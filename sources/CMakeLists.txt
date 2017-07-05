@@ -45,7 +45,7 @@ include_directories(${INC_DIR})
 # SOURCES AUTOMATIC SEARCH
 file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/*.cpp)
 file(GLOB_RECURSE INC_FILES ${INC_DIR}/*.h)
-set(SPAM )
+set(SPAM)
 
 #---------------------------------
 

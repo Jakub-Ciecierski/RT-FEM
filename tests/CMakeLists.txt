@@ -35,7 +35,7 @@ include_directories(${INC_DIR} ${INC_DIR})
 
 # SOURCES AUTOMATIC SEARCH
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-set(SOURCE_FILES )
+set(SOURCE_FILES)
 
 add_executable(${APP_NAME} ${SOURCE_FILES} ${SRC_FILES} ${INC_DIR} ${INC_DIR})
 
@@ -47,10 +47,12 @@ add_executable(${APP_NAME} ${SOURCE_FILES} ${SRC_FILES} ${INC_DIR} ${INC_DIR})
 add_subdirectory(external/googletest)
 include_directories(external/googletest/include)
 
+include_directories(../sources/include)
+
 #---------------------------------
 # LINK
 #---------------------------------
 
-#target_link_libraries(${APP_NAME} rtfem)
+target_link_libraries(${APP_NAME} rtfem)
 
 target_link_libraries(${APP_NAME} gtest gtest_main)
