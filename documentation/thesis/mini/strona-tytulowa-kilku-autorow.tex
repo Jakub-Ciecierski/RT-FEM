@@ -1,0 +1,90 @@
+\documentclass[12pt,twoside,a4paper]{article}
+% ten dokument należy kompilować za pomocą XeLaTeX-a
+
+\usepackage{fontspec,newunicodechar}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage[small,sf,bf]{titlesec}
+
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{a4wide}
+\geometry{left=20mm,right=20mm,bindingoffset=10mm, top=25mm, bottom=25mm}
+
+\newfontfamily\arial{arial.ttf}
+
+\setlength{\parindent}{0mm}
+\linespread{1.5}
+
+% ----------------------------Do wypełnienia ----------------------
+\newcommand{\discipline}{Matematyka}
+\newcommand{\spec}{Matematyka w naukach informacyjnych}
+\renewcommand{\title}{Tytuł pracy dyplomowej}
+\newcommand{\supervisor}{stopień naukowy Imię Nazwisko}
+\renewcommand{\year}{2017}
+
+\newcommand{\authori}{Pierwszy Autor}
+\newcommand{\albumi}{123456}
+\newcommand{\authorii}{Drugi Autor}
+\newcommand{\albumii}{654321}
+
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}
+
+\includegraphics[scale=1.]{politechnika} 
+\vspace{40pt}
+
+\includegraphics[scale=1.]{praca_inz}  % lub praca_lic lub praca_mgr
+
+{ \arial na kierunku \discipline
+
+\vspace{30pt}
+{\arial \large \title}
+
+\vspace{40pt}
+
+{\arial \huge \authori }
+
+\vspace{5pt}
+
+Numer albumu \albumi
+
+\vspace {20pt}
+{\arial \huge \authorii}
+
+\vspace{5pt}
+
+Numer albumu \albumii
+
+\vspace{40pt}
+
+promotor \\
+{\arial \supervisor}
+
+\vspace{15pt}
+ 
+konsultacje (opcjonalnie)  \\
+{\arial tyt./st. naukowy Imię Nazwisko }
+
+ \vfill
+WARSZAWA \year \\
+}
+\end{center}
+
+
+\newpage
+\null
+
+\vfill
+
+\begin{center}
+\begin{tabular}[t]{ccc}
+............................................. & \hspace*{100pt} & .............................................\\
+podpis promotora & \hspace*{100pt} & podpisy autorów
+\end{tabular}
+\end{center}
+
+
+\end{document}

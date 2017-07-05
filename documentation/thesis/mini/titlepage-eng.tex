@@ -1,0 +1,87 @@
+\documentclass[12pt,twoside,a4paper]{article}
+% compile this with XeLaTeX.
+
+\usepackage{fontspec,newunicodechar}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage[small,sf,bf]{titlesec}
+
+
+
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{a4wide}
+\geometry{left=20mm,right=20mm,bindingoffset=10mm, top=25mm, bottom=25mm}
+
+\newfontfamily\arial{arial.ttf}
+
+\linespread{1.5}
+\setlength{\parindent}{0mm}
+
+% ------------------------------------------------------
+
+\newcommand{\discipline}{Computer Science}
+\newcommand{\spec}{Name of a specialisation}
+\renewcommand{\title}{Thesis title}
+\renewcommand{\author}{Name Surname}
+\newcommand{\supervisor}{title/degree Name Surname}
+\newcommand{\album}{123456}
+\renewcommand{\year}{2017}
+
+
+\begin{document}
+
+\pagestyle{empty}
+
+
+\begin{center}
+\includegraphics[scale=1.]{wut}
+\vspace{70pt}
+
+
+\includegraphics[scale=1.]{bachelor} % or master
+
+{ \arial
+in the field of study~\discipline \\
+and specialisation~\spec
+
+\vspace{30pt}
+{\arial \large \title}
+
+\vspace{50pt}
+
+{\arial \huge \author}
+
+\vspace{5pt}
+
+student record book number \album
+
+\vspace{40pt}
+
+thesis supervisor \\
+{\arial \supervisor}
+
+\vspace{15pt}
+ 
+consulation (optional)  \\
+{\arial academic title/degree Name and Surname}
+
+ \vfill
+WARSAW \year \\
+}
+\end{center}
+
+
+\newpage
+\null
+
+\vfill
+
+\begin{center}
+\begin{tabular}[t]{ccc}
+............................................. & \hspace*{100pt} & .............................................\\
+supervisor's signature & \hspace*{100pt} & author's signature
+\end{tabular}
+\end{center}
+
+
+\end{document}

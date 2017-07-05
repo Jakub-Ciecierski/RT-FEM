@@ -1,0 +1,14 @@
+\select@language {polish}
+\contentsline {chapter}{Wst\IeC {\k e}p}{9}{section*.1}
+\contentsline {chapter}{\numberline {1}Rozdzia\IeC {\l } pokazowy}{10}{chapter.1}
+\contentsline {section}{\numberline {1.1}Przyk\IeC {\l }adowa sekcja/podrozdzia\IeC {\l }}{10}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Podsekcja}{10}{subsection.1.1.1}
+\contentsline {section}{\numberline {1.2}Tabele i rysunki}{11}{section.1.2}
+\contentsline {chapter}{\numberline {2}Nast\IeC {\k e}pny rozdzia\IeC {\l }}{13}{chapter.2}
+\contentsline {section}{\numberline {2.1}Jaki\IeC {\'s} podrozdzia\IeC {\l }}{13}{section.2.1}
+\contentsline {chapter}{Bibliografia}{14}{section*.2}
+\contentsline {chapter}{Wykaz symboli i skr\IeC {\'o}t\IeC {\'o}w}{15}{section*.3}
+\contentsline {chapter}{Spis rysunk\'ow}{16}{section*.4}
+\contentsline {chapter}{Spis tabel}{17}{section*.5}
+\contentsline {chapter}{Spis za\IeC {\l }\IeC {\k a}cznik\IeC {\'o}w}{18}{section*.6}
+\contentsfinish 

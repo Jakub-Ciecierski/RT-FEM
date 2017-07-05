@@ -1,0 +1,452 @@
+\documentclass[a4paper,11pt,twoside]{report}
+
+
+% -------------- Kodowanie znakow, język polski -------------
+
+\usepackage[utf8]{inputenc}
+%\usepackage[MeX]{polski}
+%\usepackage[T1]{fontenc}
+%\usepackage[english, polish]{babel}
+
+
+% ----------------- Przydatne pakiety ----------------------
+\usepackage{amsfonts}
+\usepackage{mathrsfs} 
+\usepackage{amsmath,amsthm,latexsym,xpatch}
+\usepackage[dvips]{graphicx,color}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\usepackage{array}
+\usepackage{pstricks}
+\usepackage{textcomp}
+
+
+% ---------------- Marginesy, akapity, interlinia ------------------
+
+\usepackage[inner=20mm, outer=20mm, bindingoffset=10mm, top=25mm, bottom=25mm]{geometry}
+
+
+\linespread{1.5}
+%\allowdisplaybreaks
+\usepackage{indentfirst} % optional
+\setlength{\parindent}{5mm}
+
+\hyphenation{Syl-ves-tra}
+\hyphenation{Syl-ves-ter-a}
+
+%--------------------------- zYWA PAGINA ------------------------
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[LE,RO]{\thepage} 
+\fancyhead[LO]{\sc \nouppercase{\rightmark}}
+\fancyhead[RE]{\sc \leftmark}
+
+\renewcommand{\chaptermark}[1]{
+\markboth{\thechapter.\ #1}{}}
+
+
+\renewcommand{\headrulewidth}{0 pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}%
+  \fancyfoot[LE,RO]{\thepage}%
+  
+  \renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+  \renewcommand{\footrulewidth}{0.0pt}
+}
+
+
+
+% ---------------- Chapters ---------------------
+
+\usepackage{titlesec}
+\titleformat{\chapter}%[display]
+  {\normalfont\Large \bfseries}
+  {\thechapter.}{1ex}{\Large}
+
+\titleformat{\section}
+  {\normalfont\large\bfseries}
+  {\thesection.}{1ex}{}
+\titlespacing{\section}{0pt}{30pt}{20pt} 
+%\titlespacing{\co}{akapit}{ile przed}{ile po} 
+    
+\titleformat{\subsection}
+  {\normalfont \bfseries}
+  {\thesubsection.}{1ex}{}
+
+
+% ----------------------- Table of contents ---------------------------
+\def\cleardoublepage{\clearpage\if@twoside
+\ifodd\c@page\else\hbox{}\thispagestyle{empty}\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+
+
+% kropki dla chapterow
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\l@chapter}
+  {\hfil}
+  {\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}\hfill}
+  {}{}
+\makeatother
+
+\usepackage{titletoc}
+\makeatletter
+\titlecontents{chapter}% <section-type>
+  [0pt]% <left>
+  {}% <above-code>
+  {\bfseries \thecontentslabel.\quad}% <numbered-entry-format>
+  {\bfseries}% <numberless-entry-format>
+  {\bfseries\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}\hfill\contentspage}% <filler-page-format>
+
+\titlecontents{section}
+  [1em]
+  {}
+  {\thecontentslabel.\quad}
+  {}
+  {\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}\hfill\contentspage}
+
+\titlecontents{subsection}
+  [2em]
+  {}
+  {\thecontentslabel.\quad}
+  {}
+  {\leaders\hbox{\normalfont$\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}\hfill\contentspage}
+\makeatother
+
+
+
+% ---------------------- Lists of figures and tables  ----------------------
+
+\renewcommand*{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand*{\thefigure}{\arabic{chapter}.\arabic{figure}}
+%\let\c@table\c@figure % jesli wlaczone, numeruje tabele i obrazki razem
+
+
+% ----------------------------- Environments ----------------------
+
+
+\makeatletter
+\newtheoremstyle{definition}%    % Name
+{3ex}%                          % Space above
+{3ex}%                          % Space below
+{\upshape}%                      % Body font
+{}%                              % Indent amount
+{\bfseries}%                     % Theorem head font
+{.}%                             % Punctuation after theorem head
+{.5em}%                            % Space after theorem head, ' ', or \newline
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}%  % Theorem head spec (can be left empty, meaning `normal')
+\makeatother
+
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+
+
+% ----------------------------- PROOF -----------------------------
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]
+{\par
+  \vspace{-12pt}% remove the space after the theorem
+  \pushQED{\qed}%
+  \normalfont
+  \topsep0pt \partopsep0pt % no space before
+  \trivlist
+  \item[\hskip\labelsep
+        \sc
+    #1\@addpunct{:}]\ignorespaces
+}
+{%
+  \popQED\endtrivlist\@endpefalse
+  \addvspace{20pt} % some space after
+}
+
+\renewcommand{\qedhere}{\hfill \qedsymbol}
+\makeatother
+
+
+
+
+% -------------------------- THE IMPORTANT PART  -------------------------
+
+
+\renewcommand{\title}{English title}
+\renewcommand{\author}{Name Surname}
+\newcommand{\album}{111111}
+\newcommand{\type}{Engineer} % Master or Engineer
+\newcommand{\supervisor}{dr inz. Supervisor's name}
+
+
+
+\begin{document}
+\sloppy
+
+
+\begin{abstract}
+
+\begin{center}
+\title
+\end{center}
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
+
+\noindent \textbf{Keywords:} keyword1, keyword2, ...
+\end{abstract}
+
+
+\null\thispagestyle{empty}\newpage
+
+\null \hfill Warsaw, ....................... % date\\
+
+
+\par\vspace{5cm}
+
+\begin{center}
+Declaration
+\end{center}
+
+I hereby declare that the thesis entitled ,,\title '', submitted for the \type ~degree, supervised  by \supervisor , is entirely my original work apart from the recognized reference.
+\vspace{2cm}
+
+\begin{flushright}
+  \begin{minipage}{50mm}
+    \begin{center}
+      ..............................................
+
+    \end{center}
+  \end{minipage}
+\end{flushright}
+
+\thispagestyle{empty}
+\newpage
+
+\null\thispagestyle{empty}\newpage
+% ------------------- 4. table of contents  ---------------------
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+
+
+
+\null\thispagestyle{empty}\newpage
+\setcounter{page}{9}
+\pagestyle{fancy}
+
+
+\chapter*{Introduction} % Introduction
+\markboth{}{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+\chapter{Chapter}
+
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua.
+
+At vero eos et accusam et justo duo dolores et ea rebum.
+
+
+\section{Example section}
+
+\begin{definition}[Definition]
+A \emph{definition} is a statement of the meaning of a term (a word, phrase, or other set of symbols). Definitions can be classified into two large categories, intensional definitions (which try to give the essence of a term) and extensional definitions (which proceed by listing the objects that a term describes).
+\end{definition}
+
+\subsection{Subsection}
+
+
+\begin{definition}
+\textit{Rownaniem} nazywamy forme zdaniowa postaci $t_1 = t_2$, gdzie $t_1, t_2$ sa termami przynajmniej jeden z nich zawiera pewna zmienna.
+\end{definition}
+
+\begin{example}
+Przyklad rownania:
+\begin{equation}
+2+2=4.
+\end{equation}
+
+
+Rownanie (\ref{rownanie}) jest falszywe. Referencje (i kilka innych rzeczy) dzialaja po dwukrotnym przekompilowaniu tex-a.
+
+\begin{equation}\label{rownanie}
+\int \limits_{0}^{1} x \; dx = \frac{3}{2}.
+\end{equation}
+
+\end{example}
+
+Twierdzenie \ref{Pitagoras} jest bardzo ciekawe.
+
+\begin{theorem}[Twierdzenie Pitagorasa]\label{Pitagoras}
+Niech bedzie dany trojkat prostokatny o przyprostokatnych dlugosci $a$ i $b$ oraz przeciwprostokatnej dlugosci $c$. Wtedy
+$$
+a^2 + b^2 = c^2.
+$$
+\end{theorem}
+
+\begin{proof}
+Dowod zostal zaprezentowany w \cite{Ktos} oraz \cite{Innyktos}. Czyli w sumie moge napisac, ze w \cite{Ktos, Innyktos}. Albo ze latwo widac.
+\end{proof}
+
+\begin{corollary}
+Doszedlem do jakiegos wniosku i daje temu wyraz.
+\end{corollary}
+
+
+
+
+\begin{remark}
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+\end{remark}
+
+\begin{lemma}[Lemacik]
+Ten lemat jest nie na temat.
+\end{lemma}
+\begin{proof} Dowod przez indukcje.
+\end{proof}
+
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+
+
+\section{Tabele i rysunki}
+
+ Opcjonalny argument srodowisk table i figure\\
+h 	- 	bez przemieszczenia, dokladnie w miejscu uzycia (uzyteczne w odniesieniu do niewielkich wstawek); \\
+t 	- 	na gorze strony;\\
+b 	- 	na dole strony;\\
+p 	- 	na stronie zawierajacej wylacznie wstawki;\\
+! 	- 	ignorujac wiekszosc parametrow kontrolujacych umieszczanie wstawek, przekroczenie wartosci, ktorych moze nie pozwolic na umieszczanie nastepnych wstawek na stronie.
+
+\begin{figure}[h!]
+\begin{center}
+\setlength{\unitlength}{1mm}
+\begin{picture}(40, 30)
+\put(20,1){\line(0,1){20}} % linia
+
+% dol
+\put(20,1){\circle*{2}}
+\put(25,1){0}
+
+% gora
+\put(20,21){\circle*{2}}
+\put(25,21){1}
+\end{picture}
+\end{center}
+\caption{Obrazek zrobiony w LaTeXu}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{rl|c}
+bla & blabla & blablabla\\
+\hline
+bla & blabal & blablabla \\
+ble & bleble & blebleble
+\end{tabular}
+\caption[Opis skrocony]{Pelny opis znajdujacy sie pod tabela}
+\end{table}
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{politechnika}
+\caption[Logo MiNI]{Jakis obrazek}
+\end{figure}
+
+
+\chapter{Nastepny rozdzial}
+
+
+
+\section{Jakis podrozdzial}
+
+
+\begin{definition}
+Niech $A\neq \emptyset$, $n \in \mathbb{N}$. Kazde przeksztalcenie $f:A^n \rightarrow A$ nazywamy \textit{$n$-arna operacja} lub \textit{dzialaniem} okreslonym na $A$.
+0-arne operacje to wyroznione stale.
+\end{definition}
+
+
+\begin{definition}[Algebra]
+Pare uporzadkowana $(A,F)$, gdzie $A\neq \emptyset$ jest zbiorem, a $F$ jest rodzina operacji okreslonych na $A$, nazywamy \textit{algebra} (lub \textit{$F$-algebra}). Zbior $A$ nazywa sie \textit{zbiorem elementow}, \textit{nosnikiem} lub \textit{uniwersum} algebry $(A,F)$, a $F$ \textit{zbiorem operacji elementarnych}.
+\end{definition}
+
+\begin{proposition}
+Stwierdzam wiec ostatnio, ze doszedlszy do granicy, pozostaje mi tylko przy tej granicy biwakowac albo zawrocic, mozliwie tez szukac przejscia czy wyjscia na nowe obszary.
+\end{proposition}
+
+
+
+% -------------------- 6. Bibliography -----------------------
+% Alphabetical order by surnames of authors
+
+\begin{thebibliography}{20}
+% \bibitem[name]{reference} Author, \emph{Title}, Press, year, pages
+% cite: \cite{ref1, ref2,...}
+
+\bibitem[1]{Ktos} A. Aaaaa, \emph{Tytul}, Wydawnictwo, rok, strona-strona.
+\bibitem[2]{Innyktos} J. Bobkowski, S. Dobkowski, \emph{Blebleble}, Magazyn nr, rok, strony.
+\bibitem[3]{B} C. Brink, \emph{Power structures}, Algebra Universalis 30(2), 1993, 177-216.
+\bibitem[4]{H} F. Burris, H. P. Sankappanavar, \emph{A Course of Universal Algebra}, Springer-Verlag, New York, 1981.
+\end{thebibliography}
+\thispagestyle{empty}
+
+
+% --- 7. Symbols and abbreviations (?)
+\chapter*{List of symbols and abbreviations}
+
+\begin{tabular}{cl}
+nzw. & nadzwyczajny \\
+* & operator gwiazdka \\
+$\widetilde{}$ & tylda
+\end{tabular}
+\thispagestyle{empty}
+
+
+% ----- 8. List of figures --------
+\listoffigures
+\thispagestyle{empty}
+
+
+% ------------ 9. List of tables - jak wyzej ------------------
+
+\listoftables
+\thispagestyle{empty}
+
+
+
+% 10. List of appendices
+
+\chapter*{List of Appendices}
+\begin{enumerate}[itemsep = 0pt]
+\item Appendix 1 -- description (?)
+\item Appendix 2 -- ...
+\end{enumerate}
+\thispagestyle{empty}
+
+% --------------------- 11. Appendices ---------------------
+% Appendices goes here (after the thesis) - this is only an information
+
+\newpage
+\pagestyle{empty} 
+Appendix 1, appendix 2, ...
+\end{document}

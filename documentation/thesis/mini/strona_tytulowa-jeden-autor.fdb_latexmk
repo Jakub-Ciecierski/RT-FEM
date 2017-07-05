@@ -1,0 +1,21 @@
+# Fdb version 3
+["pdflatex"] 1498810849 "strona_tytulowa-jeden-autor.tex" "strona_tytulowa-jeden-autor.pdf" "strona_tytulowa-jeden-autor" 1498810849
+  "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1479649810 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1479649815 1288 655e228510b4c2a1abe905c368440826 ""
+  "/usr/share/texmf-dist/tex/generic/unicode-data/CaseFolding.txt" 1479649817 78161 e3fbf2f626f10070000fe66f3a2ff5ef ""
+  "/usr/share/texmf-dist/tex/generic/unicode-data/SpecialCasing.txt" 1479649817 16830 fea30f45a2f81ffa474fd984d297e2ea ""
+  "/usr/share/texmf-dist/tex/generic/unicode-data/UnicodeData.txt" 1479649817 1686443 dde25b1cf9bbb4ba1140ac12e4128b0b ""
+  "/usr/share/texmf-dist/tex/latex/base/article.cls" 1479649819 19821 310da678527a7dfe2a02c88af38079b7 ""
+  "/usr/share/texmf-dist/tex/latex/base/size12.clo" 1479649819 8303 1d67e16498f00f63da792fab169302fc ""
+  "/usr/share/texmf-dist/tex/latex/fontspec/fontspec.sty" 1479649819 1699 41a8dcd7126940efa254804d5311bbda ""
+  "/usr/share/texmf-dist/tex/latex/l3kernel/expl3-code.tex" 1479649819 691023 85475662378ba8c8988c6f3cfa3799e3 ""
+  "/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty" 1479649819 10238 1150418e80b156612a595d9edbbbb9f3 ""
+  "/usr/share/texmf-dist/tex/latex/l3kernel/l3pdfmode.def" 1479649819 11199 4171493874042bbbacba0e3c76eaa3b9 ""
+  "/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty" 1479649819 61642 eb33a97f8bac89395852fc3a7cfc9114 ""
+  "/usr/share/texmf-dist/web2c/texmf.cnf" 1479649825 31669 df537245012f3e5f05bdc55644b7a3df ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1486051878 7252862 957f96274d7a69bb5ab36082f70e9ac5 ""
+  "strona_tytulowa-jeden-autor.aux" 1498810848 8 a94a2480d3289e625eea47cd1b285758 ""
+  "strona_tytulowa-jeden-autor.tex" 1498810848 1573 04b960253ba638964280359f1cd0af1f ""
+  (generated)
+  "strona_tytulowa-jeden-autor.log"
+  "strona_tytulowa-jeden-autor.pdf"
