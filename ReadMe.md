@@ -9,11 +9,16 @@ The library computes the entire process of Finite Element Method for solid mecha
  1. Post-Processing:
     * Output all Solid Mechanics FEM artifacts.
 
-# Language
+## Supported Platforms
 Library is written in c++11.
 TODO
+* Linux 32/64bit (Tested)
+* Windows 32/64bit (Not Tested TODO)
 
-# Build
+## Requirements
+* Cmake 3.3
+
+## Build
 RTFEM can be built on any platform supporting cmake. <br/>
 To build the library, run the following command in root directory:
 ```
@@ -27,5 +32,5 @@ Unittests are written using googletest
 ### Benchmarks
 TODO
 
-# Example application
+## Demo application
 TODO
