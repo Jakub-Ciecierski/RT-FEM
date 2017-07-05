@@ -1,8 +1,8 @@
 # RTFEM
-RTFEM stands for Real-Time Finite Element Method.
-The library allows to compute the entire process of Finite Element Method for Solid Mechanics in real time, namely:
+RTFEM stands for Real-Time Finite Element Method. <br/>
+The library computes the entire process of Finite Element Method for solid mechanics in real time, namely:
  1. Pre-Processing:
-    * 3D Finite Element Meshing of given Mesh.
+    * 3D Finite Element Meshing of given geometry.
  1. FEM Solver:
     * [CPU] Linear elastic, linear deformation, static.
     * TODO
@@ -11,14 +11,21 @@ The library allows to compute the entire process of Finite Element Method for So
 
 # Language
 Library is written in c++11.
+TODO
 
 # Build
-Project is build using cmake.
-Run "cmake /." command in order to build the library.
+RTFEM can be built on any platform supporting cmake. <br/>
+To build the library, run the following command in root directory:
+```
+cmake .
+```
 
-## Unittests 
-You can disable/enable building unittests in CMakeLists.txt.
+### Unittests
+Building Unittests can be disabled/enabled in CMakeLists.txt. <br/>
 Unittests are written using googletest
+
+### Benchmarks
+TODO
 
 # Example application
 TODO
