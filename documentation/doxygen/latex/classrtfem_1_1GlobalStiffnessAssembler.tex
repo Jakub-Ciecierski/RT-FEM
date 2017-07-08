@@ -1,0 +1,49 @@
+\hypertarget{classrtfem_1_1GlobalStiffnessAssembler}{}\section{rtfem\+:\+:Global\+Stiffness\+Assembler Class Reference}
+\label{classrtfem_1_1GlobalStiffnessAssembler}\index{rtfem\+::\+Global\+Stiffness\+Assembler@{rtfem\+::\+Global\+Stiffness\+Assembler}}
+
+
+{\ttfamily \#include $<$Global\+Stiffness\+Assembler.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classrtfem_1_1Matrix}{Matrix} \hyperlink{classrtfem_1_1GlobalStiffnessAssembler_a1da0902be1ae9e0fe7a5f7d2645597e3}{Compute} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classrtfem_1_1FEMModel}{F\+E\+M\+Model} $>$ fem\+\_\+model)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Local Stiffness \hyperlink{classrtfem_1_1Matrix}{Matrix} (k) is the stiffness of each element \mbox{[}3\+Ne x 3\+Ne\mbox{]} e.\+g. for Tetrahedron (Ne = 3) thus\+: (dim = \mbox{[}12 x 12\mbox{]})
+
+Global Stiffness \hyperlink{classrtfem_1_1Matrix}{Matrix} (K) is the stiffness of entire F\+EM Model \mbox{[}3N x 3N\mbox{]} e.\+g. For 9 vertices (dim = \mbox{[}27 x 27\mbox{]})
+
+Partial Global Stiffness \hyperlink{classrtfem_1_1Matrix}{Matrix} (Ke) is the matrix of dimension equal to Global Stiffness but filled with only Local Stiffness data. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classrtfem_1_1GlobalStiffnessAssembler_a1da0902be1ae9e0fe7a5f7d2645597e3}\label{classrtfem_1_1GlobalStiffnessAssembler_a1da0902be1ae9e0fe7a5f7d2645597e3}} 
+\index{rtfem\+::\+Global\+Stiffness\+Assembler@{rtfem\+::\+Global\+Stiffness\+Assembler}!Compute@{Compute}}
+\index{Compute@{Compute}!rtfem\+::\+Global\+Stiffness\+Assembler@{rtfem\+::\+Global\+Stiffness\+Assembler}}
+\subsubsection{\texorpdfstring{Compute()}{Compute()}}
+{\footnotesize\ttfamily \hyperlink{classrtfem_1_1Matrix}{Matrix} rtfem\+::\+Global\+Stiffness\+Assembler\+::\+Compute (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \hyperlink{classrtfem_1_1FEMModel}{F\+E\+M\+Model} $>$}]{fem\+\_\+model }\end{DoxyParamCaption})}
+
+Computes Global Stiffness \hyperlink{classrtfem_1_1Matrix}{Matrix} (K). \begin{DoxyVerb} 1) Computes Constitutive Matrix (C)
+ 2) Computes Geometry Matrix (B) for each Finite Element
+ 3) Computes Local Stiffness (k) for each Finite Element
+     - Using Constitutive Matrix and Geometry Matrix.
+ 4) Assembles all Local Stiffness matrices into Global Stiffness Matrix (K)
+\end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em fem\+\_\+model} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/samba/ciecierskij/programming/rt\+\_\+fem/sources/include/\+R\+T\+F\+E\+M/\+F\+E\+M/\+Solver/Global\+Stiffness\+Assembler.\+h\item 
+/home/samba/ciecierskij/programming/rt\+\_\+fem/sources/src/\+R\+T\+F\+E\+M/\+F\+E\+M/\+Solver/Global\+Stiffness\+Assembler.\+cpp\end{DoxyCompactItemize}

@@ -31,7 +31,7 @@ include_directories(${INC_DIR} ${INC_DIR})
 
 # SOURCES AUTOMATIC SEARCH
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-set(SOURCE_FILES)
+set(SOURCE_FILES )
 
 add_executable(${APP_NAME} ${SOURCE_FILES} ${SRC_FILES} ${INC_DIR} ${INC_DIR})
 

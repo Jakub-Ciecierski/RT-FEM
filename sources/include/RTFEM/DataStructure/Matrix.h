@@ -4,6 +4,7 @@
 #include <RTFEM/DataTypes.h>
 
 #include <vector>
+#include <iostream>
 
 namespace rtfem {
 
@@ -15,6 +16,9 @@ struct MatrixDimension{
     UInt column_count;
 };
 
+/**
+ * Matrix data structure.
+ */
 class Matrix {
 public:
     /**
@@ -45,13 +49,26 @@ public:
     std::vector<Float>& GetRow(UInt i);
     const std::vector<Float>& GetRow(UInt i) const;
 
+    bool operator==(const Matrix &rhs) const;
+    bool operator!=(const Matrix &rhs) const;
 private:
     void InitData();
 
     std::vector<std::vector<Float>> data_;
 
+private:
     MatrixDimension dimensions_;
 };
+
+std::ostream& operator<<(std::ostream&, const Matrix&);
+
+Matrix operator*(Float x, const Matrix& m);
+Matrix operator*(const Matrix& m, Float x);
+
+Matrix operator/(const Matrix& m, Float x);
+
+Matrix operator*(const Matrix& m1, const Matrix& m2);
+Matrix operator+(const Matrix& m1, const Matrix& m2);
 
 }
 

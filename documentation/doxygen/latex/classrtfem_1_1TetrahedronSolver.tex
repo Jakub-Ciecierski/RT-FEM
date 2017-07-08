@@ -1,0 +1,31 @@
+\hypertarget{classrtfem_1_1TetrahedronSolver}{}\section{rtfem\+:\+:Tetrahedron\+Solver Class Reference}
+\label{classrtfem_1_1TetrahedronSolver}\index{rtfem\+::\+Tetrahedron\+Solver@{rtfem\+::\+Tetrahedron\+Solver}}
+
+
+{\ttfamily \#include $<$Tetrahedron\+Solver.\+h$>$}
+
+Inheritance diagram for rtfem\+:\+:Tetrahedron\+Solver\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrtfem_1_1TetrahedronSolver}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrtfem_1_1TetrahedronSolver_a8d51da2dea70e926dd0975bc2ce92c52}\label{classrtfem_1_1TetrahedronSolver_a8d51da2dea70e926dd0975bc2ce92c52}} 
+virtual \hyperlink{structrtfem_1_1FiniteElementSolverData}{Finite\+Element\+Solver\+Data} {\bfseries Solve} (std\+::shared\+\_\+ptr$<$ \hyperlink{classrtfem_1_1FiniteElement}{Finite\+Element} $>$ finite\+\_\+element) override
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Solver for Linear Tetrahedron (constant gradient of shape function). The geometry matrix B is constant with respect to X (and always will be constant, independent of material/strain equations
+
+Solver Data\+: Shape \hyperlink{classrtfem_1_1Matrix}{Matrix}\+: \mbox{[}3 x 12\mbox{]} Used in computing Force vector
+
+Geometry matrix\+: \mbox{[}6 x 12\mbox{]} (Shape function gradient) Used in computing Stiffness \hyperlink{classrtfem_1_1Matrix}{Matrix} 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/samba/ciecierskij/programming/rt\+\_\+fem/sources/include/\+R\+T\+F\+E\+M/\+F\+E\+M/\+Solver/\+Finite\+Element\+Solvers/Tetrahedron\+Solver.\+h\item 
+/home/samba/ciecierskij/programming/rt\+\_\+fem/sources/src/\+R\+T\+F\+E\+M/\+F\+E\+M/\+Solver/\+Finite\+Element\+Solvers/Tetrahedron\+Solver.\+cpp\end{DoxyCompactItemize}

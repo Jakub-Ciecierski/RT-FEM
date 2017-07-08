@@ -1,0 +1,76 @@
+\hypertarget{classrtfem_1_1Matrix}{}\section{rtfem\+:\+:Matrix Class Reference}
+\label{classrtfem_1_1Matrix}\index{rtfem\+::\+Matrix@{rtfem\+::\+Matrix}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classrtfem_1_1Matrix_af6122e873f49182e48f95a2d3a91f5ba}{Matrix} (U\+Int row\+\_\+count, U\+Int column\+\_\+count)
+\item 
+\mbox{\Hypertarget{classrtfem_1_1Matrix_a71423cbb4c6cbe0c46bb4a8cc4e87063}\label{classrtfem_1_1Matrix_a71423cbb4c6cbe0c46bb4a8cc4e87063}} 
+{\bfseries Matrix} (const \hyperlink{structrtfem_1_1MatrixDimension}{Matrix\+Dimension} \&\&matrix\+\_\+dimension)
+\item 
+\mbox{\Hypertarget{classrtfem_1_1Matrix_a931e8b928bb80eeab0b3f32ab8cf7634}\label{classrtfem_1_1Matrix_a931e8b928bb80eeab0b3f32ab8cf7634}} 
+const \hyperlink{structrtfem_1_1MatrixDimension}{Matrix\+Dimension} \& {\bfseries dimensions} () const
+\item 
+std\+::vector$<$ Float $>$ \& \hyperlink{classrtfem_1_1Matrix_afc502c2c20deb2a11562f6d55217093b}{operator\mbox{[}$\,$\mbox{]}} (U\+Int i)
+\item 
+\mbox{\Hypertarget{classrtfem_1_1Matrix_a799f80a8ff3f0794814e848fb90d2a1e}\label{classrtfem_1_1Matrix_a799f80a8ff3f0794814e848fb90d2a1e}} 
+const std\+::vector$<$ Float $>$ \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (U\+Int i) const
+\item 
+std\+::vector$<$ Float $>$ \& \hyperlink{classrtfem_1_1Matrix_acbb68e60ae9007c824c058b1e10825a5}{Get\+Row} (U\+Int i)
+\item 
+\mbox{\Hypertarget{classrtfem_1_1Matrix_a892b9524461866bd8cdb291ff608aa00}\label{classrtfem_1_1Matrix_a892b9524461866bd8cdb291ff608aa00}} 
+const std\+::vector$<$ Float $>$ \& {\bfseries Get\+Row} (U\+Int i) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrtfem_1_1Matrix_af6122e873f49182e48f95a2d3a91f5ba}\label{classrtfem_1_1Matrix_af6122e873f49182e48f95a2d3a91f5ba}} 
+\index{rtfem\+::\+Matrix@{rtfem\+::\+Matrix}!Matrix@{Matrix}}
+\index{Matrix@{Matrix}!rtfem\+::\+Matrix@{rtfem\+::\+Matrix}}
+\subsubsection{\texorpdfstring{Matrix()}{Matrix()}}
+{\footnotesize\ttfamily rtfem\+::\+Matrix\+::\+Matrix (\begin{DoxyParamCaption}\item[{U\+Int}]{row\+\_\+count,  }\item[{U\+Int}]{column\+\_\+count }\end{DoxyParamCaption})}
+
+Creates \hyperlink{classrtfem_1_1Matrix}{Matrix} with row\+\_\+count rows and column\+\_\+count columns 
+\begin{DoxyParams}{Parameters}
+{\em row\+\_\+count} & \\
+\hline
+{\em column\+\_\+count} & \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classrtfem_1_1Matrix_acbb68e60ae9007c824c058b1e10825a5}\label{classrtfem_1_1Matrix_acbb68e60ae9007c824c058b1e10825a5}} 
+\index{rtfem\+::\+Matrix@{rtfem\+::\+Matrix}!Get\+Row@{Get\+Row}}
+\index{Get\+Row@{Get\+Row}!rtfem\+::\+Matrix@{rtfem\+::\+Matrix}}
+\subsubsection{\texorpdfstring{Get\+Row()}{GetRow()}}
+{\footnotesize\ttfamily std\+::vector$<$ Float $>$ \& rtfem\+::\+Matrix\+::\+Get\+Row (\begin{DoxyParamCaption}\item[{U\+Int}]{i }\end{DoxyParamCaption})}
+
+Returns i-\/th row. 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrtfem_1_1Matrix_afc502c2c20deb2a11562f6d55217093b}\label{classrtfem_1_1Matrix_afc502c2c20deb2a11562f6d55217093b}} 
+\index{rtfem\+::\+Matrix@{rtfem\+::\+Matrix}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!rtfem\+::\+Matrix@{rtfem\+::\+Matrix}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily std\+::vector$<$ Float $>$ \& rtfem\+::\+Matrix\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{U\+Int}]{i }\end{DoxyParamCaption})}
+
+Returns i-\/th row. 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/samba/ciecierskij/programming/rt\+\_\+fem/sources/include/\+R\+T\+F\+E\+M/\+Data\+Structure/Matrix.\+h\item 
+/home/samba/ciecierskij/programming/rt\+\_\+fem/sources/src/\+R\+T\+F\+E\+M/\+Data\+Structure/Matrix.\+cpp\end{DoxyCompactItemize}

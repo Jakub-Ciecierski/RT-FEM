@@ -6,6 +6,7 @@ namespace rtfem {
 using Float = double;
 
 using UInt = unsigned int;
+using Int = int;
 
 }
 
