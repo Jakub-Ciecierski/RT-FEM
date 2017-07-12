@@ -40,6 +40,7 @@ public:
      *          - Using Constitutive Matrix and Geometry Matrix.
      *      4) Assembles all Local Stiffness matrices into Global Stiffness Matrix (K)
      *
+     * TODO: Benchmark Global Stiffness Matrix
      * @param fem_model
      * @return
      */

@@ -21,6 +21,8 @@ namespace rtfem {
 struct Material {
     Float young_modulus;
     Float poisson_coefficient;
+
+    Float density;
 };
 
 }

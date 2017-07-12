@@ -9,12 +9,13 @@
 namespace rtfem {
 
 class FiniteElement;
+class Vector3;
 
  /**
-  * Contains:
- *      Volume.
- *      Shape Matrix
- *      Geometry Matrix
+ *  Contains:
+ *      Volume (V)
+ *      Geometry Matrix (B)
+ *      Force vector (p)
  *
  *  Coordinates:
  *      x2 is assumed to point 'up'
@@ -22,13 +23,15 @@ class FiniteElement;
 struct FiniteElementSolverData{
     FiniteElementSolverData() :
             volume(0),
-            shape_matrix(0,0),
-            geometry_matrix(0,0){}
+            geometry_matrix(0,0),
+            force_vector(0,0){}
     Float volume;
 
-    Matrix shape_matrix;
-
+    // Used to compute Global Stiffness
     Matrix geometry_matrix;
+
+    // Used to compute Global Force
+    Matrix force_vector;
 };
 
 
@@ -42,6 +45,10 @@ public:
     virtual ~FiniteElementSolver();
 
     virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element) = 0;
+
+    virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element,
+                                          const Vector3& body_force,
+                                          const Vector3& traction_force) = 0;
 };
 }
 

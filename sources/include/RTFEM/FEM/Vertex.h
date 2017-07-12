@@ -13,6 +13,9 @@ public:
 
     UInt id() const {return id_;}
     const Vector3& coordinates() const {return coordinates_;}
+    Float x() const {return coordinates_.x;}
+    Float y() const {return coordinates_.y;}
+    Float z() const {return coordinates_.z;}
 
 private:
     /**

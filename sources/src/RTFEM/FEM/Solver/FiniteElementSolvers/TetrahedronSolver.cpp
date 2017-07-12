@@ -3,6 +3,7 @@
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/Math/MatrixMath.h>
+#include <RTFEM/DataStructure/Vector4.h>
 
 namespace rtfem {
 
@@ -11,148 +12,139 @@ TetrahedronSolver::TetrahedronSolver() {}
 TetrahedronSolver::~TetrahedronSolver() {}
 
 FiniteElementSolverData TetrahedronSolver::Solve(std::shared_ptr<FiniteElement> finite_element){
-    auto a0 = ComputeA(0, finite_element);
-    auto a1 = ComputeA(1, finite_element);
-    auto a2 = ComputeA(2, finite_element);
-    auto a3 = ComputeA(3, finite_element);
+    return Solve(finite_element, Vector3(0,0,0), Vector3(0,0,0));
+}
 
-    auto b0 = ComputeB(0, finite_element);
-    auto b1 = ComputeB(1, finite_element);
-    auto b2 = ComputeB(2, finite_element);
-    auto b3 = ComputeB(3, finite_element);
+FiniteElementSolverData TetrahedronSolver::Solve(
+        std::shared_ptr<FiniteElement> finite_element,
+        const Vector3& body_force,
+        const Vector3& traction_force){
+    auto v1 = finite_element->vertices()[0];
+    auto v2 = finite_element->vertices()[1];
+    auto v3 = finite_element->vertices()[2];
+    auto v4 = finite_element->vertices()[3];
 
-    auto c0 = ComputeC(0, finite_element);
-    auto c1 = ComputeC(1, finite_element);
-    auto c2 = ComputeC(2, finite_element);
-    auto c3 = ComputeC(3, finite_element);
-
-    auto d0 = ComputeD(0, finite_element);
-    auto d1 = ComputeD(1, finite_element);
-    auto d2 = ComputeD(2, finite_element);
-    auto d3 = ComputeD(3, finite_element);
-
-    auto volume = ComputeVolume(finite_element);
-    if(volume == 0){
-        throw std::invalid_argument("TetrahedronSolver::Solve: Element with 0 volume");
-    }
+    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4);
 
     FiniteElementSolverData data;
-    data.volume = volume;
-
-    data.geometry_matrix = Matrix(6, 12);
-    AssemblyGeometryMatrix(data.geometry_matrix, 0, b0, c0, d0);
-    AssemblyGeometryMatrix(data.geometry_matrix, 3, b1, c1, d1);
-    AssemblyGeometryMatrix(data.geometry_matrix, 6, b2, c2, d2);
-    AssemblyGeometryMatrix(data.geometry_matrix, 9, b3, c3, d3);
-
-    data.geometry_matrix = data.geometry_matrix / (6*volume);
+    data.volume = ComputeVolume(shape_function_coefficients);
+    data.geometry_matrix = ComputeGeometryMatrix(shape_function_coefficients, data.volume);
+    data.force_vector = ComputeForceVector(shape_function_coefficients, body_force, traction_force);
 
     return data;
 }
 
-Float TetrahedronSolver::ComputeA(UInt vertex_local_index,
-                                  const std::shared_ptr<FiniteElement> finite_element){
-    const UInt n = 3;
-    Matrix m(n, n);
-    UInt current_column = 0;
-    for(UInt i = 0; i < finite_element->GetVertexCount(); i++){
-        if(i == vertex_local_index)
-            continue;
-        const auto& vertex = finite_element->vertices()[i];
-        m[0][current_column] = vertex->coordinates().x;
-        m[1][current_column] = vertex->coordinates().y;
-        m[2][current_column] = vertex->coordinates().z;
-        current_column++;
-    }
-    MatrixMath matrix_math;
+Matrix TetrahedronSolver::SolveJacobianInverse(std::shared_ptr<FiniteElement> finite_element){
+    auto v1 = finite_element->vertices()[0];
+    auto v2 = finite_element->vertices()[1];
+    auto v3 = finite_element->vertices()[2];
+    auto v4 = finite_element->vertices()[3];
 
-    return matrix_math.ComputeDeterminant(m);
+    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4);
+    auto volume = ComputeVolume(shape_function_coefficients);
+
+    return AssemblyJacobianInverse(shape_function_coefficients, volume);
 }
 
-Float TetrahedronSolver::ComputeB(UInt vertex_local_index,
-                                  const std::shared_ptr<FiniteElement> finite_element){
-    const UInt n = 3;
-    Matrix m(n, n);
-    UInt current_column = 0;
-    for(UInt i = 0; i < finite_element->GetVertexCount(); i++){
-        if(i == vertex_local_index)
-            continue;
+TetrahedronShapeFunctionCoefficients TetrahedronSolver::ComputeShapeFunctionCoefficients(const Vertex &v1,
+                                                                              const Vertex &v2,
+                                                                              const Vertex &v3,
+                                                                              const Vertex &v4) {
+    auto x32 = v3.x() - v2.x();
+    auto x34 = v3.x() - v4.x();
+    auto x43 = v4.x() - v3.x();
+    auto x14 = v1.x() - v4.x();
+    auto x21 = v2.x() - v1.x();
+    auto x31 = v3.x() - v1.x();
+    auto x24 = v2.x() - v4.x();
+    auto x42 = v4.x() - v2.x();
+    auto x13 = v1.x() - v3.x();
+    auto x12 = v1.x() - v2.x();
 
-        const auto& vertex = finite_element->vertices()[i];
-        m[0][current_column] = 1;
-        m[1][current_column] = vertex->coordinates().y;
-        m[2][current_column] = vertex->coordinates().z;
-        current_column++;
-    }
-    MatrixMath matrix_math;
+    auto z43 = v4.z() - v3.z();
+    auto z31 = v3.z() - v1.z();
+    auto z32 = v3.z() - v2.z();
+    auto z24 = v2.z() - v4.z();
+    auto z34 = v3.z() - v4.z();
+    auto z13 = v1.z() - v3.z();
+    auto z14 = v1.z() - v4.z();
+    auto z21 = v2.z() - v1.z();
+    auto z42 = v4.z() - v2.z();
+    auto z12 = v1.z() - v2.z();
 
-    return -matrix_math.ComputeDeterminant(m);
+    auto y42 = v4.y() - v2.y();
+    auto y31 = v3.y() - v1.y();
+    auto y24 = v2.y() - v4.y();
+    auto y13 = v1.y() - v3.y();
+    auto y32 = v3.y() - v2.y();
+    auto y34 = v3.y() - v4.y();
+    auto y14 = v1.y() - v4.y();
+    auto y12 = v1.y() - v2.y();
+    auto y43 = v4.y() - v3.y();
+    auto y21 = v2.y() - v1.y();
+
+    TetrahedronShapeFunctionCoefficients coefficients;
+
+    auto V0i = ComputeAi(v1, v2, v3, v4);
+    coefficients.A1 = V0i.x;
+    coefficients.A2 = V0i.y;
+    coefficients.A3 = V0i.z;
+    coefficients.A4 = V0i.w;
+
+    coefficients.B1 = (y42 * z32) - (y32 * z42);
+    coefficients.B2 = (y31 * z43) - (y34 * z13);
+    coefficients.B3 = (y24 * z14) - (y14 * z24);
+    coefficients.B4 = (y13 * z21) - (y12 * z31);
+
+    coefficients.C1 = (x32 * z42) - (x42 * z32);
+    coefficients.C2 = (x43 * z31) - (x13 * z34);
+    coefficients.C3 = (x14 * z24) - (x24 * z14);
+    coefficients.C4 = (x21 * z13) - (x31 * z12);
+
+    coefficients.D1 = (x42 * y32) - (x32 * y42);
+    coefficients.D2 = (x31 * y43) - (x34 * y13);
+    coefficients.D3 = (x24 * y14) - (x14 * y24);
+    coefficients.D4 = (x13 * y21) - (x12 * y31);
+
+    return coefficients;
 }
 
-Float TetrahedronSolver::ComputeC(UInt vertex_local_index,
-                                  const std::shared_ptr<FiniteElement> finite_element){
-    const UInt n = 3;
-    Matrix m(n, n);
-    UInt current_column = 0;
-    for(UInt i = 0; i < finite_element->GetVertexCount(); i++){
-        if(i == vertex_local_index)
-            continue;
+Vector4 TetrahedronSolver::ComputeAi(const Vertex &v1,
+                                     const Vertex &v2,
+                                     const Vertex &v3,
+                                     const Vertex &v4) {
+    auto V01 =
+            v2.x() * ((v3.y() * v4.z()) - (v4.y() * v3.z()))
+            + v3.x() * ((v4.y() * v2.z()) - (v2.y() * v4.z()))
+            + v4.x() * ((v2.y() * v3.z()) - (v3.y() * v2.z()));
+    auto V02 =
+            v1.x() * ((v4.y() * v3.z()) - (v3.y() * v4.z()))
+            + v3.x() * ((v1.y() * v4.z()) - (v4.y() * v1.z()))
+            + v4.x() * ((v3.y() * v1.z()) - (v1.y() * v3.z()));
+    auto V03 =
+            v1.x() * ((v2.y() * v4.z()) - (v4.y() * v2.z()))
+            + v2.x() * ((v4.y() * v1.z()) - (v1.y() * v4.z()))
+            + v4.x() * ((v1.y() * v2.z()) - (v2.y() * v1.z()));
+    auto V04 =
+            v1.x() * ((v3.y() * v2.z()) - (v2.y() * v3.z()))
+            + v2.x() * ((v1.y() * v3.z()) - (v3.y() * v1.z()))
+            + v3.x() * ((v2.y() * v1.z()) - (v1.y() * v2.z()));
 
-        const auto& vertex = finite_element->vertices()[i];
-        m[0][current_column] = vertex->coordinates().x;
-        m[1][current_column] = 1;
-        m[2][current_column] = vertex->coordinates().z;
-        current_column++;
-    }
-    MatrixMath matrix_math;
+    Vector4 V0i(V01, V02, V03, V04);
 
-    return matrix_math.ComputeDeterminant(m);
+    return V0i;
 }
 
-Float TetrahedronSolver::ComputeD(UInt vertex_local_index,
-                                  const std::shared_ptr<FiniteElement> finite_element){
-    const UInt n = 3;
-    Matrix m(n, n);
-    UInt current_column = 0;
-    for(UInt i = 0; i < finite_element->GetVertexCount(); i++){
-        if(i == vertex_local_index)
-            continue;
+Matrix TetrahedronSolver::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients& coefficients,
+                                                Float volume){
+    Matrix geometry_matrix(6, 12);
+    AssemblyGeometryMatrix(geometry_matrix, 0, coefficients.B1, coefficients.C1, coefficients.D1);
+    AssemblyGeometryMatrix(geometry_matrix, 3, coefficients.B2, coefficients.C2, coefficients.D2);
+    AssemblyGeometryMatrix(geometry_matrix, 6, coefficients.B3, coefficients.C3, coefficients.D3);
+    AssemblyGeometryMatrix(geometry_matrix, 9, coefficients.B4, coefficients.C4, coefficients.D4);
+    geometry_matrix = geometry_matrix / (6*volume);
 
-        const auto& vertex = finite_element->vertices()[i];
-        m[0][current_column] = vertex->coordinates().x;
-        m[1][current_column] = vertex->coordinates().y;
-        m[2][current_column] = 1;
-        current_column++;
-    }
-    MatrixMath matrix_math;
-
-    return matrix_math.ComputeDeterminant(m);
-}
-
-Float TetrahedronSolver::ComputeVolume(const std::shared_ptr<FiniteElement> finite_element){
-    const UInt n = 4;
-    Matrix m(n, n);
-    UInt current_column = 0;
-    for(UInt i = 0; i < finite_element->GetVertexCount(); i++){
-        const auto& vertex = finite_element->vertices()[i];
-
-        m[0][current_column] = 1;
-        m[1][current_column] = vertex->coordinates().x;
-        m[2][current_column] = vertex->coordinates().y;
-        m[3][current_column] = vertex->coordinates().z;
-        current_column++;
-    }
-    MatrixMath matrix_math;
-
-    Float volume = matrix_math.ComputeDeterminant(m) / (Float)6.0;
-    return volume;
-}
-
-Float TetrahedronSolver::ComputeShapeFunctionValue(Float a, Float b,
-                                                   Float c, Float d,
-                                                   Float volume,
-                                                   const Vector3& x){
-    return (a + b*x.x + c*x.y + d*x.z) / 6*volume;
+    return geometry_matrix;
 }
 
 void TetrahedronSolver::AssemblyGeometryMatrix(Matrix& B, UInt column_offset,
@@ -166,6 +158,52 @@ void TetrahedronSolver::AssemblyGeometryMatrix(Matrix& B, UInt column_offset,
     B[4][2 + column_offset] = c;
     B[5][0 + column_offset] = d;
     B[5][2 + column_offset] = b;
+}
+
+Float TetrahedronSolver::ComputeVolume(const TetrahedronShapeFunctionCoefficients& coefficients){
+    auto volume = (coefficients.A1 / 6.0)
+                  + (coefficients.A2 / 6.0)
+                  + (coefficients.A3 / 6.0)
+                  + (coefficients.A4 / 6.0);
+    if(volume == 0){
+        throw std::invalid_argument("TetrahedronSolver::Solve: Element with 0 volume");
+    }
+
+    return volume;
+}
+
+Matrix TetrahedronSolver::AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients& coefficients,
+                                                  Float volume){
+    Matrix jacobian_inverse(4,4);
+    jacobian_inverse[0][0] = coefficients.A1;
+    jacobian_inverse[1][0] = coefficients.A2;
+    jacobian_inverse[2][0] = coefficients.A3;
+    jacobian_inverse[3][0] = coefficients.A4;
+
+    jacobian_inverse[0][1] = coefficients.B1;
+    jacobian_inverse[1][1] = coefficients.B2;
+    jacobian_inverse[2][1] = coefficients.B3;
+    jacobian_inverse[3][1] = coefficients.B4;
+
+    jacobian_inverse[0][2] = coefficients.C1;
+    jacobian_inverse[1][2] = coefficients.C2;
+    jacobian_inverse[2][2] = coefficients.C3;
+    jacobian_inverse[3][2] = coefficients.C4;
+
+    jacobian_inverse[0][3] = coefficients.D1;
+    jacobian_inverse[1][3] = coefficients.D2;
+    jacobian_inverse[2][3] = coefficients.D3;
+    jacobian_inverse[3][3] = coefficients.D4;
+
+    jacobian_inverse = jacobian_inverse / (6 * volume);
+
+    return jacobian_inverse;
+}
+
+Matrix TetrahedronSolver::ComputeForceVector(const TetrahedronShapeFunctionCoefficients& shape_function_coefficients,
+                                             const Vector3& body_force,
+                                             const Vector3& traction_force){
+
 }
 
 }
