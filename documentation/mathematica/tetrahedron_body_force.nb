@@ -1,0 +1,262 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      8604,        253]
+NotebookOptionsPosition[      8294,        237]
+NotebookOutlinePosition[      8630,        252]
+CellTagsIndexPosition[      8587,        249]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IntegrateOverTetrahedron", "[", 
+     RowBox[{"expr_", ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "\[Zeta]1_", ",", "\[Zeta]2_", ",", "\[Zeta]3_", ",", "\[Zeta]4_"}], 
+       "}"}], ",", "V_", ",", "max_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"p", ",", "i", ",", "j", ",", "k", ",", "l", ",", "c", ",", 
+        RowBox[{"s", "=", "0"}]}], "}"}], ",", 
+      RowBox[{
+       RowBox[{"p", "=", 
+        RowBox[{"Expand", "[", "expr", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"i", "=", "0"}], ",", 
+         RowBox[{"i", "\[LessEqual]", "max"}], ",", 
+         RowBox[{"i", "++"}], ",", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"j", "=", "0"}], ",", 
+           RowBox[{"j", "\[LessEqual]", "max"}], ",", 
+           RowBox[{"j", "++"}], ",", 
+           RowBox[{"For", "[", 
+            RowBox[{
+             RowBox[{"k", "=", "0"}], ",", 
+             RowBox[{"k", "\[LessEqual]", "max"}], ",", 
+             RowBox[{"k", "++"}], ",", 
+             RowBox[{"For", "[", 
+              RowBox[{
+               RowBox[{"l", "=", "0"}], ",", 
+               RowBox[{"l", "\[LessEqual]", "max"}], ",", 
+               RowBox[{"l", "++"}], ",", 
+               RowBox[{
+                RowBox[{"c", "=", 
+                 RowBox[{"Coefficient", "[", 
+                  RowBox[{
+                   RowBox[{"Coefficient", "[", 
+                    RowBox[{
+                    RowBox[{"Coefficient", "[", 
+                    RowBox[{
+                    RowBox[{"Coefficient", "[", 
+                    RowBox[{"p", ",", "\[Zeta]1", ",", "i"}], "]"}], ",", 
+                    "\[Zeta]2", ",", "j"}], "]"}], ",", "\[Zeta]3", ",", 
+                    "k"}], "]"}], ",", "\[Zeta]4", ",", "l"}], "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"s", "+=", 
+                 RowBox[{"6", "*", "c", "*", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"i", "!"}], "*", 
+                    RowBox[{"j", "!"}], "*", 
+                    RowBox[{"k", "!"}], "*", 
+                    RowBox[{"l", "!"}]}], ")"}], "/", 
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"i", "+", "j", "+", "k", "+", "l", "+", "3"}], 
+                    ")"}], "!"}], ")"}]}]}]}]}]}], "]"}]}], "]"}]}], "]"}]}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ClearAll", "[", "p", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Return", "[", 
+        RowBox[{"Simplify", "[", 
+         RowBox[{"V", "*", "s"}], "]"}], "]"}], ";"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "bz1", ",", "bz2", ",", "bz3", ",", "bz4", ",", "\[Zeta]1", ",", 
+    "\[Zeta]2", ",", "\[Zeta]3", ",", "\[Zeta]4", ",", "V"}], "]"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Ne", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "\[Zeta]1", ",", "0", ",", "0", ",", "\[Zeta]2", ",", "0", ",", "0", 
+       ",", "\[Zeta]3", ",", "0", ",", "0", ",", "\[Zeta]4", ",", "0", ",", 
+       "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+      "0", ",", "\[Zeta]1", ",", "0", ",", "0", ",", "\[Zeta]2", ",", "0", 
+       ",", "0", ",", "\[Zeta]3", ",", "0", ",", "0", ",", "\[Zeta]4", ",", 
+       "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+      "0", ",", "0", ",", "\[Zeta]1", ",", "0", ",", "0", ",", "\[Zeta]2", 
+       ",", "0", ",", "0", ",", "\[Zeta]3", ",", "0", ",", "0", ",", 
+       "\[Zeta]4"}], "}"}]}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"zetas", "=", 
+   RowBox[{"{", 
+    RowBox[{"\[Zeta]1", ",", "\[Zeta]2", ",", "\[Zeta]3", ",", "\[Zeta]4"}], 
+    "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"bv", "=", 
+   RowBox[{"{", 
+    RowBox[{"x0", ",", "y0", ",", "z0"}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"b", "=", 
+   RowBox[{
+    RowBox[{"Transpose", "[", "Ne", "]"}], ".", "bv"}]}], ";", 
+  RowBox[{"fe", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{"0", ",", 
+     RowBox[{"{", "12", "}"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"For", "[", 
+   RowBox[{
+    RowBox[{"i", "=", "1"}], ",", 
+    RowBox[{"i", "\[LessEqual]", "12"}], ",", 
+    RowBox[{"i", "++"}], ",", 
+    RowBox[{
+     RowBox[{"fe", "[", 
+      RowBox[{"[", "i", "]"}], "]"}], "=", 
+     RowBox[{"IntegrateOverTetrahedron", "[", 
+      RowBox[{
+       RowBox[{"b", "[", 
+        RowBox[{"[", "i", "]"}], "]"}], ",", "zetas", ",", "V", ",", "3"}], 
+      "]"}]}]}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Print", "[", 
+   RowBox[{"\"\<consistent body force =\>\"", ",", 
+    RowBox[{"fe", "//", "MatrixForm"}]}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.708857542405439*^9, 3.708857714490876*^9}, {
+  3.7088577741876583`*^9, 3.708857814579094*^9}, {3.708858173744478*^9, 
+  3.708858178083168*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"consistent body force =\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", 
+     TagBox[GridBox[{
+        {
+         FractionBox[
+          RowBox[{"V", " ", "x0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "y0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "z0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "x0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "y0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "z0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "x0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "y0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "z0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "x0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "y0"}], "4"]},
+        {
+         FractionBox[
+          RowBox[{"V", " ", "z0"}], "4"]}
+       },
+       GridBoxAlignment->{
+        "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
+         "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+       GridBoxSpacings->{"Columns" -> {
+           Offset[0.27999999999999997`], {
+            Offset[0.5599999999999999]}, 
+           Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+           Offset[0.2], {
+            Offset[0.4]}, 
+           Offset[0.2]}, "RowsIndexed" -> {}}],
+      Column], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["consistent body force =", 
+   MatrixForm[{
+    Rational[1, 4] $CellContext`V $CellContext`x0, 
+     Rational[1, 4] $CellContext`V $CellContext`y0, 
+     Rational[1, 4] $CellContext`V $CellContext`z0, 
+     Rational[1, 4] $CellContext`V $CellContext`x0, 
+     Rational[1, 4] $CellContext`V $CellContext`y0, 
+     Rational[1, 4] $CellContext`V $CellContext`z0, 
+     Rational[1, 4] $CellContext`V $CellContext`x0, 
+     Rational[1, 4] $CellContext`V $CellContext`y0, 
+     Rational[1, 4] $CellContext`V $CellContext`z0, 
+     Rational[1, 4] $CellContext`V $CellContext`x0, 
+     Rational[1, 4] $CellContext`V $CellContext`y0, 
+     Rational[1, 4] $CellContext`V $CellContext`z0}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.7088575865064573`*^9, 3.708857717868257*^9, {3.708857777227446*^9, 
+   3.7088578169972754`*^9}, 3.708858181349326*^9}]
+}, Open  ]]
+},
+WindowSize->{1920, 1036},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 5214, 137, 363, "Input"],
+Cell[5796, 161, 2482, 73, 341, "Print"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

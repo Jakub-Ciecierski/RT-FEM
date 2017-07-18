@@ -22,11 +22,20 @@ struct MatrixDimension{
 class Matrix {
 public:
     /**
-     * Creates Matrix with row_count rows and column_count columns
+     * Creates Matrix with row_count rows and column_count columns, initiated with zeros
      * @param row_count
      * @param column_count
      */
     Matrix(UInt row_count, UInt column_count);
+
+    /**
+     * Creates Matrix with row_count rows and column_count columns, initiated with value parameter
+     * @param value
+     * @param row_count
+     * @param column_count
+     */
+    Matrix(Float value, UInt row_count, UInt column_count);
+
     Matrix(const MatrixDimension&& matrix_dimension);
 
     ~Matrix();
@@ -52,7 +61,7 @@ public:
     bool operator==(const Matrix &rhs) const;
     bool operator!=(const Matrix &rhs) const;
 private:
-    void InitData();
+    void InitData(Float value);
 
     std::vector<std::vector<Float>> data_;
 

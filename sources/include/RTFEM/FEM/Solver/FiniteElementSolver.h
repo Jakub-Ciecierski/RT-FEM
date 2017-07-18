@@ -34,6 +34,16 @@ struct FiniteElementSolverData{
     Matrix force_vector;
 };
 
+/**
+ * Pressure forces directed along unit normal of i-th face
+ * (traction_force_face1, i == 1)
+ */
+struct TractionForce {
+    Float force_face1 = 0;
+    Float force_face2 = 0;
+    Float force_face3 = 0;
+    Float force_face4 = 0;
+};
 
 /**
  * Computes FiniteElementSolverData for a given FiniteElement.
@@ -48,7 +58,7 @@ public:
 
     virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element,
                                           const Vector3& body_force,
-                                          const Vector3& traction_force) = 0;
+                                          const TractionForce& traction_force) = 0;
 };
 }
 

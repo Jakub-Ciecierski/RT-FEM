@@ -6,12 +6,17 @@ namespace rtfem {
 
 Matrix::Matrix(UInt row_count, UInt column_count) :
         dimensions_{row_count, column_count}{
-    InitData();
+    InitData(0.0);
+}
+
+Matrix::Matrix(Float value, UInt row_count, UInt column_count) :
+        dimensions_{row_count, column_count}{
+    InitData(value);
 }
 
 Matrix::Matrix(const MatrixDimension &&matrix_dimension) :
         dimensions_(matrix_dimension) {
-    InitData();
+    InitData(0.0);
 }
 
 Matrix::~Matrix() {}
@@ -38,7 +43,7 @@ const std::vector<Float>& Matrix::GetRow(UInt i) const {
     return data_[i];
 }
 
-void Matrix::InitData(){
+void Matrix::InitData(Float value){
     data_.resize(dimensions_.row_count);
 
     for(UInt i = 0; i < dimensions_.row_count; i++){

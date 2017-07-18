@@ -37,6 +37,39 @@ struct TetrahedronShapeFunctionCoefficients{
     Float D4;
 };
 
+struct EdgesCache {
+    Float x32 = 0;
+    Float x34 = 0;
+    Float x43 = 0;
+    Float x14 = 0;
+    Float x21 = 0;
+    Float x31 = 0;
+    Float x24 = 0;
+    Float x42 = 0;
+    Float x13 = 0;
+    Float x12 = 0;
+    Float z43 = 0;
+    Float z31 = 0;
+    Float z32 = 0;
+    Float z24 = 0;
+    Float z34 = 0;
+    Float z13 = 0;
+    Float z14 = 0;
+    Float z21 = 0;
+    Float z42 = 0;
+    Float z12 = 0;
+    Float y42 = 0;
+    Float y31 = 0;
+    Float y24 = 0;
+    Float y13 = 0;
+    Float y32 = 0;
+    Float y34 = 0;
+    Float y14 = 0;
+    Float y12 = 0;
+    Float y43 = 0;
+    Float y21 = 0;
+};
+
 /**
  * Solver for Linear Tetrahedron (constant gradient of shape function).
  * The geometry matrix B is constant with respect to X
@@ -74,11 +107,14 @@ public:
 
     virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element,
                                           const Vector3& body_force,
-                                          const Vector3& traction_force) override;
+                                          const TractionForce& traction_force) override;
 
     Matrix SolveJacobianInverse(std::shared_ptr<FiniteElement> finite_element);
 
 private:
+    void ComputeEdgesCache(const Vertex &v1, const Vertex &v2,
+                           const Vertex &v3, const Vertex &v4);
+
     /**
      * Computes The coefficients on linear tetrahedron shape function.
      * fi(x) = (Ai + Bi*x1 + Ci*x2 + Di*x3) / 6*V
@@ -120,9 +156,18 @@ private:
      * @return
      */
     Matrix ComputeForceVector(const TetrahedronShapeFunctionCoefficients& shape_function_coefficients,
+                              Float volume,
                               const Vector3& body_force,
-                              const Vector3& traction_force);
+                              const TractionForce& traction_force);
 
+    Matrix ComputeBodyForceVector(Float volume,
+                                  const Vector3& body_force);
+
+    Matrix ComputeTractionForceVector(const TetrahedronShapeFunctionCoefficients& shape_function_coefficients,
+                                      const TractionForce& traction_force);
+
+
+    EdgesCache edges_cache_;
 };
 }
 
