@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     20337,        565]
-NotebookOptionsPosition[     19951,        546]
-NotebookOutlinePosition[     20286,        561]
-CellTagsIndexPosition[     20243,        558]
+NotebookDataLength[     21859,        605]
+NotebookOptionsPosition[     21431,        585]
+NotebookOutlinePosition[     21766,        600]
+CellTagsIndexPosition[     21723,        597]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -357,29 +357,30 @@ Cell[BoxData[{
        RowBox[{"(", 
         RowBox[{"1", "-", 
          RowBox[{"2", "*", "\[Nu]"}]}], ")"}]}], ")"}]}], "*", 
-    RowBox[{"{", 
+    RowBox[{"{", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"{", 
        RowBox[{
         RowBox[{"1", "-", "\[Nu]"}], ",", "\[Nu]", ",", "\[Nu]", ",", "0", 
-        ",", "0", ",", "0"}], "}"}], ",", 
+        ",", "0", ",", "0"}], "}"}], ",", "\[IndentingNewLine]", 
       RowBox[{"{", 
        RowBox[{"\[Nu]", ",", 
         RowBox[{"1", "-", "\[Nu]"}], ",", "\[Nu]", ",", "0", ",", "0", ",", 
-        "0"}], "}"}], ",", 
+        "0"}], "}"}], ",", "\[IndentingNewLine]", 
       RowBox[{"{", 
        RowBox[{"\[Nu]", ",", "\[Nu]", ",", 
         RowBox[{"1", "-", "\[Nu]"}], ",", "0", ",", "0", ",", "0"}], "}"}], 
-      ",", 
+      ",", "\[IndentingNewLine]", 
       RowBox[{"{", 
        RowBox[{"0", ",", "0", ",", "0", ",", 
         RowBox[{
          RowBox[{"1", "/", "2"}], "-", "\[Nu]"}], ",", "0", ",", "0"}], "}"}],
-       ",", 
+       ",", "\[IndentingNewLine]", 
       RowBox[{"{", 
        RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", 
         RowBox[{
          RowBox[{"1", "/", "2"}], "-", "\[Nu]"}], ",", "0"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
       RowBox[{"{", 
        RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
         RowBox[{
@@ -405,6 +406,11 @@ Cell[BoxData[{
      RowBox[{"{", "False", "}"}]}], "]"}]}], ";"}], "\n", 
  RowBox[{
   RowBox[{"Print", "[", 
+   RowBox[{"\"\<Emat=\>\"", ",", 
+    RowBox[{"Emat", "//", "MatrixForm"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Print", "[", 
    RowBox[{"\"\<Ke=\>\"", ",", 
     RowBox[{"Ke", "//", "MatrixForm"}]}], "]"}], ";"}], "\n", 
  RowBox[{
@@ -414,92 +420,121 @@ Cell[BoxData[{
      RowBox[{"Eigenvalues", "[", 
       RowBox[{"N", "[", "Ke", "]"}], "]"}], "]"}]}], "]"}], ";"}]}], "Input",
  CellChangeTimes->{{3.7095436596345043`*^9, 3.709543699350183*^9}, 
-   3.709544725171981*^9, 3.709544768119163*^9}],
+   3.709544725171981*^9, 3.709544768119163*^9, {3.709544828465695*^9, 
+   3.709544877745244*^9}, {3.7095449724700403`*^9, 3.709544985246792*^9}}],
 
 Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Emat=\"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {"720", "360", "360", "0", "0", "0"},
+       {"360", "720", "360", "0", "0", "0"},
+       {"360", "360", "720", "0", "0", "0"},
+       {"0", "0", "0", "180", "0", "0"},
+       {"0", "0", "0", "0", "180", "0"},
+       {"0", "0", "0", "0", "0", "180"}
+      },
+      GridBoxAlignment->{
+       "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
+        "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.7]}, 
+          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["Emat=", 
+   MatrixForm[{{720, 360, 360, 0, 0, 0}, {360, 720, 360, 0, 0, 0}, {360, 360, 
+    720, 0, 0, 0}, {0, 0, 0, 180, 0, 0}, {0, 0, 0, 0, 180, 0}, {0, 0, 0, 0, 0,
+     180}}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.7095437683370113`*^9, 3.709544727197587*^9, {3.709544832459094*^9, 
+   3.709544839459393*^9}, 3.709544880963209*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Ke=\"\>", "\[InvisibleSpace]", 
    TagBox[
     RowBox[{"(", "\[NoBreak]", GridBox[{
-       {"107280", "77760", "17280", 
-        RowBox[{"-", "720"}], "4320", "8640", 
-        RowBox[{"-", "38880"}], 
-        RowBox[{"-", "34560"}], "0", 
-        RowBox[{"-", "67680"}], 
-        RowBox[{"-", "47520"}], 
-        RowBox[{"-", "25920"}]},
-       {"77760", "247680", "38880", 
-        RowBox[{"-", "17280"}], "74880", "30240", 
-        RowBox[{"-", "17280"}], 
-        RowBox[{"-", "155520"}], 
-        RowBox[{"-", "8640"}], 
-        RowBox[{"-", "43200"}], 
-        RowBox[{"-", "167040"}], 
-        RowBox[{"-", "60480"}]},
-       {"17280", "38880", "81360", "0", "21600", "25200", "0", 
-        RowBox[{"-", "17280"}], 
-        RowBox[{"-", "38880"}], 
-        RowBox[{"-", "17280"}], 
-        RowBox[{"-", "43200"}], 
-        RowBox[{"-", "67680"}]},
+       {"745", "540", "120", 
+        RowBox[{"-", "5"}], "30", "60", 
+        RowBox[{"-", "270"}], 
+        RowBox[{"-", "240"}], "0", 
+        RowBox[{"-", "470"}], 
+        RowBox[{"-", "330"}], 
+        RowBox[{"-", "180"}]},
+       {"540", "1720", "270", 
+        RowBox[{"-", "120"}], "520", "210", 
+        RowBox[{"-", "120"}], 
+        RowBox[{"-", "1080"}], 
+        RowBox[{"-", "60"}], 
+        RowBox[{"-", "300"}], 
+        RowBox[{"-", "1160"}], 
+        RowBox[{"-", "420"}]},
+       {"120", "270", "565", "0", "150", "175", "0", 
+        RowBox[{"-", "120"}], 
+        RowBox[{"-", "270"}], 
+        RowBox[{"-", "120"}], 
+        RowBox[{"-", "300"}], 
+        RowBox[{"-", "470"}]},
        {
-        RowBox[{"-", "720"}], 
-        RowBox[{"-", "17280"}], "0", "20880", 
-        RowBox[{"-", "12960"}], 
-        RowBox[{"-", "8640"}], 
-        RowBox[{"-", "12960"}], "17280", "0", 
-        RowBox[{"-", "7200"}], "12960", "8640"},
-       {"4320", "74880", "21600", 
-        RowBox[{"-", "12960"}], "31680", "12960", "8640", 
-        RowBox[{"-", "51840"}], 
-        RowBox[{"-", "8640"}], "0", 
-        RowBox[{"-", "54720"}], 
-        RowBox[{"-", "25920"}]},
-       {"8640", "30240", "25200", 
-        RowBox[{"-", "8640"}], "12960", "20880", "0", 
-        RowBox[{"-", "17280"}], 
-        RowBox[{"-", "12960"}], "0", 
-        RowBox[{"-", "25920"}], 
-        RowBox[{"-", "33120"}]},
+        RowBox[{"-", "5"}], 
+        RowBox[{"-", "120"}], "0", "145", 
+        RowBox[{"-", "90"}], 
+        RowBox[{"-", "60"}], 
+        RowBox[{"-", "90"}], "120", "0", 
+        RowBox[{"-", "50"}], "90", "60"},
+       {"30", "520", "150", 
+        RowBox[{"-", "90"}], "220", "90", "60", 
+        RowBox[{"-", "360"}], 
+        RowBox[{"-", "60"}], "0", 
+        RowBox[{"-", "380"}], 
+        RowBox[{"-", "180"}]},
+       {"60", "210", "175", 
+        RowBox[{"-", "60"}], "90", "145", "0", 
+        RowBox[{"-", "120"}], 
+        RowBox[{"-", "90"}], "0", 
+        RowBox[{"-", "180"}], 
+        RowBox[{"-", "230"}]},
        {
-        RowBox[{"-", "38880"}], 
-        RowBox[{"-", "17280"}], "0", 
-        RowBox[{"-", "12960"}], "8640", "0", "25920", "0", "0", "25920", 
-        "8640", "0"},
+        RowBox[{"-", "270"}], 
+        RowBox[{"-", "120"}], "0", 
+        RowBox[{"-", "90"}], "60", "0", "180", "0", "0", "180", "60", "0"},
        {
-        RowBox[{"-", "34560"}], 
-        RowBox[{"-", "155520"}], 
-        RowBox[{"-", "17280"}], "17280", 
-        RowBox[{"-", "51840"}], 
-        RowBox[{"-", "17280"}], "0", "103680", "0", "17280", "103680", 
-        "34560"},
+        RowBox[{"-", "240"}], 
+        RowBox[{"-", "1080"}], 
+        RowBox[{"-", "120"}], "120", 
+        RowBox[{"-", "360"}], 
+        RowBox[{"-", "120"}], "0", "720", "0", "120", "720", "240"},
        {"0", 
-        RowBox[{"-", "8640"}], 
-        RowBox[{"-", "38880"}], "0", 
-        RowBox[{"-", "8640"}], 
-        RowBox[{"-", "12960"}], "0", "0", "25920", "0", "17280", "25920"},
+        RowBox[{"-", "60"}], 
+        RowBox[{"-", "270"}], "0", 
+        RowBox[{"-", "60"}], 
+        RowBox[{"-", "90"}], "0", "0", "180", "0", "120", "180"},
        {
-        RowBox[{"-", "67680"}], 
-        RowBox[{"-", "43200"}], 
-        RowBox[{"-", "17280"}], 
-        RowBox[{"-", "7200"}], "0", "0", "25920", "17280", "0", "48960", 
-        "25920", "17280"},
+        RowBox[{"-", "470"}], 
+        RowBox[{"-", "300"}], 
+        RowBox[{"-", "120"}], 
+        RowBox[{"-", "50"}], "0", "0", "180", "120", "0", "340", "180", "120"},
        {
-        RowBox[{"-", "47520"}], 
-        RowBox[{"-", "167040"}], 
-        RowBox[{"-", "43200"}], "12960", 
-        RowBox[{"-", "54720"}], 
-        RowBox[{"-", "25920"}], "8640", "103680", "17280", "25920", "118080", 
-        "51840"},
+        RowBox[{"-", "330"}], 
+        RowBox[{"-", "1160"}], 
+        RowBox[{"-", "300"}], "90", 
+        RowBox[{"-", "380"}], 
+        RowBox[{"-", "180"}], "60", "720", "120", "180", "820", "360"},
        {
-        RowBox[{"-", "25920"}], 
-        RowBox[{"-", "60480"}], 
-        RowBox[{"-", "67680"}], "8640", 
-        RowBox[{"-", "25920"}], 
-        RowBox[{"-", "33120"}], "0", "34560", "25920", "17280", "51840", 
-        "74880"}
+        RowBox[{"-", "180"}], 
+        RowBox[{"-", "420"}], 
+        RowBox[{"-", "470"}], "60", 
+        RowBox[{"-", "180"}], 
+        RowBox[{"-", "230"}], "0", "240", "180", "120", "360", "520"}
       },
       GridBoxAlignment->{
        "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -515,32 +550,36 @@ Cell[BoxData[
      MatrixForm[BoxForm`e$]]]}],
   SequenceForm["Ke=", 
    MatrixForm[CompressedData["
-1:eJxVkTFLA0EUhOe0tQj4BxKwslEClsJBwF4RbENASKWCEBBBrktrI4LVgX9D
-8DpBOPAXhAN/RKrz+b7dWy8uLDu7O2/e7Oxodn12tSVpp5uD10zVQaZiIh22
-Zs1AqkbScG6mO58+yvWPTU/MqhefcD+21TxLxZtZsZdpuOhw2Vq+MssvHN+2
-Vu366rpwv44zpDQ9l25mAYYa+rBSQx88sOf+8dT5tQVNVrQYzbdzx9EnfvGA
-Lpzq3v12d8VRrKUm3+/887ZF9MAdXPokP2iA4ZYPvb/gvY71Qe9SfwOczsmM
-HEIek+gh1espZhDeAV529avYJ+HkYbMPNWAyCvm6Jjls8lI++Xu/59/4i5Dv
-+H8OeEi6ee34M76bf6MPnJRDEF72unDJ/Rew0Oog
+1:eJxdUTGKAkEQ7PVADESMDxFMjTXbJ1wkF8lGRkaazgMMNjURX2BqInIP2MBI
+RAzvA5ctlwqOVU4tOzjQdPVuVXdNz2C2nCwaZtZW/KHoIRzw3XvfR04R/w/v
+u6gBbQh8RHyhJvenadZJzHLULdRXC/iEBgXyDVwHnDFb4I45FGeD2Af40nBO
+Lg3n0EOuuWvEzoeezE66M/BUPumXHjbi/iJX/7aPoKVmJf/8fpWHQn3WkZ+d
++OR+Rv5M/VNxD1afg+bxdLWHXH63kf6iHTjhUppCcypceYjnOGHu6Kae5zde
+tZ/vpK6Pegtqpm97uDTqvqMPs3kS7p3pLdJoD+xbRnPI5d6fKAvzFw==
     "]]],
   Editable->False]], "Print",
- CellChangeTimes->{3.7095437683370113`*^9, 3.709544727197587*^9}],
+ CellChangeTimes->{
+  3.7095437683370113`*^9, 3.709544727197587*^9, {3.709544832459094*^9, 
+   3.709544839459393*^9}, 3.709544880979463*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"eigs of Ke=\"\>", "\[InvisibleSpace]", 
    RowBox[{"{", 
     RowBox[{
-    "559565.8182064465`", ",", "144981.3105561326`", ",", 
-     "142036.3756657331`", ",", "30919.06336372647`", ",", 
-     "15382.313778134318`", ",", "14315.11842982702`", ",", "0", ",", "0", 
+    "3885.873737544767`", ",", "1006.8146566398096`", ",", 
+     "986.3637199009245`", ",", "214.71571780365613`", ",", 
+     "106.82162345926595`", ",", "99.41054465157657`", ",", "0", ",", "0", 
      ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}]}],
   SequenceForm[
   "eigs of Ke=", {
-   559565.8182064465, 144981.3105561326, 142036.3756657331, 30919.06336372647,
-     15382.313778134318`, 14315.11842982702, 0, 0, 0, 0, 0, 0}],
+   3885.873737544767, 1006.8146566398096`, 986.3637199009245, 
+    214.71571780365613`, 106.82162345926595`, 99.41054465157657, 0, 0, 0, 0, 
+    0, 0}],
   Editable->False]], "Print",
- CellChangeTimes->{3.7095437683370113`*^9, 3.7095447272119923`*^9}]
+ CellChangeTimes->{
+  3.7095437683370113`*^9, 3.709544727197587*^9, {3.709544832459094*^9, 
+   3.709544839459393*^9}, 3.70954488098044*^9}]
 }, Open  ]]
 }, Open  ]]
 },
@@ -561,10 +600,11 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[579, 22, 14681, 394, 1001, "Input"],
+Cell[579, 22, 15078, 401, 1111, "Input"],
 Cell[CellGroupData[{
-Cell[15285, 420, 3989, 106, 197, "Print"],
-Cell[19277, 528, 646, 14, 23, "Print"]
+Cell[15682, 427, 1267, 31, 101, "Print"],
+Cell[16952, 460, 3719, 102, 197, "Print"],
+Cell[20674, 564, 729, 17, 23, "Print"]
 }, Open  ]]
 }, Open  ]]
 }
