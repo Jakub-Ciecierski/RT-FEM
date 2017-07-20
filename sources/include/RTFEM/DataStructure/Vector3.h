@@ -15,6 +15,10 @@ public:
 
     ~Vector3();
 
+    bool operator==(const Vector3 &rhs) const;
+
+    bool operator!=(const Vector3 &rhs) const;
+
     Float x;
     Float y;
     Float z;

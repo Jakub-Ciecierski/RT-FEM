@@ -36,6 +36,17 @@ public:
      */
     Matrix(Float value, UInt row_count, UInt column_count);
 
+    /**
+     * Creates Matrix with elements taken from the initializer list.
+     * The List contains rows (lists).
+     *
+     * Number of columns is the maximum count of all rows.
+     * If any column has less elements then maximum, they are initialized with zero.
+     *
+     * @param lists
+     */
+    Matrix(std::initializer_list<std::initializer_list<Float>> lists);
+
     Matrix(const MatrixDimension&& matrix_dimension);
 
     ~Matrix();
@@ -60,6 +71,9 @@ public:
 
     bool operator==(const Matrix &rhs) const;
     bool operator!=(const Matrix &rhs) const;
+
+    Matrix& operator+=(const Matrix& rhs);
+
 private:
     void InitData(Float value);
 

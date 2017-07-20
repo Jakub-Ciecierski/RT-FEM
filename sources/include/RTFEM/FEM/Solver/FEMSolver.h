@@ -8,7 +8,6 @@
 namespace rtfem {
 
 class FEMModel;
-class Matrix;
 
 class FEMSolver {
 public:
@@ -34,8 +33,6 @@ private:
     ConstitutiveSolverType constitutive_solver_type_;
     GeometrySolverType geometry_solver_type_;
     AnalysisSolverType analysis_solver_type_;
-
-    std::unique_ptr<Matrix> global_stiffness_;
 };
 }
 

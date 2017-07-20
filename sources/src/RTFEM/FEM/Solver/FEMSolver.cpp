@@ -2,6 +2,7 @@
 
 #include <RTFEM/DataStructure/Matrix.h>
 #include <RTFEM/Memory/UniquePointer.h>
+#include <RTFEM/FEM/Solver/FEMAssembler.h>
 
 namespace rtfem {
 
@@ -16,9 +17,9 @@ FEMSolver::~FEMSolver() {}
 
 void FEMSolver::Solve(const std::shared_ptr<FEMModel> fem_model) {
     // TODO pick solver based on this types
+    FEMAssembler fem_assembler;
+    auto fem_assembler_data = fem_assembler.Compute(fem_model);
 
-    //auto GlobalStiffness = ComputeGlobalStiffness();
-    //auto GlobalForces = ComputeGlobalForces();
 }
 
 }

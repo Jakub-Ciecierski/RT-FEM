@@ -5,8 +5,11 @@
 #include <RTFEM/Math/MatrixMath.h>
 #include <RTFEM/DataStructure/Vector4.h>
 #include <cmath>
+#include <RTFEM/Math/VectorMath.h>
 
 namespace rtfem {
+
+constexpr UInt DOF_COUNT = 12;
 
 TetrahedronSolver::TetrahedronSolver() {}
 
@@ -25,15 +28,15 @@ FiniteElementSolverData TetrahedronSolver::Solve(
     auto v3 = finite_element->vertices()[2];
     auto v4 = finite_element->vertices()[3];
 
-    ComputeEdgesCache(*v1, *v2, *v3, *v4);
-
-    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4);
+    auto edges = ComputeEdgesCache(*v1, *v2, *v3, *v4);
+    auto faces_area = ComputeFacesArea(edges);
+    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4, edges);
 
     FiniteElementSolverData data;
     data.volume = ComputeVolume(shape_function_coefficients);
     data.geometry_matrix = ComputeGeometryMatrix(shape_function_coefficients, data.volume);
     data.force_vector = ComputeForceVector(shape_function_coefficients,
-                                           data.volume,
+                                           data.volume, faces_area,
                                            body_force, traction_force);
 
     return data;
@@ -45,54 +48,56 @@ Matrix TetrahedronSolver::SolveJacobianInverse(std::shared_ptr<FiniteElement> fi
     auto v3 = finite_element->vertices()[2];
     auto v4 = finite_element->vertices()[3];
 
-    ComputeEdgesCache(*v1, *v2, *v3, *v4);
+    auto edges = ComputeEdgesCache(*v1, *v2, *v3, *v4);
 
-    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4);
+    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4, edges);
     auto volume = ComputeVolume(shape_function_coefficients);
 
     return AssemblyJacobianInverse(shape_function_coefficients, volume);
 }
 
-void TetrahedronSolver::ComputeEdgesCache(const Vertex &v1, const Vertex &v2,
-                                          const Vertex &v3, const Vertex &v4) {
-    edges_cache_ = EdgesCache{};
+Edges TetrahedronSolver::ComputeEdgesCache(const Vertex &v1, const Vertex &v2,
+                                           const Vertex &v3, const Vertex &v4) {
+    Edges edges;
 
-    edges_cache_.x32 = v3.x() - v2.x();
-    edges_cache_.x34 = v3.x() - v4.x();
-    edges_cache_.x43 = v4.x() - v3.x();
-    edges_cache_.x14 = v1.x() - v4.x();
-    edges_cache_.x21 = v2.x() - v1.x();
-    edges_cache_.x31 = v3.x() - v1.x();
-    edges_cache_.x24 = v2.x() - v4.x();
-    edges_cache_.x42 = v4.x() - v2.x();
-    edges_cache_.x13 = v1.x() - v3.x();
-    edges_cache_.x12 = v1.x() - v2.x();
-    edges_cache_.z43 = v4.z() - v3.z();
-    edges_cache_.z31 = v3.z() - v1.z();
-    edges_cache_.z32 = v3.z() - v2.z();
-    edges_cache_.z24 = v2.z() - v4.z();
-    edges_cache_.z34 = v3.z() - v4.z();
-    edges_cache_.z13 = v1.z() - v3.z();
-    edges_cache_.z14 = v1.z() - v4.z();
-    edges_cache_.z21 = v2.z() - v1.z();
-    edges_cache_.z42 = v4.z() - v2.z();
-    edges_cache_.z12 = v1.z() - v2.z();
-    edges_cache_.y42 = v4.y() - v2.y();
-    edges_cache_.y31 = v3.y() - v1.y();
-    edges_cache_.y24 = v2.y() - v4.y();
-    edges_cache_.y13 = v1.y() - v3.y();
-    edges_cache_.y32 = v3.y() - v2.y();
-    edges_cache_.y34 = v3.y() - v4.y();
-    edges_cache_.y14 = v1.y() - v4.y();
-    edges_cache_.y12 = v1.y() - v2.y();
-    edges_cache_.y43 = v4.y() - v3.y();
-    edges_cache_.y21 = v2.y() - v1.y();
+    edges.x32 = v3.x() - v2.x();
+    edges.x34 = v3.x() - v4.x();
+    edges.x43 = v4.x() - v3.x();
+    edges.x14 = v1.x() - v4.x();
+    edges.x21 = v2.x() - v1.x();
+    edges.x31 = v3.x() - v1.x();
+    edges.x24 = v2.x() - v4.x();
+    edges.x42 = v4.x() - v2.x();
+    edges.x13 = v1.x() - v3.x();
+    edges.x12 = v1.x() - v2.x();
+    edges.z43 = v4.z() - v3.z();
+    edges.z31 = v3.z() - v1.z();
+    edges.z32 = v3.z() - v2.z();
+    edges.z24 = v2.z() - v4.z();
+    edges.z34 = v3.z() - v4.z();
+    edges.z13 = v1.z() - v3.z();
+    edges.z14 = v1.z() - v4.z();
+    edges.z21 = v2.z() - v1.z();
+    edges.z42 = v4.z() - v2.z();
+    edges.z12 = v1.z() - v2.z();
+    edges.y42 = v4.y() - v2.y();
+    edges.y31 = v3.y() - v1.y();
+    edges.y24 = v2.y() - v4.y();
+    edges.y13 = v1.y() - v3.y();
+    edges.y32 = v3.y() - v2.y();
+    edges.y34 = v3.y() - v4.y();
+    edges.y14 = v1.y() - v4.y();
+    edges.y12 = v1.y() - v2.y();
+    edges.y43 = v4.y() - v3.y();
+    edges.y21 = v2.y() - v1.y();
+
+    return edges;
 }
 
-TetrahedronShapeFunctionCoefficients TetrahedronSolver::ComputeShapeFunctionCoefficients(const Vertex &v1,
-                                                                                         const Vertex &v2,
-                                                                                         const Vertex &v3,
-                                                                                         const Vertex &v4) {
+TetrahedronShapeFunctionCoefficients TetrahedronSolver::ComputeShapeFunctionCoefficients(
+        const Vertex &v1, const Vertex &v2,
+        const Vertex &v3, const Vertex &v4,
+        const Edges& edges) {
     TetrahedronShapeFunctionCoefficients coefficients;
 
     auto V0i = ComputeAi(v1, v2, v3, v4);
@@ -101,20 +106,20 @@ TetrahedronShapeFunctionCoefficients TetrahedronSolver::ComputeShapeFunctionCoef
     coefficients.A3 = V0i.z;
     coefficients.A4 = V0i.w;
 
-    coefficients.B1 = (edges_cache_.y42 * edges_cache_.z32) - (edges_cache_.y32 * edges_cache_.z42);
-    coefficients.B2 = (edges_cache_.y31 * edges_cache_.z43) - (edges_cache_.y34 * edges_cache_.z13);
-    coefficients.B3 = (edges_cache_.y24 * edges_cache_.z14) - (edges_cache_.y14 * edges_cache_.z24);
-    coefficients.B4 = (edges_cache_.y13 * edges_cache_.z21) - (edges_cache_.y12 * edges_cache_.z31);
+    coefficients.B1 = (edges.y42 * edges.z32) - (edges.y32 * edges.z42);
+    coefficients.B2 = (edges.y31 * edges.z43) - (edges.y34 * edges.z13);
+    coefficients.B3 = (edges.y24 * edges.z14) - (edges.y14 * edges.z24);
+    coefficients.B4 = (edges.y13 * edges.z21) - (edges.y12 * edges.z31);
 
-    coefficients.C1 = (edges_cache_.x32 * edges_cache_.z42) - (edges_cache_.x42 * edges_cache_.z32);
-    coefficients.C2 = (edges_cache_.x43 * edges_cache_.z31) - (edges_cache_.x13 * edges_cache_.z34);
-    coefficients.C3 = (edges_cache_.x14 * edges_cache_.z24) - (edges_cache_.x24 * edges_cache_.z14);
-    coefficients.C4 = (edges_cache_.x21 * edges_cache_.z13) - (edges_cache_.x31 * edges_cache_.z12);
+    coefficients.C1 = (edges.x32 * edges.z42) - (edges.x42 * edges.z32);
+    coefficients.C2 = (edges.x43 * edges.z31) - (edges.x13 * edges.z34);
+    coefficients.C3 = (edges.x14 * edges.z24) - (edges.x24 * edges.z14);
+    coefficients.C4 = (edges.x21 * edges.z13) - (edges.x31 * edges.z12);
 
-    coefficients.D1 = (edges_cache_.x42 * edges_cache_.y32) - (edges_cache_.x32 * edges_cache_.y42);
-    coefficients.D2 = (edges_cache_.x31 * edges_cache_.y43) - (edges_cache_.x34 * edges_cache_.y13);
-    coefficients.D3 = (edges_cache_.x24 * edges_cache_.y14) - (edges_cache_.x14 * edges_cache_.y24);
-    coefficients.D4 = (edges_cache_.x13 * edges_cache_.y21) - (edges_cache_.x12 * edges_cache_.y31);
+    coefficients.D1 = (edges.x42 * edges.y32) - (edges.x32 * edges.y42);
+    coefficients.D2 = (edges.x31 * edges.y43) - (edges.x34 * edges.y13);
+    coefficients.D3 = (edges.x24 * edges.y14) - (edges.x14 * edges.y24);
+    coefficients.D4 = (edges.x13 * edges.y21) - (edges.x12 * edges.y31);
 
     return coefficients;
 }
@@ -147,7 +152,7 @@ Vector4 TetrahedronSolver::ComputeAi(const Vertex &v1,
 
 Matrix TetrahedronSolver::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients& coefficients,
                                                 Float volume){
-    Matrix geometry_matrix(6, 12);
+    Matrix geometry_matrix(6, DOF_COUNT);
     AssemblyGeometryMatrix(geometry_matrix, 0, coefficients.B1, coefficients.C1, coefficients.D1);
     AssemblyGeometryMatrix(geometry_matrix, 3, coefficients.B2, coefficients.C2, coefficients.D2);
     AssemblyGeometryMatrix(geometry_matrix, 6, coefficients.B3, coefficients.C3, coefficients.D3);
@@ -211,11 +216,13 @@ Matrix TetrahedronSolver::AssemblyJacobianInverse(const TetrahedronShapeFunction
 }
 
 Matrix TetrahedronSolver::ComputeForceVector(const TetrahedronShapeFunctionCoefficients& shape_function_coefficients,
-                                             Float volume,
+                                             Float volume, const FacesArea& faces_area,
                                              const Vector3& body_force,
                                              const TractionForce& traction_force){
     auto consistent_body_force = ComputeBodyForceVector(volume, body_force);
-    auto consistent_traction_force = ComputeTractionForceVector(shape_function_coefficients, traction_force);
+    auto consistent_traction_force = ComputeTractionForceVector(shape_function_coefficients,
+                                                                faces_area,
+                                                                traction_force);
 
     return consistent_body_force + consistent_traction_force;
 }
@@ -223,7 +230,7 @@ Matrix TetrahedronSolver::ComputeForceVector(const TetrahedronShapeFunctionCoeff
 Matrix TetrahedronSolver::ComputeBodyForceVector(
         Float volume,
         const Vector3& body_force){
-    Matrix consistent_body_force(12,1);
+    Matrix consistent_body_force(DOF_COUNT,1);
 
     consistent_body_force[0][0] = body_force.x;
     consistent_body_force[1][0] = body_force.y;
@@ -245,15 +252,78 @@ Matrix TetrahedronSolver::ComputeBodyForceVector(
 
 Matrix TetrahedronSolver::ComputeTractionForceVector(
         const TetrahedronShapeFunctionCoefficients& shape_function_coefficients,
+        const FacesArea& faces_area,
         const TractionForce& traction_force){
     auto& coeff = shape_function_coefficients;
-    auto S1 = std::sqrt((coeff.A1 * coeff.A1) + (coeff.B1 * coeff.B1) + (coeff.C1 * coeff.C1));
-    auto A1_normal = coeff.A1 / S1;
-    auto B1_normal = coeff.B1 / S1;
-    auto C1_normal = coeff.C1 / S1;
 
+    auto traction_force_face1 =
+            ComputeTractionForceVectorFace(0, traction_force.force_face1, faces_area.area1,
+                                           coeff.B1, coeff.C1, coeff.D1);
+    auto traction_force_face2 =
+            ComputeTractionForceVectorFace(1, traction_force.force_face2, faces_area.area2,
+                                           coeff.B2, coeff.C2, coeff.D2);
+    auto traction_force_face3 =
+            ComputeTractionForceVectorFace(2, traction_force.force_face3, faces_area.area3,
+                                           coeff.B3, coeff.C3, coeff.D3);
+    auto traction_force_face4 =
+            ComputeTractionForceVectorFace(3, traction_force.force_face4, faces_area.area4,
+                                           coeff.B4, coeff.C4, coeff.D4);
 
-    return Matrix(12,1);
+    return traction_force_face1 + traction_force_face2 + traction_force_face3 + traction_force_face4;
+}
+
+Matrix TetrahedronSolver::ComputeTractionForceVectorFace(UInt face_index, Float traction_force,
+                                                         Float area,
+                                                         Float B, Float C, Float D){
+    auto S = std::sqrt((B * B) + (C * C) + (D * D));
+    auto B_normal = B / S;
+    auto C_normal = C / S;
+    auto D_normal = D / S;
+
+    auto magnitude = (1.0 / 3.0) * traction_force * area;
+
+    Matrix traction_force_vector_face(DOF_COUNT, 1);
+    traction_force_vector_face[0][0] = B_normal;
+    traction_force_vector_face[1][0] = C_normal;
+    traction_force_vector_face[2][0] = D_normal;
+    traction_force_vector_face[3][0] = B_normal;
+    traction_force_vector_face[4][0] = C_normal;
+    traction_force_vector_face[5][0] = D_normal;
+    traction_force_vector_face[6][0] = B_normal;
+    traction_force_vector_face[7][0] = C_normal;
+    traction_force_vector_face[8][0] = D_normal;
+    traction_force_vector_face[9][0] = B_normal;
+    traction_force_vector_face[10][0] = C_normal;
+    traction_force_vector_face[11][0] = D_normal;
+
+    traction_force_vector_face = traction_force_vector_face * magnitude;
+
+    traction_force_vector_face[face_index + 0][0] = 0;
+    traction_force_vector_face[face_index + 1][0] = 0;
+    traction_force_vector_face[face_index + 2][0] = 0;
+
+    return traction_force_vector_face;
+}
+
+FacesArea TetrahedronSolver::ComputeFacesArea(const Edges& edges){
+    VectorMath vector_math_;
+    FacesArea faces_area;
+
+    faces_area.area1 = vector_math_.Magnitude(
+            vector_math_.Cross(Vector3(edges.x32, edges.y32, edges.z32),
+                               Vector3(edges.x42, edges.y42, edges.z42)));
+    faces_area.area2 = vector_math_.Magnitude(
+            vector_math_.Cross(Vector3(edges.x43, edges.y43, edges.z43),
+                               Vector3(edges.x13, edges.y13, edges.z13)));
+    faces_area.area3 = vector_math_.Magnitude(
+            vector_math_.Cross(Vector3(edges.x14, edges.y14, edges.z14),
+                               Vector3(edges.x24, edges.y24, edges.z24)));
+    faces_area.area4 = vector_math_.Magnitude(
+            vector_math_.Cross(Vector3(edges.x21, edges.y21, edges.z21),
+                               Vector3(edges.x31, edges.y31, edges.z31)));
+
+    return faces_area;
+
 }
 
 }

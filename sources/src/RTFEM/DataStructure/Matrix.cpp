@@ -14,6 +14,27 @@ Matrix::Matrix(Float value, UInt row_count, UInt column_count) :
     InitData(value);
 }
 
+Matrix::Matrix(std::initializer_list<std::initializer_list<Float>> lists) :
+        dimensions_{0,0} {
+    UInt max_size = 0;
+    for(const auto& list : lists){
+        if(max_size < list.size())
+            max_size = list.size();
+    }
+    dimensions_ = MatrixDimension{lists.size(), max_size};
+    InitData(0.0);
+    UInt i = 0;
+
+    for(const auto& list : lists){
+        UInt j = 0;
+        for(const auto& value : list){
+            data_[i][j] = value;
+            j++;
+        }
+        i++;
+    }
+}
+
 Matrix::Matrix(const MatrixDimension &&matrix_dimension) :
         dimensions_(matrix_dimension) {
     InitData(0.0);
@@ -72,6 +93,19 @@ bool Matrix::operator==(const Matrix &rhs) const {
 
 bool Matrix::operator!=(const Matrix &rhs) const {
     return !(rhs == *this);
+}
+
+Matrix& Matrix::operator+=(const Matrix& rhs){
+    if(this->dimensions().row_count != rhs.dimensions().row_count ||
+            this->dimensions().column_count != rhs.dimensions().column_count)
+        throw std::invalid_argument("Matrix Addition: Dimensions are not valid");
+
+    for(UInt i = 0; i < this->dimensions().row_count; i++){
+        for(UInt j = 0; j < this->dimensions().column_count; j++){
+            (*this)[i][j] = (*this)[i][j] + rhs[i][j];
+        }
+    }
+    return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m){

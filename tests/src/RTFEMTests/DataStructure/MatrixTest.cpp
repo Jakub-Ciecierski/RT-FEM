@@ -229,3 +229,57 @@ TEST_F(MatrixTest, MatrixAddition_ProperResult){
 
     EXPECT_EQ(expected_result, m1+m2);
 }
+
+TEST_F(MatrixTest, MatrixReferenceAddition_ProperResult){
+    rtfem::Matrix m1(3,2);
+    m1[0][0] = 1;
+    m1[0][1] = 2;
+    m1[1][0] = 3;
+    m1[1][1] = 4;
+    m1[2][0] = 5;
+    m1[2][1] = 6;
+
+    rtfem::Matrix m2(3,2);
+    m2[0][0] = 10;
+    m2[0][1] = 2;
+    m2[1][0] = 4;
+    m2[1][1] = 7;
+    m2[2][0] = 8;
+    m2[2][1] = 1;
+
+    rtfem::Matrix expected_result(3,2);
+    expected_result[0][0] = 11;
+    expected_result[0][1] = 4;
+    expected_result[1][0] = 7;
+    expected_result[1][1] = 11;
+    expected_result[2][0] = 13;
+    expected_result[2][1] = 7;
+
+    m1 += m2;
+
+    EXPECT_EQ(expected_result, m1);
+}
+
+TEST_F(MatrixTest, MatrixInitializedList_AllColumnsProvided_CorrectDimensions){
+    rtfem::Matrix m{{1,2,3} , {4,5,6}};
+    constexpr rtfem::UInt expected_row_count = 2;
+    constexpr rtfem::UInt expected_column_count = 3;
+
+    EXPECT_EQ(expected_row_count, m.dimensions().row_count);
+    EXPECT_EQ(expected_column_count, m.dimensions().column_count);
+}
+
+TEST_F(MatrixTest, MatrixInitializedList_NotAllColumnsProvided_CorrectDimensions){
+    rtfem::Matrix m{{1,2,3} , {4, 6}};
+    rtfem::UInt expected_row_count = 2;
+    rtfem::UInt expected_column_count = 3;
+
+    EXPECT_EQ(expected_row_count, m.dimensions().row_count);
+    EXPECT_EQ(expected_column_count, m.dimensions().column_count);
+}
+
+TEST_F(MatrixTest, MatrixInitializedList_NotAllColumnsProvided_InitializedWithZero){
+    rtfem::Matrix m{{1,2,3} , {4, 6}};
+
+    EXPECT_EQ(0, m[1][2]);
+}
