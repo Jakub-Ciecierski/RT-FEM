@@ -12,7 +12,7 @@
 
 void FEMAssemblerTest::SetUp() {
     FEMModelSampleBuilder builder;
-    fem_model = builder.CreateRandomFEMModel();
+    fem_model_ = builder.CreateRandomFEMModel();
 
     fem_assembler_ = rtfem::make_unique<rtfem::FEMAssembler>();
 }
@@ -21,8 +21,6 @@ void FEMAssemblerTest::TearDown() {
 }
 
 TEST_F(FEMAssemblerTest, SingleFiniteElement_CorrectGlobalStiffnessMatrix_Mathematica){
-    auto global_stiffness_matrix = fem_assembler_->Compute(fem_model);
-
     auto finite_elements = std::vector<std::shared_ptr<rtfem::FiniteElement>>(1);
     auto vertices = std::vector<std::shared_ptr<rtfem::Vertex>>(4);
 
@@ -61,3 +59,22 @@ TEST_F(FEMAssemblerTest, SingleFiniteElement_CorrectGlobalStiffnessMatrix_Mathem
 
     EXPECT_EQ(expected_stiffness, fem_assembler_data.global_stiffness);
 };
+
+TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions){
+    auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
+    auto fem_assembler_data = fem_assembler_->Compute(fem_model);
+
+    rtfem::UInt expected_row_count = fem_model_->vertices().size() * 3;
+    EXPECT_EQ(expected_row_count, fem_assembler_data.global_force.dimensions().row_count);
+    EXPECT_EQ((rtfem::UInt)1, fem_assembler_data.global_force.dimensions().column_count);
+}
+
+TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperStiffnessDimensions){
+    auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
+    auto fem_assembler_data = fem_assembler_->Compute(fem_model);
+
+    rtfem::UInt expected_row_count = fem_model_->vertices().size() * 3;
+    rtfem::UInt expected_column_count = expected_row_count;
+    EXPECT_EQ(expected_row_count, fem_assembler_data.global_stiffness.dimensions().row_count);
+    EXPECT_EQ(expected_column_count, fem_assembler_data.global_stiffness.dimensions().column_count);
+}

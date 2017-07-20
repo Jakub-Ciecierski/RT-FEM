@@ -6,7 +6,6 @@ void FEMSolverTest::SetUp() {
 void FEMSolverTest::TearDown() {
 }
 
-TEST_F(FEMSolverTest, Test1
-){
+TEST_F(FEMSolverTest, Test1){
 
 }

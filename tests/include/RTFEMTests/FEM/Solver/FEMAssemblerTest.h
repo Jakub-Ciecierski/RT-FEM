@@ -13,7 +13,7 @@ protected:
 
     virtual void TearDown() override;
 
-    std::shared_ptr<rtfem::FEMModel> fem_model;
+    std::shared_ptr<rtfem::FEMModel> fem_model_;
     std::unique_ptr<rtfem::FEMAssembler> fem_assembler_;
 
 };
