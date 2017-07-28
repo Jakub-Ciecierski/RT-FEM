@@ -21,7 +21,7 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<Float>> lists) :
         if(max_size < list.size())
             max_size = list.size();
     }
-    dimensions_ = MatrixDimension{lists.size(), max_size};
+    dimensions_ = MatrixDimension{(UInt)lists.size(), max_size};
     InitData(0.0);
     UInt i = 0;
 
