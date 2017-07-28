@@ -1,9 +1,8 @@
 #include "RTFEM/FEM/Vertex.h"
 
-rtfem::Vertex::Vertex(rtfem::UInt id,
-                      const rtfem::Vector3 &&cooridnates) :
-    id_(id), coordinates_(cooridnates){}
+namespace rtfem {
 
-rtfem::Vertex::~Vertex() {
+Vertex::Vertex(UInt id, const Eigen::Vector3<Float>& coordinates)
+        : id_(id), coordinates_(coordinates){}
 
 }

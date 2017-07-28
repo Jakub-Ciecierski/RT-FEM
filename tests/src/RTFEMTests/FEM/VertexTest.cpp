@@ -6,9 +6,9 @@
 
 void VertexTest::SetUp() {
     default_vertex_.id = 2;
-    default_vertex_.coordinates = rtfem::Vector3();
+    default_vertex_.coordinates = Eigen::Vector3<rtfem::Float>();
     default_vertex_.vertex = rtfem::make_unique<rtfem::Vertex>(default_vertex_.id,
-                                                               std::move(default_vertex_.coordinates));
+                                                               default_vertex_.coordinates);
 }
 
 void VertexTest::TearDown() {

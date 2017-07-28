@@ -4,18 +4,21 @@
 #include <RTFEM/DataTypes.h>
 #include <RTFEM/DataStructure/Vector3.h>
 
+#include <Eigen/Core>
+
 namespace rtfem {
 
 class Vertex {
 public:
-    Vertex(UInt id, const Vector3&& cooridnates);
-    ~Vertex();
+    Vertex(UInt id, const Eigen::Vector3<Float>& coordinates);
+
+    ~Vertex() = default;
 
     UInt id() const {return id_;}
-    const Vector3& coordinates() const {return coordinates_;}
-    Float x() const {return coordinates_.x;}
-    Float y() const {return coordinates_.y;}
-    Float z() const {return coordinates_.z;}
+    const Eigen::Vector3<Float>& coordinates() const {return coordinates_;}
+    Float x() const {return coordinates_(0);}
+    Float y() const {return coordinates_(1);}
+    Float z() const {return coordinates_(2);}
 
 private:
     /**
@@ -24,7 +27,8 @@ private:
     UInt id_;
 
     // TODO local/global ?
-    Vector3 coordinates_;
+    //Vector3 coordinates_;
+    Eigen::Matrix<Float, 3, 1> coordinates_;
 };
 }
 

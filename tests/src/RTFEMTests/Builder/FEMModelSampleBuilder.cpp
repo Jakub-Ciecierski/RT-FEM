@@ -16,15 +16,15 @@ FEMModelSampleBuilder::CreateRandomFEMModel() {
     auto finite_elements = std::vector<std::shared_ptr<rtfem::FiniteElement>>(finite_element_count_);
     auto vertices = std::vector<std::shared_ptr<rtfem::Vertex>>(vertex_count_);
 
-    vertices[0] = std::make_shared<rtfem::Vertex>(0, rtfem::Vector3(0,0,0));
-    vertices[1] = std::make_shared<rtfem::Vertex>(1, rtfem::Vector3(1,0,0));
-    vertices[2] = std::make_shared<rtfem::Vertex>(2, rtfem::Vector3(1,1,0));
-    vertices[3] = std::make_shared<rtfem::Vertex>(3, rtfem::Vector3(1,1,1));
-    vertices[4] = std::make_shared<rtfem::Vertex>(4, rtfem::Vector3(0,1,1));
-    vertices[5] = std::make_shared<rtfem::Vertex>(5, rtfem::Vector3(2,2,2));
-    vertices[6] = std::make_shared<rtfem::Vertex>(6, rtfem::Vector3(1,0,1));
-    vertices[7] = std::make_shared<rtfem::Vertex>(7, rtfem::Vector3(0,1,0));
-    vertices[8] = std::make_shared<rtfem::Vertex>(8, rtfem::Vector3(0,0,2));
+    vertices[0] = std::make_shared<rtfem::Vertex>(0, Eigen::Vector3<rtfem::Float>(0,0,0));
+    vertices[1] = std::make_shared<rtfem::Vertex>(1, Eigen::Vector3<rtfem::Float>(1,0,0));
+    vertices[2] = std::make_shared<rtfem::Vertex>(2, Eigen::Vector3<rtfem::Float>(1,1,0));
+    vertices[3] = std::make_shared<rtfem::Vertex>(3, Eigen::Vector3<rtfem::Float>(1,1,1));
+    vertices[4] = std::make_shared<rtfem::Vertex>(4, Eigen::Vector3<rtfem::Float>(0,1,1));
+    vertices[5] = std::make_shared<rtfem::Vertex>(5, Eigen::Vector3<rtfem::Float>(2,2,2));
+    vertices[6] = std::make_shared<rtfem::Vertex>(6, Eigen::Vector3<rtfem::Float>(1,0,1));
+    vertices[7] = std::make_shared<rtfem::Vertex>(7, Eigen::Vector3<rtfem::Float>(0,1,0));
+    vertices[8] = std::make_shared<rtfem::Vertex>(8, Eigen::Vector3<rtfem::Float>(0,0,2));
 
     finite_elements[0] = std::make_shared<rtfem::TetrahedronFiniteElement>(vertices[0],
                                                                            vertices[1],

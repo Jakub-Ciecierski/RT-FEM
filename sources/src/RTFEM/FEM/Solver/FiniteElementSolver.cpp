@@ -2,9 +2,4 @@
 
 namespace rtfem {
 
-FiniteElementSolver::FiniteElementSolver() {}
-
-FiniteElementSolver::~FiniteElementSolver() {}
-
-
 }

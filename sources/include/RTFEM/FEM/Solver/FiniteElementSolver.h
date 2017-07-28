@@ -22,16 +22,16 @@ class Vector3;
  */
 struct FiniteElementSolverData{
     FiniteElementSolverData() :
-            volume(0),
-            geometry_matrix(0,0),
-            force_vector(0,0){}
+            volume(0){}
     Float volume;
 
     // Used to compute Global Stiffness
-    Matrix geometry_matrix;
+    //Matrix geometry_matrix;
+    Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> geometry_matrix;
 
     // Used to compute Global Force
-    Matrix force_vector;
+    //Matrix force_vector;
+    Eigen::Matrix<Float, Eigen::Dynamic, 1> force_vector;
 };
 
 /**
@@ -50,14 +50,13 @@ struct TractionForce {
  */
 class FiniteElementSolver {
 public:
-    FiniteElementSolver();
-
-    virtual ~FiniteElementSolver();
+    FiniteElementSolver() = default;
+    virtual ~FiniteElementSolver() = default;
 
     virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element) = 0;
 
     virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element,
-                                          const Vector3& body_force,
+                                          const Eigen::Vector3<Float>& body_force,
                                           const TractionForce& traction_force) = 0;
 };
 }
