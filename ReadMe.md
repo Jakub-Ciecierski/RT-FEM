@@ -30,7 +30,8 @@ The following software is required to be installed:
 External Dependencies can be found in ./external and tests/external directories. <br/>
 They are installed automatically when using cmake installation.
 * TetGen (external/tetgen1.5.0)
-    * 3D Tetrahedron meshing algorithm 
+    * 3D Tetrahedron meshing algorithm
+* Eigen (external/eigen)
 * googletest (tests/external/googletest)
     * Unit testing
 

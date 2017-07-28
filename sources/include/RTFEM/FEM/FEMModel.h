@@ -22,8 +22,8 @@ class FiniteElement;
  */
 class FEMModel {
 public:
-    FEMModel(std::vector<std::shared_ptr<FiniteElement>>& finite_elements_,
-             std::vector<std::shared_ptr<Vertex>>& vertices_,
+    FEMModel(std::vector<std::shared_ptr<FiniteElement>>& finite_elements,
+             std::vector<std::shared_ptr<Vertex>>& vertices,
              const Material&& material);
     ~FEMModel();
 
