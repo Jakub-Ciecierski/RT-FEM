@@ -12,8 +12,8 @@ class Matrix;
 }
 
 struct MatrixTestPack{
-    rtfem::UInt row_count;
-    rtfem::UInt column_count;
+    unsigned int row_count;
+    unsigned int column_count;
     std::unique_ptr<rtfem::Matrix> matrix;
 };
 
@@ -25,7 +25,7 @@ protected:
     MatrixTestPack& small_matrix(){return small_matrix_;};
 
 private:
-    std::unique_ptr<rtfem::Matrix> CreateMatrix(rtfem::UInt r, rtfem::UInt c);
+    std::unique_ptr<rtfem::Matrix> CreateMatrix(unsigned int r, unsigned int c);
 
     MatrixTestPack small_matrix_;
 };

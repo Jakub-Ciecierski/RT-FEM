@@ -6,72 +6,75 @@ namespace rtfem {
 /**
  * fi(x) = (Ai + Bi*x1 + Ci*x2 + Di*x3) / 6*V
  */
-struct TetrahedronShapeFunctionCoefficients{
+template<class T>
+struct TetrahedronShapeFunctionCoefficients {
     // A1 = 6*V0i
-    Float A1;
-    Float A2;
-    Float A3;
-    Float A4;
+    T A1;
+    T A2;
+    T A3;
+    T A4;
 
-    Float B1;
-    Float B2;
-    Float B3;
-    Float B4;
+    T B1;
+    T B2;
+    T B3;
+    T B4;
 
-    Float C1;
-    Float C2;
-    Float C3;
-    Float C4;
+    T C1;
+    T C2;
+    T C3;
+    T C4;
 
-    Float D1;
-    Float D2;
-    Float D3;
-    Float D4;
+    T D1;
+    T D2;
+    T D3;
+    T D4;
 };
 
 /**
  * xij = xi - xj
  */
+template<class T>
 struct Edges {
-    Float x32 = 0;
-    Float x34 = 0;
-    Float x43 = 0;
-    Float x14 = 0;
-    Float x21 = 0;
-    Float x31 = 0;
-    Float x24 = 0;
-    Float x42 = 0;
-    Float x13 = 0;
-    Float x12 = 0;
+    T x32 = 0;
+    T x34 = 0;
+    T x43 = 0;
+    T x14 = 0;
+    T x21 = 0;
+    T x31 = 0;
+    T x24 = 0;
+    T x42 = 0;
+    T x13 = 0;
+    T x12 = 0;
 
-    Float z43 = 0;
-    Float z31 = 0;
-    Float z32 = 0;
-    Float z24 = 0;
-    Float z34 = 0;
-    Float z13 = 0;
-    Float z14 = 0;
-    Float z21 = 0;
-    Float z42 = 0;
-    Float z12 = 0;
+    T z43 = 0;
+    T z31 = 0;
+    T z32 = 0;
+    T z24 = 0;
+    T z34 = 0;
+    T z13 = 0;
+    T z14 = 0;
+    T z21 = 0;
+    T z42 = 0;
+    T z12 = 0;
 
-    Float y42 = 0;
-    Float y31 = 0;
-    Float y24 = 0;
-    Float y13 = 0;
-    Float y32 = 0;
-    Float y34 = 0;
-    Float y14 = 0;
-    Float y12 = 0;
-    Float y43 = 0;
-    Float y21 = 0;
+    T y42 = 0;
+    T y31 = 0;
+    T y24 = 0;
+    T y13 = 0;
+    T y32 = 0;
+    T y34 = 0;
+    T y14 = 0;
+    T y12 = 0;
+    T y43 = 0;
+    T y21 = 0;
 };
 
+template<class T>
 struct FacesArea {
-    Float area1;
-    Float area2;
-    Float area3;
-    Float area4;
+    T area1;
+    T area2;
+    T area3;
+    T area4;
 };
 
 constexpr int TETRAHEDRON_DOF_COUNT = 12;

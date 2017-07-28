@@ -11,7 +11,7 @@ namespace rtfem {
 struct Vector3 {
 public:
     Vector3();
-    Vector3(Float x, Float y, Float z);
+    Vector3(double x, double y, double z);
 
     ~Vector3();
 
@@ -19,9 +19,9 @@ public:
 
     bool operator!=(const Vector3 &rhs) const;
 
-    Float x;
-    Float y;
-    Float z;
+    double x;
+    double y;
+    double z;
 };
 }
 

@@ -2,20 +2,20 @@
 
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
-#include <RTFEM/Math/MatrixMath.h>
-#include <cmath>
 #include <RTFEM/Math/VectorMath.h>
 
 namespace rtfem {
 
-FiniteElementSolverData TetrahedronSolver::Solve(std::shared_ptr<FiniteElement> finite_element){
-    return Solve(finite_element, Eigen::Vector3<Float>(0,0,0), TractionForce{});
+template<class T>
+FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(std::shared_ptr<FiniteElement<T>> finite_element){
+    return Solve(finite_element, Eigen::Vector3<T>::Zero(), TractionForce<T>{});
 }
 
-FiniteElementSolverData TetrahedronSolver::Solve(
-        std::shared_ptr<FiniteElement> finite_element,
-        const Eigen::Vector3<Float>& body_force,
-        const TractionForce& traction_force){
+template<class T>
+FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
+        std::shared_ptr<FiniteElement<T>> finite_element,
+        const Eigen::Vector3<T>& body_force,
+        const TractionForce<T>& traction_force){
     auto v1 = finite_element->vertices()[0];
     auto v2 = finite_element->vertices()[1];
     auto v3 = finite_element->vertices()[2];
@@ -25,7 +25,7 @@ FiniteElementSolverData TetrahedronSolver::Solve(
     auto faces_area = ComputeFacesArea(edges);
     auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4, edges);
 
-    FiniteElementSolverData data;
+    FiniteElementSolverData<T> data;
     data.volume = ComputeVolume(shape_function_coefficients);
     data.geometry_matrix = ComputeGeometryMatrix(shape_function_coefficients, data.volume);
     data.force_vector = ComputeForceVector(shape_function_coefficients,
@@ -35,8 +35,9 @@ FiniteElementSolverData TetrahedronSolver::Solve(
     return data;
 }
 
-Eigen::Matrix<Float, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
-TetrahedronSolver::SolveJacobianInverse(std::shared_ptr<FiniteElement> finite_element){
+template<class T>
+Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
+TetrahedronSolver<T>::SolveJacobianInverse(std::shared_ptr<FiniteElement<T>> finite_element){
     auto v1 = finite_element->vertices()[0];
     auto v2 = finite_element->vertices()[1];
     auto v3 = finite_element->vertices()[2];
@@ -50,9 +51,10 @@ TetrahedronSolver::SolveJacobianInverse(std::shared_ptr<FiniteElement> finite_el
     return AssemblyJacobianInverse(shape_function_coefficients, volume);
 }
 
-Edges TetrahedronSolver::ComputeEdgesCache(const Vertex &v1, const Vertex &v2,
-                                           const Vertex &v3, const Vertex &v4) {
-    Edges edges;
+template<class T>
+Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1, const Vertex<T> &v2,
+                                                 const Vertex<T> &v3, const Vertex<T> &v4) {
+    Edges<T> edges;
 
     edges.x32 = v3.x() - v2.x();
     edges.x34 = v3.x() - v4.x();
@@ -88,9 +90,10 @@ Edges TetrahedronSolver::ComputeEdgesCache(const Vertex &v1, const Vertex &v2,
     return edges;
 }
 
-FacesArea TetrahedronSolver::ComputeFacesArea(const Edges& edges){
+template<class T>
+FacesArea<T> TetrahedronSolver<T>::ComputeFacesArea(const Edges<T>& edges){
     VectorMath vector_math_;
-    FacesArea faces_area;
+    FacesArea<T> faces_area;
 
     faces_area.area1 = vector_math_.Magnitude(
             vector_math_.Cross(Vector3(edges.x32, edges.y32, edges.z32),
@@ -109,11 +112,13 @@ FacesArea TetrahedronSolver::ComputeFacesArea(const Edges& edges){
 
 }
 
-TetrahedronShapeFunctionCoefficients TetrahedronSolver::ComputeShapeFunctionCoefficients(
-        const Vertex &v1, const Vertex &v2,
-        const Vertex &v3, const Vertex &v4,
-        const Edges& edges) {
-    TetrahedronShapeFunctionCoefficients coefficients;
+template<class T>
+TetrahedronShapeFunctionCoefficients<T>
+TetrahedronSolver<T>::ComputeShapeFunctionCoefficients(
+        const Vertex<T> &v1, const Vertex<T> &v2,
+        const Vertex<T> &v3, const Vertex<T> &v4,
+        const Edges<T>& edges) {
+    TetrahedronShapeFunctionCoefficients<T> coefficients;
 
     auto V0i = ComputeAi(v1, v2, v3, v4);
     coefficients.A1 = V0i.x();
@@ -139,10 +144,11 @@ TetrahedronShapeFunctionCoefficients TetrahedronSolver::ComputeShapeFunctionCoef
     return coefficients;
 }
 
-Eigen::Vector4<Float> TetrahedronSolver::ComputeAi(const Vertex &v1,
-                                                   const Vertex &v2,
-                                                   const Vertex &v3,
-                                                   const Vertex &v4) {
+template<class T>
+Eigen::Vector4<T> TetrahedronSolver<T>::ComputeAi(const Vertex<T> &v1,
+                                                   const Vertex<T> &v2,
+                                                   const Vertex<T> &v3,
+                                                   const Vertex<T> &v4) {
     auto V01 =
             v2.x() * ((v3.y() * v4.z()) - (v4.y() * v3.z()))
             + v3.x() * ((v4.y() * v2.z()) - (v2.y() * v4.z()))
@@ -160,27 +166,29 @@ Eigen::Vector4<Float> TetrahedronSolver::ComputeAi(const Vertex &v1,
             + v2.x() * ((v1.y() * v3.z()) - (v3.y() * v1.z()))
             + v3.x() * ((v2.y() * v1.z()) - (v1.y() * v2.z()));
 
-    Eigen::Vector4<Float> V0i(V01, V02, V03, V04);
+    Eigen::Vector4<T> V0i(V01, V02, V03, V04);
 
     return V0i;
 }
 
-Float TetrahedronSolver::ComputeVolume(const TetrahedronShapeFunctionCoefficients& coefficients){
+template<class T>
+T TetrahedronSolver<T>::ComputeVolume(const TetrahedronShapeFunctionCoefficients<T>& coefficients){
     auto volume = (coefficients.A1 / 6.0)
                   + (coefficients.A2 / 6.0)
                   + (coefficients.A3 / 6.0)
                   + (coefficients.A4 / 6.0);
     if(volume == 0){
-        throw std::invalid_argument("TetrahedronSolver::Solve: Element with 0 volume");
+        throw std::invalid_argument("TetrahedronSolver<T>::Solve: Element with 0 volume");
     }
 
     return volume;
 }
 
-Eigen::Matrix<Float, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M>
-TetrahedronSolver::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients &coefficients,
-                                         Float volume) {
-    Eigen::Matrix<Float,
+template<class T>
+Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M>
+TetrahedronSolver<T>::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients<T> &coefficients,
+                                            T volume) {
+    Eigen::Matrix<T,
             TETRAHEDRON_GEOMETRIC_MATRIX_N,
             TETRAHEDRON_GEOMETRIC_MATRIX_M> geometry_matrix;
     AssemblyGeometryMatrix(geometry_matrix, 0, coefficients.B1, coefficients.C1, coefficients.D1);
@@ -192,9 +200,10 @@ TetrahedronSolver::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficie
     return geometry_matrix;
 }
 
-void TetrahedronSolver::AssemblyGeometryMatrix(
-        Eigen::Matrix<Float, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M> &B, UInt column_offset,
-        Float b, Float c, Float d) {
+template<class T>
+void TetrahedronSolver<T>::AssemblyGeometryMatrix(
+        Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M> &B, unsigned int column_offset,
+        T b, T c, T d) {
     B(0, 0 + column_offset) = b;
     B(1, 1 + column_offset) = c;
     B(2, 2 + column_offset) = d;
@@ -206,11 +215,12 @@ void TetrahedronSolver::AssemblyGeometryMatrix(
     B(5, 2 + column_offset) = b;
 }
 
-Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-TetrahedronSolver::ComputeForceVector(const TetrahedronShapeFunctionCoefficients &shape_function_coefficients,
-                                      Float volume, const FacesArea &faces_area,
-                                      const Eigen::Vector3<Float> &body_force,
-                                      const TractionForce &traction_force) {
+template<class T>
+Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+TetrahedronSolver<T>::ComputeForceVector(const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
+                                         T volume, const FacesArea<T> &faces_area,
+                                         const Eigen::Vector3<T> &body_force,
+                                         const TractionForce<T> &traction_force) {
     auto consistent_body_force = ComputeBodyForceVector(volume, body_force);
     auto consistent_traction_force = ComputeTractionForceVector(shape_function_coefficients,
                                                                 faces_area,
@@ -219,11 +229,12 @@ TetrahedronSolver::ComputeForceVector(const TetrahedronShapeFunctionCoefficients
     return consistent_body_force + consistent_traction_force;
 }
 
-Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-TetrahedronSolver::ComputeBodyForceVector(
-        Float volume,
-        const Eigen::Vector3<Float> &body_force) {
-    Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N> consistent_body_force;
+template<class T>
+Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+TetrahedronSolver<T>::ComputeBodyForceVector(
+        T volume,
+        const Eigen::Vector3<T> &body_force) {
+    Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N> consistent_body_force;
 
     consistent_body_force(0) = body_force.x();
     consistent_body_force(1) = body_force.y();
@@ -243,11 +254,12 @@ TetrahedronSolver::ComputeBodyForceVector(
     return consistent_body_force;
 }
 
-Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-TetrahedronSolver::ComputeTractionForceVector(
-        const TetrahedronShapeFunctionCoefficients &shape_function_coefficients,
-        const FacesArea &faces_area,
-        const TractionForce &traction_force) {
+template<class T>
+Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+TetrahedronSolver<T>::ComputeTractionForceVector(
+        const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
+        const FacesArea<T> &faces_area,
+        const TractionForce<T> &traction_force) {
     auto &coeff = shape_function_coefficients;
 
     auto traction_force_face1 =
@@ -266,17 +278,18 @@ TetrahedronSolver::ComputeTractionForceVector(
     return traction_force_face1 + traction_force_face2 + traction_force_face3 + traction_force_face4;
 }
 
-Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-TetrahedronSolver::ComputeTractionForceVectorFace(UInt face_index, Float traction_force,
-                                                  Float area,
-                                                  Float B, Float C, Float D) {
+template<class T>
+Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+TetrahedronSolver<T>::ComputeTractionForceVectorFace(unsigned int face_index, T traction_force,
+                                                     T area,
+                                                     T B, T C, T D) {
     auto S = std::sqrt((B * B) + (C * C) + (D * D));
     auto B_normal = B / S;
     auto C_normal = C / S;
     auto D_normal = D / S;
 
     auto magnitude = (1.0 / 3.0) * traction_force * area;
-    Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N> traction_force_vector_face;
+    Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N> traction_force_vector_face;
 
     traction_force_vector_face(0) = B_normal;
     traction_force_vector_face(1) = C_normal;
@@ -300,10 +313,11 @@ TetrahedronSolver::ComputeTractionForceVectorFace(UInt face_index, Float tractio
     return traction_force_vector_face;
 }
 
-Eigen::Matrix<Float, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
-TetrahedronSolver::AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients &coefficients,
-                                           Float volume) {
-    Eigen::Matrix<Float, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N> jacobian_inverse;
+template<class T>
+Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
+TetrahedronSolver<T>::AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients<T> &coefficients,
+                                              T volume) {
+    Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N> jacobian_inverse;
     jacobian_inverse(0, 0) = coefficients.A1;
     jacobian_inverse(1, 0) = coefficients.A2;
     jacobian_inverse(2, 0) = coefficients.A3;
@@ -328,5 +342,8 @@ TetrahedronSolver::AssemblyJacobianInverse(const TetrahedronShapeFunctionCoeffic
 
     return jacobian_inverse;
 }
+
+template class TetrahedronSolver<double>;
+template class TetrahedronSolver<float>;
 
 }

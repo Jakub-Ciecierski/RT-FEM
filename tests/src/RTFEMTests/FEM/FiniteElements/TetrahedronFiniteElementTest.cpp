@@ -4,8 +4,8 @@
 #include <RTFEM/Memory/UniquePointer.h>
 
 void TetrahedronFiniteElementTest::SetUp() {
-    tetrahedron_ = rtfem::make_unique<rtfem::TetrahedronFiniteElement>(nullptr, nullptr,
-                                                                       nullptr, nullptr);
+    tetrahedron_ = rtfem::make_unique<rtfem::TetrahedronFiniteElement<double>>(nullptr, nullptr,
+                                                                               nullptr, nullptr);
 }
 
 void TetrahedronFiniteElementTest::TearDown() {
@@ -16,6 +16,6 @@ TEST_F(TetrahedronFiniteElementTest, CreatedTetrahedron_ProperType){
 }
 
 TEST_F(TetrahedronFiniteElementTest, CreatedTetrahedron_ProperVertexCount){
-    const rtfem::UInt expected_count = 4;
+    const unsigned int expected_count = 4;
     EXPECT_EQ(expected_count, tetrahedron_->GetVertexCount());
 }

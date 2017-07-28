@@ -7,20 +7,22 @@
 
 namespace rtfem {
 
+template<class T>
 class Vertex;
 
-class TetrahedronFiniteElement : public FiniteElement {
+template<class T>
+class TetrahedronFiniteElement : public FiniteElement<T> {
 public:
-    TetrahedronFiniteElement(std::shared_ptr<Vertex> vertex1,
-                             std::shared_ptr<Vertex> vertex2,
-                             std::shared_ptr<Vertex> vertex3,
-                             std::shared_ptr<Vertex> vertex4);
+    TetrahedronFiniteElement(std::shared_ptr<Vertex<T>> vertex1,
+                             std::shared_ptr<Vertex<T>> vertex2,
+                             std::shared_ptr<Vertex<T>> vertex3,
+                             std::shared_ptr<Vertex<T>> vertex4);
 
     ~TetrahedronFiniteElement();
 
-    UInt GetVertexCount() const override;
+    unsigned int GetVertexCount() const override;
 private:
-    const UInt vertex_count = 4;
+    const unsigned int vertex_count = 4;
 };
 }
 

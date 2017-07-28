@@ -9,7 +9,10 @@
 
 namespace rtfem {
 
+template<class T>
 class Vertex;
+
+template<class T>
 class FiniteElement;
 
 /**
@@ -20,30 +23,31 @@ class FiniteElement;
  *
  * FEMModel contains data of a single connected object.
  */
+template<class T>
 class FEMModel {
 public:
-    FEMModel(std::vector<std::shared_ptr<FiniteElement>>& finite_elements,
-             std::vector<std::shared_ptr<Vertex>>& vertices,
-             const Material&& material);
-    ~FEMModel();
+    FEMModel(std::vector<std::shared_ptr<FiniteElement<T>>>& finite_elements,
+             std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+             const Material<T>&& material);
+    ~FEMModel() = default;
 
-    const std::vector<std::shared_ptr<FiniteElement>>& finite_elements() const {
+    const std::vector<std::shared_ptr<FiniteElement<T>>>& finite_elements() const {
         return finite_elements_;
     }
-    const std::vector<std::shared_ptr<Vertex>>& vertices() const {
+    const std::vector<std::shared_ptr<Vertex<T>>>& vertices() const {
         return vertices_;
     }
 
-    Material& material(){return material_;}
+    Material<T>& material(){return material_;}
 
-    UInt VertexCount();
-    UInt FiniteElementCount();
+    unsigned int VertexCount();
+    unsigned int FiniteElementCount();
 
 private:
-    std::vector<std::shared_ptr<FiniteElement>> finite_elements_;
-    std::vector<std::shared_ptr<Vertex>> vertices_;
+    std::vector<std::shared_ptr<FiniteElement<T>>> finite_elements_;
+    std::vector<std::shared_ptr<Vertex<T>>> vertices_;
 
-    Material material_;
+    Material<T> material_;
 };
 
 }

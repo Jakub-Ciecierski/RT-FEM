@@ -2,22 +2,26 @@
 
 namespace rtfem {
 
-FEMModel::FEMModel(std::vector<std::shared_ptr<rtfem::FiniteElement>>& finite_elements,
-                   std::vector<std::shared_ptr<rtfem::Vertex>>& vertices,
-                   const Material&& material) :
+template<class T>
+FEMModel<T>::FEMModel(std::vector<std::shared_ptr<rtfem::FiniteElement<T>>>& finite_elements,
+                   std::vector<std::shared_ptr<rtfem::Vertex<T>>>& vertices,
+                   const Material<T>&& material) :
         finite_elements_(finite_elements),
         vertices_(vertices),
         material_(material){
 }
 
-FEMModel::~FEMModel() {}
-
-UInt FEMModel::VertexCount(){
+template<class T>
+unsigned int FEMModel<T>::VertexCount(){
     return vertices_.size();
 }
 
-UInt FEMModel::FiniteElementCount(){
+template<class T>
+unsigned int FEMModel<T>::FiniteElementCount(){
     return finite_elements_.size();
 }
+
+template class FEMModel<double>;
+template class FEMModel<float>;
 
 }

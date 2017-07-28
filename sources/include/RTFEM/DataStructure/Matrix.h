@@ -9,11 +9,11 @@
 namespace rtfem {
 
 struct MatrixDimension{
-    MatrixDimension(UInt row_count, UInt column_count) :
+    MatrixDimension(unsigned int row_count, unsigned int column_count) :
             row_count(row_count), column_count(column_count){}
 
-    UInt row_count;
-    UInt column_count;
+    unsigned int row_count;
+    unsigned int column_count;
 };
 
 /**
@@ -26,7 +26,7 @@ public:
      * @param row_count
      * @param column_count
      */
-    Matrix(UInt row_count, UInt column_count);
+    Matrix(unsigned int row_count, unsigned int column_count);
 
     /**
      * Creates Matrix with row_count rows and column_count columns, initiated with value parameter
@@ -34,7 +34,7 @@ public:
      * @param row_count
      * @param column_count
      */
-    Matrix(Float value, UInt row_count, UInt column_count);
+    Matrix(double value, unsigned int row_count, unsigned int column_count);
 
     /**
      * Creates Matrix with elements taken from the initializer list.
@@ -45,7 +45,7 @@ public:
      *
      * @param lists
      */
-    Matrix(std::initializer_list<std::initializer_list<Float>> lists);
+    Matrix(std::initializer_list<std::initializer_list<double>> lists);
 
     Matrix(const MatrixDimension&& matrix_dimension);
 
@@ -58,16 +58,16 @@ public:
      * @param i
      * @return
      */
-    std::vector<Float>& operator[] (UInt i);
-    const std::vector<Float>& operator[] (UInt i) const;
+    std::vector<double>& operator[] (unsigned int i);
+    const std::vector<double>& operator[] (unsigned int i) const;
 
     /**
      * Returns i-th row.
      * @param i
      * @return
      */
-    std::vector<Float>& GetRow(UInt i);
-    const std::vector<Float>& GetRow(UInt i) const;
+    std::vector<double>& GetRow(unsigned int i);
+    const std::vector<double>& GetRow(unsigned int i) const;
 
     bool operator==(const Matrix &rhs) const;
     bool operator!=(const Matrix &rhs) const;
@@ -75,9 +75,9 @@ public:
     Matrix& operator+=(const Matrix& rhs);
 
 private:
-    void InitData(Float value);
+    void InitData(double value);
 
-    std::vector<std::vector<Float>> data_;
+    std::vector<std::vector<double>> data_;
 
 private:
     MatrixDimension dimensions_;
@@ -85,10 +85,10 @@ private:
 
 std::ostream& operator<<(std::ostream&, const Matrix&);
 
-Matrix operator*(Float x, const Matrix& m);
-Matrix operator*(const Matrix& m, Float x);
+Matrix operator*(double x, const Matrix& m);
+Matrix operator*(const Matrix& m, double x);
 
-Matrix operator/(const Matrix& m, Float x);
+Matrix operator/(const Matrix& m, double x);
 
 Matrix operator*(const Matrix& m1, const Matrix& m2);
 Matrix operator+(const Matrix& m1, const Matrix& m2);

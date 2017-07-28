@@ -2,7 +2,11 @@
 
 namespace rtfem {
 
-Vertex::Vertex(UInt id, const Eigen::Vector3<Float>& coordinates)
-        : id_(id), coordinates_(coordinates){}
+template<class T>
+Vertex<T>::Vertex(unsigned int id, const Eigen::Vector3<T> &coordinates)
+        : id_(id), coordinates_(coordinates) {}
+
+template class Vertex<double>;
+template class Vertex<float>;
 
 }

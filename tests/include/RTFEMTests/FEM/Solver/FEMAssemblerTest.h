@@ -1,9 +1,13 @@
 #include "gtest/gtest.h"
 
 #include <memory>
+#include <RTFEM/DataTypes.h>
 
 namespace rtfem{
+template<class T>
 class FEMModel;
+
+template<class T>
 class FEMAssembler;
 }
 
@@ -13,7 +17,7 @@ protected:
 
     virtual void TearDown() override;
 
-    std::shared_ptr<rtfem::FEMModel> fem_model_;
-    std::unique_ptr<rtfem::FEMAssembler> fem_assembler_;
+    std::shared_ptr<rtfem::FEMModel<double>> fem_model_;
+    std::unique_ptr<rtfem::FEMAssembler<double>> fem_assembler_;
 
 };

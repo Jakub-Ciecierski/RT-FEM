@@ -4,18 +4,21 @@
 #include <RTFEM/FEM/Solver/FEMSolverTypes.h>
 
 #include <memory>
+#include <RTFEM/DataTypes.h>
 
 namespace rtfem {
 
+template<class T>
 class FEMModel;
 
+template<class T>
 class FEMSolver {
 public:
     FEMSolver(
             const ConstitutiveSolverType&& constitutive_solver_type,
             const GeometrySolverType&& geometry_solver_type,
             const AnalysisSolverType&& analysis_solver_type);
-    ~FEMSolver();
+    ~FEMSolver() = default;
 
     const ConstitutiveSolverType& constitutive_solver_type(){
         return constitutive_solver_type_;
@@ -27,7 +30,7 @@ public:
         return analysis_solver_type_;
     }
 
-    void Solve(const std::shared_ptr<FEMModel> fem_model);
+    void Solve(const std::shared_ptr<FEMModel<T>> fem_model);
 
 private:
     ConstitutiveSolverType constitutive_solver_type_;

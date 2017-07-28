@@ -6,15 +6,19 @@
 
 namespace rtfem {
 
+template<class T>
 class FiniteElement;
+
+template<class T>
 class Vertex;
 
 /**
  * A list of vertices and finite elements that make up a 3D FEM Geometry
  */
+template<class T>
 struct FEMGeometry {
-    std::vector<std::shared_ptr<FiniteElement>> finite_elements;
-    std::vector<std::shared_ptr<Vertex>> vertices;
+    std::vector<std::shared_ptr<FiniteElement<T>>> finite_elements;
+    std::vector<std::shared_ptr<Vertex<T>>> vertices;
 };
 }
 

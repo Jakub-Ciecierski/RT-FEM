@@ -8,7 +8,9 @@
 
 namespace rtfem {
 
+template<class T>
 class FiniteElement;
+
 class Vector3;
 
  /**
@@ -20,44 +22,47 @@ class Vector3;
  *  Coordinates:
  *      x2 is assumed to point 'up'
  */
+template<class T>
 struct FiniteElementSolverData{
     FiniteElementSolverData() :
             volume(0){}
-    Float volume;
+    T volume;
 
     // Used to compute Global Stiffness
     //Matrix geometry_matrix;
-    Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> geometry_matrix;
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> geometry_matrix;
 
     // Used to compute Global Force
     //Matrix force_vector;
-    Eigen::Matrix<Float, Eigen::Dynamic, 1> force_vector;
+    Eigen::Matrix<T, Eigen::Dynamic, 1> force_vector;
 };
 
 /**
  * Pressure forces directed along unit normal of i-th face
  * (traction_force_face1, i == 1)
  */
+template<class T>
 struct TractionForce {
-    Float force_face1 = 0;
-    Float force_face2 = 0;
-    Float force_face3 = 0;
-    Float force_face4 = 0;
+    T force_face1 = 0;
+    T force_face2 = 0;
+    T force_face3 = 0;
+    T force_face4 = 0;
 };
 
 /**
  * Computes FiniteElementSolverData for a given FiniteElement.
  */
+template<class T>
 class FiniteElementSolver {
 public:
     FiniteElementSolver() = default;
     virtual ~FiniteElementSolver() = default;
 
-    virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element) = 0;
+    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element) = 0;
 
-    virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element,
-                                          const Eigen::Vector3<Float>& body_force,
-                                          const TractionForce& traction_force) = 0;
+    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element,
+                                             const Eigen::Vector3<T> &body_force,
+                                             const TractionForce<T> &traction_force) = 0;
 };
 }
 

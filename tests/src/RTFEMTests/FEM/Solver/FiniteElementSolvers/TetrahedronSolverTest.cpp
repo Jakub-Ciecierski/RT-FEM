@@ -8,17 +8,17 @@
 #include <cmath>
 
 void TetrahedronSolverTest::SetUp() {
-    solver_ = rtfem::make_unique<rtfem::TetrahedronSolver>();
+    solver_ = rtfem::make_unique<rtfem::TetrahedronSolver<double>>();
 
-    auto vertex0 = std::make_shared<rtfem::Vertex>(0, Eigen::Vector3<rtfem::Float>(1, 0, 2));
-    auto vertex1 = std::make_shared<rtfem::Vertex>(1, Eigen::Vector3<rtfem::Float>(1, 2, 1));
-    auto vertex2 = std::make_shared<rtfem::Vertex>(2, Eigen::Vector3<rtfem::Float>(0, 0, 0));
-    auto vertex3 = std::make_shared<rtfem::Vertex>(3, Eigen::Vector3<rtfem::Float>(2, 0, 0));
+    auto vertex0 = std::make_shared<rtfem::Vertex<double>>(0, Eigen::Vector3<double>(1, 0, 2));
+    auto vertex1 = std::make_shared<rtfem::Vertex<double>>(1, Eigen::Vector3<double>(1, 2, 1));
+    auto vertex2 = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(0, 0, 0));
+    auto vertex3 = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(2, 0, 0));
 
-    finite_element_ = std::make_shared<rtfem::TetrahedronFiniteElement>(vertex0,
-                                                                        vertex1,
-                                                                        vertex2,
-                                                                        vertex3);
+    finite_element_ = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertex0,
+                                                                                      vertex1,
+                                                                                      vertex2,
+                                                                                      vertex3);
 }
 
 void TetrahedronSolverTest::TearDown() {
@@ -27,23 +27,23 @@ void TetrahedronSolverTest::TearDown() {
 TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions){
     auto data = solver_->Solve(finite_element_);
 
-    EXPECT_EQ((rtfem::UInt)6, data.geometry_matrix.rows());
-    EXPECT_EQ((rtfem::UInt)12, data.geometry_matrix.cols());
+    EXPECT_EQ((unsigned int)6, data.geometry_matrix.rows());
+    EXPECT_EQ((unsigned int)12, data.geometry_matrix.cols());
 }
 
 /**
  * TODO: Should move it to benchmarks test
  */
 TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
-    auto vertex0 = std::make_shared<rtfem::Vertex>(0, Eigen::Vector3<rtfem::Float>(-1.0/2.0, -2.0/9.0, 4.0/11.0));
-    auto vertex1 = std::make_shared<rtfem::Vertex>(1, Eigen::Vector3<rtfem::Float>(1.0/16.0, 0, 2.0/13.0));
-    auto vertex2 = std::make_shared<rtfem::Vertex>(2, Eigen::Vector3<rtfem::Float>(-1.0/34.0, -1.0/13.0, 1.0/3.0));
-    auto vertex3 = std::make_shared<rtfem::Vertex>(3, Eigen::Vector3<rtfem::Float>(-3.0/11.0, -2.0/9.0, -1.0/4.0));
-    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement>(vertex0,
-                                                                            vertex1,
-                                                                            vertex2,
-                                                                            vertex3);
-    Eigen::Matrix<rtfem::Float, 4, 4> expected_jacobian_inverse;
+    auto vertex0 = std::make_shared<rtfem::Vertex<double>>(0, Eigen::Vector3<double>(-1.0/2.0, -2.0/9.0, 4.0/11.0));
+    auto vertex1 = std::make_shared<rtfem::Vertex<double>>(1, Eigen::Vector3<double>(1.0/16.0, 0, 2.0/13.0));
+    auto vertex2 = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(-1.0/34.0, -1.0/13.0, 1.0/3.0));
+    auto vertex3 = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(-3.0/11.0, -2.0/9.0, -1.0/4.0));
+    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertex0,
+                                                                                          vertex1,
+                                                                                          vertex2,
+                                                                                          vertex3);
+    Eigen::Matrix<double, 4, 4> expected_jacobian_inverse;
     expected_jacobian_inverse(0, 0) = 0.18591;
     expected_jacobian_inverse(1, 0) = 1.54868;
     expected_jacobian_inverse(2, 0) = -0.839161;
@@ -67,8 +67,8 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
     auto jacobian_inverse = solver_->SolveJacobianInverse(finite_element);
 
     // Round
-    for(rtfem::UInt i = 0; i < jacobian_inverse.rows();i++){
-        for(rtfem::UInt j = 0; j < jacobian_inverse.cols();j++){
+    for(unsigned int i = 0; i < jacobian_inverse.rows();i++){
+        for(unsigned int j = 0; j < jacobian_inverse.cols();j++){
             jacobian_inverse(i,j) = std::floor(jacobian_inverse(i,j) * 100) / 100;
             expected_jacobian_inverse(i, j) = std::floor(expected_jacobian_inverse(i, j) * 100) / 100;
         }
@@ -81,16 +81,16 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
  * TODO: Should move it to benchmarks test
  */
 TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
-    auto vertex0 = std::make_shared<rtfem::Vertex>(0, Eigen::Vector3<rtfem::Float>(1.0/56.0, -2.0/13.0, -4.0/11.0));
-    auto vertex1 = std::make_shared<rtfem::Vertex>(1, Eigen::Vector3<rtfem::Float>(2.0/9.0, 1.0/9.0, -2.0/11.0));
-    auto vertex2 = std::make_shared<rtfem::Vertex>(2, Eigen::Vector3<rtfem::Float>(-1.0/9.0, -7.0/15.0, 3.0/7.0));
-    auto vertex3 = std::make_shared<rtfem::Vertex>(3, Eigen::Vector3<rtfem::Float>(-1.0/34.0, -4.0/9.0, 2.0/7.0));
-    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement>(vertex0,
-                                                                            vertex1,
-                                                                            vertex2,
-                                                                            vertex3);
+    auto vertex0 = std::make_shared<rtfem::Vertex<double>>(0, Eigen::Vector3<double>(1.0/56.0, -2.0/13.0, -4.0/11.0));
+    auto vertex1 = std::make_shared<rtfem::Vertex<double>>(1, Eigen::Vector3<double>(2.0/9.0, 1.0/9.0, -2.0/11.0));
+    auto vertex2 = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(-1.0/9.0, -7.0/15.0, 3.0/7.0));
+    auto vertex3 = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(-1.0/34.0, -4.0/9.0, 2.0/7.0));
+    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertex0,
+                                                                                          vertex1,
+                                                                                          vertex2,
+                                                                                          vertex3);
 
-    Eigen::Matrix<rtfem::Float, 4, 4> expected_jacobian_inverse;
+    Eigen::Matrix<double, 4, 4> expected_jacobian_inverse;
     expected_jacobian_inverse(0, 0) = 0.380431;
     expected_jacobian_inverse(1, 0) = 0.679071;
     expected_jacobian_inverse(2, 0) = 1.95165;
@@ -114,8 +114,8 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
     auto jacobian_inverse = solver_->SolveJacobianInverse(finite_element);
 
     // Round
-    for(rtfem::UInt i = 0; i < jacobian_inverse.rows();i++){
-        for(rtfem::UInt j = 0; j < jacobian_inverse.cols();j++){
+    for(unsigned int i = 0; i < jacobian_inverse.rows();i++){
+        for(unsigned int j = 0; j < jacobian_inverse.cols();j++){
             jacobian_inverse(i, j) = std::floor(jacobian_inverse(i, j) * 100) / 100;
             expected_jacobian_inverse(i, j) = std::floor(expected_jacobian_inverse(i, j) * 100) / 100;
         }
@@ -125,14 +125,14 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
 }
 
 TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult){
-    const rtfem::Float g = -9.81;
-    Eigen::Vector3<rtfem::Float> gravity(0, g, 0);
-    auto data = solver_->Solve(finite_element_, gravity, rtfem::TractionForce{});
+    const double g = -9.81;
+    Eigen::Vector3<double> gravity(0, g, 0);
+    auto data = solver_->Solve(finite_element_, gravity, rtfem::TractionForce<double>{});
 
     // Assume volume is calculated correctly.
     auto volume = data.volume;
 
-    Eigen::Matrix<rtfem::Float, 12, 1> expected_node_force_vector;
+    Eigen::Matrix<double, 12, 1> expected_node_force_vector;
     expected_node_force_vector(0) = 0;
     expected_node_force_vector(1) = g;
     expected_node_force_vector(2) = 0;

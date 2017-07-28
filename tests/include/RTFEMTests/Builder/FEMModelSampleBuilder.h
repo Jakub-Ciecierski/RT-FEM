@@ -5,6 +5,7 @@
 #include <RTFEM/DataTypes.h>
 
 namespace rtfem {
+template<class T>
 class FEMModel;
 }
 class FEMModelSampleBuilder {
@@ -13,13 +14,13 @@ public:
 
     ~FEMModelSampleBuilder();
 
-    const rtfem::UInt finite_element_count() const {return finite_element_count_;}
-    const rtfem::UInt vertex_count() const {return vertex_count_;}
+    const unsigned int finite_element_count() const {return finite_element_count_;}
+    const unsigned int vertex_count() const {return vertex_count_;}
 
-    std::shared_ptr<rtfem::FEMModel> CreateRandomFEMModel();
+    std::shared_ptr<rtfem::FEMModel<double>> CreateRandomFEMModel();
 private:
-    const rtfem::UInt finite_element_count_ = 4;
-    const rtfem::UInt vertex_count_ = 9;
+    const unsigned int finite_element_count_ = 4;
+    const unsigned int vertex_count_ = 9;
 };
 
 

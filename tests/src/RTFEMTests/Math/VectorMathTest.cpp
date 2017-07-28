@@ -22,6 +22,6 @@ TEST_F(VectorMathTest, Cross_OrthonormalBasis){
 
 TEST_F(VectorMathTest, Magnitude_UnitLength){
     rtfem::Vector3 v(1, 0, 0);
-    rtfem::Float expected_magnitude = 1.0;
+    double expected_magnitude = 1.0;
     EXPECT_EQ(expected_magnitude, vector_math_->Magnitude(v));
 }

@@ -14,35 +14,37 @@ void FEMAssemblerTest::SetUp() {
     FEMModelSampleBuilder builder;
     fem_model_ = builder.CreateRandomFEMModel();
 
-    fem_assembler_ = rtfem::make_unique<rtfem::FEMAssembler>();
+    fem_assembler_ = rtfem::make_unique<rtfem::FEMAssembler<double>>();
 }
 
 void FEMAssemblerTest::TearDown() {
 }
 
 TEST_F(FEMAssemblerTest, SingleFiniteElement_CorrectGlobalStiffnessMatrix_Mathematica){
-    auto finite_elements = std::vector<std::shared_ptr<rtfem::FiniteElement>>(1);
-    auto vertices = std::vector<std::shared_ptr<rtfem::Vertex>>(4);
+    auto finite_elements = std::vector<std::shared_ptr<rtfem::FiniteElement<double>>>(1);
+    auto vertices = std::vector<std::shared_ptr<rtfem::Vertex<double>>>(4);
 
-    vertices[0] = std::make_shared<rtfem::Vertex>(0, Eigen::Vector3<rtfem::Float>(2,3,4));
-    vertices[1] = std::make_shared<rtfem::Vertex>(1, Eigen::Vector3<rtfem::Float>(6,3,2));
-    vertices[2] = std::make_shared<rtfem::Vertex>(2, Eigen::Vector3<rtfem::Float>(2,5,1));
-    vertices[3] = std::make_shared<rtfem::Vertex>(3, Eigen::Vector3<rtfem::Float>(4,3,6));
+    vertices[0] = std::make_shared<rtfem::Vertex<double>>(0, Eigen::Vector3<double>(2,3,4));
+    vertices[1] = std::make_shared<rtfem::Vertex<double>>(1, Eigen::Vector3<double>(6,3,2));
+    vertices[2] = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(2,5,1));
+    vertices[3] = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(4,3,6));
 
-    finite_elements[0] = std::make_shared<rtfem::TetrahedronFiniteElement>(vertices[0],
-                                                                           vertices[1],
-                                                                           vertices[2],
-                                                                           vertices[3]);
+    finite_elements[0] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertices[0],
+                                                                                         vertices[1],
+                                                                                         vertices[2],
+                                                                                         vertices[3]);
 
-    auto fem_model = std::make_shared<rtfem::FEMModel>(finite_elements, vertices, rtfem::Material{480, 1.0/3.0});
+    auto fem_model = std::make_shared<rtfem::FEMModel<double>>(finite_elements,
+                                                                     vertices,
+                                                                     rtfem::Material<double>{480, 1.0 / 3.0});
     auto fem_assembler_data = fem_assembler_->Compute(fem_model);
 
-    for(rtfem::UInt i = 0; i < 12; i++){
-        for(rtfem::UInt j = 0; j < 12; j++){
+    for(unsigned int i = 0; i < 12; i++){
+        for(unsigned int j = 0; j < 12; j++){
             fem_assembler_data.global_stiffness(i, j) = (int)(fem_assembler_data.global_stiffness(i,j));
         }
     }
-    Eigen::Matrix<rtfem::Float, 12, 12> expected_stiffness;
+    Eigen::Matrix<double, 12, 12> expected_stiffness;
     expected_stiffness <<
                  745,   540,    120,    -5,     30,     60,     -270,   -240,   0,      -470,   -330,   -180 ,
                  540,   1720,   270,    -120,   520,    210,    -120,   -1080,  -60,    -300,   -1160,  -420 ,
@@ -64,17 +66,17 @@ TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions){
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
     auto fem_assembler_data = fem_assembler_->Compute(fem_model);
 
-    rtfem::UInt expected_row_count = fem_model_->vertices().size() * 3;
+    unsigned int expected_row_count = fem_model_->vertices().size() * 3;
     EXPECT_EQ(expected_row_count, fem_assembler_data.global_force.rows());
-    EXPECT_EQ((rtfem::UInt)1, fem_assembler_data.global_force.cols());
+    EXPECT_EQ((unsigned int)1, fem_assembler_data.global_force.cols());
 }
 
 TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperStiffnessDimensions){
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
     auto fem_assembler_data = fem_assembler_->Compute(fem_model);
 
-    rtfem::UInt expected_row_count = fem_model_->vertices().size() * 3;
-    rtfem::UInt expected_column_count = expected_row_count;
+    unsigned int expected_row_count = fem_model_->vertices().size() * 3;
+    unsigned int expected_column_count = expected_row_count;
     EXPECT_EQ(expected_row_count, fem_assembler_data.global_stiffness.rows());
     EXPECT_EQ(expected_column_count, fem_assembler_data.global_stiffness.cols());
 }

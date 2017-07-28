@@ -16,7 +16,7 @@ void MatrixTest::TearDown(){
 
 }
 
-std::unique_ptr<rtfem::Matrix> MatrixTest::CreateMatrix(rtfem::UInt r, rtfem::UInt c){
+std::unique_ptr<rtfem::Matrix> MatrixTest::CreateMatrix(unsigned int r, unsigned int c){
     return rtfem::make_unique<rtfem::Matrix>(r,c);
 }
 
@@ -38,15 +38,15 @@ TEST_F(MatrixTest, IndexNotOutOfBounds_DoesNotThrowException) {
 }
 
 TEST_F(MatrixTest, MatrixConstructed_FullOfZeros) {
-    for(rtfem::UInt i = 0; i > small_matrix().matrix->dimensions().row_count; i++){
-        for(rtfem::UInt j = 0; j > small_matrix().matrix->dimensions().column_count; j++){
+    for(unsigned int i = 0; i > small_matrix().matrix->dimensions().row_count; i++){
+        for(unsigned int j = 0; j > small_matrix().matrix->dimensions().column_count; j++){
             EXPECT_EQ(0, (*small_matrix().matrix)[i][j]);
         }
     }
 }
 
 TEST_F(MatrixTest, SetValue_GetSameValue) {
-    const rtfem::Float x = 5.0;
+    const double x = 5.0;
 
     (*small_matrix().matrix)[0][0] = x;
 
@@ -117,8 +117,8 @@ TEST_F(MatrixTest, MatrixEqualityOperator_TwoNotEqualMatricesSameDimension_Shoul
 }
 
 TEST_F(MatrixTest, MatrixScalarMultiplication_RightSide) {
-    const rtfem::Float x = 5.0;
-    const rtfem::Float expected_value = 25;
+    const double x = 5.0;
+    const double expected_value = 25;
 
     (*small_matrix().matrix)[0][0] = x;
 
@@ -128,8 +128,8 @@ TEST_F(MatrixTest, MatrixScalarMultiplication_RightSide) {
 }
 
 TEST_F(MatrixTest, MatrixScalarMultiplication_LeftSide) {
-    const rtfem::Float x = 5.0;
-    const rtfem::Float expected_value = 25;
+    const double x = 5.0;
+    const double expected_value = 25;
 
     (*small_matrix().matrix)[0][0] = x;
 
@@ -139,7 +139,7 @@ TEST_F(MatrixTest, MatrixScalarMultiplication_LeftSide) {
 }
 
 TEST_F(MatrixTest, MatrixScalarDivision_RightSide) {
-    const rtfem::Float expected_value = 5;
+    const double expected_value = 5;
 
     (*small_matrix().matrix)[0][0] = 10.0;
 
@@ -262,8 +262,8 @@ TEST_F(MatrixTest, MatrixReferenceAddition_ProperResult){
 
 TEST_F(MatrixTest, MatrixInitializedList_AllColumnsProvided_CorrectDimensions){
     rtfem::Matrix m{{1,2,3} , {4,5,6}};
-    constexpr rtfem::UInt expected_row_count = 2;
-    constexpr rtfem::UInt expected_column_count = 3;
+    constexpr unsigned int expected_row_count = 2;
+    constexpr unsigned int expected_column_count = 3;
 
     EXPECT_EQ(expected_row_count, m.dimensions().row_count);
     EXPECT_EQ(expected_column_count, m.dimensions().column_count);
@@ -271,8 +271,8 @@ TEST_F(MatrixTest, MatrixInitializedList_AllColumnsProvided_CorrectDimensions){
 
 TEST_F(MatrixTest, MatrixInitializedList_NotAllColumnsProvided_CorrectDimensions){
     rtfem::Matrix m{{1,2,3} , {4, 6}};
-    rtfem::UInt expected_row_count = 2;
-    rtfem::UInt expected_column_count = 3;
+    unsigned int expected_row_count = 2;
+    unsigned int expected_column_count = 3;
 
     EXPECT_EQ(expected_row_count, m.dimensions().row_count);
     EXPECT_EQ(expected_column_count, m.dimensions().column_count);

@@ -1,8 +1,10 @@
 #include "gtest/gtest.h"
 
 #include <memory>
+#include <RTFEM/DataTypes.h>
 
 namespace rtfem{
+template<class T>
 class TetrahedronFiniteElement;
 }
 
@@ -11,5 +13,5 @@ protected:
     virtual void SetUp() override;
     virtual void TearDown() override;
 
-    std::unique_ptr<rtfem::TetrahedronFiniteElement> tetrahedron_;
+    std::unique_ptr<rtfem::TetrahedronFiniteElement<double>> tetrahedron_;
 };

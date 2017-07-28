@@ -6,15 +6,17 @@
 
 namespace rtfem {
 
-FEMGeometry Tetrahedralization::Compute(const TriangleMesh &triangle_mesh,
-                                        unsigned int vertex_count) {
-    //auto
+template<class T>
+FEMGeometry<T> Tetrahedralization<T>::Compute(const TriangleMesh &triangle_mesh,
+                                              unsigned int vertex_count) {
+   //auto
 
-    return FEMGeometry();
+    return FEMGeometry<T>();
 }
 
-std::vector<std::shared_ptr<Vector3>>
-Tetrahedralization::GenerateRandomPointsInsideTriangleMesh(const TriangleMesh &triangle_mesh){
+template<class T>
+std::vector<std::shared_ptr<Eigen::Vector3<T>>>
+Tetrahedralization<T>::GenerateRandomPointsInsideTriangleMesh(const TriangleMesh &triangle_mesh){
 
 }
 

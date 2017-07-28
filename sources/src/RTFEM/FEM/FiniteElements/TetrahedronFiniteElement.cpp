@@ -2,21 +2,28 @@
 
 namespace rtfem {
 
-TetrahedronFiniteElement::TetrahedronFiniteElement(std::shared_ptr<Vertex> vertex1,
-                                                   std::shared_ptr<Vertex> vertex2,
-                                                   std::shared_ptr<Vertex> vertex3,
-                                                   std::shared_ptr<Vertex> vertex4) :
-        FiniteElement(std::move(FiniteElementType::Tetrahedron)){
-    vertices_.resize(vertex_count);
-    vertices_[0] = vertex1;
-    vertices_[1] = vertex2;
-    vertices_[2] = vertex3;
-    vertices_[3] = vertex4;
+template<class T>
+TetrahedronFiniteElement<T>::TetrahedronFiniteElement(std::shared_ptr<Vertex<T>> vertex1,
+                                                      std::shared_ptr<Vertex<T>> vertex2,
+                                                      std::shared_ptr<Vertex<T>> vertex3,
+                                                      std::shared_ptr<Vertex<T>> vertex4) :
+        FiniteElement<T>(std::move(FiniteElementType::Tetrahedron)) {
+    this->vertices_.resize(vertex_count);
+    this->vertices_[0] = vertex1;
+    this->vertices_[1] = vertex2;
+    this->vertices_[2] = vertex3;
+    this->vertices_[3] = vertex4;
 }
 
-TetrahedronFiniteElement::~TetrahedronFiniteElement() {}
+template<class T>
+TetrahedronFiniteElement<T>::~TetrahedronFiniteElement() {}
 
-UInt rtfem::TetrahedronFiniteElement::GetVertexCount() const {
+template<class T>
+unsigned int TetrahedronFiniteElement<T>::GetVertexCount() const {
     return 4;
 }
+
+template class TetrahedronFiniteElement<double>;
+template class TetrahedronFiniteElement<float>;
+
 }

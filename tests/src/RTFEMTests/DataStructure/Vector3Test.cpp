@@ -18,9 +18,9 @@ TEST_F(Vector3Test, CreatedVector_InitiedWithZeros) {
 }
 
 TEST_F(Vector3Test, CreatedVector_TrippleConstructor_ProperValues) {
-    rtfem::Float expexted_x = 1.0;
-    rtfem::Float expexted_y = 2.0;
-    rtfem::Float expexted_z = 3.0;
+    double expexted_x = 1.0;
+    double expexted_y = 2.0;
+    double expexted_z = 3.0;
 
     rtfem::Vector3 vec3(expexted_x, expexted_y, expexted_z);
 
@@ -30,21 +30,21 @@ TEST_F(Vector3Test, CreatedVector_TrippleConstructor_ProperValues) {
 }
 
 TEST_F(Vector3Test, Vector_ChangedXValue_ValueRegisteredProperly) {
-    rtfem::Float expected_value = 5.5f;
+    double expected_value = 5.5f;
     vector_->x = expected_value;
 
     EXPECT_EQ(expected_value, vector_->x);
 }
 
 TEST_F(Vector3Test, Vector_ChangedYValue_ValueRegisteredProperly) {
-    rtfem::Float expected_value = 5.5f;
+    double expected_value = 5.5f;
     vector_->y = expected_value;
 
     EXPECT_EQ(expected_value, vector_->y);
 }
 
 TEST_F(Vector3Test, Vector_ChangedZValue_ValueRegisteredProperly) {
-    rtfem::Float expected_value = 5.5f;
+    double expected_value = 5.5f;
     vector_->z = expected_value;
 
     EXPECT_EQ(expected_value, vector_->z);

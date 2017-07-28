@@ -5,10 +5,10 @@
 
 namespace rtfem {
 
-using Float = double;
+//using Float = double;
 
-using UInt = unsigned int;
-using Int = int;
+//using UInt = unsigned int;
+//using Int = int;
 
 }
 

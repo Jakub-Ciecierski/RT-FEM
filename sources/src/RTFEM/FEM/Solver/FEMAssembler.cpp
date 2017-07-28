@@ -12,13 +12,10 @@
 
 namespace rtfem {
 
-constexpr UInt dimensions = 3;
+constexpr unsigned int dimensions = 3;
 
-FEMAssembler::FEMAssembler() {}
-
-FEMAssembler::~FEMAssembler() {}
-
-FEMAssemblerData FEMAssembler::Compute(const std::shared_ptr<FEMModel> fem_model) {
+template<class T>
+FEMAssemblerData<T> FEMAssembler<T>::Compute(const std::shared_ptr<FEMModel<T>> fem_model) {
     if(fem_model->finite_elements().size() == 0)
         throw std::invalid_argument("FEMModel contains no Finite Elements!");
     auto vertex_count = fem_model->VertexCount();
@@ -26,7 +23,7 @@ FEMAssemblerData FEMAssembler::Compute(const std::shared_ptr<FEMModel> fem_model
 
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
-    FEMAssemblerData fem_assembler_data(global_dof_count);
+    FEMAssemblerData<T> fem_assembler_data(global_dof_count);
     for(const auto& finite_element : fem_model->finite_elements()){
         auto finite_element_solver = GetFiniteElementSolver(finite_element->type());
         auto finite_element_solver_data = finite_element_solver->Solve(finite_element);
@@ -49,18 +46,19 @@ FEMAssemblerData FEMAssembler::Compute(const std::shared_ptr<FEMModel> fem_model
     return fem_assembler_data;
 }
 
-Eigen::Matrix<Float, 6, 6>
-FEMAssembler::ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel> fem_model){
-    constexpr UInt constitutive_matrix_size = 6;
-    Eigen::Matrix<Float, constitutive_matrix_size, constitutive_matrix_size>
-            constitutive_matrix = Eigen::Matrix<Float, constitutive_matrix_size, constitutive_matrix_size>::Zero();
+template<class T>
+Eigen::Matrix<T, 6, 6>
+FEMAssembler<T>::ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel<T>> fem_model){
+    constexpr unsigned int constitutive_matrix_size = 6;
+    Eigen::Matrix<T, constitutive_matrix_size, constitutive_matrix_size>
+            constitutive_matrix = Eigen::Matrix<T, constitutive_matrix_size, constitutive_matrix_size>::Zero();
 
     auto& material = fem_model->material();
-    Float p = material.poisson_coefficient;
-    Float e = material.young_modulus;
-    Float a = (Float)1.0 - p;
-    Float b = ((Float)1.0 - (Float)2.0*p) / (Float)2.0;
-    Float c = e / (((Float)1.0 + p) * ((Float)1 - (Float)2*p));
+    T p = material.poisson_coefficient;
+    T e = material.young_modulus;
+    T a = 1.0 - p;
+    T b = (1.0 - 2.0*p) / 2.0;
+    T c = e / ((1.0 + p) * (1.0 - 2.0*p));
 
     constitutive_matrix(0 ,0) = a;
     constitutive_matrix(0 ,1) = p;
@@ -80,27 +78,29 @@ FEMAssembler::ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel> fem_mode
     return constitutive_matrix;
 }
 
-std::unique_ptr<FiniteElementSolver>
-FEMAssembler::GetFiniteElementSolver(const FiniteElementType& type){
+template<class T>
+std::unique_ptr<FiniteElementSolver<T>>
+FEMAssembler<T>::GetFiniteElementSolver(const FiniteElementType& type){
     switch(type){
         case FiniteElementType::Tetrahedron:
-            return rtfem::make_unique<TetrahedronSolver>();
+            return rtfem::make_unique<TetrahedronSolver<T>>();
     }
 
     return nullptr;
 }
 
-Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>
-FEMAssembler::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElement> finite_element,
-                                           UInt vertex_count) {
+template<class T>
+Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+FEMAssembler<T>::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElement<T>> finite_element,
+                                           unsigned int vertex_count) {
     auto local_vertex_count = finite_element->GetVertexCount();
 
     unsigned int n = dimensions * local_vertex_count;
     unsigned int m = dimensions * vertex_count;
-    Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> A
-            = Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>::Zero(n, m);
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A
+            = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(n, m);
 
-    for (UInt i = 0; i < local_vertex_count; i++) {
+    for (unsigned int i = 0; i < local_vertex_count; i++) {
         const auto &vertex = finite_element->vertices()[i];
         auto global_id = vertex->id();
 
@@ -114,23 +114,25 @@ FEMAssembler::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElement> 
     return A;
 }
 
-Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>
-FEMAssembler::ComputePartialGlobalStiffnessMatrix(
-        const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-        const Eigen::Matrix<Float, 6, 6>& constitutive_matrix_C,
-        const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>& boolean_assembly_matrix_A,
-        Float volume) {
+template<class T>
+Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+FEMAssembler<T>::ComputePartialGlobalStiffnessMatrix(
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
+        const Eigen::Matrix<T, 6, 6>& constitutive_matrix_C,
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& boolean_assembly_matrix_A,
+        T volume) {
     auto local_stiffness_k = ComputeLocalStiffness(geometry_matrix,
                                                    constitutive_matrix_C,
                                                    volume);
     return boolean_assembly_matrix_A.transpose() * local_stiffness_k * boolean_assembly_matrix_A;
 }
 
-Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>
-FEMAssembler::ComputeLocalStiffness(
-        const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-        const Eigen::Matrix<Float, 6, 6> &constitutive_matrix,
-        Float volume) {
+template<class T>
+Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+FEMAssembler<T>::ComputeLocalStiffness(
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
+        const Eigen::Matrix<T, 6, 6> &constitutive_matrix,
+        T volume) {
     auto &C = constitutive_matrix;
     auto &B = geometry_matrix;
     auto BT = geometry_matrix.transpose();
@@ -140,11 +142,17 @@ FEMAssembler::ComputeLocalStiffness(
     return local_stiffness;
 }
 
-Eigen::Vector<Float, Eigen::Dynamic>
-FEMAssembler::ComputePartialGlobalForceVector(
-        const Eigen::Vector<Float, Eigen::Dynamic> &force_vector,
-        const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> &boolean_assembly_matrix_A) {
+template<class T>
+Eigen::Vector<T, Eigen::Dynamic>
+FEMAssembler<T>::ComputePartialGlobalForceVector(
+        const Eigen::Vector<T, Eigen::Dynamic> &force_vector,
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &boolean_assembly_matrix_A) {
     return boolean_assembly_matrix_A.transpose() * force_vector;
 }
 
+template class FEMAssembler<double>;
+template class FEMAssembler<float>;
+
+template struct FEMAssemblerData<double>;
+template struct FEMAssemblerData<float>;
 }

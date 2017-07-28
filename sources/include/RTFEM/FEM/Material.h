@@ -18,11 +18,12 @@ namespace rtfem {
  *  Constitutive Matrix for each FiniteElement.
  *
  */
+template<class T>
 struct Material {
-    Float young_modulus;
-    Float poisson_coefficient;
+    T young_modulus;
+    T poisson_coefficient;
 
-    Float density;
+    T density;
 };
 
 }

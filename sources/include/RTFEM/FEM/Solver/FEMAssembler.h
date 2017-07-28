@@ -7,19 +7,34 @@
 
 namespace rtfem {
 
+template<class T>
 class FEMModel;
+
+template<class T>
 class FiniteElement;
 
+template<class T>
 class FiniteElementSolver;
+
 enum class FiniteElementType;
 
+template<class T>
 struct FEMAssemblerData{
-    FEMAssemblerData(UInt global_dof_count) :
-            global_stiffness(Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>::Zero(
-                    global_dof_count, global_dof_count)),
-            global_force(Eigen::Vector<Float, Eigen::Dynamic>::Zero(global_dof_count)) {}
-    Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> global_stiffness;
-    Eigen::Vector<Float, Eigen::Dynamic> global_force;
+    FEMAssemblerData(unsigned int global_dof_count) :
+            global_stiffness(
+                    Eigen::Matrix<
+                            T,
+                            Eigen::Dynamic,
+                            Eigen::Dynamic>::
+                    Zero(global_dof_count, global_dof_count)),
+            global_force(
+                    Eigen::Vector<
+                            T,
+                            Eigen::Dynamic>::
+                    Zero(global_dof_count)) {}
+
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_stiffness;
+    Eigen::Vector<T, Eigen::Dynamic> global_force;
 };
 
 /**
@@ -37,11 +52,11 @@ struct FEMAssemblerData{
  * Partial Global Force Vector (Qe) [3N x 1]
  * Global Force Vector (Q) [3N x 1]
  */
+template<class T>
 class FEMAssembler {
 public:
-    FEMAssembler();
-
-    ~FEMAssembler();
+    FEMAssembler() = default;
+    ~FEMAssembler() = default;
 
     /**
      * Computes Global Stiffness Matrix (K).
@@ -56,7 +71,7 @@ public:
      * @param fem_model
      * @return
      */
-    FEMAssemblerData Compute(const std::shared_ptr<FEMModel> fem_model);
+    FEMAssemblerData<T> Compute(const std::shared_ptr<FEMModel<T>> fem_model);
 
 private:
     /**
@@ -71,8 +86,8 @@ private:
      * @param fem_model
      * @return
      */
-    Eigen::Matrix<Float, 6, 6>
-    ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel> fem_model);
+    Eigen::Matrix<T, 6, 6>
+    ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel<T>> fem_model);
 
     /**
      * Computes Geometry Matrix (B).
@@ -81,7 +96,7 @@ private:
      * @param type
      * @return
      */
-    std::unique_ptr<FiniteElementSolver> GetFiniteElementSolver(const FiniteElementType& type);
+    std::unique_ptr<FiniteElementSolver<T>> GetFiniteElementSolver(const FiniteElementType& type);
 
     /**
      * Computes The Boolean Assembly Matrix (A) [3Ne x 3N].
@@ -92,9 +107,9 @@ private:
      * @param vertex_count
      * @return
      */
-    Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>
-    ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElement> finite_element,
-                                 UInt vertex_count);
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+    ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElement<T>> finite_element,
+                                 unsigned int vertex_count);
 
     /**
      * Computes Partial Global Stiffness Matrix.
@@ -104,12 +119,12 @@ private:
      * @param local_stiffness_k
      * @return
      */
-    Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputePartialGlobalStiffnessMatrix(
-            const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-            const Eigen::Matrix<Float, 6, 6> &constitutive_matrix_C,
-            const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> &boolean_assembly_matrix_A,
-            Float volume);
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
+            const Eigen::Matrix<T, 6, 6> &constitutive_matrix_C,
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &boolean_assembly_matrix_A,
+            T volume);
 
     /**
      * Computes Local Stiffness (k) of a given element.
@@ -119,11 +134,11 @@ private:
      * @param volume
      * @return
      */
-    Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic>
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputeLocalStiffness(
-            const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-            const Eigen::Matrix<Float, 6, 6>& constitutive_matrix,
-            Float volume);
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
+            const Eigen::Matrix<T, 6, 6>& constitutive_matrix,
+            T volume);
 
     /**
      * Computes the Partial Global Force vector (Q)
@@ -131,10 +146,10 @@ private:
      * @param boolean_assembly_matrix_A
      * @return
      */
-    Eigen::Vector<Float, Eigen::Dynamic>
+    Eigen::Vector<T, Eigen::Dynamic>
     ComputePartialGlobalForceVector(
-            const Eigen::Vector<Float, Eigen::Dynamic> &force_vector,
-            const Eigen::Matrix<Float, Eigen::Dynamic, Eigen::Dynamic> &boolean_assembly_matrix_A);
+            const Eigen::Vector<T, Eigen::Dynamic> &force_vector,
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &boolean_assembly_matrix_A);
 
 };
 }

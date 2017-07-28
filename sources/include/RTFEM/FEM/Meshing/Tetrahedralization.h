@@ -3,10 +3,13 @@
 
 #include <vector>
 #include <memory>
+#include <RTFEM/DataTypes.h>
 
 namespace rtfem {
 
+template<class T>
 struct FEMGeometry;
+
 struct TriangleMesh;
 struct Vector3;
 
@@ -15,6 +18,7 @@ struct Vector3;
  *
  * Tetrahedralization is an offline tool used as a pre-processor to FEM Solver.
  */
+template<class T>
 class Tetrahedralization {
 public:
     Tetrahedralization() = default;
@@ -28,10 +32,10 @@ public:
      * Number of vertices in the FEMGeometry
      * @return
      */
-    FEMGeometry Compute(const TriangleMesh& triangle_mesh,
-                        unsigned int vertex_count);
+    FEMGeometry<T> Compute(const TriangleMesh &triangle_mesh,
+                               unsigned int vertex_count);
 private:
-    std::vector<std::shared_ptr<Vector3>>
+    std::vector<std::shared_ptr<Eigen::Vector3<T>>>
     GenerateRandomPointsInsideTriangleMesh(const TriangleMesh &triangle_mesh);
 };
 }

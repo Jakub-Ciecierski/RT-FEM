@@ -4,13 +4,14 @@
 #include <RTFEM/DataTypes.h>
 
 namespace rtfem{
+template<class T>
 class FEMModel;
 }
 
 struct FEMModelPack{
-    rtfem::UInt vertex_count;
-    rtfem::UInt finite_element_count;
-    std::shared_ptr<rtfem::FEMModel> fem_model;
+    unsigned int vertex_count;
+    unsigned int finite_element_count;
+    std::shared_ptr<rtfem::FEMModel<double>> fem_model;
 };
 
 class FEMModelTest : public ::testing::Test {

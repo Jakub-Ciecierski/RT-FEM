@@ -8,14 +8,14 @@ namespace rtfem {
 struct Vector4 {
 public:
     Vector4();
-    Vector4(Float x, Float y, Float z, Float w);
+    Vector4(double x, double y, double z, double w);
 
     ~Vector4();
 
-    Float x;
-    Float y;
-    Float z;
-    Float w;
+    double x;
+    double y;
+    double z;
+    double w;
 };
 }
 

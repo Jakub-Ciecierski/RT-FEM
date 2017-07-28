@@ -19,7 +19,7 @@ Vector3 VectorMath::Cross(const Vector3& v1, const Vector3& v2){
     return vec;
 }
 
-Float VectorMath::Magnitude(const Vector3 &v) {
+double VectorMath::Magnitude(const Vector3 &v) {
     return std::sqrt(v.x * v.x + v.y*v.y + v.z * v.z);
 }
 

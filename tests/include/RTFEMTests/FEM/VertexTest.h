@@ -6,13 +6,14 @@
 #include <Eigen/Core>
 
 namespace rtfem{
+template<class T>
 class Vertex;
 }
 
 struct VertexPack{
-    rtfem::UInt id;
-    Eigen::Matrix<rtfem::Float, 3, 1> coordinates;
-    std::unique_ptr<rtfem::Vertex> vertex;
+    unsigned int id;
+    Eigen::Matrix<double, 3, 1> coordinates;
+    std::unique_ptr<rtfem::Vertex<double>> vertex;
 };
 
 class VertexTest : public ::testing::Test {

@@ -10,7 +10,10 @@
 
 namespace rtfem {
 
+template<class T>
 class Vertex;
+
+template<class T>
 class TetrahedronFiniteElement;
 
 /**
@@ -40,25 +43,26 @@ class TetrahedronFiniteElement;
  *  2) Research Materials:
  *      http://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/AFEM.Ch09.d/AFEM.Ch09.pdf
  */
-class TetrahedronSolver : public FiniteElementSolver{
+template<class T>
+class TetrahedronSolver : public FiniteElementSolver<T>{
 public:
     TetrahedronSolver() = default;
     ~TetrahedronSolver() = default;
 
-    virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element) override;
+    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element) override;
 
-    virtual FiniteElementSolverData Solve(std::shared_ptr<FiniteElement> finite_element,
-                                          const Eigen::Vector3<Float>& body_force,
-                                          const TractionForce& traction_force) override;
+    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element,
+                                             const Eigen::Vector3<T> &body_force,
+                                             const TractionForce<T> &traction_force) override;
 
-    Eigen::Matrix<Float, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
-    SolveJacobianInverse(std::shared_ptr<FiniteElement> finite_element);
+    Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
+    SolveJacobianInverse(std::shared_ptr<FiniteElement<T>> finite_element);
 
 private:
-    Edges ComputeEdgesCache(const Vertex &v1, const Vertex &v2,
-                            const Vertex &v3, const Vertex &v4);
+    Edges<T> ComputeEdgesCache(const Vertex<T> &v1, const Vertex<T> &v2,
+                               const Vertex<T> &v3, const Vertex<T> &v4);
 
-    FacesArea ComputeFacesArea(const Edges& edges);
+    FacesArea<T> ComputeFacesArea(const Edges<T>& edges);
 
     /**
      * Computes The coefficients on linear tetrahedron shape function.
@@ -70,14 +74,15 @@ private:
      * @param v4
      * @return
      */
-    TetrahedronShapeFunctionCoefficients
-    ComputeShapeFunctionCoefficients(const Vertex& v1, const Vertex& v2,
-                                     const Vertex& v3, const Vertex& v4,
-                                     const Edges& edges);
-    Eigen::Vector4<Float> ComputeAi(const Vertex &v1, const Vertex &v2,
-                                    const Vertex &v3, const Vertex &v4);
+    TetrahedronShapeFunctionCoefficients<T>
+    ComputeShapeFunctionCoefficients(const Vertex<T>& v1, const Vertex<T>& v2,
+                                     const Vertex<T>& v3, const Vertex<T>& v4,
+                                     const Edges<T>& edges);
 
-    Float ComputeVolume(const TetrahedronShapeFunctionCoefficients& coefficients);
+    Eigen::Vector4<T> ComputeAi(const Vertex<T> &v1, const Vertex<T> &v2,
+                                const Vertex<T> &v3, const Vertex<T> &v4);
+
+    T ComputeVolume(const TetrahedronShapeFunctionCoefficients<T>& coefficients);
 
     /**
      * Computes The [6x12] Geometric Matrix (B)
@@ -86,12 +91,13 @@ private:
      * @param volume
      * @return
      */
-    Eigen::Matrix<Float, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M>
-    ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients& coefficients, Float volume);
+    Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M>
+    ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients<T>& coefficients, T volume);
+
     void AssemblyGeometryMatrix(
-            Eigen::Matrix<Float, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M> &B,
-            UInt column_offset,
-            Float b, Float c, Float d);
+            Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M> &B,
+            unsigned int column_offset,
+            T b, T c, T d);
 
     /**
      * Computes Force vector [12x1] which is a combination of body force and traction force.
@@ -101,26 +107,26 @@ private:
      * @param traction_force
      * @return
      */
-    Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-    ComputeForceVector(const TetrahedronShapeFunctionCoefficients &shape_function_coefficients,
-                       Float volume, const FacesArea &faces_area,
-                       const Eigen::Vector3<Float> &body_force,
-                       const TractionForce &traction_force);
-    Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-    ComputeBodyForceVector(Float volume,
-                           const Eigen::Vector3<Float> &body_force);
-    Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-    ComputeTractionForceVector(const TetrahedronShapeFunctionCoefficients &shape_function_coefficients,
-                               const FacesArea &faces_area,
-                               const TractionForce &traction_force);
-    Eigen::Vector<Float, TETRAHEDRON_FORCE_VECTOR_N>
-    ComputeTractionForceVectorFace(UInt face_index, Float traction_force,
-                                   Float area,
-                                   Float B, Float C, Float D);
+    Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+    ComputeForceVector(const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
+                       T volume, const FacesArea<T> &faces_area,
+                       const Eigen::Vector3<T> &body_force,
+                       const TractionForce<T> &traction_force);
+    Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+    ComputeBodyForceVector(T volume,
+                           const Eigen::Vector3<T> &body_force);
+    Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+    ComputeTractionForceVector(const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
+                               const FacesArea<T> &faces_area,
+                               const TractionForce<T> &traction_force);
+    Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
+    ComputeTractionForceVectorFace(unsigned int face_index, T traction_force,
+                                   T area,
+                                   T B, T C, T D);
 
-    Eigen::Matrix<Float, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
-    AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients &coefficients,
-                            Float volume);
+    Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
+    AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients<T> &coefficients,
+                            T volume);
 };
 }
 

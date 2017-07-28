@@ -2,7 +2,10 @@
 
 namespace rtfem{
 
-FiniteElement::FiniteElement(const FiniteElementType&& type) : type_(type){}
-FiniteElement::~FiniteElement(){}
+template<class T>
+FiniteElement<T>::FiniteElement(const FiniteElementType&& type) : type_(type){}
+
+template class FiniteElement<double>;
+template class FiniteElement<float>;
 
 }

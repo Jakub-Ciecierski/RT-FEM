@@ -15,7 +15,7 @@ public:
 
     Vector3 Cross(const Vector3& v1, const Vector3& v2);
 
-    Float Magnitude(const Vector3& v);
+    double Magnitude(const Vector3& v);
 };
 }
 

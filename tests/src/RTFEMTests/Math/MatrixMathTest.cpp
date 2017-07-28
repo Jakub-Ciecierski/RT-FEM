@@ -42,8 +42,8 @@ TEST_F(MatrixMathTest, ContractMatrix_MatrixWithSingleRow_ThrownInvalidArgumentE
 TEST_F(MatrixMathTest, ContractMatrix_Matrix_DimensionsSmallerByOne){
     auto matrix = matrix_math_->ContractMatrix(std::move(*matrix_), 1, 1);
 
-    const rtfem::UInt expected_row_count = 2;
-    const rtfem::UInt expected_column_count = 2;
+    const unsigned int expected_row_count = 2;
+    const unsigned int expected_column_count = 2;
 
     EXPECT_EQ(expected_row_count, matrix.dimensions().row_count);
     EXPECT_EQ(expected_column_count, matrix.dimensions().column_count);
@@ -52,11 +52,11 @@ TEST_F(MatrixMathTest, ContractMatrix_Matrix_DimensionsSmallerByOne){
 TEST_F(MatrixMathTest, ContractMatrix_Matrix_ProperValues){
     auto contracted_matrix = matrix_math_->ContractMatrix(std::move(*matrix_), 1, 1);
 
-    EXPECT_EQ((rtfem::Float)0.0, contracted_matrix[0][0]);
-    EXPECT_EQ((rtfem::Float)2.0, contracted_matrix[0][1]);
+    EXPECT_EQ((double)0.0, contracted_matrix[0][0]);
+    EXPECT_EQ((double)2.0, contracted_matrix[0][1]);
 
-    EXPECT_EQ((rtfem::Float)6.0, contracted_matrix[1][0]);
-    EXPECT_EQ((rtfem::Float)8.0, contracted_matrix[1][1]);
+    EXPECT_EQ((double)6.0, contracted_matrix[1][0]);
+    EXPECT_EQ((double)8.0, contracted_matrix[1][1]);
 }
 
 TEST_F(MatrixMathTest, ComputeDeterminant2_ProperValue){
@@ -66,8 +66,8 @@ TEST_F(MatrixMathTest, ComputeDeterminant2_ProperValue){
     matrix[1][0] = 3;
     matrix[1][1] = 8;
 
-    const rtfem::Float expected_det = 14;
-    rtfem::Float det = matrix_math_->ComputeDeterminant2(matrix);
+    const double expected_det = 14;
+    double det = matrix_math_->ComputeDeterminant2(matrix);
 
     EXPECT_EQ(expected_det, det);
 }
@@ -86,8 +86,8 @@ TEST_F(MatrixMathTest, ComputeDeterminant_Matrix3ProperValue){
     matrix[2][1] = 8;
     matrix[2][2] = 7;
 
-    const rtfem::Float expected_det = -306;
-    rtfem::Float det = matrix_math_->ComputeDeterminant(matrix);
+    const double expected_det = -306;
+    double det = matrix_math_->ComputeDeterminant(matrix);
 
     EXPECT_EQ(expected_det, det);
 }
@@ -114,8 +114,8 @@ TEST_F(MatrixMathTest, ComputeDeterminant_Matrix4ProperValue){
     matrix[3][2] = 8;
     matrix[3][3] = 9;
 
-    const rtfem::Float expected_det = 89252;
-    rtfem::Float det = matrix_math_->ComputeDeterminant(matrix);
+    const double expected_det = 89252;
+    double det = matrix_math_->ComputeDeterminant(matrix);
 
     EXPECT_EQ(expected_det, det);
 }
