@@ -2,7 +2,8 @@
 
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
-#include <RTFEM/Math/VectorMath.h>
+
+#include <Eigen/Geometry>
 
 namespace rtfem {
 
@@ -92,24 +93,22 @@ Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1, const Vert
 
 template<class T>
 FacesArea<T> TetrahedronSolver<T>::ComputeFacesArea(const Edges<T>& edges){
-    VectorMath vector_math_;
     FacesArea<T> faces_area;
 
-    faces_area.area1 = vector_math_.Magnitude(
-            vector_math_.Cross(Vector3(edges.x32, edges.y32, edges.z32),
-                               Vector3(edges.x42, edges.y42, edges.z42)));
-    faces_area.area2 = vector_math_.Magnitude(
-            vector_math_.Cross(Vector3(edges.x43, edges.y43, edges.z43),
-                               Vector3(edges.x13, edges.y13, edges.z13)));
-    faces_area.area3 = vector_math_.Magnitude(
-            vector_math_.Cross(Vector3(edges.x14, edges.y14, edges.z14),
-                               Vector3(edges.x24, edges.y24, edges.z24)));
-    faces_area.area4 = vector_math_.Magnitude(
-            vector_math_.Cross(Vector3(edges.x21, edges.y21, edges.z21),
-                               Vector3(edges.x31, edges.y31, edges.z31)));
+    faces_area.area1 =
+            Eigen::Vector<T, 3>(edges.x32, edges.y32, edges.z32).cross(
+                    Eigen::Vector<T, 3>(edges.x42, edges.y42, edges.z42)).norm();
+    faces_area.area2 =
+            Eigen::Vector<T, 3>(edges.x43, edges.y43, edges.z43).cross(
+                    Eigen::Vector<T, 3>(edges.x13, edges.y13, edges.z13)).norm();
+    faces_area.area3 =
+            Eigen::Vector<T, 3>(edges.x14, edges.y14, edges.z14).cross(
+                    Eigen::Vector<T, 3>(edges.x24, edges.y24, edges.z24)).norm();
+    faces_area.area4 =
+            Eigen::Vector<T, 3>(edges.x21, edges.y21, edges.z21).cross(
+                    Eigen::Vector<T, 3>(edges.x31, edges.y31, edges.z31)).norm();
 
     return faces_area;
-
 }
 
 template<class T>

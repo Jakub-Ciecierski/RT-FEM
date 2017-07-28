@@ -1,9 +1,10 @@
 #ifndef PROJECT_TRIANGULATOR_H
 #define PROJECT_TRIANGULATOR_H
 
+#include <RTFEM/DataTypes.h>
+
 #include <vector>
 #include <memory>
-#include <RTFEM/DataTypes.h>
 
 namespace rtfem {
 
@@ -11,7 +12,6 @@ template<class T>
 struct FEMGeometry;
 
 struct TriangleMesh;
-struct Vector3;
 
 /**
  * Generates 3D Tetrahedron Mesh.
@@ -22,7 +22,6 @@ template<class T>
 class Tetrahedralization {
 public:
     Tetrahedralization() = default;
-
     ~Tetrahedralization() = default;
 
     /**
@@ -33,7 +32,7 @@ public:
      * @return
      */
     FEMGeometry<T> Compute(const TriangleMesh &triangle_mesh,
-                               unsigned int vertex_count);
+                           unsigned int vertex_count);
 private:
     std::vector<std::shared_ptr<Eigen::Vector3<T>>>
     GenerateRandomPointsInsideTriangleMesh(const TriangleMesh &triangle_mesh);

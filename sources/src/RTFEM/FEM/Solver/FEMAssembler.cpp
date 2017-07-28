@@ -1,25 +1,21 @@
 #include "RTFEM/FEM/Solver/FEMAssembler.h"
 
-#include <RTFEM/FEM/FEMModel.h>
-#include <RTFEM/DataStructure/Matrix.h>
 #include <RTFEM/Memory/UniquePointer.h>
+#include <RTFEM/FEM/FEMModel.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolver.h>
-#include <RTFEM/FEM/FiniteElements/FiniteElementType.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolvers/TetrahedronSolver/TetrahedronSolver.h>
+#include <RTFEM/FEM/FiniteElements/FiniteElementType.h>
 #include <RTFEM/FEM/FiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
-#include <RTFEM/Math/MatrixMath.h>
 
 namespace rtfem {
-
-constexpr unsigned int dimensions = 3;
 
 template<class T>
 FEMAssemblerData<T> FEMAssembler<T>::Compute(const std::shared_ptr<FEMModel<T>> fem_model) {
     if(fem_model->finite_elements().size() == 0)
         throw std::invalid_argument("FEMModel contains no Finite Elements!");
     auto vertex_count = fem_model->VertexCount();
-    auto global_dof_count = dimensions*vertex_count;
+    auto global_dof_count = DIMENSIONS*vertex_count;
 
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
@@ -47,11 +43,10 @@ FEMAssemblerData<T> FEMAssembler<T>::Compute(const std::shared_ptr<FEMModel<T>> 
 }
 
 template<class T>
-Eigen::Matrix<T, 6, 6>
+Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
 FEMAssembler<T>::ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel<T>> fem_model){
-    constexpr unsigned int constitutive_matrix_size = 6;
-    Eigen::Matrix<T, constitutive_matrix_size, constitutive_matrix_size>
-            constitutive_matrix = Eigen::Matrix<T, constitutive_matrix_size, constitutive_matrix_size>::Zero();
+    Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
+            constitutive_matrix = Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>::Zero();
 
     auto& material = fem_model->material();
     T p = material.poisson_coefficient;
@@ -95,8 +90,8 @@ FEMAssembler<T>::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElemen
                                            unsigned int vertex_count) {
     auto local_vertex_count = finite_element->GetVertexCount();
 
-    unsigned int n = dimensions * local_vertex_count;
-    unsigned int m = dimensions * vertex_count;
+    unsigned int n = DIMENSIONS * local_vertex_count;
+    unsigned int m = DIMENSIONS * vertex_count;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A
             = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(n, m);
 
@@ -104,8 +99,8 @@ FEMAssembler<T>::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElemen
         const auto &vertex = finite_element->vertices()[i];
         auto global_id = vertex->id();
 
-        auto global_column_start = global_id * dimensions;
-        auto local_row_start = i * dimensions;
+        auto global_column_start = global_id * DIMENSIONS;
+        auto local_row_start = i * DIMENSIONS;
 
         A(local_row_start + 0, global_column_start + 0) = 1;
         A(local_row_start + 1, global_column_start + 1) = 1;
@@ -118,7 +113,7 @@ template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
 FEMAssembler<T>::ComputePartialGlobalStiffnessMatrix(
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-        const Eigen::Matrix<T, 6, 6>& constitutive_matrix_C,
+        const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>& constitutive_matrix_C,
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& boolean_assembly_matrix_A,
         T volume) {
     auto local_stiffness_k = ComputeLocalStiffness(geometry_matrix,
@@ -131,7 +126,7 @@ template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
 FEMAssembler<T>::ComputeLocalStiffness(
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-        const Eigen::Matrix<T, 6, 6> &constitutive_matrix,
+        const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &constitutive_matrix,
         T volume) {
     auto &C = constitutive_matrix;
     auto &B = geometry_matrix;

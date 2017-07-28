@@ -1,8 +1,9 @@
 #ifndef PROJECT_FEMMODELTESTBUILDER_H
 #define PROJECT_FEMMODELTESTBUILDER_H
 
-#include <memory>
 #include <RTFEM/DataTypes.h>
+
+#include <memory>
 
 namespace rtfem {
 template<class T>

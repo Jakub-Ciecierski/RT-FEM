@@ -2,9 +2,6 @@
 #define PROJECT_VERTEX_H
 
 #include <RTFEM/DataTypes.h>
-#include <RTFEM/DataStructure/Vector3.h>
-
-#include <Eigen/Core>
 
 namespace rtfem {
 

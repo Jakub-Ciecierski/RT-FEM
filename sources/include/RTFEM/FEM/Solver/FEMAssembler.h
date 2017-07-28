@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include <RTFEM/DataStructure/Matrix.h>
+#include <RTFEM/DataTypes.h>
 
 namespace rtfem {
 
@@ -36,6 +36,9 @@ struct FEMAssemblerData{
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_stiffness;
     Eigen::Vector<T, Eigen::Dynamic> global_force;
 };
+
+constexpr int CONSTITUTIVE_MATRIX_N = 6;
+constexpr unsigned int DIMENSIONS = 3;
 
 /**
  * Computes and Assembles Global Stiffness Matrix and Global Force Vector.
@@ -86,7 +89,7 @@ private:
      * @param fem_model
      * @return
      */
-    Eigen::Matrix<T, 6, 6>
+    Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
     ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel<T>> fem_model);
 
     /**
@@ -122,7 +125,7 @@ private:
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputePartialGlobalStiffnessMatrix(
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-            const Eigen::Matrix<T, 6, 6> &constitutive_matrix_C,
+            const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &constitutive_matrix_C,
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &boolean_assembly_matrix_A,
             T volume);
 
@@ -137,7 +140,7 @@ private:
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputeLocalStiffness(
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-            const Eigen::Matrix<T, 6, 6>& constitutive_matrix,
+            const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>& constitutive_matrix,
             T volume);
 
     /**

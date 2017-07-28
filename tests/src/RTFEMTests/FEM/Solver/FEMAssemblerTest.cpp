@@ -1,13 +1,14 @@
 #include "RTFEMTests/FEM/Solver/FEMAssemblerTest.h"
 
 #include <RTFEMTests/Builder/FEMModelSampleBuilder.h>
+
 #include <RTFEM/Memory/UniquePointer.h>
 #include <RTFEM/FEM/Solver/FEMAssembler.h>
-#include <RTFEM/DataStructure/Matrix.h>
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Material.h>
 #include <RTFEM/FEM/FEMModel.h>
+
 #include <cmath>
 
 void FEMAssemblerTest::SetUp() {

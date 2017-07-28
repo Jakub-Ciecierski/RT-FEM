@@ -1,6 +1,5 @@
 #include "RTFEM/FEM/Solver/FEMSolver.h"
 
-#include <RTFEM/DataStructure/Matrix.h>
 #include <RTFEM/FEM/Solver/FEMAssembler.h>
 
 namespace rtfem {

@@ -2,7 +2,6 @@
 #define PROJECT_FINITEELEMENTSOLVER_H
 
 #include <RTFEM/DataTypes.h>
-#include <RTFEM/DataStructure/Matrix.h>
 
 #include <memory>
 
@@ -10,8 +9,6 @@ namespace rtfem {
 
 template<class T>
 class FiniteElement;
-
-class Vector3;
 
  /**
  *  Contains:

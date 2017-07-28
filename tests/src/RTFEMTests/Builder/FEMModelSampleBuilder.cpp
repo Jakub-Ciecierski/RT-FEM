@@ -4,7 +4,6 @@
 #include <RTFEM/FEM/FiniteElement.h>
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
-#include <RTFEM/DataStructure/Vector3.h>
 #include <RTFEM/Memory/UniquePointer.h>
 
 FEMModelSampleBuilder::FEMModelSampleBuilder() {}

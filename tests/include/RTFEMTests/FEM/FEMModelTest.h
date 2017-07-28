@@ -1,7 +1,8 @@
 #include "gtest/gtest.h"
 
-#include <memory>
 #include <RTFEM/DataTypes.h>
+
+#include <memory>
 
 namespace rtfem{
 template<class T>

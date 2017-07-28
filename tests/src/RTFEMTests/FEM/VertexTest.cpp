@@ -1,7 +1,6 @@
 #include "RTFEMTests/FEM/VertexTest.h"
 
 #include <RTFEM/FEM/Vertex.h>
-#include <RTFEM/DataStructure/Vector3.h>
 #include <RTFEM/Memory/UniquePointer.h>
 
 void VertexTest::SetUp() {

@@ -2,9 +2,9 @@
 #define PROJECT_FEMSOLVER_H
 
 #include <RTFEM/FEM/Solver/FEMSolverTypes.h>
+#include <RTFEM/DataTypes.h>
 
 #include <memory>
-#include <RTFEM/DataTypes.h>
 
 namespace rtfem {
 

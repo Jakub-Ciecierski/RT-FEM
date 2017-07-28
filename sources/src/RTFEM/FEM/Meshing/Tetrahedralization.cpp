@@ -1,6 +1,5 @@
 #include "RTFEM/FEM/Meshing/Tetrahedralization.h"
 
-#include <RTFEM/DataStructure/Vector3.h>
 #include <RTFEM/FEM/Meshing/TriangleMesh.h>
 #include <RTFEM/FEM/FEMGeometry.h>
 

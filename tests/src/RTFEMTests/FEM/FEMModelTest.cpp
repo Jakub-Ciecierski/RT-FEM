@@ -1,10 +1,8 @@
 #include "RTFEMTests/FEM/FEMModelTest.h"
 
-#include <RTFEM/Memory/UniquePointer.h>
-#include <RTFEM/FEM/FEMModel.h>
-#include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
-
 #include <RTFEMTests/Builder/FEMModelSampleBuilder.h>
+
+#include <RTFEM/FEM/FEMModel.h>
 
 void FEMModelTest::SetUp() {
     FEMModelSampleBuilder builder;

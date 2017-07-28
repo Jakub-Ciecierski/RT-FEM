@@ -2,11 +2,10 @@
 #define PROJECT_TETRAHEDRONSOLVER_H
 
 #include <RTFEM/DataTypes.h>
-#include <RTFEM/DataStructure/Matrix.h>
-#include <memory>
-#include <RTFEM/DataStructure/Vector3.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolver.h>
 #include "RTFEM/FEM/Solver/FiniteElementSolvers/TetrahedronSolver/TetrahedronSolverData.h"
+
+#include <memory>
 
 namespace rtfem {
 
