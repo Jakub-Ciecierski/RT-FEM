@@ -16,6 +16,6 @@ TEST_F(TetrahedronFiniteElementTest, CreatedTetrahedron_ProperType){
 }
 
 TEST_F(TetrahedronFiniteElementTest, CreatedTetrahedron_ProperVertexCount){
-    const unsigned int expected_count = 4;
+    constexpr unsigned int expected_count = 4;
     EXPECT_EQ(expected_count, tetrahedron_->GetVertexCount());
 }

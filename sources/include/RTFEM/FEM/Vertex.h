@@ -24,7 +24,7 @@ private:
      */
     unsigned int id_;
 
-    Eigen::Matrix<T, 3, 1> coordinates_;
+    Eigen::Vector3<T> coordinates_;
 };
 
 }

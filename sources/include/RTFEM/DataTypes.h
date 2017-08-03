@@ -3,15 +3,6 @@
 
 #include <Eigen/Core>
 
-namespace rtfem {
-
-//using Float = double;
-
-//using UInt = unsigned int;
-//using Int = int;
-
-}
-
 namespace Eigen {
 
 template<class T>
