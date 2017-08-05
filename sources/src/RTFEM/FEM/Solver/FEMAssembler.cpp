@@ -8,6 +8,8 @@
 #include <RTFEM/FEM/FiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
 
+#include <iostream>
+
 namespace rtfem {
 
 template<class T>
@@ -119,6 +121,7 @@ FEMAssembler<T>::ComputePartialGlobalStiffnessMatrix(
     auto local_stiffness_k = ComputeLocalStiffness(geometry_matrix,
                                                    constitutive_matrix_C,
                                                    volume);
+
     return boolean_assembly_matrix_A.transpose() * local_stiffness_k * boolean_assembly_matrix_A;
 }
 
@@ -150,4 +153,5 @@ template class FEMAssembler<float>;
 
 template struct FEMAssemblerData<double>;
 template struct FEMAssemblerData<float>;
+
 }

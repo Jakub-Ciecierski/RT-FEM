@@ -30,14 +30,17 @@ TEST_F(FEMAssemblerTest, SingleFiniteElement_CorrectGlobalStiffnessMatrix_Mathem
     vertices[2] = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(2,5,1));
     vertices[3] = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(4,3,6));
 
-    finite_elements[0] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertices[0],
-                                                                                         vertices[1],
-                                                                                         vertices[2],
-                                                                                         vertices[3]);
+    finite_elements[0] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            vertices[0],
+            vertices[1],
+            vertices[2],
+            vertices[3]);
 
-    auto fem_model = std::make_shared<rtfem::FEMModel<double>>(finite_elements,
-                                                                     vertices,
-                                                                     rtfem::Material<double>{480, 1.0 / 3.0});
+    auto fem_model = std::make_shared<rtfem::FEMModel<double>>(
+            finite_elements,
+            vertices,
+            rtfem::Material<double>{480, 1.0 / 3.0});
+
     auto fem_assembler_data = fem_assembler_->Compute(fem_model);
 
     for(unsigned int i = 0; i < 12; i++){

@@ -189,7 +189,11 @@ TetrahedronSolver<T>::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoeffi
                                             T volume) {
     Eigen::Matrix<T,
             TETRAHEDRON_GEOMETRIC_MATRIX_N,
-            TETRAHEDRON_GEOMETRIC_MATRIX_M> geometry_matrix;
+            TETRAHEDRON_GEOMETRIC_MATRIX_M> geometry_matrix =
+            Eigen::Matrix<T,
+                    TETRAHEDRON_GEOMETRIC_MATRIX_N,
+                    TETRAHEDRON_GEOMETRIC_MATRIX_M>::Zero();
+
     AssemblyGeometryMatrix(geometry_matrix, 0, coefficients.B1, coefficients.C1, coefficients.D1);
     AssemblyGeometryMatrix(geometry_matrix, 3, coefficients.B2, coefficients.C2, coefficients.D2);
     AssemblyGeometryMatrix(geometry_matrix, 6, coefficients.B3, coefficients.C3, coefficients.D3);

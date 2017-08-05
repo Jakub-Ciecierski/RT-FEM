@@ -88,6 +88,7 @@ unsigned int GetIndex(const AABBCoordinate& aabb_coordinate){
         case AABBCoordinate::Z:
             return 2;
     }
+    return -1;
 }
 
 template AABB<float> CreateAABB<float>(const TriangleMesh<float>& triangle_mesh);
