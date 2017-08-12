@@ -14,13 +14,8 @@ template<class T>
 struct FEMGeometry;
 
 template<class T>
-struct TriangleMesh;
+struct TriangleMeshIndexed;
 
-template<class T>
-struct AABB;
-
-template<class T>
-struct RandomDistributions;
 
 /**
  * Generates 3D Tetrahedron Mesh.
@@ -37,21 +32,12 @@ public:
      * Computes the Tetrahedralization.
      *
      * @param triangle_mesh
-     * @param vertex_count
-     * Number of vertices in the FEMGeometry
      * @return
      */
-    FEMGeometry<T> Compute(const TriangleMesh<T> &triangle_mesh,
-                           unsigned int vertex_count);
+    FEMGeometry<T> Compute(const TriangleMeshIndexed<T> &triangle_mesh);
+
 private:
-    std::vector<Eigen::Vector3<T>>
-    GenerateRandomPointsInsideTriangleMesh(const TriangleMesh<T> &triangle_mesh,
-                                           unsigned int vertex_count);
 
-    Eigen::Vector3<T> GenereRandomValidPoint(const TriangleMesh<T> triangle_mesh,
-                                             RandomDistributions<T>& random_distributions);
-
-    RandomDistributions<T> CreateRandomDistributions(const AABB<T>& aabb);
 };
 }
 

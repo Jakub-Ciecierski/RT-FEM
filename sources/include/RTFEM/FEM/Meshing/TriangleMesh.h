@@ -14,14 +14,26 @@ struct Triangle {
     Eigen::Vector3<T> v3;
 };
 
+template<class T>
+struct TriangleMesh {
+    std::vector<Triangle<T>> triangles;
+};
+
+struct TriangleIndices{
+    unsigned int v1;
+    unsigned int v2;
+    unsigned int v3;
+};
+
 /**
  * Represents a Triangle mesh.
  * The most common representation of surface meshes,
  * can be easily extracted from any renderable objects.
  */
 template<class T>
-struct TriangleMesh {
-    std::vector<Triangle<T>> triangles;
+struct TriangleMeshIndexed{
+    std::vector<Eigen::Vector3<T>> points;
+    std::vector<TriangleIndices> triangles;
 };
 
 }
