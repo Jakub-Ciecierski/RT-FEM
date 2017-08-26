@@ -38,7 +38,7 @@ struct FEMAssemblerData{
 };
 
 constexpr int CONSTITUTIVE_MATRIX_N = 6;
-constexpr unsigned int DIMENSIONS = 3;
+constexpr unsigned int DIMENSION_COUNT = 3;
 
 /**
  * Computes and Assembles Global Stiffness Matrix and Global Force Vector.

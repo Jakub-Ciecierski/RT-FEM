@@ -8,6 +8,9 @@
 
 #include <random>
 
+class tetgenio;
+class tetgenbehavior;
+
 namespace rtfem {
 
 template<class T>
@@ -37,7 +40,22 @@ public:
     FEMGeometry<T> Compute(const TriangleMeshIndexed<T> &triangle_mesh);
 
 private:
+    void SetupInput(const TriangleMeshIndexed<T> &triangle_mesh,
+                    tetgenio& tetgen_input,
+                    tetgenbehavior &tetgen_options);
+    void SetupInputPoints(const TriangleMeshIndexed<T> &triangle_mesh,
+                          tetgenio &tetgen_input);
+    void SetupInputFacets(const TriangleMeshIndexed<T> &triangle_mesh,
+                          tetgenio &tetgen_input);
+    void SetupInputOptions(tetgenbehavior &tetgen_options);
 
+    FEMGeometry<T> FetchOutput(tetgenio &tetgen_output);
+    void FetchPoints(FEMGeometry<T>& fem_geometry,
+                     tetgenio &tetgen_output);
+    void FetchTetrahedra(FEMGeometry<T>& fem_geometry,
+                         tetgenio &tetgen_output);
+    void FetchFaces(FEMGeometry<T>& fem_geometry,
+                    tetgenio &tetgen_output);
 };
 }
 

@@ -17,7 +17,7 @@ FEMAssemblerData<T> FEMAssembler<T>::Compute(const std::shared_ptr<FEMModel<T>> 
     if(fem_model->finite_elements().size() == 0)
         throw std::invalid_argument("FEMModel contains no Finite Elements!");
     auto vertex_count = fem_model->VertexCount();
-    auto global_dof_count = DIMENSIONS*vertex_count;
+    auto global_dof_count = DIMENSION_COUNT*vertex_count;
 
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
@@ -92,8 +92,8 @@ FEMAssembler<T>::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElemen
                                            unsigned int vertex_count) {
     auto local_vertex_count = finite_element->GetVertexCount();
 
-    unsigned int n = DIMENSIONS * local_vertex_count;
-    unsigned int m = DIMENSIONS * vertex_count;
+    unsigned int n = DIMENSION_COUNT * local_vertex_count;
+    unsigned int m = DIMENSION_COUNT * vertex_count;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A
             = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(n, m);
 
@@ -101,8 +101,8 @@ FEMAssembler<T>::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElemen
         const auto &vertex = finite_element->vertices()[i];
         auto global_id = vertex->id();
 
-        auto global_column_start = global_id * DIMENSIONS;
-        auto local_row_start = i * DIMENSIONS;
+        auto global_column_start = global_id * DIMENSION_COUNT;
+        auto local_row_start = i * DIMENSION_COUNT;
 
         A(local_row_start + 0, global_column_start + 0) = 1;
         A(local_row_start + 1, global_column_start + 1) = 1;

@@ -2,22 +2,147 @@
 
 #include <RTFEM/FEM/Meshing/TriangleMesh.h>
 #include <RTFEM/FEM/FEMGeometry.h>
-#include <RTFEM/FEM/Meshing/AABBAlgorithms.h>
+#include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
+#include <RTFEM/FEM/Vertex.h>
 
-#include "tetgen.h"
+#include <tetgen.h>
+
+#include <iostream>
 
 namespace rtfem {
+
+const unsigned int DIMENSION_COUNT = 3;
+const unsigned int TETRAHEDRA_DOF_COUNT = 4;
 
 template<class T>
 FEMGeometry<T> Tetrahedralization<T>::Compute(
         const TriangleMeshIndexed<T> &triangle_mesh){
     tetgenio tetgen_input, tetgen_output;
+    tetgenbehavior options;
 
-    constexpr unsigned int dimension = 3;
+    SetupInput(triangle_mesh, tetgen_input, options);
+    tetrahedralize(&options, &tetgen_input, &tetgen_output);
+    return FetchOutput(tetgen_output);
+}
+
+template<class T>
+void Tetrahedralization<T>::SetupInput(
+        const TriangleMeshIndexed<T> &triangle_mesh,
+        tetgenio& tetgen_input,
+        tetgenbehavior &tetgen_options){
+    SetupInputPoints(triangle_mesh, tetgen_input);
+    SetupInputFacets(triangle_mesh, tetgen_input);
+    SetupInputOptions(tetgen_options);
+}
+
+template<class T>
+void Tetrahedralization<T>::SetupInputPoints(
+        const TriangleMeshIndexed<T> &triangle_mesh,
+        tetgenio &tetgen_input){
     tetgen_input.numberofpoints = triangle_mesh.points.size();
-    tetgen_input.pointlist = new REAL[tetgen_input.numberofpoints * dimension];
+    tetgen_input.pointlist = new REAL[tetgen_input.numberofpoints * DIMENSION_COUNT];
+    for(unsigned int i = 0; i < (unsigned int)tetgen_input.numberofpoints; i++){
+        tetgen_input.pointlist[(i * DIMENSION_COUNT) + 0] = triangle_mesh.points[i][0];
+        tetgen_input.pointlist[(i * DIMENSION_COUNT) + 1] = triangle_mesh.points[i][1];
+        tetgen_input.pointlist[(i * DIMENSION_COUNT) + 2] = triangle_mesh.points[i][2];
+    }
+}
 
-    delete[] tetgen_input.pointlist;
+template<class T>
+void Tetrahedralization<T>::SetupInputFacets(
+        const TriangleMeshIndexed<T> &triangle_mesh,
+        tetgenio &tetgen_input){
+    tetgen_input.numberoffacets = triangle_mesh.triangles.size();
+    tetgen_input.facetlist = new tetgenio::facet[tetgen_input.numberoffacets];
+    tetgen_input.facetmarkerlist = new int[tetgen_input.numberoffacets];
+    for(unsigned int i = 0; i < (unsigned int)tetgen_input.numberoffacets; i++){
+        auto f = &tetgen_input.facetlist[i];
+        f->numberofpolygons = 1;
+        f->polygonlist = new tetgenio::polygon[f->numberofpolygons];
+
+        auto p = &f->polygonlist[0];
+        p->numberofvertices = 3;
+        p->vertexlist = new int[p->numberofvertices];
+        p->vertexlist[0] = triangle_mesh.triangles[i].v1;
+        p->vertexlist[1] = triangle_mesh.triangles[i].v2;
+        p->vertexlist[2] = triangle_mesh.triangles[i].v3;
+
+        f->numberofholes = 0;
+        f->holelist = NULL;
+
+        tetgen_input.facetmarkerlist[i] = 0;
+    }
+}
+
+template<class T>
+void Tetrahedralization<T>::SetupInputOptions(
+        tetgenbehavior &tetgen_options){
+    char commandline[2] = "p";
+    commandline[1] = '\0';
+    if(!tetgen_options.parse_commandline(commandline)){
+        throw std::invalid_argument("parse_commandline incorrect commandline");
+    }
+}
+
+template<class T>
+FEMGeometry<T> Tetrahedralization<T>::FetchOutput(tetgenio &tetgen_output){
+    FEMGeometry<T> fem_geometry;
+
+    FetchPoints(fem_geometry, tetgen_output);
+    FetchTetrahedra(fem_geometry, tetgen_output);
+    FetchFaces(fem_geometry, tetgen_output);
+
+    return fem_geometry;
+}
+
+template<class T>
+void Tetrahedralization<T>::FetchPoints(FEMGeometry<T>& fem_geometry,
+                                        tetgenio &tetgen_output){
+    for(int i = 0; i < tetgen_output.numberofpoints; i++){
+        Eigen::Vector3<T> coordinates{
+                static_cast<T>(tetgen_output.pointlist[(i * DIMENSION_COUNT) + 0]),
+                static_cast<T>(tetgen_output.pointlist[(i * DIMENSION_COUNT) + 1]),
+                static_cast<T>(tetgen_output.pointlist[(i * DIMENSION_COUNT) + 2])
+        };
+        auto vertex = std::make_shared<Vertex<T>>(i, coordinates);
+        fem_geometry.vertices.push_back(vertex);
+    }
+}
+
+template<class T>
+void Tetrahedralization<T>::FetchTetrahedra(FEMGeometry<T>& fem_geometry,
+                                            tetgenio &tetgen_output){
+    if(tetgen_output.numberofcorners != TETRAHEDRA_DOF_COUNT){
+        throw std::invalid_argument("tetgen_output.numberofcorners must be 4");
+    }
+
+    for(int i = 0; i < tetgen_output.numberoftetrahedra; i++){
+        auto v1 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
+                (i * tetgen_output.numberofcorners) + 0]];
+        auto v2 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
+                (i * tetgen_output.numberofcorners) + 1]];
+        auto v3 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
+                (i * tetgen_output.numberofcorners) + 2]];
+        auto v4 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
+                (i * tetgen_output.numberofcorners) + 3]];
+
+        auto finite_element = std::make_shared<TetrahedronFiniteElement<T>>(
+                v1, v2, v3, v4);
+
+        fem_geometry.finite_elements.push_back(finite_element);
+    }
+}
+
+template<class T>
+void Tetrahedralization<T>::FetchFaces(FEMGeometry<T>& fem_geometry,
+                                       tetgenio &tetgen_output){
+    for(int i = 0; i < tetgen_output.numberoftrifaces; i++){
+        fem_geometry.finite_element_faces.push_back(TriangleFace{
+                tetgen_output.trifacelist[(i * DIMENSION_COUNT) + 0],
+                tetgen_output.trifacelist[(i * DIMENSION_COUNT) + 1],
+                tetgen_output.trifacelist[(i * DIMENSION_COUNT) + 2]
+        });
+    }
 }
 
 template class Tetrahedralization<float>;
