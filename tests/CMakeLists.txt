@@ -35,12 +35,13 @@ set(SOURCE_FILES )
 
 add_executable(${APP_NAME} ${SOURCE_FILES} ${SRC_FILES} ${INC_DIR} ${INC_DIR})
 
-
 #----------------------------------
 # EXTERNAL
 #----------------------------------
 
-add_subdirectory(external/googletest)
+if (NOT TARGET gtest)
+    add_subdirectory(external/googletest)
+endif()
 include_directories(external/googletest/include)
 
 include_directories(../external/tetgen1.5.0)
