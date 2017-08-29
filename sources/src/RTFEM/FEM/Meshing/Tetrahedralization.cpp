@@ -15,13 +15,19 @@ const unsigned int DIMENSION_COUNT = 3;
 const unsigned int TETRAHEDRA_DOF_COUNT = 4;
 
 template<class T>
+void Tetrahedralization<T>::SetOptions(
+        const TetrahedralizationOptions& options){
+    options_ = options;
+}
+
+template<class T>
 FEMGeometry<T> Tetrahedralization<T>::Compute(
         const TriangleMeshIndexed<T> &triangle_mesh){
     tetgenio tetgen_input, tetgen_output;
-    tetgenbehavior options;
+    tetgenbehavior tetgen_options;
 
-    SetupInput(triangle_mesh, tetgen_input, options);
-    tetrahedralize(&options, &tetgen_input, &tetgen_output);
+    SetupInput(triangle_mesh, tetgen_input, tetgen_options);
+    tetrahedralize(&tetgen_options, &tetgen_input, &tetgen_output);
     return FetchOutput(tetgen_output);
 }
 
@@ -77,9 +83,20 @@ void Tetrahedralization<T>::SetupInputFacets(
 template<class T>
 void Tetrahedralization<T>::SetupInputOptions(
         tetgenbehavior &tetgen_options){
-    char commandline[2] = "p";
-    commandline[1] = '\0';
-    if(!tetgen_options.parse_commandline(commandline)){
+    std::vector<char> commandline;
+    commandline.push_back('p');
+
+    if(options_.maximum_volume > 0){
+        commandline.push_back('q');
+        commandline.push_back('a');
+        auto maximum_volume_str = std::to_string(options_.maximum_volume);
+        for(unsigned int i = 0; i < maximum_volume_str.size(); i++){
+            commandline.push_back(maximum_volume_str[i]);
+        }
+    }
+    commandline.push_back('\0');
+
+    if(!tetgen_options.parse_commandline(commandline.data())){
         throw std::invalid_argument("parse_commandline incorrect commandline");
     }
 }

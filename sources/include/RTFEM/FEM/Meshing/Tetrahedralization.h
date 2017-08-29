@@ -19,6 +19,13 @@ struct FEMGeometry;
 template<class T>
 struct TriangleMeshIndexed;
 
+struct TetrahedralizationOptions{
+    /**
+     * No tetrahedra will be generated with volume greater than maximum_volume.
+     * 0 indicates no constraint
+     */
+    float maximum_volume = 0;
+};
 
 /**
  * Generates 3D Tetrahedron Mesh.
@@ -30,6 +37,8 @@ class Tetrahedralization {
 public:
     Tetrahedralization() = default;
     ~Tetrahedralization() = default;
+
+    void SetOptions(const TetrahedralizationOptions& options);
 
     /**
      * Computes the Tetrahedralization.
@@ -56,6 +65,8 @@ private:
                          tetgenio &tetgen_output);
     void FetchFaces(FEMGeometry<T>& fem_geometry,
                     tetgenio &tetgen_output);
+
+    TetrahedralizationOptions options_;
 };
 }
 
