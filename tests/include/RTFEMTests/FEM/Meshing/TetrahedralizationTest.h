@@ -17,6 +17,5 @@ protected:
 
     virtual void TearDown() override;
 
-    std::unique_ptr<rtfem::Tetrahedralization<float>> tetrahedralization_;
     std::unique_ptr<rtfem::TriangleMeshIndexed<float>> triangle_mesh_cube_;
 };
