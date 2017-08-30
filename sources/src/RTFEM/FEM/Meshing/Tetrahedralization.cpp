@@ -76,7 +76,7 @@ void Tetrahedralization<T>::SetupInputFacets(
         f->numberofholes = 0;
         f->holelist = NULL;
 
-        tetgen_input.facetmarkerlist[i] = 0;
+        tetgen_input.facetmarkerlist[i] = 1;
     }
 }
 
@@ -85,9 +85,9 @@ void Tetrahedralization<T>::SetupInputOptions(
         tetgenbehavior &tetgen_options){
     std::vector<char> commandline;
     commandline.push_back('p');
+    commandline.push_back('q');
 
     if(options_.maximum_volume > 0){
-        commandline.push_back('q');
         commandline.push_back('a');
         auto maximum_volume_str = std::to_string(options_.maximum_volume);
         for(unsigned int i = 0; i < maximum_volume_str.size(); i++){
@@ -134,19 +134,24 @@ void Tetrahedralization<T>::FetchTetrahedra(FEMGeometry<T>& fem_geometry,
     }
 
     for(int i = 0; i < tetgen_output.numberoftetrahedra; i++){
-        auto v1 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
-                (i * tetgen_output.numberofcorners) + 0]];
-        auto v2 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
-                (i * tetgen_output.numberofcorners) + 1]];
-        auto v3 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
-                (i * tetgen_output.numberofcorners) + 2]];
-        auto v4 = fem_geometry.vertices[tetgen_output.tetrahedronlist[
-                (i * tetgen_output.numberofcorners) + 3]];
+        auto start_index = i * tetgen_output.numberofcorners;
+        FiniteElementIndices finite_element_indices{
+                tetgen_output.tetrahedronlist[start_index + 0],
+                tetgen_output.tetrahedronlist[start_index + 1],
+                tetgen_output.tetrahedronlist[start_index + 2],
+                tetgen_output.tetrahedronlist[start_index + 3]
+        };
+
+        auto v1 = fem_geometry.vertices[finite_element_indices.v1];
+        auto v2 = fem_geometry.vertices[finite_element_indices.v2];
+        auto v3 = fem_geometry.vertices[finite_element_indices.v3];
+        auto v4 = fem_geometry.vertices[finite_element_indices.v4];
 
         auto finite_element = std::make_shared<TetrahedronFiniteElement<T>>(
                 v1, v2, v3, v4);
 
         fem_geometry.finite_elements.push_back(finite_element);
+        fem_geometry.finite_element_indices.push_back(finite_element_indices);
     }
 }
 
