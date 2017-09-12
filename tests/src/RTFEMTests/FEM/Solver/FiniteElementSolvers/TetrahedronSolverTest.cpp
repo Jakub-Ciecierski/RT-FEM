@@ -37,17 +37,17 @@ void TetrahedronSolverTest::SetUp() {
 void TetrahedronSolverTest::TearDown() {
 }
 
-TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions){
+TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions) {
     auto data = solver_->Solve(finite_element_, vertices_);
 
-    EXPECT_EQ((unsigned int)6, data.geometry_matrix.rows());
-    EXPECT_EQ((unsigned int)12, data.geometry_matrix.cols());
+    EXPECT_EQ((unsigned int) 6, data.geometry_matrix.rows());
+    EXPECT_EQ((unsigned int) 12, data.geometry_matrix.cols());
 }
 
 /**
  * TODO: Should move it to benchmarks test
  */
-TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
+TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1) {
     auto vertices = std::vector<std::shared_ptr<rtfem::Vertex<double>>>(4);
     vertices[0] = std::make_shared<rtfem::Vertex<double>>(0,
                                                           Eigen::Vector3<double>(
@@ -98,10 +98,12 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
                                                           vertices);
 
     // Round
-    for(unsigned int i = 0; i < jacobian_inverse.rows();i++){
-        for(unsigned int j = 0; j < jacobian_inverse.cols();j++){
-            jacobian_inverse(i,j) = std::floor(jacobian_inverse(i,j) * 100) / 100;
-            expected_jacobian_inverse(i, j) = std::floor(expected_jacobian_inverse(i, j) * 100) / 100;
+    for (unsigned int i = 0; i < jacobian_inverse.rows(); i++) {
+        for (unsigned int j = 0; j < jacobian_inverse.cols(); j++) {
+            jacobian_inverse(i, j) =
+                std::floor(jacobian_inverse(i, j) * 100) / 100;
+            expected_jacobian_inverse(i, j) =
+                std::floor(expected_jacobian_inverse(i, j) * 100) / 100;
         }
     }
 
@@ -111,20 +113,33 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
 /**
  * TODO: Should move it to benchmarks test
  */
-TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
+TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2) {
     auto vertices = std::vector<std::shared_ptr<rtfem::Vertex<double>>>(4);
 
     vertices[0] = std::make_shared<rtfem::Vertex<double>>(0,
-                                                       Eigen::Vector3<double>(1.0/56.0, -2.0/13.0, -4.0/11.0));
+                                                          Eigen::Vector3<double>(
+                                                              1.0 / 56.0,
+                                                              -2.0 / 13.0,
+                                                              -4.0 / 11.0));
     vertices[1] = std::make_shared<rtfem::Vertex<double>>(1,
-                                                       Eigen::Vector3<double>(2.0/9.0, 1.0/9.0, -2.0/11.0));
+                                                          Eigen::Vector3<double>(
+                                                              2.0 / 9.0,
+                                                              1.0 / 9.0,
+                                                              -2.0 / 11.0));
     vertices[2] = std::make_shared<rtfem::Vertex<double>>(2,
-                                                       Eigen::Vector3<double>(-1.0/9.0, -7.0/15.0, 3.0/7.0));
+                                                          Eigen::Vector3<double>(
+                                                              -1.0 / 9.0,
+                                                              -7.0 / 15.0,
+                                                              3.0 / 7.0));
     vertices[3] = std::make_shared<rtfem::Vertex<double>>(3,
-                                                       Eigen::Vector3<double>(-1.0/34.0, -4.0/9.0, 2.0/7.0));
-    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
-        0, 1, 2, 3
-    );
+                                                          Eigen::Vector3<double>(
+                                                              -1.0 / 34.0,
+                                                              -4.0 / 9.0,
+                                                              2.0 / 7.0));
+    auto finite_element =
+        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            0, 1, 2, 3
+        );
 
     Eigen::Matrix<double, 4, 4> expected_jacobian_inverse;
     expected_jacobian_inverse(0, 0) = 0.380431;
@@ -152,17 +167,19 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
         vertices);
 
     // Round
-    for(unsigned int i = 0; i < jacobian_inverse.rows();i++){
-        for(unsigned int j = 0; j < jacobian_inverse.cols();j++){
-            jacobian_inverse(i, j) = std::floor(jacobian_inverse(i, j) * 100) / 100;
-            expected_jacobian_inverse(i, j) = std::floor(expected_jacobian_inverse(i, j) * 100) / 100;
+    for (unsigned int i = 0; i < jacobian_inverse.rows(); i++) {
+        for (unsigned int j = 0; j < jacobian_inverse.cols(); j++) {
+            jacobian_inverse(i, j) =
+                std::floor(jacobian_inverse(i, j) * 100) / 100;
+            expected_jacobian_inverse(i, j) =
+                std::floor(expected_jacobian_inverse(i, j) * 100) / 100;
         }
     }
 
     EXPECT_EQ(expected_jacobian_inverse, jacobian_inverse);
 }
 
-TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult){
+TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult) {
     const double g = -9.81;
     Eigen::Vector3<double> gravity(0, g, 0);
     auto data = solver_->Solve(finite_element_, vertices_,
@@ -184,7 +201,7 @@ TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult){
     expected_node_force_vector(9) = 0;
     expected_node_force_vector(10) = g;
     expected_node_force_vector(11) = 0;
-    expected_node_force_vector *= (volume/4.0);
+    expected_node_force_vector *= (volume / 4.0);
 
     EXPECT_EQ(expected_node_force_vector, data.force_vector);
 }

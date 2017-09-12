@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace rtfem{
+namespace rtfem {
 class VectorMath;
 }
 

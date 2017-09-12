@@ -8,6 +8,6 @@ void TetgenTest::SetUp() {
 void TetgenTest::TearDown() {
 }
 
-TEST_F(TetgenTest, IntergrationTest){
+TEST_F(TetgenTest, IntergrationTest) {
     tetgenio tetgenio_();
 }

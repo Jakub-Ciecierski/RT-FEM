@@ -8,48 +8,48 @@
 void IntersectionsTest::SetUp() {
     triangle_mesh_ = rtfem::make_unique<rtfem::TriangleMesh<float>>();
     triangle_mesh_->triangles = {
-            // Bottom
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,0,0},
-                                   Eigen::Vector3<float>{0,0,1},
-                                   Eigen::Vector3<float>{1,0,0}},
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,0,1},
-                                   Eigen::Vector3<float>{1,0,0},
-                                   Eigen::Vector3<float>{1,0,1}},
-            // Top
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,1,0},
-                                   Eigen::Vector3<float>{0,1,1},
-                                   Eigen::Vector3<float>{1,1,0}},
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,1,1},
-                                   Eigen::Vector3<float>{1,1,0},
-                                   Eigen::Vector3<float>{1,1,1}},
-            // Left
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,1,1},
-                                   Eigen::Vector3<float>{0,1,0},
-                                   Eigen::Vector3<float>{0,0,0}},
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,1,1},
-                                   Eigen::Vector3<float>{0,0,1},
-                                   Eigen::Vector3<float>{0,0,0}},
-            // Right
-            rtfem::Triangle<float>{Eigen::Vector3<float>{1,1,0},
-                                   Eigen::Vector3<float>{1,1,1},
-                                   Eigen::Vector3<float>{1,0,0}},
-            rtfem::Triangle<float>{Eigen::Vector3<float>{1,1,1},
-                                   Eigen::Vector3<float>{1,0,1},
-                                   Eigen::Vector3<float>{1,0,0}},
-            // Back
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,1,0},
-                                   Eigen::Vector3<float>{1,1,0},
-                                   Eigen::Vector3<float>{0,0,0}},
-            rtfem::Triangle<float>{Eigen::Vector3<float>{1,1,0},
-                                   Eigen::Vector3<float>{1,0,0},
-                                   Eigen::Vector3<float>{0,0,0}},
-            // Front
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,1,1},
-                                   Eigen::Vector3<float>{0,0,1},
-                                   Eigen::Vector3<float>{1,0,1}},
-            rtfem::Triangle<float>{Eigen::Vector3<float>{0,1,1},
-                                   Eigen::Vector3<float>{1,1,1},
-                                   Eigen::Vector3<float>{1,0,1}},
+        // Bottom
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 0, 0},
+                               Eigen::Vector3<float>{0, 0, 1},
+                               Eigen::Vector3<float>{1, 0, 0}},
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 0, 1},
+                               Eigen::Vector3<float>{1, 0, 0},
+                               Eigen::Vector3<float>{1, 0, 1}},
+        // Top
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 1, 0},
+                               Eigen::Vector3<float>{0, 1, 1},
+                               Eigen::Vector3<float>{1, 1, 0}},
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 1, 1},
+                               Eigen::Vector3<float>{1, 1, 0},
+                               Eigen::Vector3<float>{1, 1, 1}},
+        // Left
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 1, 1},
+                               Eigen::Vector3<float>{0, 1, 0},
+                               Eigen::Vector3<float>{0, 0, 0}},
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 1, 1},
+                               Eigen::Vector3<float>{0, 0, 1},
+                               Eigen::Vector3<float>{0, 0, 0}},
+        // Right
+        rtfem::Triangle<float>{Eigen::Vector3<float>{1, 1, 0},
+                               Eigen::Vector3<float>{1, 1, 1},
+                               Eigen::Vector3<float>{1, 0, 0}},
+        rtfem::Triangle<float>{Eigen::Vector3<float>{1, 1, 1},
+                               Eigen::Vector3<float>{1, 0, 1},
+                               Eigen::Vector3<float>{1, 0, 0}},
+        // Back
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 1, 0},
+                               Eigen::Vector3<float>{1, 1, 0},
+                               Eigen::Vector3<float>{0, 0, 0}},
+        rtfem::Triangle<float>{Eigen::Vector3<float>{1, 1, 0},
+                               Eigen::Vector3<float>{1, 0, 0},
+                               Eigen::Vector3<float>{0, 0, 0}},
+        // Front
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 1, 1},
+                               Eigen::Vector3<float>{0, 0, 1},
+                               Eigen::Vector3<float>{1, 0, 1}},
+        rtfem::Triangle<float>{Eigen::Vector3<float>{0, 1, 1},
+                               Eigen::Vector3<float>{1, 1, 1},
+                               Eigen::Vector3<float>{1, 0, 1}},
 
     };
 }
@@ -57,7 +57,7 @@ void IntersectionsTest::SetUp() {
 void IntersectionsTest::TearDown() {
 }
 
-TEST_F(IntersectionsTest, Contains_PointInsideTheCube_ReturnsTrue){
+TEST_F(IntersectionsTest, Contains_PointInsideTheCube_ReturnsTrue) {
     Eigen::Vector3<float> point1(0.5f, 0.5f, 0.5f);
     Eigen::Vector3<float> point2(0.001f, 0.0f, 0.0f);
     Eigen::Vector3<float> point3(0.999f, 0.999f, 0.999f);
@@ -73,7 +73,7 @@ TEST_F(IntersectionsTest, Contains_PointInsideTheCube_ReturnsTrue){
     EXPECT_EQ(true, rtfem::Contains(point6, *triangle_mesh_));
 }
 
-TEST_F(IntersectionsTest, Contains_PointInsideTheCube_ReturnsFalse){
+TEST_F(IntersectionsTest, Contains_PointInsideTheCube_ReturnsFalse) {
     Eigen::Vector3<float> point1(-0.1f, 0.0f, 0.0f);
     Eigen::Vector3<float> point2(-0.1f, 0.0f, 1.0f);
     Eigen::Vector3<float> point3(0.0f, 0.0f, 1.1f);

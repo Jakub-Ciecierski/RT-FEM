@@ -6,11 +6,10 @@ namespace rtfem {
 /**
  * Finite Element types supported by the solver
  */
-enum class FiniteElementType{
+enum class FiniteElementType {
     Tetrahedron
 };
 
 }
-
 
 #endif //PROJECT_FINITEELEMENTTYPES_H

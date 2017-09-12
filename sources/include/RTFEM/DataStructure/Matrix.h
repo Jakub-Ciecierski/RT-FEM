@@ -8,9 +8,9 @@
 
 namespace rtfem {
 
-struct MatrixDimension{
+struct MatrixDimension {
     MatrixDimension(unsigned int row_count, unsigned int column_count) :
-            row_count(row_count), column_count(column_count){}
+        row_count(row_count), column_count(column_count) {}
 
     unsigned int row_count;
     unsigned int column_count;
@@ -47,32 +47,32 @@ public:
      */
     Matrix(std::initializer_list<std::initializer_list<double>> lists);
 
-    Matrix(const MatrixDimension&& matrix_dimension);
+    Matrix(const MatrixDimension &&matrix_dimension);
 
     ~Matrix();
 
-    const MatrixDimension& dimensions() const {return dimensions_;}
+    const MatrixDimension &dimensions() const { return dimensions_; }
 
     /**
      * Returns i-th row.
      * @param i
      * @return
      */
-    std::vector<double>& operator[] (unsigned int i);
-    const std::vector<double>& operator[] (unsigned int i) const;
+    std::vector<double> &operator[](unsigned int i);
+    const std::vector<double> &operator[](unsigned int i) const;
 
     /**
      * Returns i-th row.
      * @param i
      * @return
      */
-    std::vector<double>& GetRow(unsigned int i);
-    const std::vector<double>& GetRow(unsigned int i) const;
+    std::vector<double> &GetRow(unsigned int i);
+    const std::vector<double> &GetRow(unsigned int i) const;
 
     bool operator==(const Matrix &rhs) const;
     bool operator!=(const Matrix &rhs) const;
 
-    Matrix& operator+=(const Matrix& rhs);
+    Matrix &operator+=(const Matrix &rhs);
 
 private:
     void InitData(double value);
@@ -83,15 +83,15 @@ private:
     MatrixDimension dimensions_;
 };
 
-std::ostream& operator<<(std::ostream&, const Matrix&);
+std::ostream &operator<<(std::ostream &, const Matrix &);
 
-Matrix operator*(double x, const Matrix& m);
-Matrix operator*(const Matrix& m, double x);
+Matrix operator*(double x, const Matrix &m);
+Matrix operator*(const Matrix &m, double x);
 
-Matrix operator/(const Matrix& m, double x);
+Matrix operator/(const Matrix &m, double x);
 
-Matrix operator*(const Matrix& m1, const Matrix& m2);
-Matrix operator+(const Matrix& m1, const Matrix& m2);
+Matrix operator*(const Matrix &m1, const Matrix &m2);
+Matrix operator+(const Matrix &m1, const Matrix &m2);
 
 }
 

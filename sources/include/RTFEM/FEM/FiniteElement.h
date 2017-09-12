@@ -18,13 +18,15 @@ class Vertex;
 template<class T>
 class FiniteElement {
 public:
-    FiniteElement(const FiniteElementType&& type);
+    FiniteElement(const FiniteElementType &&type);
     virtual ~FiniteElement() = default;
 
-    const FiniteElementType& type() const {return type_;}
+    const FiniteElementType &type() const { return type_; }
 
-    const std::vector<unsigned int>& vertices_indices(){return
-            vertices_indices_;}
+    const std::vector<unsigned int> &vertices_indices() {
+        return
+            vertices_indices_;
+    }
 
     virtual unsigned int GetVertexCount() const = 0;
 
@@ -34,6 +36,5 @@ private:
     FiniteElementType type_;
 };
 }
-
 
 #endif //PROJECT_FINITEELEMENT_H

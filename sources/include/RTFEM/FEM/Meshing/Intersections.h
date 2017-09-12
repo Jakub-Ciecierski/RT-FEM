@@ -25,7 +25,7 @@ struct Ray {
  */
 template<class T>
 bool Contains(const Eigen::Vector3<T>,
-              const TriangleMesh<T>& triangle_mesh);
+              const TriangleMesh<T> &triangle_mesh);
 
 /**
  * https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
@@ -36,10 +36,9 @@ bool Contains(const Eigen::Vector3<T>,
  * @return
  */
 template<class T>
-bool Intersects(const Ray<T>& ray,
-                const Triangle<T>& triangle);
+bool Intersects(const Ray<T> &ray,
+                const Triangle<T> &triangle);
 
 }
-
 
 #endif //PROJECT_INTERSECTIONS_H

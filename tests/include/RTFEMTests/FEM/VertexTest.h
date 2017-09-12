@@ -4,12 +4,12 @@
 
 #include <Eigen/Core>
 
-namespace rtfem{
+namespace rtfem {
 template<class T>
 class Vertex;
 }
 
-struct VertexPack{
+struct VertexPack {
     unsigned int id;
     Eigen::Matrix<double, 3, 1> coordinates;
     std::unique_ptr<rtfem::Vertex<double>> vertex;

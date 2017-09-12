@@ -13,11 +13,10 @@ public:
 
     ~VectorMath();
 
-    Vector3 Cross(const Vector3& v1, const Vector3& v2);
+    Vector3 Cross(const Vector3 &v1, const Vector3 &v2);
 
-    double Magnitude(const Vector3& v);
+    double Magnitude(const Vector3 &v);
 };
 }
-
 
 #endif //PROJECT_VECTORMATH_H

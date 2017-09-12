@@ -2,7 +2,9 @@
 
 namespace rtfem {
 
-template struct Material<double>;
-template struct Material<float>;
+template
+struct Material<double>;
+template
+struct Material<float>;
 
 }

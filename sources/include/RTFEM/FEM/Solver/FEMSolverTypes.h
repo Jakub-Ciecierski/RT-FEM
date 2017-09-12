@@ -1,26 +1,26 @@
 #ifndef PROJECT_FEMSOLVERTYPES_H
 #define PROJECT_FEMSOLVERTYPES_H
 
-namespace rtfem{
+namespace rtfem {
 
 /**
  * The Constitutive material model
  */
-enum class ConstitutiveSolverType{
+enum class ConstitutiveSolverType {
     LinearElastic
 };
 
 /**
  * The strain tensor representation.
  */
-enum class GeometrySolverType{
+enum class GeometrySolverType {
     Linear, NonLinear
 };
 
 /**
  * Static or Dynamic Analysis
  */
-enum class AnalysisSolverType{
+enum class AnalysisSolverType {
     Static, Dynamic
 };
 

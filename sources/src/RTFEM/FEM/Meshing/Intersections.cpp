@@ -7,12 +7,12 @@ namespace rtfem {
 
 template<class T>
 bool Contains(const Eigen::Vector3<T> point,
-              const TriangleMesh<T>& triangle_mesh){
-    Ray<T> ray{point, Eigen::Vector3<T>{1,0,0}};
+              const TriangleMesh<T> &triangle_mesh) {
+    Ray<T> ray{point, Eigen::Vector3<T>{1, 0, 0}};
 
     unsigned int intersection_count = 0;
-    for(const auto& triangle : triangle_mesh.triangles){
-        if(Intersects(ray, triangle))
+    for (const auto &triangle : triangle_mesh.triangles) {
+        if (Intersects(ray, triangle))
             intersection_count++;
     }
 
@@ -20,8 +20,8 @@ bool Contains(const Eigen::Vector3<T> point,
 }
 
 template<class T>
-bool Intersects(const Ray<T>& ray,
-                const Triangle<T>& triangle){
+bool Intersects(const Ray<T> &ray,
+                const Triangle<T> &triangle) {
     auto e1 = triangle.v2 - triangle.v1;
     auto e2 = triangle.v3 - triangle.v1;
 
@@ -53,17 +53,19 @@ bool Intersects(const Ray<T>& ray,
     return true;
 }
 
-template struct Ray<float>;
-template struct Ray<double>;
+template
+struct Ray<float>;
+template
+struct Ray<double>;
 
 template bool Contains<float>(const Eigen::Vector3<float>,
-                              const TriangleMesh<float>& triangle_mesh);
+                              const TriangleMesh<float> &triangle_mesh);
 template bool Contains<double>(const Eigen::Vector3<double>,
-                              const TriangleMesh<double>& triangle_mesh);
+                               const TriangleMesh<double> &triangle_mesh);
 
 template bool Intersects<float>(const Ray<float> &ray,
                                 const Triangle<float> &triangle);
 template bool Intersects<double>(const Ray<double> &ray,
-                                const Triangle<double> &triangle);
+                                 const Triangle<double> &triangle);
 
 }

@@ -1,8 +1,10 @@
 #include <RTFEM/FEM/FEMGeometry.h>
 
-namespace rtfem{
+namespace rtfem {
 
-template struct FEMGeometry<double>;
-template struct FEMGeometry<float>;
+template
+struct FEMGeometry<double>;
+template
+struct FEMGeometry<float>;
 
 }

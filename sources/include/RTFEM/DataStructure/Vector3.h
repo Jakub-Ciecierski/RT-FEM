@@ -25,5 +25,4 @@ public:
 };
 }
 
-
 #endif //PROJECT_VECTOR3_H

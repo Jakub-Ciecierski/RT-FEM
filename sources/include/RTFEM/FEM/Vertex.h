@@ -8,15 +8,15 @@ namespace rtfem {
 template<class T>
 class Vertex {
 public:
-    Vertex(unsigned int id, const Eigen::Vector3<T>& coordinates);
+    Vertex(unsigned int id, const Eigen::Vector3<T> &coordinates);
 
     ~Vertex() = default;
 
-    unsigned int id() const {return id_;}
-    const Eigen::Vector3<T>& coordinates() const {return coordinates_;}
-    T x() const {return coordinates_(0);}
-    T y() const {return coordinates_(1);}
-    T z() const {return coordinates_(2);}
+    unsigned int id() const { return id_; }
+    const Eigen::Vector3<T> &coordinates() const { return coordinates_; }
+    T x() const { return coordinates_(0); }
+    T y() const { return coordinates_(1); }
+    T z() const { return coordinates_(2); }
 
 private:
     /**
@@ -28,6 +28,5 @@ private:
 };
 
 }
-
 
 #endif //PROJECT_VERTEX_H

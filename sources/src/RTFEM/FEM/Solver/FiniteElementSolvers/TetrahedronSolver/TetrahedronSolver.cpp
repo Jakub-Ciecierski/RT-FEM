@@ -10,7 +10,7 @@ namespace rtfem {
 template<class T>
 FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     std::shared_ptr<FiniteElement<T>> finite_element,
-    const std::vector<std::shared_ptr<Vertex<T>>>& vertices){
+    const std::vector<std::shared_ptr<Vertex<T>>> &vertices) {
     return Solve(finite_element,
                  vertices,
                  Eigen::Vector3<T>::Zero(), TractionForce<T>{});
@@ -18,10 +18,10 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
 
 template<class T>
 FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
-        std::shared_ptr<FiniteElement<T>> finite_element,
-        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
-        const Eigen::Vector3<T>& body_force,
-        const TractionForce<T>& traction_force){
+    std::shared_ptr<FiniteElement<T>> finite_element,
+    const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
+    const Eigen::Vector3<T> &body_force,
+    const TractionForce<T> &traction_force) {
     auto v1 = vertices[finite_element->vertices_indices()[0]];
     auto v2 = vertices[finite_element->vertices_indices()[1]];
     auto v3 = vertices[finite_element->vertices_indices()[2]];
@@ -29,11 +29,13 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
 
     auto edges = ComputeEdgesCache(*v1, *v2, *v3, *v4);
     auto faces_area = ComputeFacesArea(edges);
-    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4, edges);
+    auto shape_function_coefficients =
+        ComputeShapeFunctionCoefficients(*v1, *v2, *v3, *v4, edges);
 
     FiniteElementSolverData<T> data;
     data.volume = ComputeVolume(shape_function_coefficients);
-    data.geometry_matrix = ComputeGeometryMatrix(shape_function_coefficients, data.volume);
+    data.geometry_matrix =
+        ComputeGeometryMatrix(shape_function_coefficients, data.volume);
     data.force_vector = ComputeForceVector(shape_function_coefficients,
                                            data.volume, faces_area,
                                            body_force, traction_force);
@@ -45,7 +47,7 @@ template<class T>
 Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
 TetrahedronSolver<T>::SolveJacobianInverse(
     std::shared_ptr<FiniteElement<T>> finite_element,
-    const std::vector<std::shared_ptr<Vertex<T>>>& vertices){
+    const std::vector<std::shared_ptr<Vertex<T>>> &vertices) {
     auto v1 = vertices[finite_element->vertices_indices()[0]];
     auto v2 = vertices[finite_element->vertices_indices()[1]];
     auto v3 = vertices[finite_element->vertices_indices()[2]];
@@ -53,15 +55,18 @@ TetrahedronSolver<T>::SolveJacobianInverse(
 
     auto edges = ComputeEdgesCache(*v1, *v2, *v3, *v4);
 
-    auto shape_function_coefficients = ComputeShapeFunctionCoefficients(*v1, *v2 ,*v3, *v4, edges);
+    auto shape_function_coefficients =
+        ComputeShapeFunctionCoefficients(*v1, *v2, *v3, *v4, edges);
     auto volume = ComputeVolume(shape_function_coefficients);
 
     return AssemblyJacobianInverse(shape_function_coefficients, volume);
 }
 
 template<class T>
-Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1, const Vertex<T> &v2,
-                                                 const Vertex<T> &v3, const Vertex<T> &v4) {
+Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1,
+                                                 const Vertex<T> &v2,
+                                                 const Vertex<T> &v3,
+                                                 const Vertex<T> &v4) {
     Edges<T> edges;
 
     edges.x32 = v3.x() - v2.x();
@@ -99,21 +104,21 @@ Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1, const Vert
 }
 
 template<class T>
-FacesArea<T> TetrahedronSolver<T>::ComputeFacesArea(const Edges<T>& edges){
+FacesArea<T> TetrahedronSolver<T>::ComputeFacesArea(const Edges<T> &edges) {
     FacesArea<T> faces_area;
 
     faces_area.area1 =
-            Eigen::Vector<T, 3>(edges.x32, edges.y32, edges.z32).cross(
-                    Eigen::Vector<T, 3>(edges.x42, edges.y42, edges.z42)).norm();
+        Eigen::Vector<T, 3>(edges.x32, edges.y32, edges.z32).cross(
+            Eigen::Vector<T, 3>(edges.x42, edges.y42, edges.z42)).norm();
     faces_area.area2 =
-            Eigen::Vector<T, 3>(edges.x43, edges.y43, edges.z43).cross(
-                    Eigen::Vector<T, 3>(edges.x13, edges.y13, edges.z13)).norm();
+        Eigen::Vector<T, 3>(edges.x43, edges.y43, edges.z43).cross(
+            Eigen::Vector<T, 3>(edges.x13, edges.y13, edges.z13)).norm();
     faces_area.area3 =
-            Eigen::Vector<T, 3>(edges.x14, edges.y14, edges.z14).cross(
-                    Eigen::Vector<T, 3>(edges.x24, edges.y24, edges.z24)).norm();
+        Eigen::Vector<T, 3>(edges.x14, edges.y14, edges.z14).cross(
+            Eigen::Vector<T, 3>(edges.x24, edges.y24, edges.z24)).norm();
     faces_area.area4 =
-            Eigen::Vector<T, 3>(edges.x21, edges.y21, edges.z21).cross(
-                    Eigen::Vector<T, 3>(edges.x31, edges.y31, edges.z31)).norm();
+        Eigen::Vector<T, 3>(edges.x21, edges.y21, edges.z21).cross(
+            Eigen::Vector<T, 3>(edges.x31, edges.y31, edges.z31)).norm();
 
     return faces_area;
 }
@@ -121,9 +126,9 @@ FacesArea<T> TetrahedronSolver<T>::ComputeFacesArea(const Edges<T>& edges){
 template<class T>
 TetrahedronShapeFunctionCoefficients<T>
 TetrahedronSolver<T>::ComputeShapeFunctionCoefficients(
-        const Vertex<T> &v1, const Vertex<T> &v2,
-        const Vertex<T> &v3, const Vertex<T> &v4,
-        const Edges<T>& edges) {
+    const Vertex<T> &v1, const Vertex<T> &v2,
+    const Vertex<T> &v3, const Vertex<T> &v4,
+    const Edges<T> &edges) {
     TetrahedronShapeFunctionCoefficients<T> coefficients;
 
     auto V0i = ComputeAi(v1, v2, v3, v4);
@@ -152,23 +157,23 @@ TetrahedronSolver<T>::ComputeShapeFunctionCoefficients(
 
 template<class T>
 Eigen::Vector4<T> TetrahedronSolver<T>::ComputeAi(const Vertex<T> &v1,
-                                                   const Vertex<T> &v2,
-                                                   const Vertex<T> &v3,
-                                                   const Vertex<T> &v4) {
+                                                  const Vertex<T> &v2,
+                                                  const Vertex<T> &v3,
+                                                  const Vertex<T> &v4) {
     auto V01 =
-            v2.x() * ((v3.y() * v4.z()) - (v4.y() * v3.z()))
+        v2.x() * ((v3.y() * v4.z()) - (v4.y() * v3.z()))
             + v3.x() * ((v4.y() * v2.z()) - (v2.y() * v4.z()))
             + v4.x() * ((v2.y() * v3.z()) - (v3.y() * v2.z()));
     auto V02 =
-            v1.x() * ((v4.y() * v3.z()) - (v3.y() * v4.z()))
+        v1.x() * ((v4.y() * v3.z()) - (v3.y() * v4.z()))
             + v3.x() * ((v1.y() * v4.z()) - (v4.y() * v1.z()))
             + v4.x() * ((v3.y() * v1.z()) - (v1.y() * v3.z()));
     auto V03 =
-            v1.x() * ((v2.y() * v4.z()) - (v4.y() * v2.z()))
+        v1.x() * ((v2.y() * v4.z()) - (v4.y() * v2.z()))
             + v2.x() * ((v4.y() * v1.z()) - (v1.y() * v4.z()))
             + v4.x() * ((v1.y() * v2.z()) - (v2.y() * v1.z()));
     auto V04 =
-            v1.x() * ((v3.y() * v2.z()) - (v2.y() * v3.z()))
+        v1.x() * ((v3.y() * v2.z()) - (v2.y() * v3.z()))
             + v2.x() * ((v1.y() * v3.z()) - (v3.y() * v1.z()))
             + v3.x() * ((v2.y() * v1.z()) - (v1.y() * v2.z()));
 
@@ -178,13 +183,15 @@ Eigen::Vector4<T> TetrahedronSolver<T>::ComputeAi(const Vertex<T> &v1,
 }
 
 template<class T>
-T TetrahedronSolver<T>::ComputeVolume(const TetrahedronShapeFunctionCoefficients<T>& coefficients){
+T TetrahedronSolver<T>::ComputeVolume(const TetrahedronShapeFunctionCoefficients<
+    T> &coefficients) {
     auto volume = (coefficients.A1 / 6.0)
-                  + (coefficients.A2 / 6.0)
-                  + (coefficients.A3 / 6.0)
-                  + (coefficients.A4 / 6.0);
-    if(volume == 0){
-        throw std::invalid_argument("TetrahedronSolver<T>::Solve: Element with 0 volume");
+        + (coefficients.A2 / 6.0)
+        + (coefficients.A3 / 6.0)
+        + (coefficients.A4 / 6.0);
+    if (volume == 0) {
+        throw std::invalid_argument(
+            "TetrahedronSolver<T>::Solve: Element with 0 volume");
     }
 
     return volume;
@@ -192,19 +199,36 @@ T TetrahedronSolver<T>::ComputeVolume(const TetrahedronShapeFunctionCoefficients
 
 template<class T>
 Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M>
-TetrahedronSolver<T>::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients<T> &coefficients,
+TetrahedronSolver<T>::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients<
+    T> &coefficients,
                                             T volume) {
     Eigen::Matrix<T,
-            TETRAHEDRON_GEOMETRIC_MATRIX_N,
-            TETRAHEDRON_GEOMETRIC_MATRIX_M> geometry_matrix =
-            Eigen::Matrix<T,
-                    TETRAHEDRON_GEOMETRIC_MATRIX_N,
-                    TETRAHEDRON_GEOMETRIC_MATRIX_M>::Zero();
+                  TETRAHEDRON_GEOMETRIC_MATRIX_N,
+                  TETRAHEDRON_GEOMETRIC_MATRIX_M> geometry_matrix =
+        Eigen::Matrix<T,
+                      TETRAHEDRON_GEOMETRIC_MATRIX_N,
+                      TETRAHEDRON_GEOMETRIC_MATRIX_M>::Zero();
 
-    AssemblyGeometryMatrix(geometry_matrix, 0, coefficients.B1, coefficients.C1, coefficients.D1);
-    AssemblyGeometryMatrix(geometry_matrix, 3, coefficients.B2, coefficients.C2, coefficients.D2);
-    AssemblyGeometryMatrix(geometry_matrix, 6, coefficients.B3, coefficients.C3, coefficients.D3);
-    AssemblyGeometryMatrix(geometry_matrix, 9, coefficients.B4, coefficients.C4, coefficients.D4);
+    AssemblyGeometryMatrix(geometry_matrix,
+                           0,
+                           coefficients.B1,
+                           coefficients.C1,
+                           coefficients.D1);
+    AssemblyGeometryMatrix(geometry_matrix,
+                           3,
+                           coefficients.B2,
+                           coefficients.C2,
+                           coefficients.D2);
+    AssemblyGeometryMatrix(geometry_matrix,
+                           6,
+                           coefficients.B3,
+                           coefficients.C3,
+                           coefficients.D3);
+    AssemblyGeometryMatrix(geometry_matrix,
+                           9,
+                           coefficients.B4,
+                           coefficients.C4,
+                           coefficients.D4);
     geometry_matrix = geometry_matrix / (6 * volume);
 
     return geometry_matrix;
@@ -212,8 +236,13 @@ TetrahedronSolver<T>::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoeffi
 
 template<class T>
 void TetrahedronSolver<T>::AssemblyGeometryMatrix(
-        Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M> &B, unsigned int column_offset,
-        T b, T c, T d) {
+    Eigen::Matrix<T,
+                  TETRAHEDRON_GEOMETRIC_MATRIX_N,
+                  TETRAHEDRON_GEOMETRIC_MATRIX_M> &B,
+    unsigned int column_offset,
+    T b,
+    T c,
+    T d) {
     B(0, 0 + column_offset) = b;
     B(1, 1 + column_offset) = c;
     B(2, 2 + column_offset) = d;
@@ -227,14 +256,17 @@ void TetrahedronSolver<T>::AssemblyGeometryMatrix(
 
 template<class T>
 Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
-TetrahedronSolver<T>::ComputeForceVector(const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
-                                         T volume, const FacesArea<T> &faces_area,
+TetrahedronSolver<T>::ComputeForceVector(const TetrahedronShapeFunctionCoefficients<
+    T> &shape_function_coefficients,
+                                         T volume,
+                                         const FacesArea<T> &faces_area,
                                          const Eigen::Vector3<T> &body_force,
                                          const TractionForce<T> &traction_force) {
     auto consistent_body_force = ComputeBodyForceVector(volume, body_force);
-    auto consistent_traction_force = ComputeTractionForceVector(shape_function_coefficients,
-                                                                faces_area,
-                                                                traction_force);
+    auto consistent_traction_force =
+        ComputeTractionForceVector(shape_function_coefficients,
+                                   faces_area,
+                                   traction_force);
 
     return consistent_body_force + consistent_traction_force;
 }
@@ -242,8 +274,8 @@ TetrahedronSolver<T>::ComputeForceVector(const TetrahedronShapeFunctionCoefficie
 template<class T>
 Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
 TetrahedronSolver<T>::ComputeBodyForceVector(
-        T volume,
-        const Eigen::Vector3<T> &body_force) {
+    T volume,
+    const Eigen::Vector3<T> &body_force) {
     Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N> consistent_body_force;
 
     consistent_body_force(0) = body_force.x();
@@ -267,32 +299,52 @@ TetrahedronSolver<T>::ComputeBodyForceVector(
 template<class T>
 Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
 TetrahedronSolver<T>::ComputeTractionForceVector(
-        const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
-        const FacesArea<T> &faces_area,
-        const TractionForce<T> &traction_force) {
+    const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
+    const FacesArea<T> &faces_area,
+    const TractionForce<T> &traction_force) {
     auto &coeff = shape_function_coefficients;
 
     auto traction_force_face1 =
-            ComputeTractionForceVectorFace(0, traction_force.force_face1, faces_area.area1,
-                                           coeff.B1, coeff.C1, coeff.D1);
+        ComputeTractionForceVectorFace(0,
+                                       traction_force.force_face1,
+                                       faces_area.area1,
+                                       coeff.B1,
+                                       coeff.C1,
+                                       coeff.D1);
     auto traction_force_face2 =
-            ComputeTractionForceVectorFace(1, traction_force.force_face2, faces_area.area2,
-                                           coeff.B2, coeff.C2, coeff.D2);
+        ComputeTractionForceVectorFace(1,
+                                       traction_force.force_face2,
+                                       faces_area.area2,
+                                       coeff.B2,
+                                       coeff.C2,
+                                       coeff.D2);
     auto traction_force_face3 =
-            ComputeTractionForceVectorFace(2, traction_force.force_face3, faces_area.area3,
-                                           coeff.B3, coeff.C3, coeff.D3);
+        ComputeTractionForceVectorFace(2,
+                                       traction_force.force_face3,
+                                       faces_area.area3,
+                                       coeff.B3,
+                                       coeff.C3,
+                                       coeff.D3);
     auto traction_force_face4 =
-            ComputeTractionForceVectorFace(3, traction_force.force_face4, faces_area.area4,
-                                           coeff.B4, coeff.C4, coeff.D4);
+        ComputeTractionForceVectorFace(3,
+                                       traction_force.force_face4,
+                                       faces_area.area4,
+                                       coeff.B4,
+                                       coeff.C4,
+                                       coeff.D4);
 
-    return traction_force_face1 + traction_force_face2 + traction_force_face3 + traction_force_face4;
+    return traction_force_face1 + traction_force_face2 + traction_force_face3
+        + traction_force_face4;
 }
 
 template<class T>
 Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
-TetrahedronSolver<T>::ComputeTractionForceVectorFace(unsigned int face_index, T traction_force,
+TetrahedronSolver<T>::ComputeTractionForceVectorFace(unsigned int face_index,
+                                                     T traction_force,
                                                      T area,
-                                                     T B, T C, T D) {
+                                                     T B,
+                                                     T C,
+                                                     T D) {
     auto S = std::sqrt((B * B) + (C * C) + (D * D));
     auto B_normal = B / S;
     auto C_normal = C / S;
@@ -325,9 +377,12 @@ TetrahedronSolver<T>::ComputeTractionForceVectorFace(unsigned int face_index, T 
 
 template<class T>
 Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
-TetrahedronSolver<T>::AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients<T> &coefficients,
+TetrahedronSolver<T>::AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients<
+    T> &coefficients,
                                               T volume) {
-    Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N> jacobian_inverse;
+    Eigen::Matrix<T,
+                  TETRAHEDRON_JACOBIAN_MATRIX_N,
+                  TETRAHEDRON_JACOBIAN_MATRIX_N> jacobian_inverse;
     jacobian_inverse(0, 0) = coefficients.A1;
     jacobian_inverse(1, 0) = coefficients.A2;
     jacobian_inverse(2, 0) = coefficients.A3;
@@ -353,7 +408,9 @@ TetrahedronSolver<T>::AssemblyJacobianInverse(const TetrahedronShapeFunctionCoef
     return jacobian_inverse;
 }
 
-template class TetrahedronSolver<double>;
-template class TetrahedronSolver<float>;
+template
+class TetrahedronSolver<double>;
+template
+class TetrahedronSolver<float>;
 
 }

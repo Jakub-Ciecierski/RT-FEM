@@ -26,5 +26,4 @@ private:
 };
 }
 
-
 #endif //PROJECT_TETRAHEDRONFINITEELEMENT_H

@@ -11,7 +11,7 @@ void VectorMathTest::SetUp() {
 void VectorMathTest::TearDown() {
 }
 
-TEST_F(VectorMathTest, Cross_OrthonormalBasis){
+TEST_F(VectorMathTest, Cross_OrthonormalBasis) {
     rtfem::Vector3 v1(1, 0, 0);
     rtfem::Vector3 v2(0, 1, 0);
 
@@ -20,7 +20,7 @@ TEST_F(VectorMathTest, Cross_OrthonormalBasis){
     EXPECT_EQ(expected_vector, vector_math_->Cross(v1, v2));
 }
 
-TEST_F(VectorMathTest, Magnitude_UnitLength){
+TEST_F(VectorMathTest, Magnitude_UnitLength) {
     rtfem::Vector3 v(1, 0, 0);
     double expected_magnitude = 1.0;
     EXPECT_EQ(expected_magnitude, vector_math_->Magnitude(v));

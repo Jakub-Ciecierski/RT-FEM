@@ -22,7 +22,9 @@ unsigned int TetrahedronFiniteElement<T>::GetVertexCount() const {
     return 4;
 }
 
-template class TetrahedronFiniteElement<double>;
-template class TetrahedronFiniteElement<float>;
+template
+class TetrahedronFiniteElement<double>;
+template
+class TetrahedronFiniteElement<float>;
 
 }

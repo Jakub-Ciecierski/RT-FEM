@@ -30,17 +30,17 @@ template<class T>
 class FEMModel {
 public:
     FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
-             const Material<T>&& material);
+             const Material <T> &&material);
     ~FEMModel() = default;
 
-    const FEMGeometry<T>& fem_geometry() const {return *fem_geometry_;}
+    const FEMGeometry<T> &fem_geometry() const { return *fem_geometry_; }
 
-    Material<T>& material(){return material_;}
+    Material <T> &material() { return material_; }
 
 private:
     std::unique_ptr<FEMGeometry<T>> fem_geometry_;
 
-    Material<T> material_;
+    Material <T> material_;
 };
 
 }

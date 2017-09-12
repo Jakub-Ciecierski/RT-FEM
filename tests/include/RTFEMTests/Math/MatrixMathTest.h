@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-namespace rtfem{
+namespace rtfem {
 class Matrix;
 class MatrixMath;
 }

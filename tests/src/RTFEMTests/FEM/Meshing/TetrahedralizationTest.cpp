@@ -15,7 +15,7 @@ void TetrahedralizationTest::SetUp() {
 void TetrahedralizationTest::TearDown() {
 }
 
-TEST_F(TetrahedralizationTest, Compute_NumberOfElements){
+TEST_F(TetrahedralizationTest, Compute_NumberOfElements) {
     rtfem::Tetrahedralization<float> tetrahedralization;
     auto fem_geometry = tetrahedralization.Compute(*triangle_mesh_cube_);
 
@@ -26,7 +26,7 @@ TEST_F(TetrahedralizationTest, Compute_NumberOfElements){
     EXPECT_EQ(expected_tetra_count, fem_geometry.finite_elements.size());
 }
 
-TEST_F(TetrahedralizationTest, Compute_SetVolumeConstriant){
+TEST_F(TetrahedralizationTest, Compute_SetVolumeConstriant) {
     rtfem::Tetrahedralization<float> tetrahedralization;
 
     rtfem::TetrahedralizationOptions options;

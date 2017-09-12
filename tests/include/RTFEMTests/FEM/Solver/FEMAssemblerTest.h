@@ -4,7 +4,7 @@
 
 #include <memory>
 
-namespace rtfem{
+namespace rtfem {
 template<class T>
 class FEMModel;
 

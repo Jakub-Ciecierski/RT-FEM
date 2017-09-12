@@ -19,5 +19,4 @@ public:
 };
 }
 
-
 #endif //PROJECT_VECTOR4_H

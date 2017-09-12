@@ -1,11 +1,13 @@
 #include "RTFEM/FEM/FiniteElement.h"
 
-namespace rtfem{
+namespace rtfem {
 
 template<class T>
-FiniteElement<T>::FiniteElement(const FiniteElementType&& type) : type_(type){}
+FiniteElement<T>::FiniteElement(const FiniteElementType &&type) : type_(type) {}
 
-template class FiniteElement<double>;
-template class FiniteElement<float>;
+template
+class FiniteElement<double>;
+template
+class FiniteElement<float>;
 
 }

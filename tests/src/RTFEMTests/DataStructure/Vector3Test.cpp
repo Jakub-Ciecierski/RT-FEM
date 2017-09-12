@@ -3,11 +3,11 @@
 #include <RTFEM/Memory/UniquePointer.h>
 #include <RTFEM/DataStructure/Vector3.h>
 
-void Vector3Test::SetUp(){
+void Vector3Test::SetUp() {
     vector_ = rtfem::make_unique<rtfem::Vector3>();
 }
 
-void Vector3Test::TearDown(){
+void Vector3Test::TearDown() {
 
 }
 

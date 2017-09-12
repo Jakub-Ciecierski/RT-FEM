@@ -26,5 +26,4 @@ private:
 
 }
 
-
 #endif //PROJECT_RANDOMDISTRIBUTIONS_H

@@ -22,5 +22,4 @@ protected:
 
 };
 
-
 #endif //PROJECT_VECTOR3TEST_H

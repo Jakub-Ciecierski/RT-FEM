@@ -19,7 +19,7 @@ struct TriangleMesh {
     std::vector<Triangle<T>> triangles;
 };
 
-struct TriangleIndices{
+struct TriangleIndices {
     unsigned int v1;
     unsigned int v2;
     unsigned int v3;
@@ -31,12 +31,11 @@ struct TriangleIndices{
  * can be easily extracted from any renderable objects.
  */
 template<class T>
-struct TriangleMeshIndexed{
+struct TriangleMeshIndexed {
     std::vector<Eigen::Vector3<T>> points;
     std::vector<TriangleIndices> triangles;
 };
 
 }
-
 
 #endif //PROJECT_SURFACEMESH_H

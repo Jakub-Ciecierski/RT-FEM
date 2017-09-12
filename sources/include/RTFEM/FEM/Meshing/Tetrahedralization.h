@@ -19,7 +19,7 @@ struct FEMGeometry;
 template<class T>
 struct TriangleMeshIndexed;
 
-struct TetrahedralizationOptions{
+struct TetrahedralizationOptions {
     /**
      * No tetrahedra will be generated with volume greater than maximum_volume.
      * 0 indicates no constraint
@@ -38,7 +38,7 @@ public:
     Tetrahedralization() = default;
     ~Tetrahedralization() = default;
 
-    void SetOptions(const TetrahedralizationOptions& options);
+    void SetOptions(const TetrahedralizationOptions &options);
 
     /**
      * Computes the Tetrahedralization.
@@ -50,7 +50,7 @@ public:
 
 private:
     void SetupInput(const TriangleMeshIndexed<T> &triangle_mesh,
-                    tetgenio& tetgen_input,
+                    tetgenio &tetgen_input,
                     tetgenbehavior &tetgen_options);
     void SetupInputPoints(const TriangleMeshIndexed<T> &triangle_mesh,
                           tetgenio &tetgen_input);
@@ -59,16 +59,15 @@ private:
     void SetupInputOptions(tetgenbehavior &tetgen_options);
 
     FEMGeometry<T> FetchOutput(tetgenio &tetgen_output);
-    void FetchPoints(FEMGeometry<T>& fem_geometry,
+    void FetchPoints(FEMGeometry<T> &fem_geometry,
                      tetgenio &tetgen_output);
-    void FetchTetrahedra(FEMGeometry<T>& fem_geometry,
+    void FetchTetrahedra(FEMGeometry<T> &fem_geometry,
                          tetgenio &tetgen_output);
-    void FetchFaces(FEMGeometry<T>& fem_geometry,
+    void FetchFaces(FEMGeometry<T> &fem_geometry,
                     tetgenio &tetgen_output);
 
     TetrahedralizationOptions options_;
 };
 }
-
 
 #endif //PROJECT_TRIANGULATOR_H

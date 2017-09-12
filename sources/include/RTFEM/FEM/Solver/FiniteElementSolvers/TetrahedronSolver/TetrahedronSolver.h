@@ -43,30 +43,32 @@ class TetrahedronFiniteElement;
  *      http://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/AFEM.Ch09.d/AFEM.Ch09.pdf
  */
 template<class T>
-class TetrahedronSolver : public FiniteElementSolver<T>{
+class TetrahedronSolver : public FiniteElementSolver<T> {
 public:
     TetrahedronSolver() = default;
     ~TetrahedronSolver() = default;
 
     virtual FiniteElementSolverData<T> Solve(
         std::shared_ptr<FiniteElement<T>> finite_element,
-        const std::vector<std::shared_ptr<Vertex<T>>>& vertices) override;
+        const std::vector<std::shared_ptr<Vertex<T>>> &vertices) override;
 
     virtual FiniteElementSolverData<T> Solve(
         std::shared_ptr<FiniteElement<T>> finite_element,
-        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+        const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
         const Eigen::Vector3<T> &body_force,
         const TractionForce<T> &traction_force) override;
 
-    Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
+    Eigen::Matrix<T,
+                  TETRAHEDRON_JACOBIAN_MATRIX_N,
+                  TETRAHEDRON_JACOBIAN_MATRIX_N>
     SolveJacobianInverse(std::shared_ptr<FiniteElement<T>> finite_element,
-                         const std::vector<std::shared_ptr<Vertex<T>>>& vertices);
+                         const std::vector<std::shared_ptr<Vertex<T>>> &vertices);
 
 private:
     Edges<T> ComputeEdgesCache(const Vertex<T> &v1, const Vertex<T> &v2,
                                const Vertex<T> &v3, const Vertex<T> &v4);
 
-    FacesArea<T> ComputeFacesArea(const Edges<T>& edges);
+    FacesArea<T> ComputeFacesArea(const Edges<T> &edges);
 
     /**
      * Computes The coefficients on linear tetrahedron shape function.
@@ -79,14 +81,14 @@ private:
      * @return
      */
     TetrahedronShapeFunctionCoefficients<T>
-    ComputeShapeFunctionCoefficients(const Vertex<T>& v1, const Vertex<T>& v2,
-                                     const Vertex<T>& v3, const Vertex<T>& v4,
-                                     const Edges<T>& edges);
+    ComputeShapeFunctionCoefficients(const Vertex<T> &v1, const Vertex<T> &v2,
+                                     const Vertex<T> &v3, const Vertex<T> &v4,
+                                     const Edges<T> &edges);
 
     Eigen::Vector4<T> ComputeAi(const Vertex<T> &v1, const Vertex<T> &v2,
                                 const Vertex<T> &v3, const Vertex<T> &v4);
 
-    T ComputeVolume(const TetrahedronShapeFunctionCoefficients<T>& coefficients);
+    T ComputeVolume(const TetrahedronShapeFunctionCoefficients<T> &coefficients);
 
     /**
      * Computes The [6x12] Geometric Matrix (B)
@@ -95,13 +97,18 @@ private:
      * @param volume
      * @return
      */
-    Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M>
-    ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients<T>& coefficients, T volume);
+    Eigen::Matrix<T,
+                  TETRAHEDRON_GEOMETRIC_MATRIX_N,
+                  TETRAHEDRON_GEOMETRIC_MATRIX_M>
+    ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients<T> &coefficients,
+                          T volume);
 
     void AssemblyGeometryMatrix(
-            Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M> &B,
-            unsigned int column_offset,
-            T b, T c, T d);
+        Eigen::Matrix<T,
+                      TETRAHEDRON_GEOMETRIC_MATRIX_N,
+                      TETRAHEDRON_GEOMETRIC_MATRIX_M> &B,
+        unsigned int column_offset,
+        T b, T c, T d);
 
     /**
      * Computes Force vector [12x1] which is a combination of body force and traction force.
@@ -128,11 +135,12 @@ private:
                                    T area,
                                    T B, T C, T D);
 
-    Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
+    Eigen::Matrix<T,
+                  TETRAHEDRON_JACOBIAN_MATRIX_N,
+                  TETRAHEDRON_JACOBIAN_MATRIX_N>
     AssemblyJacobianInverse(const TetrahedronShapeFunctionCoefficients<T> &coefficients,
                             T volume);
 };
 }
-
 
 #endif //PROJECT_TETRAHEDRONSOLVER_H

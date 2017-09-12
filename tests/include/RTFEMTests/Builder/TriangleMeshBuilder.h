@@ -17,6 +17,4 @@ public:
     std::unique_ptr<rtfem::TriangleMeshIndexed<float>> BuildCube();
 };
 
-
-
 #endif //PROJECT_TRIANGLEMESHBUILDER_H

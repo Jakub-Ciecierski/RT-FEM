@@ -18,18 +18,18 @@ template<class T>
 class FEMSolver {
 public:
     FEMSolver(
-            const ConstitutiveSolverType&& constitutive_solver_type,
-            const GeometrySolverType&& geometry_solver_type,
-            const AnalysisSolverType&& analysis_solver_type);
+        const ConstitutiveSolverType &&constitutive_solver_type,
+        const GeometrySolverType &&geometry_solver_type,
+        const AnalysisSolverType &&analysis_solver_type);
     ~FEMSolver() = default;
 
-    const ConstitutiveSolverType& constitutive_solver_type(){
+    const ConstitutiveSolverType &constitutive_solver_type() {
         return constitutive_solver_type_;
     }
-    const GeometrySolverType& geometry_solver_type(){
+    const GeometrySolverType &geometry_solver_type() {
         return geometry_solver_type_;
     }
-    const AnalysisSolverType& analysis_solver_type(){
+    const AnalysisSolverType &analysis_solver_type() {
         return analysis_solver_type_;
     }
 
@@ -37,7 +37,7 @@ public:
 
 private:
     Eigen::Vector<T, Eigen::Dynamic> SolveSystemOfEquations(
-            const FEMAssemblerData<T>& assembler_data);
+        const FEMAssemblerData<T> &assembler_data);
 
     Eigen::Vector<T, Eigen::Dynamic> displacements_;
 
@@ -46,6 +46,5 @@ private:
     AnalysisSolverType analysis_solver_type_;
 };
 }
-
 
 #endif //PROJECT_FEMSOLVER_H

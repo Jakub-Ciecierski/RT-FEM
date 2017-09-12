@@ -14,19 +14,19 @@ class FiniteElement;
 template<class T>
 class Vertex;
 
- /**
- *  Contains:
- *      Volume (V)
- *      Geometry Matrix (B)
- *      Force vector (p)
- *
- *  Coordinates:
- *      x2 is assumed to point 'up'
- */
+/**
+*  Contains:
+*      Volume (V)
+*      Geometry Matrix (B)
+*      Force vector (p)
+*
+*  Coordinates:
+*      x2 is assumed to point 'up'
+*/
 template<class T>
-struct FiniteElementSolverData{
+struct FiniteElementSolverData {
     FiniteElementSolverData() :
-            volume(0){}
+        volume(0) {}
     T volume;
 
     // Used to compute Global Stiffness
@@ -61,15 +61,14 @@ public:
 
     virtual FiniteElementSolverData<T> Solve(
         std::shared_ptr<FiniteElement<T>> finite_element,
-        const std::vector<std::shared_ptr<Vertex<T>>>& vertices) = 0;
+        const std::vector<std::shared_ptr<Vertex<T>>> &vertices) = 0;
 
     virtual FiniteElementSolverData<T> Solve(
         std::shared_ptr<FiniteElement<T>> finite_element,
-        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+        const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
         const Eigen::Vector3<T> &body_force,
         const TractionForce<T> &traction_force) = 0;
 };
 }
-
 
 #endif //PROJECT_FINITEELEMENTSOLVER_H

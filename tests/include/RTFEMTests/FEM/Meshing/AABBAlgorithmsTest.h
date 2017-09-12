@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace rtfem{
+namespace rtfem {
 
 template<class T>
 struct Triangle;
