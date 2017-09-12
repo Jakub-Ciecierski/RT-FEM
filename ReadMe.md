@@ -32,6 +32,7 @@ They are installed automatically when using cmake installation.
 * TetGen (external/tetgen1.5.0)
     * 3D Tetrahedron meshing algorithm
 * Eigen (external/eigen)
+    * Matrix operations and System of Linear Equation Solver
 * googletest (tests/external/googletest)
     * Unit testing
 

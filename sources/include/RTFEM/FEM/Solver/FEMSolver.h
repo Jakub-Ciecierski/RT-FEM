@@ -12,6 +12,9 @@ template<class T>
 class FEMModel;
 
 template<class T>
+class FEMAssemblerData;
+
+template<class T>
 class FEMSolver {
 public:
     FEMSolver(
@@ -33,6 +36,11 @@ public:
     void Solve(const std::shared_ptr<FEMModel<T>> fem_model);
 
 private:
+    Eigen::Vector<T, Eigen::Dynamic> SolveSystemOfEquations(
+            const FEMAssemblerData<T>& assembler_data);
+
+    Eigen::Vector<T, Eigen::Dynamic> displacements_;
+
     ConstitutiveSolverType constitutive_solver_type_;
     GeometrySolverType geometry_solver_type_;
     AnalysisSolverType analysis_solver_type_;
