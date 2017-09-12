@@ -12,12 +12,6 @@ class FiniteElement;
 template<class T>
 class Vertex;
 
-struct TriangleFace{
-    int v1;
-    int v2;
-    int v3;
-};
-
 struct FiniteElementIndices{
     int v1;
     int v2;
@@ -31,9 +25,8 @@ struct FiniteElementIndices{
 template<class T>
 struct FEMGeometry {
     std::vector<std::shared_ptr<Vertex<T>>> vertices;
-    std::vector<TriangleFace> finite_element_faces;
-    std::vector<FiniteElementIndices> finite_element_indices;
 
+    std::vector<FiniteElementIndices> finite_element_indices;
     std::vector<std::shared_ptr<FiniteElement<T>>> finite_elements;
 };
 }
