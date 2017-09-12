@@ -4,11 +4,15 @@
 #include <RTFEM/DataTypes.h>
 
 #include <memory>
+#include <vector>
 
 namespace rtfem {
 
 template<class T>
 class FiniteElement;
+
+template<class T>
+class Vertex;
 
  /**
  *  Contains:
@@ -55,11 +59,15 @@ public:
     FiniteElementSolver() = default;
     virtual ~FiniteElementSolver() = default;
 
-    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element) = 0;
+    virtual FiniteElementSolverData<T> Solve(
+        std::shared_ptr<FiniteElement<T>> finite_element,
+        const std::vector<std::shared_ptr<Vertex<T>>>& vertices) = 0;
 
-    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element,
-                                             const Eigen::Vector3<T> &body_force,
-                                             const TractionForce<T> &traction_force) = 0;
+    virtual FiniteElementSolverData<T> Solve(
+        std::shared_ptr<FiniteElement<T>> finite_element,
+        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+        const Eigen::Vector3<T> &body_force,
+        const TractionForce<T> &traction_force) = 0;
 };
 }
 

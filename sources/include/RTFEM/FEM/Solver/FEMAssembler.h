@@ -1,9 +1,10 @@
 #ifndef PROJECT_GLOBALSTIFFNESSASSEMBLER_H
 #define PROJECT_GLOBALSTIFFNESSASSEMBLER_H
 
-#include <memory>
-
 #include <RTFEM/DataTypes.h>
+
+#include <memory>
+#include <vector>
 
 namespace rtfem {
 
@@ -12,6 +13,9 @@ class FEMModel;
 
 template<class T>
 class FiniteElement;
+
+template<class T>
+class Vertex;
 
 template<class T>
 class FiniteElementSolver;
@@ -111,8 +115,10 @@ private:
      * @return
      */
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
-    ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElement<T>> finite_element,
-                                 unsigned int vertex_count);
+    ComputeBooleanAssemblyMatrix(
+        const std::shared_ptr<FiniteElement<T>> finite_element,
+        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+        unsigned int vertex_count);
 
     /**
      * Computes Partial Global Stiffness Matrix.

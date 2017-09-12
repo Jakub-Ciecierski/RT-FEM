@@ -34,10 +34,7 @@ TEST_F(FEMAssemblerTest,
     fem_geometry->vertices[3] = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(4,3,6));
 
     fem_geometry->finite_elements[0] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
-            fem_geometry->vertices[0],
-            fem_geometry->vertices[1],
-            fem_geometry->vertices[2],
-            fem_geometry->vertices[3]);
+            0, 1, 2, 3);
 
     auto fem_model = std::make_shared<rtfem::FEMModel<double>>(
         std::move(fem_geometry),

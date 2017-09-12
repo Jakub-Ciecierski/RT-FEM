@@ -13,12 +13,12 @@ class Vertex;
 template<class T>
 class TetrahedronFiniteElement : public FiniteElement<T> {
 public:
-    TetrahedronFiniteElement(std::shared_ptr<Vertex<T>> vertex1,
-                             std::shared_ptr<Vertex<T>> vertex2,
-                             std::shared_ptr<Vertex<T>> vertex3,
-                             std::shared_ptr<Vertex<T>> vertex4);
+    TetrahedronFiniteElement(unsigned int vertex1,
+                             unsigned int vertex2,
+                             unsigned int vertex3,
+                             unsigned int vertex4);
 
-    ~TetrahedronFiniteElement();
+    ~TetrahedronFiniteElement() = default;
 
     unsigned int GetVertexCount() const override;
 private:

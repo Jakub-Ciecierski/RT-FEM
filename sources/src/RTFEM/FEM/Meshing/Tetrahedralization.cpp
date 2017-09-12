@@ -148,7 +148,10 @@ void Tetrahedralization<T>::FetchTetrahedra(FEMGeometry<T>& fem_geometry,
         auto v4 = fem_geometry.vertices[finite_element_indices.v4];
 
         auto finite_element = std::make_shared<TetrahedronFiniteElement<T>>(
-                v1, v2, v3, v4);
+            finite_element_indices.v1,
+            finite_element_indices.v2,
+            finite_element_indices.v3,
+            finite_element_indices.v4);
 
         fem_geometry.finite_elements.push_back(finite_element);
         fem_geometry.finite_element_indices.push_back(finite_element_indices);

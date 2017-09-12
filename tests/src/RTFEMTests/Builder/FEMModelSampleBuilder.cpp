@@ -23,27 +23,15 @@ FEMModelSampleBuilder::CreateRandomFEMModel() {
     fem_geometry->vertices[7] = std::make_shared<rtfem::Vertex<double>>(7, Eigen::Vector3<double>(0,1,0));
     fem_geometry->vertices[8] = std::make_shared<rtfem::Vertex<double>>(8, Eigen::Vector3<double>(0,0,2));
 
-    fem_geometry->finite_elements[0] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
-            fem_geometry->vertices[0],
-            fem_geometry->vertices[1],
-            fem_geometry->vertices[7],
-            fem_geometry->vertices[8]);
+    fem_geometry->finite_elements[0]
+        = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(0,1,7,8);
 
     fem_geometry->finite_elements[1] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
-            fem_geometry->vertices[1],
-            fem_geometry->vertices[2],
-            fem_geometry->vertices[3],
-            fem_geometry->vertices[8]);
+            1,2,3,8);
     fem_geometry->finite_elements[2] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
-            fem_geometry->vertices[3],
-            fem_geometry->vertices[4],
-            fem_geometry->vertices[5],
-            fem_geometry->vertices[8]);
+            3,4,5,8);
     fem_geometry->finite_elements[3] = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
-            fem_geometry->vertices[5],
-            fem_geometry->vertices[6],
-            fem_geometry->vertices[0],
-            fem_geometry->vertices[8]);
+            5,6,0,8);
 
     return std::make_shared<rtfem::FEMModel<double>>(
             std::move(fem_geometry),

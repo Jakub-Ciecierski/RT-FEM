@@ -8,19 +8,24 @@
 namespace rtfem {
 
 template<class T>
-FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(std::shared_ptr<FiniteElement<T>> finite_element){
-    return Solve(finite_element, Eigen::Vector3<T>::Zero(), TractionForce<T>{});
+FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
+    std::shared_ptr<FiniteElement<T>> finite_element,
+    const std::vector<std::shared_ptr<Vertex<T>>>& vertices){
+    return Solve(finite_element,
+                 vertices,
+                 Eigen::Vector3<T>::Zero(), TractionForce<T>{});
 }
 
 template<class T>
 FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
         std::shared_ptr<FiniteElement<T>> finite_element,
+        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
         const Eigen::Vector3<T>& body_force,
         const TractionForce<T>& traction_force){
-    auto v1 = finite_element->vertices()[0];
-    auto v2 = finite_element->vertices()[1];
-    auto v3 = finite_element->vertices()[2];
-    auto v4 = finite_element->vertices()[3];
+    auto v1 = vertices[finite_element->vertices_indices()[0]];
+    auto v2 = vertices[finite_element->vertices_indices()[1]];
+    auto v3 = vertices[finite_element->vertices_indices()[2]];
+    auto v4 = vertices[finite_element->vertices_indices()[3]];
 
     auto edges = ComputeEdgesCache(*v1, *v2, *v3, *v4);
     auto faces_area = ComputeFacesArea(edges);
@@ -38,11 +43,13 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
 
 template<class T>
 Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
-TetrahedronSolver<T>::SolveJacobianInverse(std::shared_ptr<FiniteElement<T>> finite_element){
-    auto v1 = finite_element->vertices()[0];
-    auto v2 = finite_element->vertices()[1];
-    auto v3 = finite_element->vertices()[2];
-    auto v4 = finite_element->vertices()[3];
+TetrahedronSolver<T>::SolveJacobianInverse(
+    std::shared_ptr<FiniteElement<T>> finite_element,
+    const std::vector<std::shared_ptr<Vertex<T>>>& vertices){
+    auto v1 = vertices[finite_element->vertices_indices()[0]];
+    auto v2 = vertices[finite_element->vertices_indices()[1]];
+    auto v3 = vertices[finite_element->vertices_indices()[2]];
+    auto v4 = vertices[finite_element->vertices_indices()[3]];
 
     auto edges = ComputeEdgesCache(*v1, *v2, *v3, *v4);
 

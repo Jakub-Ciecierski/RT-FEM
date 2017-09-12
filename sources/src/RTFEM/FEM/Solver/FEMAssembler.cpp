@@ -14,7 +14,8 @@
 namespace rtfem {
 
 template<class T>
-FEMAssemblerData<T> FEMAssembler<T>::Compute(const std::shared_ptr<FEMModel<T>> fem_model) {
+FEMAssemblerData<T> FEMAssembler<T>::Compute(
+    const std::shared_ptr<FEMModel<T>> fem_model) {
     const auto& fem_geometry = fem_model->fem_geometry();
     if(fem_geometry.finite_elements.size() == 0)
         throw std::invalid_argument("FEMModel contains no Finite Elements!");
@@ -26,9 +27,11 @@ FEMAssemblerData<T> FEMAssembler<T>::Compute(const std::shared_ptr<FEMModel<T>> 
     FEMAssemblerData<T> fem_assembler_data(global_dof_count);
     for(const auto& finite_element : fem_geometry.finite_elements){
         auto finite_element_solver = GetFiniteElementSolver(finite_element->type());
-        auto finite_element_solver_data = finite_element_solver->Solve(finite_element);
+        auto finite_element_solver_data = finite_element_solver->Solve(
+            finite_element, fem_geometry.vertices);
 
-        auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(finite_element, vertex_count);
+        auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(
+            finite_element, fem_geometry.vertices, vertex_count);
 
         auto partial_global_stiffness_matrix_Ke =
                 ComputePartialGlobalStiffnessMatrix(finite_element_solver_data.geometry_matrix,
@@ -90,8 +93,10 @@ FEMAssembler<T>::GetFiniteElementSolver(const FiniteElementType& type){
 
 template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
-FEMAssembler<T>::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElement<T>> finite_element,
-                                           unsigned int vertex_count) {
+FEMAssembler<T>::ComputeBooleanAssemblyMatrix(
+    const std::shared_ptr<FiniteElement<T>> finite_element,
+    const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+    unsigned int vertex_count) {
     auto local_vertex_count = finite_element->GetVertexCount();
 
     unsigned int n = DIMENSION_COUNT * local_vertex_count;
@@ -100,7 +105,7 @@ FEMAssembler<T>::ComputeBooleanAssemblyMatrix(const std::shared_ptr<FiniteElemen
             = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(n, m);
 
     for (unsigned int i = 0; i < local_vertex_count; i++) {
-        const auto &vertex = finite_element->vertices()[i];
+        const auto &vertex = vertices[finite_element->vertices_indices()[i]];
         auto global_id = vertex->id();
 
         auto global_column_start = global_id * DIMENSION_COUNT;

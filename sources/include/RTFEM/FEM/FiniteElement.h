@@ -22,13 +22,14 @@ public:
     virtual ~FiniteElement() = default;
 
     const FiniteElementType& type() const {return type_;}
-    const std::vector<std::shared_ptr<Vertex<T>>>& vertices(){return vertices_;}
+
+    const std::vector<unsigned int>& vertices_indices(){return
+            vertices_indices_;}
 
     virtual unsigned int GetVertexCount() const = 0;
 
 protected:
-    std::vector<std::shared_ptr<Vertex<T>>> vertices_;
-
+    std::vector<unsigned int> vertices_indices_;
 private:
     FiniteElementType type_;
 };

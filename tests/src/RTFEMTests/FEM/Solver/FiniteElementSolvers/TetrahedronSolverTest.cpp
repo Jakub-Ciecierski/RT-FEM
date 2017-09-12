@@ -10,22 +10,35 @@
 void TetrahedronSolverTest::SetUp() {
     solver_ = rtfem::make_unique<rtfem::TetrahedronSolver<double>>();
 
-    auto vertex0 = std::make_shared<rtfem::Vertex<double>>(0, Eigen::Vector3<double>(1, 0, 2));
-    auto vertex1 = std::make_shared<rtfem::Vertex<double>>(1, Eigen::Vector3<double>(1, 2, 1));
-    auto vertex2 = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(0, 0, 0));
-    auto vertex3 = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(2, 0, 0));
+    vertices_.push_back(std::make_shared<rtfem::Vertex<double>>(0,
+                                                                Eigen::Vector3<
+                                                                    double>
+                                                                    (1, 0, 2)));
 
-    finite_element_ = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertex0,
-                                                                                      vertex1,
-                                                                                      vertex2,
-                                                                                      vertex3);
+    vertices_.push_back(std::make_shared<rtfem::Vertex<double>>(1,
+                                                                Eigen::Vector3<
+                                                                    double>
+                                                                    (1, 2, 1)));
+    vertices_.push_back(std::make_shared<rtfem::Vertex<double>>(2,
+                                                                Eigen::Vector3<
+                                                                    double>(0,
+                                                                            0,
+                                                                            0)));
+    vertices_.push_back(std::make_shared<rtfem::Vertex<double>>(3,
+                                                                Eigen::Vector3<
+                                                                    double>(2,
+                                                                            0,
+                                                                            0)));
+
+    finite_element_ = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+        0, 1, 2, 3);
 }
 
 void TetrahedronSolverTest::TearDown() {
 }
 
 TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions){
-    auto data = solver_->Solve(finite_element_);
+    auto data = solver_->Solve(finite_element_, vertices_);
 
     EXPECT_EQ((unsigned int)6, data.geometry_matrix.rows());
     EXPECT_EQ((unsigned int)12, data.geometry_matrix.cols());
@@ -35,14 +48,31 @@ TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions){
  * TODO: Should move it to benchmarks test
  */
 TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
-    auto vertex0 = std::make_shared<rtfem::Vertex<double>>(0, Eigen::Vector3<double>(-1.0/2.0, -2.0/9.0, 4.0/11.0));
-    auto vertex1 = std::make_shared<rtfem::Vertex<double>>(1, Eigen::Vector3<double>(1.0/16.0, 0, 2.0/13.0));
-    auto vertex2 = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(-1.0/34.0, -1.0/13.0, 1.0/3.0));
-    auto vertex3 = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(-3.0/11.0, -2.0/9.0, -1.0/4.0));
-    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertex0,
-                                                                                          vertex1,
-                                                                                          vertex2,
-                                                                                          vertex3);
+    auto vertices = std::vector<std::shared_ptr<rtfem::Vertex<double>>>(4);
+    vertices[0] = std::make_shared<rtfem::Vertex<double>>(0,
+                                                          Eigen::Vector3<double>(
+                                                              -1.0 / 2.0,
+                                                              -2.0 / 9.0,
+                                                              4.0 / 11.0));
+    vertices[1] = std::make_shared<rtfem::Vertex<double>>(1,
+                                                          Eigen::Vector3<double>(
+                                                              1.0 / 16.0,
+                                                              0,
+                                                              2.0 / 13.0));
+    vertices[2] = std::make_shared<rtfem::Vertex<double>>(2,
+                                                          Eigen::Vector3<double>(
+                                                              -1.0 / 34.0,
+                                                              -1.0 / 13.0,
+                                                              1.0 / 3.0));
+    vertices[3] = std::make_shared<rtfem::Vertex<double>>(3,
+                                                          Eigen::Vector3<double>(
+                                                              -3.0 / 11.0,
+                                                              -2.0 / 9.0,
+                                                              -1.0 / 4.0));
+    auto finite_element =
+        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            0, 1, 2, 3);
+
     Eigen::Matrix<double, 4, 4> expected_jacobian_inverse;
     expected_jacobian_inverse(0, 0) = 0.18591;
     expected_jacobian_inverse(1, 0) = 1.54868;
@@ -64,7 +94,8 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
     expected_jacobian_inverse(2, 3) = 2.60127;
     expected_jacobian_inverse(3, 3) = -1.17661;
 
-    auto jacobian_inverse = solver_->SolveJacobianInverse(finite_element);
+    auto jacobian_inverse = solver_->SolveJacobianInverse(finite_element,
+                                                          vertices);
 
     // Round
     for(unsigned int i = 0; i < jacobian_inverse.rows();i++){
@@ -81,14 +112,19 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1){
  * TODO: Should move it to benchmarks test
  */
 TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
-    auto vertex0 = std::make_shared<rtfem::Vertex<double>>(0, Eigen::Vector3<double>(1.0/56.0, -2.0/13.0, -4.0/11.0));
-    auto vertex1 = std::make_shared<rtfem::Vertex<double>>(1, Eigen::Vector3<double>(2.0/9.0, 1.0/9.0, -2.0/11.0));
-    auto vertex2 = std::make_shared<rtfem::Vertex<double>>(2, Eigen::Vector3<double>(-1.0/9.0, -7.0/15.0, 3.0/7.0));
-    auto vertex3 = std::make_shared<rtfem::Vertex<double>>(3, Eigen::Vector3<double>(-1.0/34.0, -4.0/9.0, 2.0/7.0));
-    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(vertex0,
-                                                                                          vertex1,
-                                                                                          vertex2,
-                                                                                          vertex3);
+    auto vertices = std::vector<std::shared_ptr<rtfem::Vertex<double>>>(4);
+
+    vertices[0] = std::make_shared<rtfem::Vertex<double>>(0,
+                                                       Eigen::Vector3<double>(1.0/56.0, -2.0/13.0, -4.0/11.0));
+    vertices[1] = std::make_shared<rtfem::Vertex<double>>(1,
+                                                       Eigen::Vector3<double>(2.0/9.0, 1.0/9.0, -2.0/11.0));
+    vertices[2] = std::make_shared<rtfem::Vertex<double>>(2,
+                                                       Eigen::Vector3<double>(-1.0/9.0, -7.0/15.0, 3.0/7.0));
+    vertices[3] = std::make_shared<rtfem::Vertex<double>>(3,
+                                                       Eigen::Vector3<double>(-1.0/34.0, -4.0/9.0, 2.0/7.0));
+    auto finite_element = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+        0, 1, 2, 3
+    );
 
     Eigen::Matrix<double, 4, 4> expected_jacobian_inverse;
     expected_jacobian_inverse(0, 0) = 0.380431;
@@ -111,7 +147,9 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
     expected_jacobian_inverse(2, 3) = 2.13718;
     expected_jacobian_inverse(3, 3) = -1.35711;
 
-    auto jacobian_inverse = solver_->SolveJacobianInverse(finite_element);
+    auto jacobian_inverse = solver_->SolveJacobianInverse(
+        finite_element,
+        vertices);
 
     // Round
     for(unsigned int i = 0; i < jacobian_inverse.rows();i++){
@@ -127,7 +165,8 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2){
 TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult){
     const double g = -9.81;
     Eigen::Vector3<double> gravity(0, g, 0);
-    auto data = solver_->Solve(finite_element_, gravity, rtfem::TractionForce<double>{});
+    auto data = solver_->Solve(finite_element_, vertices_,
+                               gravity, rtfem::TractionForce<double>{});
 
     // Assume volume is calculated correctly.
     auto volume = data.volume;

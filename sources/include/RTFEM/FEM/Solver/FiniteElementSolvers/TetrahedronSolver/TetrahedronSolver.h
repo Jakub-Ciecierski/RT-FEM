@@ -48,14 +48,19 @@ public:
     TetrahedronSolver() = default;
     ~TetrahedronSolver() = default;
 
-    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element) override;
+    virtual FiniteElementSolverData<T> Solve(
+        std::shared_ptr<FiniteElement<T>> finite_element,
+        const std::vector<std::shared_ptr<Vertex<T>>>& vertices) override;
 
-    virtual FiniteElementSolverData<T> Solve(std::shared_ptr<FiniteElement<T>> finite_element,
-                                             const Eigen::Vector3<T> &body_force,
-                                             const TractionForce<T> &traction_force) override;
+    virtual FiniteElementSolverData<T> Solve(
+        std::shared_ptr<FiniteElement<T>> finite_element,
+        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+        const Eigen::Vector3<T> &body_force,
+        const TractionForce<T> &traction_force) override;
 
     Eigen::Matrix<T, TETRAHEDRON_JACOBIAN_MATRIX_N, TETRAHEDRON_JACOBIAN_MATRIX_N>
-    SolveJacobianInverse(std::shared_ptr<FiniteElement<T>> finite_element);
+    SolveJacobianInverse(std::shared_ptr<FiniteElement<T>> finite_element,
+                         const std::vector<std::shared_ptr<Vertex<T>>>& vertices);
 
 private:
     Edges<T> ComputeEdgesCache(const Vertex<T> &v1, const Vertex<T> &v2,
