@@ -11,9 +11,8 @@ class FEMModel;
 }
 class FEMModelSampleBuilder {
 public:
-    FEMModelSampleBuilder();
-
-    ~FEMModelSampleBuilder();
+    FEMModelSampleBuilder() = default;
+    ~FEMModelSampleBuilder() = default;
 
     const unsigned int finite_element_count() const {return finite_element_count_;}
     const unsigned int vertex_count() const {return vertex_count_;}

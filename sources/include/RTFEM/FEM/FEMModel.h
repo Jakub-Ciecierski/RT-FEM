@@ -1,5 +1,5 @@
-#ifndef PROJECT_FEM_H
-#define PROJECT_FEM_H
+#ifndef PROJECT_FEM_MODEL_H
+#define PROJECT_FEM_MODEL_H
 
 #include <RTFEM/DataTypes.h>
 #include <RTFEM/FEM/Material.h>
@@ -15,6 +15,9 @@ class Vertex;
 template<class T>
 class FiniteElement;
 
+template<class T>
+struct FEMGeometry;
+
 /**
  * Main class representing the FEM Model to be computed by FEM Solvers.
  *
@@ -26,31 +29,20 @@ class FiniteElement;
 template<class T>
 class FEMModel {
 public:
-    FEMModel(std::vector<std::shared_ptr<FiniteElement<T>>>& finite_elements,
-             std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+    FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
              const Material<T>&& material);
     ~FEMModel() = default;
 
-    const std::vector<std::shared_ptr<FiniteElement<T>>>& finite_elements() const {
-        return finite_elements_;
-    }
-    const std::vector<std::shared_ptr<Vertex<T>>>& vertices() const {
-        return vertices_;
-    }
+    const FEMGeometry<T>& fem_geometry() const {return *fem_geometry_;}
 
     Material<T>& material(){return material_;}
 
-    unsigned int VertexCount();
-    unsigned int FiniteElementCount();
-
 private:
-    std::vector<std::shared_ptr<FiniteElement<T>>> finite_elements_;
-    std::vector<std::shared_ptr<Vertex<T>>> vertices_;
+    std::unique_ptr<FEMGeometry<T>> fem_geometry_;
 
     Material<T> material_;
 };
 
 }
 
-
-#endif //PROJECT_FEM_H
+#endif //PROJECT_FEM_MODEL_H

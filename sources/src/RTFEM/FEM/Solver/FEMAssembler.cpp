@@ -2,6 +2,7 @@
 
 #include <RTFEM/Memory/UniquePointer.h>
 #include <RTFEM/FEM/FEMModel.h>
+#include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolver.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolvers/TetrahedronSolver/TetrahedronSolver.h>
 #include <RTFEM/FEM/FiniteElements/FiniteElementType.h>
@@ -14,15 +15,16 @@ namespace rtfem {
 
 template<class T>
 FEMAssemblerData<T> FEMAssembler<T>::Compute(const std::shared_ptr<FEMModel<T>> fem_model) {
-    if(fem_model->finite_elements().size() == 0)
+    const auto& fem_geometry = fem_model->fem_geometry();
+    if(fem_geometry.finite_elements.size() == 0)
         throw std::invalid_argument("FEMModel contains no Finite Elements!");
-    auto vertex_count = fem_model->VertexCount();
+    auto vertex_count = fem_model->fem_geometry().vertices.size();
     auto global_dof_count = DIMENSION_COUNT*vertex_count;
 
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
     FEMAssemblerData<T> fem_assembler_data(global_dof_count);
-    for(const auto& finite_element : fem_model->finite_elements()){
+    for(const auto& finite_element : fem_geometry.finite_elements){
         auto finite_element_solver = GetFiniteElementSolver(finite_element->type());
         auto finite_element_solver_data = finite_element_solver->Solve(finite_element);
 
