@@ -135,26 +135,14 @@ void Tetrahedralization<T>::FetchTetrahedra(FEMGeometry<T>& fem_geometry,
 
     for(int i = 0; i < tetgen_output.numberoftetrahedra; i++){
         auto start_index = i * tetgen_output.numberofcorners;
-        FiniteElementIndices finite_element_indices{
-                tetgen_output.tetrahedronlist[start_index + 0],
-                tetgen_output.tetrahedronlist[start_index + 1],
-                tetgen_output.tetrahedronlist[start_index + 2],
-                tetgen_output.tetrahedronlist[start_index + 3]
-        };
-
-        auto v1 = fem_geometry.vertices[finite_element_indices.v1];
-        auto v2 = fem_geometry.vertices[finite_element_indices.v2];
-        auto v3 = fem_geometry.vertices[finite_element_indices.v3];
-        auto v4 = fem_geometry.vertices[finite_element_indices.v4];
 
         auto finite_element = std::make_shared<TetrahedronFiniteElement<T>>(
-            finite_element_indices.v1,
-            finite_element_indices.v2,
-            finite_element_indices.v3,
-            finite_element_indices.v4);
+            tetgen_output.tetrahedronlist[start_index + 0],
+            tetgen_output.tetrahedronlist[start_index + 1],
+            tetgen_output.tetrahedronlist[start_index + 2],
+            tetgen_output.tetrahedronlist[start_index + 3]);
 
         fem_geometry.finite_elements.push_back(finite_element);
-        fem_geometry.finite_element_indices.push_back(finite_element_indices);
     }
 }
 
