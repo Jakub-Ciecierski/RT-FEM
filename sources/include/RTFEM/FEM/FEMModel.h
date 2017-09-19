@@ -3,6 +3,7 @@
 
 #include <RTFEM/DataTypes.h>
 #include <RTFEM/FEM/Material.h>
+#include <RTFEM/FEM/BoundaryCondition.h>
 
 #include <vector>
 #include <memory>
@@ -30,17 +31,25 @@ template<class T>
 class FEMModel {
 public:
     FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
-             const Material <T> &&material);
+             const Material<T> &&material);
     ~FEMModel() = default;
 
     const FEMGeometry<T> &fem_geometry() const { return *fem_geometry_; }
 
-    Material <T> &material() { return material_; }
+    Material<T> &material() { return material_; }
+
+    const std::vector<BoundaryCondition<T>> &boundary_conditions() const {
+        return boundary_conditions_;
+    }
+
+    void AddBoundaryCondition(const BoundaryCondition<T> &boundary_condition);
 
 private:
     std::unique_ptr<FEMGeometry<T>> fem_geometry_;
 
-    Material <T> material_;
+    Material<T> material_;
+
+    std::vector<BoundaryCondition<T>> boundary_conditions_;
 };
 
 }

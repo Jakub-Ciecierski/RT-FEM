@@ -10,6 +10,12 @@ FEMModel<T>::FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
     fem_geometry_(std::move(fem_geometry)),
     material_(material) {}
 
+template<class T>
+void FEMModel<T>::AddBoundaryCondition(
+    const BoundaryCondition<T> &boundary_condition) {
+    boundary_conditions_.push_back(boundary_condition);
+}
+
 template
 class FEMModel<double>;
 template

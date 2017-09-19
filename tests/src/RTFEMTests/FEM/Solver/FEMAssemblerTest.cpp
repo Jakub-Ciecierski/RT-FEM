@@ -31,24 +31,28 @@ TEST_F(FEMAssemblerTest,
 
     fem_geometry->vertices[0] = std::make_shared<rtfem::Vertex<double>>(0,
                                                                         Eigen::Vector3<
-                                                                            double>(2,
-                                                                                    3,
-                                                                                    4));
+                                                                            double>(
+                                                                            2,
+                                                                            3,
+                                                                            4));
     fem_geometry->vertices[1] = std::make_shared<rtfem::Vertex<double>>(1,
                                                                         Eigen::Vector3<
-                                                                            double>(6,
-                                                                                    3,
-                                                                                    2));
+                                                                            double>(
+                                                                            6,
+                                                                            3,
+                                                                            2));
     fem_geometry->vertices[2] = std::make_shared<rtfem::Vertex<double>>(2,
                                                                         Eigen::Vector3<
-                                                                            double>(2,
-                                                                                    5,
-                                                                                    1));
+                                                                            double>(
+                                                                            2,
+                                                                            5,
+                                                                            1));
     fem_geometry->vertices[3] = std::make_shared<rtfem::Vertex<double>>(3,
                                                                         Eigen::Vector3<
-                                                                            double>(4,
-                                                                                    3,
-                                                                                    6));
+                                                                            double>(
+                                                                            4,
+                                                                            3,
+                                                                            6));
 
     fem_geometry->finite_elements[0] =
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(

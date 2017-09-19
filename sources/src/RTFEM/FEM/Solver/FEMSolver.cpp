@@ -1,16 +1,15 @@
 #include "RTFEM/FEM/Solver/FEMSolver.h"
 
 #include <RTFEM/FEM/Solver/FEMAssembler.h>
+#include <RTFEM/FEM/FEMModel.h>
 
 namespace rtfem {
 
 template<class T>
-FEMSolver<T>::FEMSolver(const ConstitutiveSolverType &&constitutive_solver_type,
-                        const GeometrySolverType &&geometry_solver_type,
-                        const AnalysisSolverType &&analysis_solver_type) :
-    constitutive_solver_type_(constitutive_solver_type),
-    geometry_solver_type_(geometry_solver_type),
-    analysis_solver_type_(analysis_solver_type) {}
+FEMSolver<T>::FEMSolver() :
+    constitutive_solver_type_(ConstitutiveSolverType::LinearElastic),
+    geometry_solver_type_(GeometrySolverType::Linear),
+    analysis_solver_type_(AnalysisSolverType::Static) {}
 
 template<class T>
 void FEMSolver<T>::Solve(const std::shared_ptr<FEMModel<T>> fem_model) {
@@ -18,7 +17,7 @@ void FEMSolver<T>::Solve(const std::shared_ptr<FEMModel<T>> fem_model) {
     FEMAssembler<T> fem_assembler;
     auto fem_assembler_data = fem_assembler.Compute(fem_model);
 
-    displacements_ = SolveSystemOfEquations(fem_assembler_data);
+    SolveSystemOfEquations(fem_assembler_data);
 }
 
 template<class T>
@@ -27,6 +26,9 @@ Eigen::Vector<T, Eigen::Dynamic> FEMSolver<T>::SolveSystemOfEquations(
     /*
     return assembler_data.global_stiffness.lu().solve(
             assembler_data.global_force);*/
+
+    return Eigen::Vector<T, Eigen::Dynamic>::Zero(
+        assembler_data.global_force.size());
 }
 
 template

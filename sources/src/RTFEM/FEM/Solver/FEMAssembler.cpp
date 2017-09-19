@@ -8,6 +8,7 @@
 #include <RTFEM/FEM/FiniteElements/FiniteElementType.h>
 #include <RTFEM/FEM/FiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
+#include <RTFEM/FEM/BoundaryCondition.h>
 
 #include <iostream>
 
@@ -16,41 +17,49 @@ namespace rtfem {
 template<class T>
 FEMAssemblerData<T> FEMAssembler<T>::Compute(
     const std::shared_ptr<FEMModel<T>> fem_model) {
-    const auto &fem_geometry = fem_model->fem_geometry();
-    if (fem_geometry.finite_elements.size() == 0)
-        throw std::invalid_argument("FEMModel contains no Finite Elements!");
-    auto vertex_count = fem_model->fem_geometry().vertices.size();
-    auto global_dof_count = DIMENSION_COUNT * vertex_count;
+    auto global_dof_count =
+        DIMENSION_COUNT * fem_model->fem_geometry().vertices.size();
+    FEMAssemblerData<T> fem_assembler_data(global_dof_count);
 
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
-    FEMAssemblerData<T> fem_assembler_data(global_dof_count);
+    ComputeAssemblerData(fem_assembler_data,
+                         fem_model->fem_geometry(),
+                         constitutive_matrix_C);
+
+    ApplyBoundaryConditions(fem_assembler_data,
+                            fem_model->boundary_conditions());
+
+    return fem_assembler_data;
+}
+
+template<class T>
+void FEMAssembler<T>::ComputeAssemblerData(
+    FEMAssemblerData<T> &fem_assembler_data,
+    const FEMGeometry<T> &fem_geometry,
+    Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
+    constitutive_matrix_C) {
     for (const auto &finite_element : fem_geometry.finite_elements) {
         auto finite_element_solver =
             GetFiniteElementSolver(finite_element->type());
+
         auto finite_element_solver_data = finite_element_solver->Solve(
             finite_element, fem_geometry.vertices);
 
         auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(
-            finite_element, fem_geometry.vertices, vertex_count);
-
-        auto partial_global_stiffness_matrix_Ke =
-            ComputePartialGlobalStiffnessMatrix(finite_element_solver_data
-                                                    .geometry_matrix,
-                                                constitutive_matrix_C,
-                                                boolean_assembly_matrix_A,
-                                                finite_element_solver_data
-                                                    .volume);
-        auto partial_global_force_vector_Q = ComputePartialGlobalForceVector(
-            finite_element_solver_data.force_vector,
-            boolean_assembly_matrix_A);
+            finite_element, fem_geometry.vertices);
 
         fem_assembler_data.global_stiffness +=
-            partial_global_stiffness_matrix_Ke;
-        fem_assembler_data.global_force += partial_global_force_vector_Q;
+            ComputePartialGlobalStiffnessMatrix(
+                finite_element_solver_data.geometry_matrix,
+                constitutive_matrix_C,
+                boolean_assembly_matrix_A,
+                finite_element_solver_data.volume);
+        fem_assembler_data.global_force +=
+            ComputePartialGlobalForceVector(
+                finite_element_solver_data.force_vector,
+                boolean_assembly_matrix_A);
     }
-
-    return fem_assembler_data;
 }
 
 template<class T>
@@ -100,8 +109,8 @@ template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
 FEMAssembler<T>::ComputeBooleanAssemblyMatrix(
     const std::shared_ptr<FiniteElement<T>> finite_element,
-    const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
-    unsigned int vertex_count) {
+    const std::vector<std::shared_ptr<Vertex<T>>> &vertices) {
+    unsigned int vertex_count = vertices.size();
     auto local_vertex_count = finite_element->GetVertexCount();
 
     unsigned int n = DIMENSION_COUNT * local_vertex_count;
@@ -167,6 +176,55 @@ FEMAssembler<T>::ComputePartialGlobalForceVector(
                         Eigen::Dynamic,
                         Eigen::Dynamic> &boolean_assembly_matrix_A) {
     return boolean_assembly_matrix_A.transpose() * force_vector;
+}
+
+template<class T>
+void FEMAssembler<T>::ApplyBoundaryConditions(
+    FEMAssemblerData<T> &assembler_data,
+    const std::vector<BoundaryCondition<T>> &boundary_conditions) {
+
+    for (auto &boundary_condition : boundary_conditions) {
+        auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;
+
+        for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
+            auto boundary_value = boundary_condition.value[i];
+
+            auto column = assembler_data.global_stiffness.col(start_index + i);
+            for (unsigned int c = 0; c < column.size(); c++) {
+                assembler_data.global_force[c] -= boundary_value * column[c];
+            }
+        }
+    }
+
+    for (auto &boundary_condition : boundary_conditions) {
+        auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;
+
+        for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
+            auto boundary_value = boundary_condition.value[i];
+
+            auto column = assembler_data.global_stiffness.col(start_index + i);
+            for (unsigned int c = 0; c < column.size(); c++) {
+                auto index = start_index + i;
+                if (index == c) {
+                    assembler_data.global_force[c] = boundary_value;
+                    column[c] = 1;
+                } else {
+                    column[c] = 0;
+                }
+            }
+        }
+
+        for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
+            auto index = start_index + i;
+            auto row = assembler_data.global_stiffness.row(index);
+            for (unsigned int r = 0; r < row.size(); r++) {
+                if (r == index)
+                    row[r] = 1;
+                else
+                    row[r] = 0;
+            }
+        }
+    }
 }
 
 template

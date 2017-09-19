@@ -20,6 +20,12 @@ class Vertex;
 template<class T>
 class FiniteElementSolver;
 
+template<class T>
+struct FEMGeometry;
+
+template<class T>
+struct BoundaryCondition;
+
 enum class FiniteElementType;
 
 template<class T>
@@ -66,7 +72,7 @@ public:
     ~FEMAssembler() = default;
 
     /**
-     * Computes Global Stiffness Matrix (K).
+     * Computes Global Stiffness Matrix (K) and Global Force Vector (Q).
      *
      *      1) Computes Constitutive Matrix (C)
      *      2) Computes Geometry Matrix (B) for each Finite Element
@@ -74,13 +80,26 @@ public:
      *          - Using Constitutive Matrix and Geometry Matrix.
      *      4) Assembles all Local Stiffness matrices into Global Stiffness Matrix (K)
      *
-     * TODO: Benchmark Global Stiffness Matrix
      * @param fem_model
      * @return
      */
     FEMAssemblerData<T> Compute(const std::shared_ptr<FEMModel<T>> fem_model);
 
 private:
+    /**
+     * Iterates through every finite element and assembles data into
+     * Global matrices
+     *
+     * @param fem_assembler_data
+     * @param fem_geometry
+     * @param constitutive_matrix_C
+     */
+    void ComputeAssemblerData(
+        FEMAssemblerData<T> &fem_assembler_data,
+        const FEMGeometry<T> &fem_geometry,
+        Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
+        constitutive_matrix_C);
+
     /**
      * Computes Isotropic Constitutive Matrix (C).
      * Used to compute Local Stiffness.
@@ -111,14 +130,13 @@ private:
      * Maps Local Stiffness to Global Stiffness.
      *
      * @param finite_element
-     * @param vertex_count
+     * @param vertices
      * @return
      */
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputeBooleanAssemblyMatrix(
         const std::shared_ptr<FiniteElement<T>> finite_element,
-        const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
-        unsigned int vertex_count);
+        const std::vector<std::shared_ptr<Vertex<T>>> &vertices);
 
     /**
      * Computes Partial Global Stiffness Matrix.
@@ -168,6 +186,15 @@ private:
                             Eigen::Dynamic,
                             Eigen::Dynamic> &boolean_assembly_matrix_A);
 
+    /**
+     * Applies Boundary Conditions to the GlobalStiffness and
+     * GlobalForce Vector
+     * @param assembler_data
+     * @param boundary_conditions
+     */
+    void ApplyBoundaryConditions(
+        FEMAssemblerData<T> &assembler_data,
+        const std::vector<BoundaryCondition<T>> &boundary_conditions);
 };
 }
 
