@@ -33,6 +33,7 @@ TEST_F(BoundaryConditionTest, FEMModel_BoundaryAdded_CorrectForceVector) {
     auto assembler_data = fem_assembler.Compute(fem_model_);
 
     auto force_size = assembler_data.global_force.size();
+
     EXPECT_EQ(boundary_value3, assembler_data.global_force[force_size - 1]);
     EXPECT_EQ(boundary_value2, assembler_data.global_force[force_size - 2]);
     EXPECT_EQ(boundary_value1, assembler_data.global_force[force_size - 3]);

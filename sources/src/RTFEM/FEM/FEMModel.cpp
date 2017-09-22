@@ -8,7 +8,8 @@ template<class T>
 FEMModel<T>::FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
                       const Material<T> &&material) :
     fem_geometry_(std::move(fem_geometry)),
-    material_(material) {}
+    material_(material),
+    body_force_(Eigen::Vector3<T>(0, 0, 0)) {}
 
 template<class T>
 void FEMModel<T>::AddBoundaryCondition(

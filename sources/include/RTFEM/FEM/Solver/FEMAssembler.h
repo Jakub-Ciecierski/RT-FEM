@@ -96,7 +96,7 @@ private:
      */
     void ComputeAssemblerData(
         FEMAssemblerData<T> &fem_assembler_data,
-        const FEMGeometry<T> &fem_geometry,
+        const FEMModel<T> &fem_model,
         Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
         constitutive_matrix_C);
 

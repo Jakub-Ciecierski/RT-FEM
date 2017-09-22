@@ -42,7 +42,19 @@ public:
         return boundary_conditions_;
     }
 
+    const Eigen::Vector3<T> &body_force() const {
+        return body_force_;
+    }
+
     void AddBoundaryCondition(const BoundaryCondition<T> &boundary_condition);
+
+    /**
+     * Adds Body Force (e.g. gravity) to the entire model.
+     * Body Force is added to each finite element.
+     *
+     * @param body_force
+     */
+    void AddBodyForce(const Eigen::Vector3<T> &body_force);
 
 private:
     std::unique_ptr<FEMGeometry<T>> fem_geometry_;
@@ -50,6 +62,8 @@ private:
     Material<T> material_;
 
     std::vector<BoundaryCondition<T>> boundary_conditions_;
+
+    Eigen::Vector3<T> body_force_;
 };
 
 }

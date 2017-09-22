@@ -24,7 +24,7 @@ FEMAssemblerData<T> FEMAssembler<T>::Compute(
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
     ComputeAssemblerData(fem_assembler_data,
-                         fem_model->fem_geometry(),
+                         *fem_model,
                          constitutive_matrix_C);
 
     ApplyBoundaryConditions(fem_assembler_data,
@@ -36,15 +36,19 @@ FEMAssemblerData<T> FEMAssembler<T>::Compute(
 template<class T>
 void FEMAssembler<T>::ComputeAssemblerData(
     FEMAssemblerData<T> &fem_assembler_data,
-    const FEMGeometry<T> &fem_geometry,
+    const FEMModel<T> &fem_model,
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
     constitutive_matrix_C) {
+    auto fem_geometry = fem_model.fem_geometry();
     for (const auto &finite_element : fem_geometry.finite_elements) {
         auto finite_element_solver =
             GetFiniteElementSolver(finite_element->type());
 
         auto finite_element_solver_data = finite_element_solver->Solve(
-            finite_element, fem_geometry.vertices);
+            finite_element,
+            fem_geometry.vertices,
+            fem_model.body_force(),
+            TractionForce<T>());
 
         auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(
             finite_element, fem_geometry.vertices);
