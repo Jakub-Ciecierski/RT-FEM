@@ -17,6 +17,11 @@ void FEMModel<T>::AddBoundaryCondition(
     boundary_conditions_.push_back(boundary_condition);
 }
 
+template<class T>
+void FEMModel<T>::SetBodyForce(const Eigen::Vector3<T> &body_force){
+    body_force_ = body_force;
+}
+
 template
 class FEMModel<double>;
 template

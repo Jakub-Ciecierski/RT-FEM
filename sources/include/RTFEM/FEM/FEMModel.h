@@ -49,12 +49,12 @@ public:
     void AddBoundaryCondition(const BoundaryCondition<T> &boundary_condition);
 
     /**
-     * Adds Body Force (e.g. gravity) to the entire model.
+     * Sets Body Force (e.g. gravity) to the entire model.
      * Body Force is added to each finite element.
      *
      * @param body_force
      */
-    void AddBodyForce(const Eigen::Vector3<T> &body_force);
+    void SetBodyForce(const Eigen::Vector3<T> &body_force);
 
 private:
     std::unique_ptr<FEMGeometry<T>> fem_geometry_;

@@ -16,6 +16,11 @@ template<class T>
 class FEMAssemblerData;
 
 template<class T>
+struct FEMSolverOutput {
+    Eigen::Vector<T, Eigen::Dynamic> displacement;
+};
+
+template<class T>
 class FEMSolver {
 public:
     FEMSolver();
@@ -41,7 +46,7 @@ public:
         analysis_solver_type_ = type;
     }
 
-    void Solve(const std::shared_ptr<FEMModel<T>> fem_model);
+    FEMSolverOutput<T> Solve(const std::shared_ptr<FEMModel<T>> fem_model);
 
 private:
     Eigen::Vector<T, Eigen::Dynamic> SolveSystemOfEquations(
