@@ -30,13 +30,20 @@ struct FEMGeometry;
 template<class T>
 class FEMModel {
 public:
+    FEMModel();
+
     FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
              const Material<T> &&material);
     ~FEMModel() = default;
 
     const FEMGeometry<T> &fem_geometry() const { return *fem_geometry_; }
 
+    void fem_geometry(std::unique_ptr<FEMGeometry<T>> fem_geometry) {
+        fem_geometry_ = std::move(fem_geometry);
+    }
+
     Material<T> &material() { return material_; }
+    void material(Material<T> material) { material_ = material; }
 
     const std::vector<BoundaryCondition<T>> &boundary_conditions() const {
         return boundary_conditions_;

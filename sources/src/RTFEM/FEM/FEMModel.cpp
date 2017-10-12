@@ -5,6 +5,12 @@
 namespace rtfem {
 
 template<class T>
+FEMModel<T>::FEMModel() :
+    fem_geometry_(nullptr),
+    material_(Material<T>{80000, 0.3, 1}),
+    body_force_(Eigen::Vector3<T>(0, 0, 0)) {}
+
+template<class T>
 FEMModel<T>::FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
                       const Material<T> &&material) :
     fem_geometry_(std::move(fem_geometry)),
