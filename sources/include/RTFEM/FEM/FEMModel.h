@@ -53,8 +53,11 @@ public:
         return body_force_;
     }
 
-    void AddBoundaryCondition(const BoundaryCondition<T> &boundary_condition);
-
+    bool AddBoundaryCondition(const BoundaryCondition<T> &boundary_condition);
+    void RemoveBoundaryCondition(
+        const BoundaryCondition<T> &boundary_condition);
+    bool ExistsBoundaryCondition(
+        const BoundaryCondition<T> &boundary_condition);
     /**
      * Sets Body Force (e.g. gravity) to the entire model.
      * Body Force is added to each finite element.

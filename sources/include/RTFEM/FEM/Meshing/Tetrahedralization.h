@@ -46,7 +46,8 @@ public:
      * @param triangle_mesh
      * @return
      */
-    FEMGeometry<T> Compute(const TriangleMeshIndexed<T> &triangle_mesh);
+    std::unique_ptr<FEMGeometry<T>> Compute(
+        const TriangleMeshIndexed<T> &triangle_mesh);
 
 private:
     void SetupInput(const TriangleMeshIndexed<T> &triangle_mesh,
@@ -58,7 +59,7 @@ private:
                           tetgenio &tetgen_input);
     void SetupInputOptions(tetgenbehavior &tetgen_options);
 
-    FEMGeometry<T> FetchOutput(tetgenio &tetgen_output);
+    std::unique_ptr<FEMGeometry<T>> FetchOutput(tetgenio &tetgen_output);
     void FetchPoints(FEMGeometry<T> &fem_geometry,
                      tetgenio &tetgen_output);
     void FetchTetrahedra(FEMGeometry<T> &fem_geometry,
