@@ -16,19 +16,19 @@ namespace rtfem {
 
 template<class T>
 FEMAssemblerData<T> FEMAssembler<T>::Compute(
-    const std::shared_ptr<FEMModel<T>> fem_model) {
+    const FEMModel<T>& fem_model) {
     auto global_dof_count =
-        DIMENSION_COUNT * fem_model->fem_geometry().vertices.size();
+        DIMENSION_COUNT * fem_model.fem_geometry().vertices.size();
     FEMAssemblerData<T> fem_assembler_data(global_dof_count);
 
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
     ComputeAssemblerData(fem_assembler_data,
-                         *fem_model,
+                         fem_model,
                          constitutive_matrix_C);
 
     ApplyBoundaryConditions(fem_assembler_data,
-                            fem_model->boundary_conditions());
+                            fem_model.boundary_conditions());
 
     return fem_assembler_data;
 }
@@ -68,12 +68,12 @@ void FEMAssembler<T>::ComputeAssemblerData(
 
 template<class T>
 Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
-FEMAssembler<T>::ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel<T>> fem_model) {
+FEMAssembler<T>::ComputeConstitutiveMatrix(const FEMModel<T>& fem_model) {
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
         constitutive_matrix =
         Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>::Zero();
 
-    auto &material = fem_model->material();
+    auto &material = fem_model.material();
     T p = material.poisson_coefficient;
     T e = material.young_modulus;
     T a = 1.0 - p;

@@ -62,7 +62,7 @@ TEST_F(FEMAssemblerTest,
         std::move(fem_geometry),
         rtfem::Material<double>{480, 1.0 / 3.0});
 
-    auto fem_assembler_data = fem_assembler_->Compute(fem_model);
+    auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
 
     for (unsigned int i = 0; i < 12; i++) {
         for (unsigned int j = 0; j < 12; j++) {
@@ -90,7 +90,7 @@ TEST_F(FEMAssemblerTest,
 
 TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions) {
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
-    auto fem_assembler_data = fem_assembler_->Compute(fem_model);
+    auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
 
     unsigned int
         expected_row_count = fem_model_->fem_geometry().vertices.size() * 3;
@@ -100,7 +100,7 @@ TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions) {
 
 TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperStiffnessDimensions) {
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
-    auto fem_assembler_data = fem_assembler_->Compute(fem_model);
+    auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
 
     unsigned int
         expected_row_count = fem_model_->fem_geometry().vertices.size() * 3;

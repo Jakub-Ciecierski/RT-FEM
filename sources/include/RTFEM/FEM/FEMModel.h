@@ -36,13 +36,13 @@ public:
              const Material<T> &&material);
     ~FEMModel() = default;
 
-    const FEMGeometry<T> &fem_geometry() const { return *fem_geometry_; }
+    FEMGeometry<T> &fem_geometry() const { return *fem_geometry_; }
 
     void fem_geometry(std::unique_ptr<FEMGeometry<T>> fem_geometry) {
         fem_geometry_ = std::move(fem_geometry);
     }
 
-    Material<T> &material() { return material_; }
+    const Material<T> &material() const { return material_; }
     void material(Material<T> material) { material_ = material; }
 
     const std::vector<BoundaryCondition<T>> &boundary_conditions() const {

@@ -46,7 +46,7 @@ public:
         analysis_solver_type_ = type;
     }
 
-    FEMSolverOutput<T> Solve(const std::shared_ptr<FEMModel<T>> fem_model);
+    FEMSolverOutput<T> Solve(const FEMModel<T>& fem_model);
 
 private:
     Eigen::Vector<T, Eigen::Dynamic> SolveSystemOfEquations(

@@ -30,7 +30,7 @@ TEST_F(BoundaryConditionTest, FEMModel_BoundaryAdded_CorrectForceVector) {
     );
 
     rtfem::FEMAssembler<double> fem_assembler;
-    auto assembler_data = fem_assembler.Compute(fem_model_);
+    auto assembler_data = fem_assembler.Compute(*fem_model_);
 
     auto force_size = assembler_data.global_force.size();
 

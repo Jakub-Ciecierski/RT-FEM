@@ -83,7 +83,7 @@ public:
      * @param fem_model
      * @return
      */
-    FEMAssemblerData<T> Compute(const std::shared_ptr<FEMModel<T>> fem_model);
+    FEMAssemblerData<T> Compute(const FEMModel<T>& fem_model);
 
 private:
     /**
@@ -113,7 +113,7 @@ private:
      * @return
      */
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
-    ComputeConstitutiveMatrix(const std::shared_ptr<FEMModel<T>> fem_model);
+    ComputeConstitutiveMatrix(const FEMModel<T>& fem_model);
 
     /**
      * Computes Geometry Matrix (B).

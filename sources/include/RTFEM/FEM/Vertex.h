@@ -14,6 +14,9 @@ public:
 
     unsigned int id() const { return id_; }
     const Eigen::Vector3<T> &coordinates() const { return coordinates_; }
+    void coordinates(const Eigen::Vector3<T> & coordinates) {
+        coordinates_ = coordinates; }
+
     T x() const { return coordinates_(0); }
     T y() const { return coordinates_(1); }
     T z() const { return coordinates_(2); }
