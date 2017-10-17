@@ -3,6 +3,8 @@
 
 #include <RTFEM/DataTypes.h>
 #include <RTFEM/FEM/Material.h>
+#include <RTFEM/FEM/BoundaryConditionContainer.h>
+#include <RTFEM/FEM/FEMGeometry.h>
 
 #include <vector>
 #include <memory>
@@ -10,16 +12,11 @@
 namespace rtfem {
 
 template<class T>
-class BoundaryConditionContainer;
-
-template<class T>
 class Vertex;
 
 template<class T>
 class FiniteElement;
 
-template<class T>
-struct FEMGeometry;
 
 /**
  * Main class representing the FEM Model to be computed by FEM Solvers.
@@ -34,25 +31,29 @@ class FEMModel {
 public:
     FEMModel();
 
-    FEMModel(std::unique_ptr<FEMGeometry<T>> fem_geometry,
+    FEMModel(const FEMGeometry<T>& fem_geometry,
              const Material<T> &&material);
     ~FEMModel() = default;
 
-    FEMGeometry<T> &fem_geometry() const { return *fem_geometry_; }
+    FEMGeometry<T> &fem_geometry() { return fem_geometry_; }
+    const FEMGeometry<T> &fem_geometry() const { return fem_geometry_; }
 
-    void fem_geometry(std::unique_ptr<FEMGeometry<T>> fem_geometry) {
-        fem_geometry_ = std::move(fem_geometry);
+    void fem_geometry(const FEMGeometry<T>& fem_geometry) {
+        fem_geometry_ = fem_geometry;
     }
 
     const Material<T> &material() const { return material_; }
-    void material(Material<T> material) { material_ = material; }
+    void material(const Material<T>& material) { material_ = material; }
 
     BoundaryConditionContainer<T> &boundary_conditions() {
-        return *boundary_conditions_;
+        return boundary_conditions_;
     }
-
     const BoundaryConditionContainer<T> &boundary_conditions() const {
-        return *boundary_conditions_;
+        return boundary_conditions_;
+    }
+    void boundary_conditions(
+        const BoundaryConditionContainer<T>& boundary_conditions) {
+        boundary_conditions_ = boundary_conditions;
     }
 
     const Eigen::Vector3<T> &body_force() const {
@@ -68,11 +69,11 @@ public:
     void SetBodyForce(const Eigen::Vector3<T> &body_force);
 
 private:
-    std::unique_ptr<FEMGeometry<T>> fem_geometry_;
+    FEMGeometry<T> fem_geometry_;
 
     Material<T> material_;
 
-    std::unique_ptr<BoundaryConditionContainer<T>> boundary_conditions_;
+    BoundaryConditionContainer<T> boundary_conditions_;
 
     Eigen::Vector3<T> body_force_;
 };

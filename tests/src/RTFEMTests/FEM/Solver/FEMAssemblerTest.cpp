@@ -25,43 +25,43 @@ void FEMAssemblerTest::TearDown() {}
 
 TEST_F(FEMAssemblerTest,
        SingleFiniteElement_CorrectGlobalStiffnessMatrix_Mathematica) {
-    auto fem_geometry = rtfem::make_unique<rtfem::FEMGeometry<double>>();
-    fem_geometry->finite_elements =
+    rtfem::FEMGeometry<double> fem_geometry;
+    fem_geometry.finite_elements =
         std::vector<std::shared_ptr<rtfem::FiniteElement<double>>>(1);
-    fem_geometry->vertices =
+    fem_geometry.vertices =
         std::vector<std::shared_ptr<rtfem::Vertex<double>>>(4);
 
-    fem_geometry->vertices[0] = std::make_shared<rtfem::Vertex<double>>(0,
+    fem_geometry.vertices[0] = std::make_shared<rtfem::Vertex<double>>(0,
                                                                         Eigen::Vector3<
                                                                             double>(
                                                                             2,
                                                                             3,
                                                                             4));
-    fem_geometry->vertices[1] = std::make_shared<rtfem::Vertex<double>>(1,
+    fem_geometry.vertices[1] = std::make_shared<rtfem::Vertex<double>>(1,
                                                                         Eigen::Vector3<
                                                                             double>(
                                                                             6,
                                                                             3,
                                                                             2));
-    fem_geometry->vertices[2] = std::make_shared<rtfem::Vertex<double>>(2,
+    fem_geometry.vertices[2] = std::make_shared<rtfem::Vertex<double>>(2,
                                                                         Eigen::Vector3<
                                                                             double>(
                                                                             2,
                                                                             5,
                                                                             1));
-    fem_geometry->vertices[3] = std::make_shared<rtfem::Vertex<double>>(3,
+    fem_geometry.vertices[3] = std::make_shared<rtfem::Vertex<double>>(3,
                                                                         Eigen::Vector3<
                                                                             double>(
                                                                             4,
                                                                             3,
                                                                             6));
 
-    fem_geometry->finite_elements[0] =
+    fem_geometry.finite_elements[0] =
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
             0, 1, 2, 3);
 
     auto fem_model = std::make_shared<rtfem::FEMModel<double>>(
-        std::move(fem_geometry),
+        fem_geometry,
         rtfem::Material<double>{480, 1.0 / 3.0});
 
     auto fem_assembler_data = fem_assembler_->Compute(*fem_model);

@@ -22,7 +22,7 @@ void Tetrahedralization<T>::SetOptions(
 }
 
 template<class T>
-std::unique_ptr<FEMGeometry<T>> Tetrahedralization<T>::Compute(
+FEMGeometry<T> Tetrahedralization<T>::Compute(
     const TriangleMeshIndexed<T> &triangle_mesh) {
     tetgenio tetgen_input, tetgen_output;
     tetgenbehavior tetgen_options;
@@ -109,13 +109,13 @@ void Tetrahedralization<T>::SetupInputOptions(
 }
 
 template<class T>
-std::unique_ptr<FEMGeometry<T>> Tetrahedralization<T>::FetchOutput(
+FEMGeometry<T> Tetrahedralization<T>::FetchOutput(
     tetgenio &tetgen_output) {
-    auto fem_geometry = rtfem::make_unique<FEMGeometry<T>>();
+    FEMGeometry<T> fem_geometry;
 
-    FetchPoints(*fem_geometry, tetgen_output);
-    FetchTetrahedra(*fem_geometry, tetgen_output);
-    FetchFaces(*fem_geometry, tetgen_output);
+    FetchPoints(fem_geometry, tetgen_output);
+    FetchTetrahedra(fem_geometry, tetgen_output);
+    FetchFaces(fem_geometry, tetgen_output);
 
     return fem_geometry;
 }
