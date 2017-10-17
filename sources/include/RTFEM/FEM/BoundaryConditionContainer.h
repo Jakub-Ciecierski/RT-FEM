@@ -21,12 +21,18 @@ public:
     bool ExistsBoundaryCondition(
         const BoundaryCondition<T> &boundary_condition);
 
+    void Clear();
+
+    unsigned int Size() const;
+
     BoundaryCondition<T>* begin();
     BoundaryCondition<T>* end();
 
     const BoundaryCondition<T>* begin() const;
     const BoundaryCondition<T>* end() const;
 
+    const BoundaryCondition<T>& operator[](int i ) const;
+    BoundaryCondition<T>& operator[](int i );
 private:
     std::vector<BoundaryCondition<T>> boundary_conditions_;
 };

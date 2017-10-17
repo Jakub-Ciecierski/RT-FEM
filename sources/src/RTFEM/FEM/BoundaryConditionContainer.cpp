@@ -35,6 +35,16 @@ bool BoundaryConditionContainer<T>::ExistsBoundaryCondition(
 }
 
 template<class T>
+void BoundaryConditionContainer<T>::Clear(){
+    boundary_conditions_.clear();
+}
+
+template<class T>
+unsigned int BoundaryConditionContainer<T>::Size() const {
+    return boundary_conditions_.size();
+}
+
+template<class T>
 BoundaryCondition<T>* BoundaryConditionContainer<T>::begin(){
     return &(boundary_conditions_[0]);
 }
@@ -52,6 +62,17 @@ const BoundaryCondition<T>* BoundaryConditionContainer<T>::begin() const{
 template<class T>
 const BoundaryCondition<T>* BoundaryConditionContainer<T>::end() const {
     return &(boundary_conditions_[boundary_conditions_.size()]);
+}
+
+template<class T>
+const BoundaryCondition<T>&
+BoundaryConditionContainer<T>::operator[](int i ) const{
+    return boundary_conditions_[i];
+}
+
+template<class T>
+BoundaryCondition<T>& BoundaryConditionContainer<T>::operator[](int i ){
+    return boundary_conditions_[i];
 }
 
 template
