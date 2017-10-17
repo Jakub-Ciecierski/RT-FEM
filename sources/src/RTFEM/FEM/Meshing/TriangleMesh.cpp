@@ -3,9 +3,9 @@
 namespace rtfem {
 
 template
-struct Triangle<double>;
+struct TriangleFaceWithPoints<double>;
 template
-struct Triangle<float>;
+struct TriangleFaceWithPoints<float>;
 
 template
 struct TriangleMesh<double>;

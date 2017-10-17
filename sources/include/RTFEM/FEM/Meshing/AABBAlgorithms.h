@@ -12,7 +12,7 @@ template<class T>
 struct TriangleMesh;
 
 template<class T>
-struct Triangle;
+struct TriangleFaceWithPoints;
 
 enum class AABBCoordinate {
     X, Y, Z
@@ -22,16 +22,16 @@ template<class T>
 AABB<T> CreateAABB(const TriangleMesh<T> &triangle_mesh);
 
 template<class T>
-T FindMin(const Triangle<T> &triangle, const AABBCoordinate &coordinate);
+T FindMin(const TriangleFaceWithPoints<T> &triangle, const AABBCoordinate &coordinate);
 
 template<class T>
-T FindMax(const Triangle<T> &triangle, const AABBCoordinate &coordinate);
+T FindMax(const TriangleFaceWithPoints<T> &triangle, const AABBCoordinate &coordinate);
 
 template<class T>
-void UpdateMin(const Triangle<T> &triangle, Eigen::Vector3<T> &min);
+void UpdateMin(const TriangleFaceWithPoints<T> &triangle, Eigen::Vector3<T> &min);
 
 template<class T>
-void UpdateMax(const Triangle<T> &triangle, Eigen::Vector3<T> &max);
+void UpdateMax(const TriangleFaceWithPoints<T> &triangle, Eigen::Vector3<T> &max);
 
 unsigned int GetIndex(const AABBCoordinate &aabb_coordinate);
 

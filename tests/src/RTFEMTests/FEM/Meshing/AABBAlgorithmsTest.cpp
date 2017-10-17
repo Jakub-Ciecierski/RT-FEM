@@ -8,10 +8,10 @@
 void AABBAlgorithmsTest::SetUp() {
     triangle_mesh_ = rtfem::make_unique<rtfem::TriangleMesh<float>>();
     triangle_mesh_->triangles = {
-        rtfem::Triangle<float>{Eigen::Vector3<float>{-2.0f, 9.0f, 0.0f},
+        rtfem::TriangleFaceWithPoints<float>{Eigen::Vector3<float>{-2.0f, 9.0f, 0.0f},
                                Eigen::Vector3<float>{-3.0f, 1.0f, 0.0f},
                                Eigen::Vector3<float>{5.0f, 2.0f, 3.0f}},
-        rtfem::Triangle<float>{Eigen::Vector3<float>{-2.0f, 0.5f, 2.0f},
+        rtfem::TriangleFaceWithPoints<float>{Eigen::Vector3<float>{-2.0f, 0.5f, 2.0f},
                                Eigen::Vector3<float>{-3.0f, -1.0f, 1.0f},
                                Eigen::Vector3<float>{6.0f, 2.0f, 2.0f}},
     };

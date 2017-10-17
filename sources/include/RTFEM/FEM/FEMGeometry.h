@@ -1,6 +1,8 @@
 #ifndef PROJECT_FEMGEOMETRY_H
 #define PROJECT_FEMGEOMETRY_H
 
+#include <RTFEM/FEM/Meshing/TriangleMesh.h>
+
 #include <vector>
 #include <memory>
 
@@ -19,6 +21,8 @@ template<class T>
 struct FEMGeometry {
     std::vector<std::shared_ptr<Vertex<T>>> vertices;
     std::vector<std::shared_ptr<FiniteElement<T>>> finite_elements;
+
+    std::vector<TriangleFace> triangle_faces;
 };
 }
 

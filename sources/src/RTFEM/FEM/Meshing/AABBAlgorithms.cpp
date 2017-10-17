@@ -28,7 +28,7 @@ AABB<T> CreateAABB(const TriangleMesh<T> &triangle_mesh) {
 }
 
 template<class T>
-T FindMin(const Triangle<T> &triangle, const AABBCoordinate &coordinate) {
+T FindMin(const TriangleFaceWithPoints<T> &triangle, const AABBCoordinate &coordinate) {
     auto i = GetIndex(coordinate);
     std::vector<T>
         min_vector = {triangle.v1[i], triangle.v2[i], triangle.v3[i]};
@@ -40,7 +40,7 @@ T FindMin(const Triangle<T> &triangle, const AABBCoordinate &coordinate) {
 }
 
 template<class T>
-T FindMax(const Triangle<T> &triangle, const AABBCoordinate &coordinate) {
+T FindMax(const TriangleFaceWithPoints<T> &triangle, const AABBCoordinate &coordinate) {
     auto i = GetIndex(coordinate);
     std::vector<T> vector = {triangle.v1[i], triangle.v2[i], triangle.v3[i]};
 
@@ -51,7 +51,7 @@ T FindMax(const Triangle<T> &triangle, const AABBCoordinate &coordinate) {
 }
 
 template<class T>
-void UpdateMin(const Triangle<T> &triangle, Eigen::Vector3<T> &min) {
+void UpdateMin(const TriangleFaceWithPoints<T> &triangle, Eigen::Vector3<T> &min) {
     auto min_x = FindMin<T>(triangle, AABBCoordinate::X);
     if (min[0] > min_x)
         min[0] = min_x;
@@ -66,7 +66,7 @@ void UpdateMin(const Triangle<T> &triangle, Eigen::Vector3<T> &min) {
 }
 
 template<class T>
-void UpdateMax(const Triangle<T> &triangle, Eigen::Vector3<T> &max) {
+void UpdateMax(const TriangleFaceWithPoints<T> &triangle, Eigen::Vector3<T> &max) {
     auto max_x = FindMax<T>(triangle, AABBCoordinate::X);
     if (max[0] < max_x)
         max[0] = max_x;
@@ -92,23 +92,23 @@ unsigned int GetIndex(const AABBCoordinate &aabb_coordinate) {
 template AABB<float> CreateAABB<float>(const TriangleMesh<float> &triangle_mesh);
 template AABB<double> CreateAABB<double>(const TriangleMesh<double> &triangle_mesh);
 
-template float FindMin<float>(const Triangle<float> &triangle,
+template float FindMin<float>(const TriangleFaceWithPoints<float> &triangle,
                               const AABBCoordinate &coordinate);
-template double FindMin<double>(const Triangle<double> &triangle,
+template double FindMin<double>(const TriangleFaceWithPoints<double> &triangle,
                                 const AABBCoordinate &coordinate);
 
-template float FindMax<float>(const Triangle<float> &triangle,
+template float FindMax<float>(const TriangleFaceWithPoints<float> &triangle,
                               const AABBCoordinate &coordinate);
-template double FindMax<double>(const Triangle<double> &triangle,
+template double FindMax<double>(const TriangleFaceWithPoints<double> &triangle,
                                 const AABBCoordinate &coordinate);
 
-template void UpdateMin<float>(const Triangle<float> &triangle,
+template void UpdateMin<float>(const TriangleFaceWithPoints<float> &triangle,
                                Eigen::Vector3<float> &min);
-template void UpdateMin<double>(const Triangle<double> &triangle,
+template void UpdateMin<double>(const TriangleFaceWithPoints<double> &triangle,
                                 Eigen::Vector3<double> &min);
 
-template void UpdateMax<float>(const Triangle<float> &triangle,
+template void UpdateMax<float>(const TriangleFaceWithPoints<float> &triangle,
                                Eigen::Vector3<float> &max);
-template void UpdateMax<double>(const Triangle<double> &triangle,
+template void UpdateMax<double>(const TriangleFaceWithPoints<double> &triangle,
                                 Eigen::Vector3<double> &max);
 }

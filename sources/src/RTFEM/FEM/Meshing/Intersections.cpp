@@ -21,7 +21,7 @@ bool Contains(const Eigen::Vector3<T> point,
 
 template<class T>
 bool Intersects(const Ray<T> &ray,
-                const Triangle<T> &triangle) {
+                const TriangleFaceWithPoints<T> &triangle) {
     auto e1 = triangle.v2 - triangle.v1;
     auto e2 = triangle.v3 - triangle.v1;
 
@@ -64,8 +64,8 @@ template bool Contains<double>(const Eigen::Vector3<double>,
                                const TriangleMesh<double> &triangle_mesh);
 
 template bool Intersects<float>(const Ray<float> &ray,
-                                const Triangle<float> &triangle);
+                                const TriangleFaceWithPoints<float> &triangle);
 template bool Intersects<double>(const Ray<double> &ray,
-                                 const Triangle<double> &triangle);
+                                 const TriangleFaceWithPoints<double> &triangle);
 
 }

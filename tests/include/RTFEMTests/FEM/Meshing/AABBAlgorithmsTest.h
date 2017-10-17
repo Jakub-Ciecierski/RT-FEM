@@ -5,7 +5,7 @@
 namespace rtfem {
 
 template<class T>
-struct Triangle;
+struct TriangleFaceWithPoints;
 
 template<class T>
 struct TriangleMesh;

@@ -6,7 +6,7 @@
 namespace rtfem {
 
 template<class T>
-struct Triangle;
+struct TriangleFaceWithPoints;
 
 template<class T>
 struct TriangleMesh;
@@ -37,7 +37,7 @@ bool Contains(const Eigen::Vector3<T>,
  */
 template<class T>
 bool Intersects(const Ray<T> &ray,
-                const Triangle<T> &triangle);
+                const TriangleFaceWithPoints<T> &triangle);
 
 }
 

@@ -8,7 +8,7 @@
 namespace rtfem {
 
 template<class T>
-struct Triangle {
+struct TriangleFaceWithPoints {
     Eigen::Vector3<T> v1;
     Eigen::Vector3<T> v2;
     Eigen::Vector3<T> v3;
@@ -16,10 +16,10 @@ struct Triangle {
 
 template<class T>
 struct TriangleMesh {
-    std::vector<Triangle<T>> triangles;
+    std::vector<TriangleFaceWithPoints<T>> triangles;
 };
 
-struct TriangleIndices {
+struct TriangleFace {
     unsigned int v1;
     unsigned int v2;
     unsigned int v3;
@@ -33,7 +33,7 @@ struct TriangleIndices {
 template<class T>
 struct TriangleMeshIndexed {
     std::vector<Eigen::Vector3<T>> points;
-    std::vector<TriangleIndices> triangles;
+    std::vector<TriangleFace> triangles;
 };
 
 }

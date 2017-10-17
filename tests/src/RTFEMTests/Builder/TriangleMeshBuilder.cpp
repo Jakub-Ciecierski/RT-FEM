@@ -21,23 +21,23 @@ TriangleMeshBuilder::BuildCube() {
 
     triangle_mesh->triangles = {
         // Bottom
-        rtfem::TriangleIndices{0, 1, 2},
-        rtfem::TriangleIndices{1, 2, 3},
+        rtfem::TriangleFace{0, 1, 2},
+        rtfem::TriangleFace{1, 2, 3},
         // Top
-        rtfem::TriangleIndices{4, 5, 6},
-        rtfem::TriangleIndices{5, 6, 7},
+        rtfem::TriangleFace{4, 5, 6},
+        rtfem::TriangleFace{5, 6, 7},
         // Left
-        rtfem::TriangleIndices{5, 4, 0},
-        rtfem::TriangleIndices{5, 1, 0},
+        rtfem::TriangleFace{5, 4, 0},
+        rtfem::TriangleFace{5, 1, 0},
         // Right
-        rtfem::TriangleIndices{6, 7, 2},
-        rtfem::TriangleIndices{7, 3, 2},
+        rtfem::TriangleFace{6, 7, 2},
+        rtfem::TriangleFace{7, 3, 2},
         // Back
-        rtfem::TriangleIndices{4, 6, 0},
-        rtfem::TriangleIndices{6, 2, 0},
+        rtfem::TriangleFace{4, 6, 0},
+        rtfem::TriangleFace{6, 2, 0},
         // Front
-        rtfem::TriangleIndices{5, 1, 3},
-        rtfem::TriangleIndices{5, 7, 3},
+        rtfem::TriangleFace{5, 1, 3},
+        rtfem::TriangleFace{5, 7, 3},
 
     };
 

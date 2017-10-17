@@ -157,14 +157,15 @@ void Tetrahedralization<T>::FetchTetrahedra(FEMGeometry<T> &fem_geometry,
 template<class T>
 void Tetrahedralization<T>::FetchFaces(FEMGeometry<T> &fem_geometry,
                                        tetgenio &tetgen_output) {
-    // TODO Faces
-    std::cout << "Number of trifaces: "
-              << tetgen_output.numberoftrifaces
-              << std::endl;
     for(int i = 0 ; i < tetgen_output.numberoftrifaces; i++){
-        std::cout << tetgen_output.trifacemarkerlist[i] << std::endl;
+        auto start_index = i * DIMENSION_COUNT;
+        TriangleFace triangle_face{
+            (unsigned int) tetgen_output.trifacelist[start_index + 0],
+            (unsigned int) tetgen_output.trifacelist[start_index + 1],
+            (unsigned int) tetgen_output.trifacelist[start_index + 2]
+        };
+        fem_geometry.triangle_faces.push_back(triangle_face);
     }
-
 }
 
 template
