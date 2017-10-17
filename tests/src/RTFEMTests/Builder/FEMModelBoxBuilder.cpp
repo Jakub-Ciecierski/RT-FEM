@@ -4,7 +4,8 @@
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
-
+#include <RTFEM/FEM/BoundaryConditionContainer.h>
+#include <RTFEM/FEM/BoundaryCondition.h>
 #include <RTFEM/Memory/UniquePointer.h>
 
 std::shared_ptr<rtfem::FEMModel<double>> FEMModelBoxBuilder::Create(){

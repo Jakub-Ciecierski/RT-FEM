@@ -3,12 +3,14 @@
 
 #include <RTFEM/DataTypes.h>
 #include <RTFEM/FEM/Material.h>
-#include <RTFEM/FEM/BoundaryCondition.h>
 
 #include <vector>
 #include <memory>
 
 namespace rtfem {
+
+template<class T>
+class BoundaryConditionContainer;
 
 template<class T>
 class Vertex;
@@ -45,19 +47,18 @@ public:
     const Material<T> &material() const { return material_; }
     void material(Material<T> material) { material_ = material; }
 
-    const std::vector<BoundaryCondition<T>> &boundary_conditions() const {
-        return boundary_conditions_;
+    BoundaryConditionContainer<T> &boundary_conditions() {
+        return *boundary_conditions_;
+    }
+
+    const BoundaryConditionContainer<T> &boundary_conditions() const {
+        return *boundary_conditions_;
     }
 
     const Eigen::Vector3<T> &body_force() const {
         return body_force_;
     }
 
-    bool AddBoundaryCondition(const BoundaryCondition<T> &boundary_condition);
-    void RemoveBoundaryCondition(
-        const BoundaryCondition<T> &boundary_condition);
-    bool ExistsBoundaryCondition(
-        const BoundaryCondition<T> &boundary_condition);
     /**
      * Sets Body Force (e.g. gravity) to the entire model.
      * Body Force is added to each finite element.
@@ -71,7 +72,7 @@ private:
 
     Material<T> material_;
 
-    std::vector<BoundaryCondition<T>> boundary_conditions_;
+    std::unique_ptr<BoundaryConditionContainer<T>> boundary_conditions_;
 
     Eigen::Vector3<T> body_force_;
 };

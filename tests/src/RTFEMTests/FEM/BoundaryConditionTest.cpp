@@ -5,6 +5,8 @@
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/Vertex.h>
 #include "RTFEMTests/Builder/FEMModelSampleBuilder.h"
+#include <RTFEM/FEM/BoundaryConditionContainer.h>
+#include <RTFEM/FEM/BoundaryCondition.h>
 
 void BoundaryConditionTest::SetUp() {
     fem_model_ = FEMModelSampleBuilder().CreateRandomFEMModel();
@@ -20,7 +22,7 @@ TEST_F(BoundaryConditionTest, FEMModel_BoundaryAdded_CorrectForceVector) {
 
     auto size = fem_model_->fem_geometry().vertices.size();
     auto id = fem_model_->fem_geometry().vertices[size - 1]->id();
-    fem_model_->AddBoundaryCondition(
+    fem_model_->boundary_conditions().AddBoundaryCondition(
         rtfem::BoundaryCondition<double>{
             id,
             Eigen::Vector3<double>(boundary_value1,

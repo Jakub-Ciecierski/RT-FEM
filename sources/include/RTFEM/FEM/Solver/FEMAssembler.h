@@ -24,7 +24,7 @@ template<class T>
 struct FEMGeometry;
 
 template<class T>
-struct BoundaryCondition;
+class BoundaryConditionContainer;
 
 enum class FiniteElementType;
 
@@ -194,7 +194,7 @@ private:
      */
     void ApplyBoundaryConditions(
         FEMAssemblerData<T> &assembler_data,
-        const std::vector<BoundaryCondition<T>> &boundary_conditions);
+        const BoundaryConditionContainer<T> &boundary_conditions);
 };
 }
 

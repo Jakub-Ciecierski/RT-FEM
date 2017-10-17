@@ -8,6 +8,7 @@
 #include <RTFEM/FEM/FiniteElements/FiniteElementType.h>
 #include <RTFEM/FEM/FiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
+#include <RTFEM/FEM/BoundaryConditionContainer.h>
 #include <RTFEM/FEM/BoundaryCondition.h>
 
 #include <iostream>
@@ -185,7 +186,7 @@ FEMAssembler<T>::ComputePartialGlobalForceVector(
 template<class T>
 void FEMAssembler<T>::ApplyBoundaryConditions(
     FEMAssemblerData<T> &assembler_data,
-    const std::vector<BoundaryCondition<T>> &boundary_conditions) {
+    const BoundaryConditionContainer<T> &boundary_conditions) {
 
     for (auto &boundary_condition : boundary_conditions) {
         auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;

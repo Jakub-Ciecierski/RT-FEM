@@ -158,6 +158,13 @@ template<class T>
 void Tetrahedralization<T>::FetchFaces(FEMGeometry<T> &fem_geometry,
                                        tetgenio &tetgen_output) {
     // TODO Faces
+    std::cout << "Number of trifaces: "
+              << tetgen_output.numberoftrifaces
+              << std::endl;
+    for(int i = 0 ; i < tetgen_output.numberoftrifaces; i++){
+        std::cout << tetgen_output.trifacemarkerlist[i] << std::endl;
+    }
+
 }
 
 template
