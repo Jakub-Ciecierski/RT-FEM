@@ -80,7 +80,5 @@ std::shared_ptr<rtfem::FEMModel<double>> FEMModelBoxBuilder::Create(){
     fem_geometry.finite_elements[5] =
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(2, 7, 5, 0);
 
-    return std::make_shared<rtfem::FEMModel<double>>(
-        fem_geometry,
-        rtfem::Material<double>{80000, 0.3});
+    return std::make_shared<rtfem::FEMModel<double>>(fem_geometry);
 }

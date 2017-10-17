@@ -86,8 +86,6 @@ FEMModelSampleBuilder::CreateRandomFEMModel() {
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
             5, 6, 0, 8);
 
-    return std::make_shared<rtfem::FEMModel<double>>(
-        fem_geometry,
-        rtfem::Material<double>{80000, 0.3});
+    return std::make_shared<rtfem::FEMModel<double>>(fem_geometry);
 }
 

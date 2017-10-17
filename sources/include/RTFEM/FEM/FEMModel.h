@@ -29,10 +29,7 @@ class FiniteElement;
 template<class T>
 class FEMModel {
 public:
-    FEMModel();
-
-    FEMModel(const FEMGeometry<T>& fem_geometry,
-             const Material<T> &&material);
+    FEMModel(const FEMGeometry<T>& fem_geometry);
     ~FEMModel() = default;
 
     FEMGeometry<T> &fem_geometry() { return fem_geometry_; }

@@ -60,9 +60,8 @@ TEST_F(FEMAssemblerTest,
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
             0, 1, 2, 3);
 
-    auto fem_model = std::make_shared<rtfem::FEMModel<double>>(
-        fem_geometry,
-        rtfem::Material<double>{480, 1.0 / 3.0});
+    auto fem_model = std::make_shared<rtfem::FEMModel<double>>(fem_geometry);
+    fem_model->material(rtfem::Material<double>{480, 1.0 / 3.0});
 
     auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
 

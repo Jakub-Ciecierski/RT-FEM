@@ -22,8 +22,8 @@ TEST_F(TetrahedralizationTest, Compute_NumberOfElements) {
     constexpr unsigned int expected_vertex_count = 8;
     constexpr unsigned int expected_tetra_count = 6;
 
-    EXPECT_EQ(expected_vertex_count, fem_geometry->vertices.size());
-    EXPECT_EQ(expected_tetra_count, fem_geometry->finite_elements.size());
+    EXPECT_EQ(expected_vertex_count, fem_geometry.vertices.size());
+    EXPECT_EQ(expected_tetra_count, fem_geometry.finite_elements.size());
 }
 
 TEST_F(TetrahedralizationTest, Compute_SetVolumeConstriant) {
@@ -36,5 +36,5 @@ TEST_F(TetrahedralizationTest, Compute_SetVolumeConstriant) {
     auto fem_geometry = tetrahedralization.Compute(*triangle_mesh_cube_);
 
     constexpr unsigned int expected_vertex_count = 50;
-    EXPECT_EQ(expected_vertex_count, fem_geometry->vertices.size());
+    EXPECT_EQ(expected_vertex_count, fem_geometry.vertices.size());
 }
