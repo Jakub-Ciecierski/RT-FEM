@@ -18,6 +18,15 @@ public:
                              unsigned int vertex3,
                              unsigned int vertex4);
 
+    TetrahedronFiniteElement(unsigned int vertex1,
+                             unsigned int vertex2,
+                             unsigned int vertex3,
+                             unsigned int vertex4,
+                             unsigned int face1,
+                             unsigned int face2,
+                             unsigned int face3,
+                             unsigned int face4);
+
     ~TetrahedronFiniteElement() = default;
 
     unsigned int GetVertexCount() const override;

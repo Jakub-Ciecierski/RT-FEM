@@ -64,8 +64,14 @@ private:
                      tetgenio &tetgen_output);
     void FetchTetrahedra(FEMGeometry<T> &fem_geometry,
                          tetgenio &tetgen_output);
-    void FetchFaces(FEMGeometry<T> &fem_geometry,
-                    tetgenio &tetgen_output);
+    std::vector<unsigned int> FetchTetrahedronFaces(
+        FEMGeometry<T> &fem_geometry,
+        unsigned int v1,
+        unsigned int v2,
+        unsigned int v3,
+        unsigned int v4);
+    void FetchBoundaryFaces(FEMGeometry<T> &fem_geometry,
+                            tetgenio &tetgen_output);
 
     TetrahedralizationOptions options_;
 };

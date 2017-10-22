@@ -24,6 +24,8 @@ struct TriangleFace {
     unsigned int v2;
     unsigned int v3;
 
+    bool is_boundary_face;
+
     bool operator==(const TriangleFace& other){
         std::vector<unsigned int> indices{v1, v2, v3};
         std::vector<unsigned int> other_indices{other.v1, other.v2, other.v3};

@@ -38,3 +38,21 @@ TEST_F(TetrahedralizationTest, Compute_SetVolumeConstriant) {
     constexpr unsigned int expected_vertex_count = 50;
     EXPECT_EQ(expected_vertex_count, fem_geometry.vertices.size());
 }
+
+TEST_F(TetrahedralizationTest, NoTriangleRepeated) {
+    rtfem::Tetrahedralization<float> tetrahedralization;
+
+    rtfem::TetrahedralizationOptions options;
+    options.maximum_volume = 0.1;
+    tetrahedralization.SetOptions(options);
+
+    auto fem_geometry = tetrahedralization.Compute(*triangle_mesh_cube_);
+
+    for(unsigned int i = 0; i < fem_geometry.triangle_faces.size(); i++){
+        for(unsigned int j = i + 1; j < fem_geometry.triangle_faces.size();j++){
+            EXPECT_EQ(false,
+                fem_geometry.triangle_faces[i] ==
+                    fem_geometry.triangle_faces[j]);
+        }
+    }
+}

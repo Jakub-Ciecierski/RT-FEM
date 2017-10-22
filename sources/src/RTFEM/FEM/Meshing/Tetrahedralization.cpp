@@ -115,7 +115,7 @@ FEMGeometry<T> Tetrahedralization<T>::FetchOutput(
 
     FetchPoints(fem_geometry, tetgen_output);
     FetchTetrahedra(fem_geometry, tetgen_output);
-    FetchFaces(fem_geometry, tetgen_output);
+    FetchBoundaryFaces(fem_geometry, tetgen_output);
 
     return fem_geometry;
 }
@@ -144,27 +144,78 @@ void Tetrahedralization<T>::FetchTetrahedra(FEMGeometry<T> &fem_geometry,
     for (int i = 0; i < tetgen_output.numberoftetrahedra; i++) {
         auto start_index = i * tetgen_output.numberofcorners;
 
+        auto v1 = tetgen_output.tetrahedronlist[start_index + 0];
+        auto v2 = tetgen_output.tetrahedronlist[start_index + 1];
+        auto v3 = tetgen_output.tetrahedronlist[start_index + 2];
+        auto v4 = tetgen_output.tetrahedronlist[start_index + 3];
+
+        auto triangle_faces = FetchTetrahedronFaces(fem_geometry,
+                                                    v1, v2, v3, v4);
+
         auto finite_element = std::make_shared<TetrahedronFiniteElement<T>>(
-            tetgen_output.tetrahedronlist[start_index + 0],
-            tetgen_output.tetrahedronlist[start_index + 1],
-            tetgen_output.tetrahedronlist[start_index + 2],
-            tetgen_output.tetrahedronlist[start_index + 3]);
+            v1, v2, v3, v4,
+            triangle_faces[0],
+            triangle_faces[1],
+            triangle_faces[2],
+            triangle_faces[3]);
 
         fem_geometry.finite_elements.push_back(finite_element);
     }
 }
 
 template<class T>
-void Tetrahedralization<T>::FetchFaces(FEMGeometry<T> &fem_geometry,
-                                       tetgenio &tetgen_output) {
+std::vector<unsigned int> Tetrahedralization<T>::FetchTetrahedronFaces(
+    FEMGeometry<T> &fem_geometry,
+    unsigned int v1,
+    unsigned int v2,
+    unsigned int v3,
+    unsigned int v4) {
+    std::vector<TriangleFace> local_triangle_faces{
+        TriangleFace{v2, v3, v4, false},
+        TriangleFace{v3, v4, v1, false},
+        TriangleFace{v4, v1, v2, false},
+        TriangleFace{v1, v2, v3, false}
+    };
+    std::vector<unsigned int> triangle_faces_indices;
+    for(auto& triangle_face : local_triangle_faces){
+        auto t1 = std::find(fem_geometry.triangle_faces.begin(),
+                            fem_geometry.triangle_faces.end(),
+                            triangle_face);
+        auto index = std::distance(fem_geometry.triangle_faces.begin(), t1);
+        // Found
+        if ((unsigned int)index < fem_geometry.triangle_faces.size()) {
+            triangle_faces_indices.push_back((unsigned int)index);
+        } else {
+            fem_geometry.triangle_faces.push_back(triangle_face);
+            triangle_faces_indices.push_back(
+                fem_geometry.triangle_faces.size() - 1);
+        }
+    }
+
+    return triangle_faces_indices;
+}
+
+template<class T>
+void Tetrahedralization<T>::FetchBoundaryFaces(FEMGeometry<T> &fem_geometry,
+                                               tetgenio &tetgen_output) {
     for(int i = 0 ; i < tetgen_output.numberoftrifaces; i++){
         auto start_index = i * DIMENSION_COUNT;
         TriangleFace triangle_face{
             (unsigned int) tetgen_output.trifacelist[start_index + 0],
             (unsigned int) tetgen_output.trifacelist[start_index + 1],
-            (unsigned int) tetgen_output.trifacelist[start_index + 2]
+            (unsigned int) tetgen_output.trifacelist[start_index + 2],
+            true
         };
-        fem_geometry.triangle_faces.push_back(triangle_face);
+        auto t1 = std::find(fem_geometry.triangle_faces.begin(),
+                            fem_geometry.triangle_faces.end(),
+                            triangle_face);
+        auto index = std::distance(fem_geometry.triangle_faces.begin(), t1);
+        // Found
+        if ((unsigned int)index < fem_geometry.triangle_faces.size()) {
+            fem_geometry.triangle_faces[index].is_boundary_face = true;
+        } else {
+            throw std::invalid_argument("Boundary Face not found");
+        }
     }
 }
 
