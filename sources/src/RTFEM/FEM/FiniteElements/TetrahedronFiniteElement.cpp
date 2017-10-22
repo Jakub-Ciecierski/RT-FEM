@@ -19,7 +19,12 @@ TetrahedronFiniteElement<T>::TetrahedronFiniteElement(
 
 template<class T>
 unsigned int TetrahedronFiniteElement<T>::GetVertexCount() const {
-    return 4;
+    return vertex_count;
+}
+
+template<class T>
+unsigned int TetrahedronFiniteElement<T>::GetFaceCount() const {
+    return face_count;
 }
 
 template

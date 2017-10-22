@@ -29,9 +29,12 @@ public:
     }
 
     virtual unsigned int GetVertexCount() const = 0;
+    virtual unsigned int GetFaceCount() const = 0;
 
 protected:
     std::vector<unsigned int> vertices_indices_;
+    std::vector<unsigned int> faces_indices_;
+
 private:
     FiniteElementType type_;
 };

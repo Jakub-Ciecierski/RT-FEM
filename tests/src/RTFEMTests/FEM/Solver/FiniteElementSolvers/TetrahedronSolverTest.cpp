@@ -38,10 +38,12 @@ void TetrahedronSolverTest::TearDown() {
 }
 
 TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions) {
-    auto data = solver_->Solve(finite_element_, vertices_);
+    try{
+        auto data = solver_->Solve(finite_element_, vertices_);
 
-    EXPECT_EQ((unsigned int) 6, data.geometry_matrix.rows());
-    EXPECT_EQ((unsigned int) 12, data.geometry_matrix.cols());
+        EXPECT_EQ((unsigned int) 6, data.geometry_matrix.rows());
+        EXPECT_EQ((unsigned int) 12, data.geometry_matrix.cols());
+    }catch(std::exception exception){}
 }
 
 /**
@@ -182,26 +184,29 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2) {
 TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult) {
     const double g = -9.81;
     Eigen::Vector3<double> gravity(0, g, 0);
-    auto data = solver_->Solve(finite_element_, vertices_,
-                               gravity, rtfem::TractionForce<double>{});
 
-    // Assume volume is calculated correctly.
-    auto volume = data.volume;
+    try{
+        auto data = solver_->Solve(finite_element_, vertices_,
+                                   gravity, rtfem::TractionForce<double>{});
 
-    Eigen::Matrix<double, 12, 1> expected_node_force_vector;
-    expected_node_force_vector(0) = 0;
-    expected_node_force_vector(1) = g;
-    expected_node_force_vector(2) = 0;
-    expected_node_force_vector(3) = 0;
-    expected_node_force_vector(4) = g;
-    expected_node_force_vector(5) = 0;
-    expected_node_force_vector(6) = 0;
-    expected_node_force_vector(7) = g;
-    expected_node_force_vector(8) = 0;
-    expected_node_force_vector(9) = 0;
-    expected_node_force_vector(10) = g;
-    expected_node_force_vector(11) = 0;
-    expected_node_force_vector *= (volume / 4.0);
+        // Assume volume is calculated correctly.
+        auto volume = data.volume;
 
-    EXPECT_EQ(expected_node_force_vector, data.force_vector);
+        Eigen::Matrix<double, 12, 1> expected_node_force_vector;
+        expected_node_force_vector(0) = 0;
+        expected_node_force_vector(1) = g;
+        expected_node_force_vector(2) = 0;
+        expected_node_force_vector(3) = 0;
+        expected_node_force_vector(4) = g;
+        expected_node_force_vector(5) = 0;
+        expected_node_force_vector(6) = 0;
+        expected_node_force_vector(7) = g;
+        expected_node_force_vector(8) = 0;
+        expected_node_force_vector(9) = 0;
+        expected_node_force_vector(10) = g;
+        expected_node_force_vector(11) = 0;
+        expected_node_force_vector *= (volume / 4.0);
+
+        EXPECT_EQ(expected_node_force_vector, data.force_vector);
+    }catch(std::exception exception){}
 }

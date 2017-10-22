@@ -21,8 +21,11 @@ public:
     ~TetrahedronFiniteElement() = default;
 
     unsigned int GetVertexCount() const override;
+    unsigned int GetFaceCount() const override;
+
 private:
     const unsigned int vertex_count = 4;
+    const unsigned int face_count = 4;
 };
 }
 

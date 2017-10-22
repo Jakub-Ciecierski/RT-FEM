@@ -23,6 +23,23 @@ struct TriangleFace {
     unsigned int v1;
     unsigned int v2;
     unsigned int v3;
+
+    bool operator==(const TriangleFace& other){
+        std::vector<unsigned int> indices{v1, v2, v3};
+        std::vector<unsigned int> other_indices{other.v1, other.v2, other.v3};
+
+        for(unsigned int i = 0; i < 3; i++){
+            bool valid_i_candidate = false;
+            for(unsigned int j = 0; j < 3; j++){
+                if(indices[i] == other_indices[j]){
+                    valid_i_candidate = true;
+                }
+            }
+            if(!valid_i_candidate)
+                return false;
+        }
+        return true;
+    }
 };
 
 /**
