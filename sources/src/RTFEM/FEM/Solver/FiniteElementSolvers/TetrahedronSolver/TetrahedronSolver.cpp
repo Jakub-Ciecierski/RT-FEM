@@ -193,6 +193,10 @@ T TetrahedronSolver<T>::ComputeVolume(const TetrahedronShapeFunctionCoefficients
         throw std::invalid_argument(
             "TetrahedronSolver<T>::Solve: Element with 0 volume");
     }
+    if (volume < 0) {
+        throw std::invalid_argument(
+            "TetrahedronSolver<T>::Solve: Element with negative volume");
+    }
 
     return volume;
 }
