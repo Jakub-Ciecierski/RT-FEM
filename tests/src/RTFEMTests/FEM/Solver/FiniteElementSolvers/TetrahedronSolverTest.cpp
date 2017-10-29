@@ -237,3 +237,99 @@ TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult) {
         EXPECT_EQ(expected_node_force_vector, data.force_vector);
     }catch(std::exception exception){}
 }
+
+TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace1_ProperResult) {
+    unsigned int triangle_face_index = 0;
+    triangle_faces_[triangle_face_index].traction_force = -9.81;
+
+    auto index1 = triangle_face_index*3 + 0;
+    auto index2 = triangle_face_index*3 + 0;
+    auto index3 = triangle_face_index*3 + 0;
+
+    try{
+        auto data = solver_->Solve(finite_element_,
+                                   vertices_,
+                                   triangle_faces_,
+                                   Eigen::Vector3<double>::Zero());
+        for(unsigned int i = 0; i < 12; i++){
+            if(i == index1 || i == index2 || i == index3){
+                EXPECT_EQ(0, data.force_vector[i]);
+            }else{
+                EXPECT_NE(0, data.force_vector[i]);
+            }
+        }
+
+    }catch(std::exception exception){}
+}
+
+TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace2_ProperResult) {
+    unsigned int triangle_face_index = 1;
+    triangle_faces_[triangle_face_index].traction_force = -9.81;
+
+    auto index1 = triangle_face_index*3 + 0;
+    auto index2 = triangle_face_index*3 + 0;
+    auto index3 = triangle_face_index*3 + 0;
+
+    try{
+        auto data = solver_->Solve(finite_element_,
+                                   vertices_,
+                                   triangle_faces_,
+                                   Eigen::Vector3<double>::Zero());
+        for(unsigned int i = 0; i < 12; i++){
+            if(i == index1 || i == index2 || i == index3){
+                EXPECT_EQ(0, data.force_vector[i]);
+            }else{
+                EXPECT_NE(0, data.force_vector[i]);
+            }
+        }
+
+    }catch(std::exception exception){}
+}
+
+TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace3_ProperResult) {
+    unsigned int triangle_face_index = 2;
+    triangle_faces_[triangle_face_index].traction_force = -9.81;
+
+    auto index1 = triangle_face_index*3 + 0;
+    auto index2 = triangle_face_index*3 + 0;
+    auto index3 = triangle_face_index*3 + 0;
+
+    try{
+        auto data = solver_->Solve(finite_element_,
+                                   vertices_,
+                                   triangle_faces_,
+                                   Eigen::Vector3<double>::Zero());
+        for(unsigned int i = 0; i < 12; i++){
+            if(i == index1 || i == index2 || i == index3){
+                EXPECT_EQ(0, data.force_vector[i]);
+            }else{
+                EXPECT_NE(0, data.force_vector[i]);
+            }
+        }
+
+    }catch(std::exception exception){}
+}
+
+TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace4_ProperResult) {
+    unsigned int triangle_face_index = 3;
+    triangle_faces_[triangle_face_index].traction_force = -9.81;
+
+    auto index1 = triangle_face_index*3 + 0;
+    auto index2 = triangle_face_index*3 + 0;
+    auto index3 = triangle_face_index*3 + 0;
+
+    try{
+        auto data = solver_->Solve(finite_element_,
+                                   vertices_,
+                                   triangle_faces_,
+                                   Eigen::Vector3<double>::Zero());
+        for(unsigned int i = 0; i < 12; i++){
+            if(i == index1 || i == index2 || i == index3){
+                EXPECT_EQ(0, data.force_vector[i]);
+            }else{
+                EXPECT_NE(0, data.force_vector[i]);
+            }
+        }
+
+    }catch(std::exception exception){}
+}
