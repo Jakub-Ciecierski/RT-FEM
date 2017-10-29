@@ -453,9 +453,9 @@ TetrahedronSolver<T>::ComputeTractionForceVectorFace(unsigned int face_index,
                                                      T C,
                                                      T D) {
     auto S = std::sqrt((B * B) + (C * C) + (D * D));
-    auto B_normal = B / S;
-    auto C_normal = C / S;
-    auto D_normal = D / S;
+    auto B_normal = -(B / S);
+    auto C_normal = -(C / S);
+    auto D_normal = -(D / S);
 
     auto magnitude = (1.0 / 3.0) * traction_force * area;
     Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N> traction_force_vector_face;
