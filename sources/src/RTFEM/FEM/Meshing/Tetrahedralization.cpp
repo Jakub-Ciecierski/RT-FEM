@@ -170,11 +170,11 @@ std::vector<unsigned int> Tetrahedralization<T>::FetchTetrahedronFaces(
     unsigned int v2,
     unsigned int v3,
     unsigned int v4) {
-    std::vector<TriangleFace> local_triangle_faces{
-        TriangleFace{v2, v3, v4, false},
-        TriangleFace{v3, v4, v1, false},
-        TriangleFace{v4, v1, v2, false},
-        TriangleFace{v1, v2, v3, false}
+    std::vector<TriangleFace<T>> local_triangle_faces{
+        TriangleFace<T>{v2, v3, v4, false},
+        TriangleFace<T>{v3, v4, v1, false},
+        TriangleFace<T>{v4, v1, v2, false},
+        TriangleFace<T>{v1, v2, v3, false}
     };
     std::vector<unsigned int> triangle_faces_indices;
     for(auto& triangle_face : local_triangle_faces){
@@ -200,7 +200,7 @@ void Tetrahedralization<T>::FetchBoundaryFaces(FEMGeometry<T> &fem_geometry,
                                                tetgenio &tetgen_output) {
     for(int i = 0 ; i < tetgen_output.numberoftrifaces; i++){
         auto start_index = i * DIMENSION_COUNT;
-        TriangleFace triangle_face{
+        TriangleFace<T> triangle_face{
             (unsigned int) tetgen_output.trifacelist[start_index + 0],
             (unsigned int) tetgen_output.trifacelist[start_index + 1],
             (unsigned int) tetgen_output.trifacelist[start_index + 2],

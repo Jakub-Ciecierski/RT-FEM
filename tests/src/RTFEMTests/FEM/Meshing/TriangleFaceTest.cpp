@@ -9,8 +9,8 @@ void TriangleFaceTest::TearDown() {
 }
 
 TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal1){
-    rtfem::TriangleFace face1{1, 2, 3};
-    rtfem::TriangleFace face2{2, 1, 3};
+    rtfem::TriangleFace<float> face1{1, 2, 3};
+    rtfem::TriangleFace<float> face2{2, 1, 3};
 
     const bool expected_value = true;
 
@@ -18,8 +18,8 @@ TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal1){
 }
 
 TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal2){
-    rtfem::TriangleFace face1{1, 2, 3};
-    rtfem::TriangleFace face2{3, 1, 2};
+    rtfem::TriangleFace<float> face1{1, 2, 3};
+    rtfem::TriangleFace<float> face2{3, 1, 2};
 
     const bool expected_value = true;
 
@@ -27,8 +27,8 @@ TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal2){
 }
 
 TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal3){
-    rtfem::TriangleFace face1{1, 2, 3};
-    rtfem::TriangleFace face2{3, 2, 1};
+    rtfem::TriangleFace<float> face1{1, 2, 3};
+    rtfem::TriangleFace<float> face2{3, 2, 1};
 
     const bool expected_value = true;
 
@@ -36,8 +36,8 @@ TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal3){
 }
 
 TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal4){
-    rtfem::TriangleFace face1{2, 1, 3};
-    rtfem::TriangleFace face2{2, 1, 3};
+    rtfem::TriangleFace<float> face1{2, 1, 3};
+    rtfem::TriangleFace<float> face2{2, 1, 3};
 
     const bool expected_value = true;
 
@@ -45,8 +45,8 @@ TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal4){
 }
 
 TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal5){
-    rtfem::TriangleFace face1{1, 2, 3};
-    rtfem::TriangleFace face2{2, 3, 1};
+    rtfem::TriangleFace<float> face1{1, 2, 3};
+    rtfem::TriangleFace<float> face2{2, 3, 1};
 
     const bool expected_value = true;
 
@@ -54,8 +54,8 @@ TEST_F(TriangleFaceTest, TwoTriangleFaces_Equal5){
 }
 
 TEST_F(TriangleFaceTest, TwoTriangleFaces_NotEqual1){
-    rtfem::TriangleFace face1{1, 2, 3};
-    rtfem::TriangleFace face2{2, 2, 3};
+    rtfem::TriangleFace<float> face1{1, 2, 3};
+    rtfem::TriangleFace<float> face2{2, 2, 3};
 
     const bool expected_value = false;
 

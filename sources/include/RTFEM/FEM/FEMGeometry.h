@@ -22,7 +22,7 @@ struct FEMGeometry {
     std::vector<std::shared_ptr<Vertex<T>>> vertices;
     std::vector<std::shared_ptr<FiniteElement<T>>> finite_elements;
 
-    std::vector<TriangleFace> triangle_faces;
+    std::vector<TriangleFace<T>> triangle_faces;
 };
 }
 

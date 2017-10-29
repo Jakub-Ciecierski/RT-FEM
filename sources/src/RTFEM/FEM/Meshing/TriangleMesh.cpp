@@ -17,4 +17,9 @@ struct TriangleMeshIndexed<double>;
 template
 struct TriangleMeshIndexed<float>;
 
+template
+struct TriangleFace<double>;
+template
+struct TriangleFace<float>;
+
 }

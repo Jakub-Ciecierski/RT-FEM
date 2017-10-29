@@ -19,12 +19,29 @@ struct TriangleMesh {
     std::vector<TriangleFaceWithPoints<T>> triangles;
 };
 
+template<class T>
 struct TriangleFace {
+    TriangleFace(
+        unsigned int v1_,
+        unsigned int v2_,
+        unsigned int v3_) : v1(v1_), v2(v2_), v3(v3_),
+                            is_boundary_face(false),
+                            traction_force(0) {}
+
+    TriangleFace(
+        unsigned int v1_,
+        unsigned int v2_,
+        unsigned int v3_,
+        bool is_boundary_face_) : v1(v1_), v2(v2_), v3(v3_),
+                                 is_boundary_face(is_boundary_face_),
+                                 traction_force(0){}
     unsigned int v1;
     unsigned int v2;
     unsigned int v3;
 
     bool is_boundary_face;
+
+    T traction_force;
 
     bool operator==(const TriangleFace& other){
         std::vector<unsigned int> indices{v1, v2, v3};
@@ -52,7 +69,7 @@ struct TriangleFace {
 template<class T>
 struct TriangleMeshIndexed {
     std::vector<Eigen::Vector3<T>> points;
-    std::vector<TriangleFace> triangles;
+    std::vector<TriangleFace<T>> triangles;
 };
 
 }
