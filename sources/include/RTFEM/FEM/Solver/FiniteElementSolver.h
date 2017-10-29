@@ -14,6 +14,9 @@ class FiniteElement;
 template<class T>
 class Vertex;
 
+template<class T>
+struct TriangleFace;
+
 /**
 *  Contains:
 *      Volume (V)
@@ -43,7 +46,7 @@ struct FiniteElementSolverData {
  * (traction_force_face1, i == 1)
  */
 template<class T>
-struct TractionForce {
+struct TractionForces {
     T force_face1 = 0;
     T force_face2 = 0;
     T force_face3 = 0;
@@ -67,7 +70,13 @@ public:
         std::shared_ptr<FiniteElement<T>> finite_element,
         const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
         const Eigen::Vector3<T> &body_force,
-        const TractionForce<T> &traction_force) = 0;
+        const TractionForces<T> &traction_force) = 0;
+
+    virtual FiniteElementSolverData<T> Solve(
+        std::shared_ptr<FiniteElement<T>> finite_element,
+        const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
+        const std::vector<TriangleFace<T>> &triangle_faces,
+        const Eigen::Vector3<T> &body_force) = 0;
 };
 }
 

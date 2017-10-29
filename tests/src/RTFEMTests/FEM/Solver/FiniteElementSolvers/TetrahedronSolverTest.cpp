@@ -187,7 +187,7 @@ TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult) {
 
     try{
         auto data = solver_->Solve(finite_element_, vertices_,
-                                   gravity, rtfem::TractionForce<double>{});
+                                   gravity, rtfem::TractionForces<double>{});
 
         // Assume volume is calculated correctly.
         auto volume = data.volume;

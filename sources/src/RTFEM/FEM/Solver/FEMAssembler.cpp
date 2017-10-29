@@ -49,7 +49,7 @@ void FEMAssembler<T>::ComputeAssemblerData(
             finite_element,
             fem_geometry.vertices,
             fem_model.body_force(),
-            TractionForce<T>());
+            TractionForces<T>());
 
         auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(
             finite_element, fem_geometry.vertices);

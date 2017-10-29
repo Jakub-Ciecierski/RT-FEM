@@ -28,6 +28,10 @@ public:
             vertices_indices_;
     }
 
+    const std::vector<unsigned int>& faces_indices(){
+        return faces_indices_;
+    }
+
     virtual unsigned int GetVertexCount() const = 0;
     virtual unsigned int GetFaceCount() const = 0;
 

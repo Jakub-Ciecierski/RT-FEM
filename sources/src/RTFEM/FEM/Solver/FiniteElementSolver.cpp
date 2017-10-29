@@ -8,9 +8,9 @@ template
 class FiniteElementSolver<float>;
 
 template
-struct TractionForce<double>;
+struct TractionForces<double>;
 template
-struct TractionForce<float>;
+struct TractionForces<float>;
 
 template
 struct FiniteElementSolverData<double>;

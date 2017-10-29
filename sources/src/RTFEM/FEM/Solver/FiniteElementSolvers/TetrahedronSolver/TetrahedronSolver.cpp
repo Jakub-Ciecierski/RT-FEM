@@ -2,6 +2,7 @@
 
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
+#include <RTFEM/FEM/Meshing/TriangleMesh.h>
 
 #include <Eigen/Geometry>
 
@@ -13,7 +14,7 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     const std::vector<std::shared_ptr<Vertex<T>>> &vertices) {
     return Solve(finite_element,
                  vertices,
-                 Eigen::Vector3<T>::Zero(), TractionForce<T>{});
+                 Eigen::Vector3<T>::Zero(), TractionForces<T>{});
 }
 
 template<class T>
@@ -21,7 +22,7 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     std::shared_ptr<FiniteElement<T>> finite_element,
     const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
     const Eigen::Vector3<T> &body_force,
-    const TractionForce<T> &traction_force) {
+    const TractionForces<T> &traction_force) {
     auto v1 = vertices[finite_element->vertices_indices()[0]];
     auto v2 = vertices[finite_element->vertices_indices()[1]];
     auto v3 = vertices[finite_element->vertices_indices()[2]];
@@ -39,6 +40,53 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     data.force_vector = ComputeForceVector(shape_function_coefficients,
                                            data.volume, faces_area,
                                            body_force, traction_force);
+
+    return data;
+}
+
+template<class T>
+FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
+    std::shared_ptr<FiniteElement<T>> finite_element,
+    const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
+    const std::vector<TriangleFace<T>> &triangle_faces,
+    const Eigen::Vector3<T> &body_force){
+    auto vertex_index1 = finite_element->vertices_indices()[0];
+    auto vertex_index2 = finite_element->vertices_indices()[0];
+    auto vertex_index3 = finite_element->vertices_indices()[0];
+    auto vertex_index4 = finite_element->vertices_indices()[0];
+
+    auto vertex1 = vertices[vertex_index1];
+    auto vertex2 = vertices[vertex_index2];
+    auto vertex3 = vertices[vertex_index3];
+    auto vertex4 = vertices[vertex_index4];
+
+    const auto& triangle_face1
+        = triangle_faces[finite_element->faces_indices()[0]];
+    const auto& triangle_face2
+        = triangle_faces[finite_element->faces_indices()[1]];
+    const auto& triangle_face3
+        = triangle_faces[finite_element->faces_indices()[2]];
+    const auto& triangle_face4
+        = triangle_faces[finite_element->faces_indices()[3]];
+
+    TractionForces<T> traction_forces = FetchTractionForce(
+        vertex_index1, vertex_index2, vertex_index3, vertex_index4,
+        triangle_face1, triangle_face2, triangle_face3, triangle_face4);
+
+    auto edges = ComputeEdgesCache(*vertex1, *vertex2, *vertex3, *vertex4);
+    auto faces_area = ComputeFacesArea(edges);
+    auto shape_function_coefficients =
+        ComputeShapeFunctionCoefficients(*vertex1, *vertex2,
+                                         *vertex3, *vertex4,
+                                         edges);
+
+    FiniteElementSolverData<T> data;
+    data.volume = ComputeVolume(shape_function_coefficients);
+    data.geometry_matrix =
+        ComputeGeometryMatrix(shape_function_coefficients, data.volume);
+    data.force_vector = ComputeForceVector(shape_function_coefficients,
+                                           data.volume, faces_area,
+                                           body_force, traction_forces);
 
     return data;
 }
@@ -63,6 +111,95 @@ TetrahedronSolver<T>::SolveJacobianInverse(
 }
 
 template<class T>
+TractionForces<T> TetrahedronSolver<T>::FetchTractionForce(
+    unsigned int vertex_index1,
+    unsigned int vertex_index2,
+    unsigned int vertex_index3,
+    unsigned int vertex_index4,
+    const TriangleFace<T>& triangle_face1,
+    const TriangleFace<T>& triangle_face2,
+    const TriangleFace<T>& triangle_face3,
+    const TriangleFace<T>& triangle_face4){
+    std::vector<TriangleFace<T>> ordered_triangle_faces;
+
+    const auto triangle_first = TriangleFace<T>{vertex_index2,
+                                                vertex_index3,
+                                                vertex_index4};
+    const auto triangle_second = TriangleFace<T>{vertex_index1,
+                                                 vertex_index3,
+                                                 vertex_index4};
+    const auto triangle_third = TriangleFace<T>{vertex_index1,
+                                                vertex_index2,
+                                                vertex_index4};
+    const auto triangle_fourth = TriangleFace<T>{vertex_index1,
+                                                 vertex_index2,
+                                                 vertex_index3};
+
+    // 0
+    if(triangle_face1 == triangle_first){
+        ordered_triangle_faces.push_back(triangle_face1);
+    }
+    else if(triangle_face2 == triangle_first){
+        ordered_triangle_faces.push_back(triangle_face2);
+    }
+    else if(triangle_face3 == triangle_first){
+        ordered_triangle_faces.push_back(triangle_face3);
+    }
+    else if(triangle_face4 == triangle_first){
+        ordered_triangle_faces.push_back(triangle_face4);
+    }
+
+    // 1
+    if(triangle_face1 == triangle_second){
+        ordered_triangle_faces.push_back(triangle_face1);
+    }
+    else if(triangle_face2 == triangle_second){
+        ordered_triangle_faces.push_back(triangle_face2);
+    }
+    else if(triangle_face3 == triangle_second){
+        ordered_triangle_faces.push_back(triangle_face3);
+    }
+    else if(triangle_face4 == triangle_second){
+        ordered_triangle_faces.push_back(triangle_face4);
+    }
+
+    // 2
+    if(triangle_face1 == triangle_third){
+        ordered_triangle_faces.push_back(triangle_face1);
+    }
+    else if(triangle_face2 == triangle_third){
+        ordered_triangle_faces.push_back(triangle_face2);
+    }
+    else if(triangle_face3 == triangle_third){
+        ordered_triangle_faces.push_back(triangle_face3);
+    }
+    else if(triangle_face4 == triangle_third){
+        ordered_triangle_faces.push_back(triangle_face4);
+    }
+
+    // 3
+    if(triangle_face1 == triangle_fourth){
+        ordered_triangle_faces.push_back(triangle_face1);
+    }
+    else if(triangle_face2 == triangle_fourth){
+        ordered_triangle_faces.push_back(triangle_face2);
+    }
+    else if(triangle_face3 == triangle_fourth){
+        ordered_triangle_faces.push_back(triangle_face3);
+    }
+    else if(triangle_face4 == triangle_fourth){
+        ordered_triangle_faces.push_back(triangle_face4);
+    }
+
+    TractionForces<T> traction_forces;
+    traction_forces.force_face1 = ordered_triangle_faces[0].traction_force;
+    traction_forces.force_face2 = ordered_triangle_faces[1].traction_force;
+    traction_forces.force_face3 = ordered_triangle_faces[2].traction_force;
+    traction_forces.force_face4 = ordered_triangle_faces[3].traction_force;
+    return traction_forces;
+}
+
+template<class T>
 Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1,
                                                  const Vertex<T> &v2,
                                                  const Vertex<T> &v3,
@@ -79,6 +216,7 @@ Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1,
     edges.x42 = v4.x() - v2.x();
     edges.x13 = v1.x() - v3.x();
     edges.x12 = v1.x() - v2.x();
+
     edges.z43 = v4.z() - v3.z();
     edges.z31 = v3.z() - v1.z();
     edges.z32 = v3.z() - v2.z();
@@ -89,6 +227,7 @@ Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1,
     edges.z21 = v2.z() - v1.z();
     edges.z42 = v4.z() - v2.z();
     edges.z12 = v1.z() - v2.z();
+
     edges.y42 = v4.y() - v2.y();
     edges.y31 = v3.y() - v1.y();
     edges.y24 = v2.y() - v4.y();
@@ -265,7 +404,7 @@ TetrahedronSolver<T>::ComputeForceVector(const TetrahedronShapeFunctionCoefficie
                                          T volume,
                                          const FacesArea<T> &faces_area,
                                          const Eigen::Vector3<T> &body_force,
-                                         const TractionForce<T> &traction_force) {
+                                         const TractionForces<T> &traction_force) {
     auto consistent_body_force = ComputeBodyForceVector(volume, body_force);
     auto consistent_traction_force =
         ComputeTractionForceVector(shape_function_coefficients,
@@ -305,7 +444,7 @@ Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
 TetrahedronSolver<T>::ComputeTractionForceVector(
     const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
     const FacesArea<T> &faces_area,
-    const TractionForce<T> &traction_force) {
+    const TractionForces<T> &traction_force) {
     auto &coeff = shape_function_coefficients;
 
     auto traction_force_face1 =

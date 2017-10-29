@@ -43,7 +43,7 @@ struct TriangleFace {
 
     T traction_force;
 
-    bool operator==(const TriangleFace& other){
+    bool operator==(const TriangleFace& other) const {
         std::vector<unsigned int> indices{v1, v2, v3};
         std::vector<unsigned int> other_indices{other.v1, other.v2, other.v3};
 
