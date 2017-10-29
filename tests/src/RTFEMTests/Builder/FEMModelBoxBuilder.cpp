@@ -67,18 +67,59 @@ std::shared_ptr<rtfem::FEMModel<double>> FEMModelBoxBuilder::Create(){
                                                                             1,
                                                                             1));
 
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{5, 1, 6});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{5, 1, 0});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{5, 6, 0});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{0, 1, 6});
+
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{1, 2, 0});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{1, 2, 4});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{0, 2, 4});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{1, 0, 4});
+
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{3, 2, 5});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{3, 2, 0});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{3, 0, 5});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{0, 2, 5});
+
+    //12, 13, 14
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{7, 1, 5});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{7, 1, 0});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{7, 0, 5});
+
+    // 15, 16, 17
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{1, 7, 2});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{1, 0, 2});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{0, 7, 2});
+
+    // 18
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{2, 7, 5});
+
     fem_geometry.finite_elements[0]
-        = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(5, 1, 6, 0);
+        = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+        5, 1, 6, 0,
+        0, 1, 2, 3);
+
     fem_geometry.finite_elements[1] =
-        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(4, 1, 2, 0);
+        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            4, 1, 2, 0,
+            4, 5, 6, 7);
     fem_geometry.finite_elements[2] =
-        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(3, 2, 5, 0);
+        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            3, 2, 5, 0,
+            8, 9, 10, 11);
     fem_geometry.finite_elements[3] =
-        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(7, 1, 5, 0);
+        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            7, 1, 5, 0,
+            12, 13, 14, 1);
     fem_geometry.finite_elements[4] =
-        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(1, 7, 2, 0);
+        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            1, 7, 2, 0,
+            15, 13, 16, 17);
     fem_geometry.finite_elements[5] =
-        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(2, 7, 5, 0);
+        std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            2, 7, 5, 0,
+            17, 11, 14, 18);
 
     return std::make_shared<rtfem::FEMModel<double>>(fem_geometry);
 }

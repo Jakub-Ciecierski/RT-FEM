@@ -4,6 +4,7 @@
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/Memory/UniquePointer.h>
+#include <RTFEM/FEM/Meshing/TriangleMesh.h>
 
 #include <cmath>
 
@@ -30,7 +31,13 @@ void TetrahedronSolverTest::SetUp() {
                                                                             0,
                                                                             0)));
 
+    triangle_faces_.push_back(rtfem::TriangleFace<double>{1,2,3});
+    triangle_faces_.push_back(rtfem::TriangleFace<double>{2,3,0});
+    triangle_faces_.push_back(rtfem::TriangleFace<double>{3,0,1});
+    triangle_faces_.push_back(rtfem::TriangleFace<double>{0,1,2});
+
     finite_element_ = std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+        0, 1, 2, 3,
         0, 1, 2, 3);
 }
 
@@ -39,7 +46,10 @@ void TetrahedronSolverTest::TearDown() {
 
 TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions) {
     try{
-        auto data = solver_->Solve(finite_element_, vertices_);
+        auto data = solver_->Solve(finite_element_,
+                                   vertices_,
+                                   triangle_faces_,
+                                   Eigen::Vector3<double>::Zero());
 
         EXPECT_EQ((unsigned int) 6, data.geometry_matrix.rows());
         EXPECT_EQ((unsigned int) 12, data.geometry_matrix.cols());
@@ -71,8 +81,16 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest1) {
                                                               -3.0 / 11.0,
                                                               -2.0 / 9.0,
                                                               -1.0 / 4.0));
+
+    std::vector<rtfem::TriangleFace<double>> triangle_faces;
+    triangle_faces.push_back(rtfem::TriangleFace<double>{0, 1, 2});
+    triangle_faces.push_back(rtfem::TriangleFace<double>{0, 1, 3});
+    triangle_faces.push_back(rtfem::TriangleFace<double>{0, 3, 2});
+    triangle_faces.push_back(rtfem::TriangleFace<double>{3, 1, 2});
+
     auto finite_element =
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            0, 1, 2, 3,
             0, 1, 2, 3);
 
     Eigen::Matrix<double, 4, 4> expected_jacobian_inverse;
@@ -138,10 +156,17 @@ TEST_F(TetrahedronSolverTest, Solver_JacobianInverse_RandomMathematicaTest2) {
                                                               -1.0 / 34.0,
                                                               -4.0 / 9.0,
                                                               2.0 / 7.0));
+
+    std::vector<rtfem::TriangleFace<double>> triangle_faces;
+    triangle_faces.push_back(rtfem::TriangleFace<double>{0, 1, 2});
+    triangle_faces.push_back(rtfem::TriangleFace<double>{0, 1, 3});
+    triangle_faces.push_back(rtfem::TriangleFace<double>{0, 3, 2});
+    triangle_faces.push_back(rtfem::TriangleFace<double>{3, 1, 2});
+
     auto finite_element =
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
-            0, 1, 2, 3
-        );
+            0, 1, 2, 3,
+            0, 1, 2, 3);
 
     Eigen::Matrix<double, 4, 4> expected_jacobian_inverse;
     expected_jacobian_inverse(0, 0) = 0.380431;
@@ -186,8 +211,10 @@ TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult) {
     Eigen::Vector3<double> gravity(0, g, 0);
 
     try{
-        auto data = solver_->Solve(finite_element_, vertices_,
-                                   gravity, rtfem::TractionForces<double>{});
+        auto data = solver_->Solve(finite_element_,
+                                   vertices_,
+                                   triangle_faces_,
+                                   gravity);
 
         // Assume volume is calculated correctly.
         auto volume = data.volume;

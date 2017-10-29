@@ -13,6 +13,9 @@ class TetrahedronSolver;
 
 template<class T>
 class Vertex;
+
+template<class T>
+struct TriangleFace;
 }
 
 class TetrahedronSolverTest : public ::testing::Test {
@@ -22,6 +25,7 @@ protected:
 
     std::shared_ptr<rtfem::TetrahedronFiniteElement<double>> finite_element_;
     std::vector<std::shared_ptr<rtfem::Vertex<double>>> vertices_;
+    std::vector<rtfem::TriangleFace<double>> triangle_faces_;
 
     std::unique_ptr<rtfem::TetrahedronSolver<double>> solver_;
 };

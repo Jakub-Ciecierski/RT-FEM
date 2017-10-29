@@ -11,49 +11,13 @@ namespace rtfem {
 template<class T>
 FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     std::shared_ptr<FiniteElement<T>> finite_element,
-    const std::vector<std::shared_ptr<Vertex<T>>> &vertices) {
-    return Solve(finite_element,
-                 vertices,
-                 Eigen::Vector3<T>::Zero(), TractionForces<T>{});
-}
-
-template<class T>
-FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
-    std::shared_ptr<FiniteElement<T>> finite_element,
-    const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
-    const Eigen::Vector3<T> &body_force,
-    const TractionForces<T> &traction_force) {
-    auto v1 = vertices[finite_element->vertices_indices()[0]];
-    auto v2 = vertices[finite_element->vertices_indices()[1]];
-    auto v3 = vertices[finite_element->vertices_indices()[2]];
-    auto v4 = vertices[finite_element->vertices_indices()[3]];
-
-    auto edges = ComputeEdgesCache(*v1, *v2, *v3, *v4);
-    auto faces_area = ComputeFacesArea(edges);
-    auto shape_function_coefficients =
-        ComputeShapeFunctionCoefficients(*v1, *v2, *v3, *v4, edges);
-
-    FiniteElementSolverData<T> data;
-    data.volume = ComputeVolume(shape_function_coefficients);
-    data.geometry_matrix =
-        ComputeGeometryMatrix(shape_function_coefficients, data.volume);
-    data.force_vector = ComputeForceVector(shape_function_coefficients,
-                                           data.volume, faces_area,
-                                           body_force, traction_force);
-
-    return data;
-}
-
-template<class T>
-FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
-    std::shared_ptr<FiniteElement<T>> finite_element,
     const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
     const std::vector<TriangleFace<T>> &triangle_faces,
     const Eigen::Vector3<T> &body_force){
     auto vertex_index1 = finite_element->vertices_indices()[0];
-    auto vertex_index2 = finite_element->vertices_indices()[0];
-    auto vertex_index3 = finite_element->vertices_indices()[0];
-    auto vertex_index4 = finite_element->vertices_indices()[0];
+    auto vertex_index2 = finite_element->vertices_indices()[1];
+    auto vertex_index3 = finite_element->vertices_indices()[2];
+    auto vertex_index4 = finite_element->vertices_indices()[3];
 
     auto vertex1 = vertices[vertex_index1];
     auto vertex2 = vertices[vertex_index2];

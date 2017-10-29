@@ -56,8 +56,14 @@ TEST_F(FEMAssemblerTest,
                                                                             3,
                                                                             6));
 
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{0, 1, 2});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{0, 1, 3});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{0, 3, 2});
+    fem_geometry.triangle_faces.push_back(rtfem::TriangleFace<double>{3, 1, 2});
+
     fem_geometry.finite_elements[0] =
         std::make_shared<rtfem::TetrahedronFiniteElement<double>>(
+            0, 1, 2, 3,
             0, 1, 2, 3);
 
     auto fem_model = std::make_shared<rtfem::FEMModel<double>>(fem_geometry);

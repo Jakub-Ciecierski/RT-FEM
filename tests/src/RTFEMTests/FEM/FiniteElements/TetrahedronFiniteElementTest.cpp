@@ -5,6 +5,7 @@
 
 void TetrahedronFiniteElementTest::SetUp() {
     tetrahedron_ = rtfem::make_unique<rtfem::TetrahedronFiniteElement<double>>(
+        0, 0, 0, 0,
         0, 0, 0, 0
     );
 }
