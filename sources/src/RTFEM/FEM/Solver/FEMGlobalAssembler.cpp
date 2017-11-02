@@ -1,4 +1,4 @@
-#include "RTFEM/FEM/Solver/FEMAssembler.h"
+#include "RTFEM/FEM/Solver/FEMGlobalAssembler.h"
 
 #include <RTFEM/Memory/UniquePointer.h>
 #include <RTFEM/FEM/FEMModel.h>
@@ -16,11 +16,11 @@
 namespace rtfem {
 
 template<class T>
-FEMAssemblerData<T> FEMAssembler<T>::Compute(
+FEMGlobalAssemblerData<T> FEMGlobalAssembler<T>::Compute(
     const FEMModel<T>& fem_model) {
     auto global_dof_count =
         DIMENSION_COUNT * fem_model.fem_geometry().vertices.size();
-    FEMAssemblerData<T> fem_assembler_data(global_dof_count);
+    FEMGlobalAssemblerData<T> fem_assembler_data(global_dof_count);
 
     auto constitutive_matrix_C = ComputeConstitutiveMatrix(fem_model);
 
@@ -35,41 +35,61 @@ FEMAssemblerData<T> FEMAssembler<T>::Compute(
 }
 
 template<class T>
-void FEMAssembler<T>::ComputeAssemblerData(
-    FEMAssemblerData<T> &fem_assembler_data,
+void FEMGlobalAssembler<T>::ComputeAssemblerData(
+    FEMGlobalAssemblerData<T> &fem_assembler_data,
     const FEMModel<T> &fem_model,
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
     constitutive_matrix_C) {
     auto fem_geometry = fem_model.fem_geometry();
-    for (const auto &finite_element : fem_geometry.finite_elements) {
+    for (auto &finite_element : fem_geometry.finite_elements) {
+        auto fem_geometry = fem_model.fem_geometry();
+
         auto finite_element_solver =
-            GetFiniteElementSolver(finite_element->type());
+                GetFiniteElementSolver(finite_element->type());
 
         auto finite_element_solver_data = finite_element_solver->Solve(
-            finite_element,
-            fem_geometry.vertices,
-            fem_geometry.triangle_faces,
-            fem_model.body_force());
+                finite_element,
+                fem_geometry.vertices,
+                fem_geometry.triangle_faces,
+                fem_model.body_force(),
+                fem_model.material());
 
         auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(
-            finite_element, fem_geometry.vertices);
+                finite_element, fem_geometry.vertices);
 
-        fem_assembler_data.global_stiffness +=
-            ComputePartialGlobalStiffnessMatrix(
-                finite_element_solver_data.geometry_matrix,
+        ComputeAssemblerDataIteration(
+                fem_assembler_data,
+                finite_element_solver_data,
+                fem_model,
                 constitutive_matrix_C,
-                boolean_assembly_matrix_A,
-                finite_element_solver_data.volume);
-        fem_assembler_data.global_force +=
-            ComputePartialGlobalForceVector(
-                finite_element_solver_data.force_vector,
                 boolean_assembly_matrix_A);
     }
 }
 
 template<class T>
+void FEMGlobalAssembler<T>::ComputeAssemblerDataIteration(
+        FEMGlobalAssemblerData<T> &fem_assembler_data,
+        const FiniteElementSolverData<T>& finite_element_solver_data,
+        const FEMModel<T> &fem_model,
+        const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
+        constitutive_matrix_C,
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
+        boolean_assembly_matrix_A){
+    fem_assembler_data.global_stiffness +=
+            ComputePartialGlobalStiffnessMatrix(
+                    finite_element_solver_data.geometry_matrix,
+                    constitutive_matrix_C,
+                    boolean_assembly_matrix_A,
+                    finite_element_solver_data.volume);
+    fem_assembler_data.global_force +=
+            ComputePartialGlobalForceVector(
+                    finite_element_solver_data.force_vector,
+                    boolean_assembly_matrix_A);
+}
+
+template<class T>
 Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
-FEMAssembler<T>::ComputeConstitutiveMatrix(const FEMModel<T>& fem_model) {
+FEMGlobalAssembler<T>::ComputeConstitutiveMatrix(const FEMModel<T>& fem_model) {
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
         constitutive_matrix =
         Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>::Zero();
@@ -101,7 +121,7 @@ FEMAssembler<T>::ComputeConstitutiveMatrix(const FEMModel<T>& fem_model) {
 
 template<class T>
 std::unique_ptr<FiniteElementSolver<T>>
-FEMAssembler<T>::GetFiniteElementSolver(const FiniteElementType &type) {
+FEMGlobalAssembler<T>::GetFiniteElementSolver(const FiniteElementType &type) {
     switch (type) {
         case FiniteElementType::Tetrahedron:
             return rtfem::make_unique<TetrahedronSolver<T>>();
@@ -112,7 +132,7 @@ FEMAssembler<T>::GetFiniteElementSolver(const FiniteElementType &type) {
 
 template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
-FEMAssembler<T>::ComputeBooleanAssemblyMatrix(
+FEMGlobalAssembler<T>::ComputeBooleanAssemblyMatrix(
     const std::shared_ptr<FiniteElement<T>> finite_element,
     const std::vector<std::shared_ptr<Vertex<T>>> &vertices) {
     unsigned int vertex_count = vertices.size();
@@ -139,7 +159,7 @@ FEMAssembler<T>::ComputeBooleanAssemblyMatrix(
 
 template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
-FEMAssembler<T>::ComputePartialGlobalStiffnessMatrix(
+FEMGlobalAssembler<T>::ComputePartialGlobalStiffnessMatrix(
     const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
     const Eigen::Matrix<T,
                         CONSTITUTIVE_MATRIX_N,
@@ -158,7 +178,7 @@ FEMAssembler<T>::ComputePartialGlobalStiffnessMatrix(
 
 template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
-FEMAssembler<T>::ComputeLocalStiffness(
+FEMGlobalAssembler<T>::ComputeLocalStiffness(
     const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
     const Eigen::Matrix<T,
                         CONSTITUTIVE_MATRIX_N,
@@ -175,7 +195,7 @@ FEMAssembler<T>::ComputeLocalStiffness(
 
 template<class T>
 Eigen::Vector<T, Eigen::Dynamic>
-FEMAssembler<T>::ComputePartialGlobalForceVector(
+FEMGlobalAssembler<T>::ComputePartialGlobalForceVector(
     const Eigen::Vector<T, Eigen::Dynamic> &force_vector,
     const Eigen::Matrix<T,
                         Eigen::Dynamic,
@@ -184,8 +204,8 @@ FEMAssembler<T>::ComputePartialGlobalForceVector(
 }
 
 template<class T>
-void FEMAssembler<T>::ApplyBoundaryConditions(
-    FEMAssemblerData<T> &assembler_data,
+void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
+    FEMGlobalAssemblerData<T> &assembler_data,
     const BoundaryConditionContainer<T> &boundary_conditions) {
 
     for (auto &boundary_condition : boundary_conditions) {
@@ -233,13 +253,13 @@ void FEMAssembler<T>::ApplyBoundaryConditions(
 }
 
 template
-class FEMAssembler<double>;
+class FEMGlobalAssembler<double>;
 template
-class FEMAssembler<float>;
+class FEMGlobalAssembler<float>;
 
 template
-struct FEMAssemblerData<double>;
+struct FEMGlobalAssemblerData<double>;
 template
-struct FEMAssemblerData<float>;
+struct FEMGlobalAssemblerData<float>;
 
 }

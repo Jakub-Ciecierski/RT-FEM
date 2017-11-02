@@ -26,11 +26,26 @@ struct FEMGeometry;
 template<class T>
 class BoundaryConditionContainer;
 
+template<class T>
+struct FiniteElementSolverData;
+
 enum class FiniteElementType;
 
 template<class T>
-struct FEMAssemblerData {
-    FEMAssemblerData(unsigned int global_dof_count) :
+struct FEMGlobalAssemblerData {
+    FEMGlobalAssemblerData(unsigned int global_dof_count) :
+        global_mass(
+            Eigen::Matrix<
+                    T,
+                    Eigen::Dynamic,
+                    Eigen::Dynamic>::
+            Zero(global_dof_count, global_dof_count)),
+        global_damping(
+            Eigen::Matrix<
+                    T,
+                    Eigen::Dynamic,
+                    Eigen::Dynamic>::
+            Zero(global_dof_count, global_dof_count)),
         global_stiffness(
             Eigen::Matrix<
                 T,
@@ -43,6 +58,8 @@ struct FEMAssemblerData {
                 Eigen::Dynamic>::
             Zero(global_dof_count)) {}
 
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_mass;
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_damping;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_stiffness;
     Eigen::Vector<T, Eigen::Dynamic> global_force;
 };
@@ -66,10 +83,10 @@ constexpr unsigned int DIMENSION_COUNT = 3;
  * Global Force Vector (Q) [3N x 1]
  */
 template<class T>
-class FEMAssembler {
+class FEMGlobalAssembler {
 public:
-    FEMAssembler() = default;
-    ~FEMAssembler() = default;
+    FEMGlobalAssembler() = default;
+    virtual ~FEMGlobalAssembler() = default;
 
     /**
      * Computes Global Stiffness Matrix (K) and Global Force Vector (Q).
@@ -83,9 +100,29 @@ public:
      * @param fem_model
      * @return
      */
-    FEMAssemblerData<T> Compute(const FEMModel<T>& fem_model);
+    FEMGlobalAssemblerData<T> Compute(const FEMModel<T>& fem_model);
 
+protected:
+
+    virtual void ComputeAssemblerDataIteration(
+            FEMGlobalAssemblerData<T> &fem_assembler_data,
+            const FiniteElementSolverData<T>& finite_element_solver_data,
+            const FEMModel<T> &fem_model,
+            const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N,CONSTITUTIVE_MATRIX_N> &
+            constitutive_matrix_C,
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
+            boolean_assembly_matrix_A);
+    /**
+     * Applies Boundary Conditions to the GlobalStiffness and
+     * GlobalForce Vector
+     * @param assembler_data
+     * @param boundary_conditions
+     */
+    virtual void ApplyBoundaryConditions(
+            FEMGlobalAssemblerData<T> &assembler_data,
+            const BoundaryConditionContainer<T> &boundary_conditions);
 private:
+
     /**
      * Iterates through every finite element and assembles data into
      * Global matrices
@@ -95,10 +132,10 @@ private:
      * @param constitutive_matrix_C
      */
     void ComputeAssemblerData(
-        FEMAssemblerData<T> &fem_assembler_data,
-        const FEMModel<T> &fem_model,
-        Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
-        constitutive_matrix_C);
+            FEMGlobalAssemblerData<T> &fem_assembler_data,
+            const FEMModel<T> &fem_model,
+            Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
+            constitutive_matrix_C);
 
     /**
      * Computes Isotropic Constitutive Matrix (C).
@@ -186,15 +223,6 @@ private:
                             Eigen::Dynamic,
                             Eigen::Dynamic> &boolean_assembly_matrix_A);
 
-    /**
-     * Applies Boundary Conditions to the GlobalStiffness and
-     * GlobalForce Vector
-     * @param assembler_data
-     * @param boundary_conditions
-     */
-    void ApplyBoundaryConditions(
-        FEMAssemblerData<T> &assembler_data,
-        const BoundaryConditionContainer<T> &boundary_conditions);
 };
 }
 

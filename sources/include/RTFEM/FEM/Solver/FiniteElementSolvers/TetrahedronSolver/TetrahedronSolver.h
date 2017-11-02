@@ -63,7 +63,8 @@ public:
         std::shared_ptr<FiniteElement<T>> finite_element,
         const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
         const std::vector<TriangleFace<T>> &triangle_faces,
-        const Eigen::Vector3<T> &body_force) override;
+        const Eigen::Vector3<T> &body_force,
+        const Material<T>& material) override;
 
     Eigen::Matrix<T,
                   TETRAHEDRON_JACOBIAN_MATRIX_N,
@@ -149,10 +150,12 @@ private:
     ComputeForceVector(const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
                        T volume, const FacesArea<T> &faces_area,
                        const Eigen::Vector3<T> &body_force,
-                       const TractionForces<T> &traction_force);
+                       const TractionForces<T> &traction_force,
+                       const Material<T>& material);
     Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
     ComputeBodyForceVector(T volume,
-                           const Eigen::Vector3<T> &body_force);
+                           const Eigen::Vector3<T> &body_force,
+                           const Material<T>& material);
     Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
     ComputeTractionForceVector(const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
                                const FacesArea<T> &faces_area,

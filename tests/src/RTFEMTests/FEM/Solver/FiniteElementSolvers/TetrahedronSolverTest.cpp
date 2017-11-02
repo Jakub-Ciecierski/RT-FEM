@@ -5,6 +5,7 @@
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/Memory/UniquePointer.h>
 #include <RTFEM/FEM/Meshing/TriangleMesh.h>
+#include <RTFEM/FEM/Material.h>
 
 #include <cmath>
 
@@ -49,7 +50,8 @@ TEST_F(TetrahedronSolverTest, Solver_GeomtryMatrix_ProperDimensions) {
         auto data = solver_->Solve(finite_element_,
                                    vertices_,
                                    triangle_faces_,
-                                   Eigen::Vector3<double>::Zero());
+                                   Eigen::Vector3<double>::Zero(),
+                                   rtfem::Material<double>{});
 
         EXPECT_EQ((unsigned int) 6, data.geometry_matrix.rows());
         EXPECT_EQ((unsigned int) 12, data.geometry_matrix.cols());
@@ -214,7 +216,8 @@ TEST_F(TetrahedronSolverTest, Solver_BodyForceAppliedGravity_ProperResult) {
         auto data = solver_->Solve(finite_element_,
                                    vertices_,
                                    triangle_faces_,
-                                   gravity);
+                                   gravity,
+                                   rtfem::Material<double>{});
 
         // Assume volume is calculated correctly.
         auto volume = data.volume;
@@ -250,7 +253,8 @@ TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace1_ProperResult) {
         auto data = solver_->Solve(finite_element_,
                                    vertices_,
                                    triangle_faces_,
-                                   Eigen::Vector3<double>::Zero());
+                                   Eigen::Vector3<double>::Zero(),
+                                   rtfem::Material<double>{});
         for(unsigned int i = 0; i < 12; i++){
             if(i == index1 || i == index2 || i == index3){
                 EXPECT_EQ(0, data.force_vector[i]);
@@ -274,7 +278,8 @@ TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace2_ProperResult) {
         auto data = solver_->Solve(finite_element_,
                                    vertices_,
                                    triangle_faces_,
-                                   Eigen::Vector3<double>::Zero());
+                                   Eigen::Vector3<double>::Zero(),
+                                   rtfem::Material<double>{});
         for(unsigned int i = 0; i < 12; i++){
             if(i == index1 || i == index2 || i == index3){
                 EXPECT_EQ(0, data.force_vector[i]);
@@ -298,7 +303,8 @@ TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace3_ProperResult) {
         auto data = solver_->Solve(finite_element_,
                                    vertices_,
                                    triangle_faces_,
-                                   Eigen::Vector3<double>::Zero());
+                                   Eigen::Vector3<double>::Zero(),
+                                   rtfem::Material<double>{});
         for(unsigned int i = 0; i < 12; i++){
             if(i == index1 || i == index2 || i == index3){
                 EXPECT_EQ(0, data.force_vector[i]);
@@ -322,7 +328,8 @@ TEST_F(TetrahedronSolverTest, Solver_TractionForceAppliedToFace4_ProperResult) {
         auto data = solver_->Solve(finite_element_,
                                    vertices_,
                                    triangle_faces_,
-                                   Eigen::Vector3<double>::Zero());
+                                   Eigen::Vector3<double>::Zero(),
+                                   rtfem::Material<double>{});
         for(unsigned int i = 0; i < 12; i++){
             if(i == index1 || i == index2 || i == index3){
                 EXPECT_EQ(0, data.force_vector[i]);

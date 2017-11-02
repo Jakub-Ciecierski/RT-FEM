@@ -9,7 +9,7 @@ template<class T>
 class FEMModel;
 
 template<class T>
-class FEMAssembler;
+class FEMGlobalAssembler;
 }
 
 class FEMAssemblerTest : public ::testing::Test {
@@ -19,6 +19,6 @@ protected:
     virtual void TearDown() override;
 
     std::shared_ptr<rtfem::FEMModel<double>> fem_model_;
-    std::unique_ptr<rtfem::FEMAssembler<double>> fem_assembler_;
+    std::unique_ptr<rtfem::FEMGlobalAssembler<double>> fem_assembler_;
 
 };

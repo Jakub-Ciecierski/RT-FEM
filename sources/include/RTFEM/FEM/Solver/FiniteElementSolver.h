@@ -9,6 +9,9 @@
 namespace rtfem {
 
 template<class T>
+struct Material;
+
+template<class T>
 class FiniteElement;
 
 template<class T>
@@ -33,11 +36,9 @@ struct FiniteElementSolverData {
     T volume;
 
     // Used to compute Global Stiffness
-    //Matrix geometry_matrix;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> geometry_matrix;
 
     // Used to compute Global Force
-    //Matrix force_vector;
     Eigen::Matrix<T, Eigen::Dynamic, 1> force_vector;
 };
 
@@ -66,7 +67,8 @@ public:
         std::shared_ptr<FiniteElement<T>> finite_element,
         const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
         const std::vector<TriangleFace<T>> &triangle_faces,
-        const Eigen::Vector3<T> &body_force) = 0;
+        const Eigen::Vector3<T> &body_force,
+        const Material<T>& material) = 0;
 };
 }
 

@@ -1,7 +1,7 @@
 #include "RTFEMTests/FEM/BoundaryConditionTest.h"
 
 #include <RTFEM/FEM/Solver/FEMSolver.h>
-#include <RTFEM/FEM/Solver/FEMAssembler.h>
+#include <RTFEM/FEM/Solver/FEMGlobalAssembler.h>
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/Vertex.h>
 #include "RTFEMTests/Builder/FEMModelSampleBuilder.h"
@@ -31,7 +31,7 @@ TEST_F(BoundaryConditionTest, FEMModel_BoundaryAdded_CorrectForceVector) {
         }
     );
 
-    rtfem::FEMAssembler<double> fem_assembler;
+    rtfem::FEMGlobalAssembler<double> fem_assembler;
 
     try{
         auto assembler_data = fem_assembler.Compute(*fem_model_);

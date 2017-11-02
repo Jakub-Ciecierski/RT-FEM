@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0098)http://what-when-how.com/the-finite-element-method/fem-for-3d-solids-finite-element-method-part-1/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>FEM for 3D Solids (Finite Element Method) Part 1</title>
+<meta name="robots" content="noodp, noydir">
+<meta name="description" content="Introduction A three-dimensional (3D) solid element can be considered to be the most general of all solid finite elements because all the field variables are dependent of x, y and z. An example of a 3D solid structure under loading […]">
+<link rel="stylesheet" href="./FEM for 3D Solids (Finite Element Method) Part 1_files/style.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="./FEM for 3D Solids (Finite Element Method) Part 1_files/layout.css" type="text/css" media="screen, projection">
+<!--[if lte IE 8]><link rel="stylesheet" href="http://what-when-how.com/wp-content/themes/thesis_182/lib/css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+<link rel="shortcut icon" href="http://what-when-how.com/wp-content/uploads/2011/08/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="what-when-how RSS Feed" href="http://feeds.feedburner.com/what-when-how">
+<link rel="pingback" href="http://what-when-how.com/xmlrpc.php">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://what-when-how.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://what-when-how.com/wp-includes/wlwmanifest.xml">
+</head>
+<body>
+<div id="header_area" class="full_width">
+<div class="page">
+<ul class="menu">
+</ul>
+	<div id="header">
+		<p id="logo"><a href="http://what-when-how.com/">what-when-how</a></p>
+		<p id="tagline">In Depth Tutorials and Information</p>
+	</div>
+</div>
+</div>
+<div id="content_area" class="full_width">
+<div class="page">
+	<div id="content_box">
+		<div id="content" class="hfeed">
+
+				   
+
+
+
+						<script language="javascript">
+
+
+
+						//	navigator.CustomTag = null;
+
+
+
+						</script>				   				   
+
+
+
+							<div class="post-258783 post type-post status-publish format-standard hentry category-the-finite-element-method post_box top" id="post-258783">
+				<div class="headline_area">
+					<h1 class="entry-title">FEM for 3D Solids (Finite Element Method) Part 1</h1>
+				</div>
+				<div class="format_text entry-content">
+
+<script type="text/javascript">
+    google_ad_client = "ca-pub-3548356617924720";
+    google_ad_slot = "9774666650";
+    google_ad_width = 728;
+    google_ad_height = 90;
+</script>
+<!-- Above the fold 728x90 -->
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+
+<script type="text/javascript">
+    google_ad_client = "ca-pub-3548356617924720";
+    google_ad_slot = "9774666650";
+    google_ad_width = 728;
+    google_ad_height = 90;
+</script>
+<!-- Above the fold 728x90 -->
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+
+
+<h2>Introduction </h2>
+<p><strong>A three-dimensional (3D)</strong> solid element can be considered to be the most general of all solid finite elements because all the field variables are dependent of x, y and z. An example of a 3D solid structure under loading is shown in Figure 9.1. As can be seen, the force vectors here can be in any arbitrary direction in space. A 3D solid can also have any arbitrary shape, material properties and boundary conditions in space. As such, there are altogether six possible stress components, three normal and three shear, that need to be taken into consideration. Typically, a 3D solid element can be a tetrahedron or hexahedron in shape with either flat or curved surfaces. Each node of the element will have three translational degrees of freedom. The element can thus deform in all three directions in space. </p>
+<p><strong>Since the 3D element is said to be the most general solid element</strong>, the truss, beam, plate, 2D solid and shell elements can all be considered to be special cases of the 3D element. So, why is there a need to develop all the other elements? Why not just use the 3D element to model everything? Theoretically, yes, the 3D element can actually be used to model all kinds of structurural components, including trusses, beams, plates, shells and so on. However, it can be very tedious in geometry creation and meshing. Furthermore, it is also most demanding on computer resources. Hence, the general rule of thumb is, that when a structure can be assumed within acceptable tolerances to be simplified into a 1D (trusses, beams and frames) or 2D (2D solids and plates) structure, always do so. The creation of a 1D or 2D FEM model is much easier and efficient. Use 3D solid elements only when we have no other choices. The formulation of 3D solids elements is straightforward, because it is basically an extension of 2D solids elements. All the techniques used in 2D solids can be utilized, except that all the variables are now functions of x, y and z. The basic concepts, procedures and formulations for 3D solid elements can also be found in many existing topics (see, e.g., Washizu, 1981; Rao, 1999; Zienkiewicz and Taylor, 2000; etc.). </p><!--Ad Injection:random-->
+<div style="float:left;margin-top:3px;margin-bottom:3px;padding-top:3px;padding-bottom:3px;"><script type="text/javascript">
+    google_ad_client = "ca-pub-3548356617924720";
+    google_ad_slot = "9654707454";
+    google_ad_width = 336;
+    google_ad_height = 280;
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div><br clear="all">
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589618_thumb.png" target="_blank"><img title="Example of a 3D solid under loadings. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="369" alt="Example of a 3D solid under loadings. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589618_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Figure 9.1. Example of a 3D solid under loadings.</strong> </p>
+<h2>Tetrahedron Element </h2>
+<h3>Strain Matrix</h3>
+<p><strong>Consider the same 3D solid structure as Figure 9.1,</strong> whose domain is divided in a proper manner into a number of tetrahedron elements (Figure 9.2) with four nodes and four surfaces, as shown in Figure 9.3. A tetrahedron element has four nodes, each having three DOFs (u, v and w), making the total DOFs in a tetrahedron element twelve, as shown in Figure 9.3. </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589619_thumb.png" target="_blank"><img title="Solid block divided into four-node tetrahedron elements. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="212" alt="Solid block divided into four-node tetrahedron elements. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589619_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Figure 9.2. Solid block divided into four-node tetrahedron elements.</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589620_thumb.png" target="_blank"><img title="Atetrahedron element. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="385" alt="Atetrahedron element. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589620_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Figure 9.3. Atetrahedron element.</strong> </p>
+<p><strong>The nodes are numbered 1, 2, 3 and 4</strong> by the right-hand rule. The local Cartesian coordinate system for a tetrahedron element can usually be the same as the global coordinate system, as there are no advantages in having a separate local Cartesian coordinate system. In an element, the displacement vector U is a function of the coordinate x, y and z, and is interpolated by shape functions in the following form, which should by now be shown to be part and parcel of the finite element method: </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589621_thumb.png" target="_blank"><img title="tmp5896-21_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="46" alt="tmp5896-21_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589621_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>where the nodal displacement vector, de, is given as </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589622_thumb.png" target="_blank"><img title="tmp5896-22_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="380" alt="tmp5896-22_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589622_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>and the matrix of shape functions has the form </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589623_thumb.png" target="_blank"><img title="tmp5896-23_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="143" alt="tmp5896-23_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589623_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>To develop the shape functions,</strong> we make use of what is known as the volume coordinates, which is a natural extension from the area coordinates for 2D solids. The use of the volume coordinates makes it more convenient for shape function construction and element matrix integration. The volume coordinates for node 1 is defined as </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589624_thumb.png" target="_blank"><img title="tmp5896-24_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="104" alt="tmp5896-24_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589624_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>where Vp234 and Vi234 denote, respectively, the volumes of the tetrahedrons P234 and 1234, as shown in Figure 9.4. The volume coordinate for node 2-4 can also be defined in the same manner: </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589625_thumb.png" target="_blank"><img title="Volume coordinates for tetrahedron elements. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="434" alt="Volume coordinates for tetrahedron elements. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589625_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Figure 9.4. Volume coordinates for tetrahedron elements.</strong> </p>
+<p>&nbsp;</p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589626_thumb.png" target="_blank"><img title="tmp5896-26_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="79" alt="tmp5896-26_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589626_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>The volume coordinate can also be viewed as the ratio between the distance of the point P and point 1 to the plane 234:</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589627_thumb.png" target="_blank"><img title="tmp5896-27_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="59" alt="tmp5896-27_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589627_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>It can easily be confirmed that </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589628_thumb.png" target="_blank"><img title="tmp5896-28_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="49" alt="tmp5896-28_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589628_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>since </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589629_thumb.png" target="_blank"><img title="tmp5896-29_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="46" alt="tmp5896-29_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589629_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>It can also easily be confirmed that </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589630_thumb.png" target="_blank"><img title="tmp5896-30_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="89" alt="tmp5896-30_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589630_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Using Eq. (9.9), the relationship between the volume coordinates and Cartesian coordinates can be easily derived:</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589631_thumb.png" target="_blank"><img title="tmp5896-31_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="131" alt="tmp5896-31_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589631_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Equations (9.7) and (9.10) can then be expressed as a single matrix equation as follows:</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589632_thumb.png" target="_blank"><img title="tmp5896-32_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="150" alt="tmp5896-32_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589632_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>The inversion of Eq. (9.11) will give</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589633_thumb.png" target="_blank"><img title="tmp5896-33_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="139" alt="tmp5896-33_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589633_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>where </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589634_thumb.png" target="_blank"><img title="tmp5896-34_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="189" alt="tmp5896-34_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589634_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>in which the subscript i varies from 1 to 4, and j, k and l are determined by a cyclic permutation in the order of i, j, k, l. For example, if i = 1, then j = 2, k = 3, l = 4. When i = 2, then j = 3, k = 4, l = 1. The volume of the tetrahedron element V can be obtained by </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589635_thumb.png" target="_blank"><img title="tmp5896-35_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="134" alt="tmp5896-35_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589635_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>The properties of Li, as depicted in Eqs. (9.6) to (9.9), show that Li can be used as the shape function of a four-nodal tetrahedron element:</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589636_thumb.png" target="_blank"><img title="tmp5896-36_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="76" alt="tmp5896-36_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589636_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>It can be seen from above that</strong> the shape function is a linear function of x, y and z, hence, the four-nodal tetrahedron element is a linear element. Note that from Eq. (9.14), the moment matrix of the linear basis functions will never be singular, unless the volume of the element is zero (or the four nodes of the element are in a plane). Based on Lemmas 2 and 3, we can be sure that the shape functions given by Eq. (9.15) satisfy the sufficient requirement of FEM shape functions. </p>
+<p><strong>It was mentioned that</strong> there are six stresses in a 3D element in total. The stress components are<a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589637_thumb.png" target="_blank"><img title="tmp5896-37_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="51" alt="tmp5896-37_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589637_thumb_thumb.png" width="595" border="0"></a>To get the corresponding strains, </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589638_thumb.png" target="_blank"><img title="tmp5896-38_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="62" alt="tmp5896-38_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589638_thumb_thumb.png" width="573" border="0"></a>we can substitute Eq. (9.1) into Eq. (2.5): </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589641_thumb.png" target="_blank"><img title="tmp5896-41_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="59" alt="tmp5896-41_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589641_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>where the strain matrix B is given by </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589642_thumb.png" target="_blank"><img title="tmp5896-42_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="183" alt="tmp5896-42_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589642_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Using Eq. (9.3),</strong> the strain matrix, B, can be obtained as </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589643_thumb.png" target="_blank"><img title="tmp5896-43_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="142" alt="tmp5896-43_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589643_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>It can be seen that the strain matrix for</strong> a linear tetrahedron element is a constant matrix. This implies that the strain within a linear tetrahedron element is constant, and thus so is the stress. Therefore, the linear tetrahedron elements are also often referred to as a constant strain element or constant stress element, similar to the case of 2D linear triangular elements. </p>
+<h3>Element Matrices </h3>
+<p><strong>Once the strain matrix has been obtained,</strong> the stiffness matrix ke for 3D solid elements can be obtained by substituting Eq. (9.18) into Eq. (3.71). Since the strain is constant, the element strain matrix is obtained as </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589644_thumb.png" target="_blank"><img title="tmp5896-44_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="77" alt="tmp5896-44_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589644_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Note that the material constant matrix c is given generally by Eq. (2.9). The mass matrix can similarly be obtained using Eq. (3.75):</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589645_thumb.png" target="_blank"><img title="tmp5896-45_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="110" alt="tmp5896-45_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589645_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>where </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589646_thumb.png" target="_blank"><img title="tmp5896-46_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="103" alt="tmp5896-46_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589646_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>Using the following formula [Eisenberg and Malvern, 1973], </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589647_thumb.png" target="_blank"><img title="tmp5896-47_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="87" alt="tmp5896-47_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589647_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>we can conveniently evaluate the integral in Eq. (9.20) to give </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589648_thumb.png" target="_blank"><img title="tmp5896-48_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="324" alt="tmp5896-48_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589648_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>An alternative way to calculate the mass matrix for</strong> 3D solid elements is to use a special natural coordinate system, which is defined as shown in Figures 9.5-9.7. In Figure 9.5, the plane of ξ = constant is defined in such a way that the edge P-Q stays parallel to the edge 2-3 of the element, and point 4 coincides with point 4 of the element. When P moves to point 1, ξ = 0, and when P moves to point 2, ξ = 1. In Figure 9.6, the plane of η = constant is defined in such a way that the edge 1-4 on the triangle coincides with the edge 1-4 of the element, and point P stays on the edge 2-3 of the element. When P moves to point 2, η = 0, and when P moves to point 3, η = 1. The plane of ζ = constant is defined in Figure 9.7, in such a way that the plane P-Q-R stays parallel to the plane 1 -2-3 of the element, and when P moves to point 4, ζ = 0, and when P moves to point 2, ζ = 1. In addition, the plane 1-2-3 on the element sits on the x-y plane. </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589649_thumb.png" target="_blank"><img title="Natural coordinate, where ξ = constant. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="480" alt="Natural coordinate, where ξ = constant. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589649_thumb_thumb.png" width="577" border="0"></a> </p>
+<p><strong>Figure 9.5. Natural coordinate, where ξ = constant.</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589650_thumb.png" target="_blank"><img title="Natural coordinate, where η = constant. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="480" alt="Natural coordinate, where η = constant. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589650_thumb_thumb.png" width="608" border="0"></a> </p>
+<p><strong>Figure 9.6. Natural coordinate, where η = constant.</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589651_thumb.png" target="_blank"><img title="Natural coordinate, where ζ = constant. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="480" alt="Natural coordinate, where ζ = constant. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589651_thumb_thumb.png" width="596" border="0"></a> </p>
+<p><strong>Figure 9.7. Natural coordinate, where ζ = constant.</strong> </p>
+<p><strong>Therefore,</strong> the relationship between xyz and<a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589652_thumb.png" target="_blank"><img title="tmp5896-52_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="42" alt="tmp5896-52_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589652_thumb_thumb.png" width="65" border="0"></a>‘ can be obtained in the following steps: </p>
+<p>In Figure 9.8, the coordinates at point P are first interpolated using the x, y and z coordinates at points 2 and 3: </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589654_thumb.png" target="_blank"><img title="tmp5896-54_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="132" alt="tmp5896-54_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589654_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>The coordinates at point B are then interpolated using the x, y and z coordinates at points 1 and P:</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589655_thumb.png" target="_blank"><img title="tmp5896-55_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="122" alt="tmp5896-55_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589655_thumb_thumb.png" width="640" border="0"></a></p>
+<p>&nbsp;</p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589656_thumb.png" target="_blank"><img title="Cartesian coordinates xyz of point O in term of ξηζ. " style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="400" alt="Cartesian coordinates xyz of point O in term of ξηζ. " src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589656_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>Figure 9.8. Cartesian coordinates xyz of point O in term of ξηζ.</strong> </p>
+<p><strong>The coordinates at point O are finally interpolated using the x, y and z coordinates at points 4 and B:</strong> </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589657_thumb.png" target="_blank"><img title="tmp5896-57_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="89" alt="tmp5896-57_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589657_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>With this special natural coordinate system, the shape functions in the matrix of Eq. (9.3) can be written by inspection as </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589658_thumb.png" target="_blank"><img title="tmp5896-58_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="198" alt="tmp5896-58_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589658_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>The Jacobian matrix between xyz and ξηζ is required, and is given as </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589659_thumb.png" target="_blank"><img title="tmp5896-59_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="102" alt="tmp5896-59_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589659_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>Using Eqs. (9.26) and (9.27), the determinate of the Jacobian can be found to be </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589660_thumb.png" target="_blank"><img title="tmp5896-60_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="83" alt="tmp5896-60_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589660_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>The mass matrix can now be obtained as </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589661_thumb.png" target="_blank"><img title="tmp5896-61_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="59" alt="tmp5896-61_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589661_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>which gives </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589662_thumb.png" target="_blank"><img title="tmp5896-62_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="103" alt="tmp5896-62_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589662_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>where Nij- is given by Eq. (9.21), but in which the shape functions should be defined by Eq. (9.27). Evaluating the integrals in Eq. (9.31) would give the same mass matrix as in Eq. (9.23). </p>
+<p><strong>The nodal force vector for 3D solid elements</strong> can be obtained using Eqs. (3.78), (3.79) and (3.81). Suppose the element is loaded by a distributed force f on the edge 2-3 of the element as shown in Figure 9.3; the nodal force vector becomes </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589663_thumb.png" target="_blank"><img title="tmp5896-63_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="112" alt="tmp5896-63_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589663_thumb_thumb.png" width="640" border="0"></a> </p>
+<p><strong>If the load is uniformly</strong> distributed,<a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589664_thumb.png" target="_blank"><img title="tmp5896-64_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="59" alt="tmp5896-64_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589664_thumb_thumb.png" width="276" border="0"></a>are&nbsp; constants,and the above equation becomes </p>
+<p><a href="http://what-when-how.com/wp-content/uploads/2012/06/tmp589666_thumb.png" target="_blank"><img title="tmp5896-66_thumb" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="391" alt="tmp5896-66_thumb" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/tmp589666_thumb_thumb.png" width="640" border="0"></a> </p>
+<p>where l3-4 is the length of the edge 3-4. Equation (9.33) implies that the distributed forces are equally divided and applied at the two nodes. This conclusion also applies to evenly distributed surface forces applied on any face of the element, and to evenly distributed body force applied on the entire body of the element. Finally, the stiffness matrix, ke, the mass matrix, me, and the nodal force vector, fe, can be used directly to assemble the global FE equation, Eq. (3.96), without going through a coordinate transformation. </p>
+
+<script type="text/javascript">
+    google_ad_client = "ca-pub-3548356617924720";
+    google_ad_slot = "4305259831";
+    google_ad_width = 200;
+    google_ad_height = 90;
+</script>
+<!-- At end of article Link unit 200x90 -->
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+<script type="text/javascript">
+    google_ad_client = "ca-pub-3548356617924720";
+    google_ad_slot = "4305259831";
+    google_ad_width = 200;
+    google_ad_height = 90;
+</script>
+<!-- At end of article Link unit 200x90 -->
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+
+				</div>
+			</div>
+
+			<div id="comments">
+			</div>
+					<div class="prev_next post_nav">
+						<p class="previous">Next post: <a href="http://what-when-how.com/the-finite-element-method/fem-for-3d-solids-finite-element-method-part-2/" rel="prev">FEM for 3D Solids (Finite Element Method) Part 2</a></p>
+						<p>Previous post: <a href="http://what-when-how.com/the-finite-element-method/fem-for-plates-and-shells-finite-element-method-part-3/" rel="next">FEM for Plates and Shells (Finite Element Method) Part 3</a></p>
+					</div>
+		</div>
+
+		<div id="sidebars">
+			<div id="sidebar_1" class="sidebar">
+				<ul class="sidebar_list">
+<li class="widget widget_nrc" id="related-links-by-category"><h3>Related Links</h3>			<ul>
+				<li class="serif"><span class="cat-name"><a href="http://what-when-how.com/category/the-finite-element-method/" title="The Finite Element Method">The Finite Element Method</a></span><ul><li class="cat-item" id="related-cat-post-260255"><a href="http://what-when-how.com/the-finite-element-method/computational-modelling-finite-element-method/" title="Computational Modelling (Finite Element Method)">Computational Modelling (Finite Element Method)</a></li><li class="cat-item" id="related-cat-post-260235"><a href="http://what-when-how.com/the-finite-element-method/introduction-to-mechanics-for-solids-and-structures-finite-element-method-part-1/" title="Introduction to Mechanics for Solids and Structures (Finite Element Method) Part 1">Introduction to Mechanics for Solids and Structures (Finite Element Method) Part 1</a></li><li class="cat-item" id="related-cat-post-260155"><a href="http://what-when-how.com/the-finite-element-method/introduction-to-mechanics-for-solids-and-structures-finite-element-method-part-2/" title="Introduction to Mechanics for Solids and Structures (Finite Element Method) Part 2">Introduction to Mechanics for Solids and Structures (Finite Element Method) Part 2</a></li><li class="cat-item" id="related-cat-post-260095"><a href="http://what-when-how.com/the-finite-element-method/introduction-to-mechanics-for-solids-and-structures-finite-element-method-part-3/" title="Introduction to Mechanics for Solids and Structures (Finite Element Method) Part 3">Introduction to Mechanics for Solids and Structures (Finite Element Method) Part 3</a></li><li class="cat-item" id="related-cat-post-260007"><a href="http://what-when-how.com/the-finite-element-method/fundamentals-for-finite-element-method-part-1/" title="Fundamentals for Finite Element Method Part 1">Fundamentals for Finite Element Method Part 1</a></li></ul></li>			</ul>
+			</li><li class="widget thesis_widget_google_cse" id="google-custom-search">
+<h3>:: Search WWH ::</h3>
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-bottom" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box" target="_blank">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-3548356617924720:u0h0be-i8eq">
+        <input type="hidden" name="ie" value="ISO-8859-1">
+        <input type="text" name="q" size="60">
+        <input type="submit" name="sa" value="Search">
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="./FEM for 3D Solids (Finite Element Method) Part 1_files/poweredby_FFFFFF.gif" alt="Google">
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+</li>
+				</ul>
+			</div>
+			<div id="sidebar_2" class="sidebar">
+				<ul class="sidebar_list">
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<div id="footer_area" class="full_width">
+<div class="page">
+	<div id="footer">
+
+<p><a href="http://what-when-how.com/help-unprivileged-children/" rel="nofollow">Help Unprivileged Children</a> &nbsp;¶&nbsp;
+
+<a href="http://what-when-how.com/careers/" rel="nofollow">Careers</a> &nbsp;¶&nbsp;
+
+<a href="http://what-when-how.com/privacy-statement/" rel="nofollow">Privacy Statement</a> &nbsp;¶&nbsp;
+
+<a href="http://what-when-how.com/copyright-information/" rel="nofollow">Copyright Information</a></p>
+
+
+<script type="text/javascript">
+var sc_project=4900976; 
+var sc_invisible=1; 
+var sc_security="2107041e"; 
+</script>
+<script type="text/javascript" src="./FEM for 3D Solids (Finite Element Method) Part 1_files/counter_xhtml.js"></script>
+<noscript>&lt;div class="statcounter"&gt;&lt;a 
+class="statcounter"&gt;&lt;img class="statcounter"
+src="http://c.statcounter.com/4900976/0/2107041e/1/"
+alt="" /&gt;&lt;/a&gt;&lt;/div&gt;</noscript>
+
+	</div>
+</div>
+</div>
+<!--[if lte IE 8]>
+<div id="ie_clear"></div>
+<![endif]-->
+
+</body></html>

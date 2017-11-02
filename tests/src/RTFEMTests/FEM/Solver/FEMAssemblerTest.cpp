@@ -3,7 +3,7 @@
 #include <RTFEMTests/Builder/FEMModelSampleBuilder.h>
 
 #include <RTFEM/Memory/UniquePointer.h>
-#include <RTFEM/FEM/Solver/FEMAssembler.h>
+#include <RTFEM/FEM/Solver/FEMGlobalAssembler.h>
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Material.h>
@@ -18,7 +18,7 @@ void FEMAssemblerTest::SetUp() {
     FEMModelSampleBuilder builder;
     fem_model_ = builder.CreateRandomFEMModel();
 
-    fem_assembler_ = rtfem::make_unique<rtfem::FEMAssembler<double>>();
+    fem_assembler_ = rtfem::make_unique<rtfem::FEMGlobalAssembler<double>>();
 }
 
 void FEMAssemblerTest::TearDown() {}

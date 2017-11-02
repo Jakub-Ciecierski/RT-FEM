@@ -3,6 +3,7 @@
 #include <RTFEM/FEM/FiniteElements/TetrahedronFiniteElement.h>
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/FEM/Meshing/TriangleMesh.h>
+#include <RTFEM/FEM/Material.h>
 
 #include <Eigen/Geometry>
 
@@ -13,7 +14,8 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     std::shared_ptr<FiniteElement<T>> finite_element,
     const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
     const std::vector<TriangleFace<T>> &triangle_faces,
-    const Eigen::Vector3<T> &body_force){
+    const Eigen::Vector3<T> &body_force,
+    const Material<T>& material){
     auto vertex_index1 = finite_element->vertices_indices()[0];
     auto vertex_index2 = finite_element->vertices_indices()[1];
     auto vertex_index3 = finite_element->vertices_indices()[2];
@@ -50,7 +52,8 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
         ComputeGeometryMatrix(shape_function_coefficients, data.volume);
     data.force_vector = ComputeForceVector(shape_function_coefficients,
                                            data.volume, faces_area,
-                                           body_force, traction_forces);
+                                           body_force, traction_forces,
+                                           material);
 
     return data;
 }
@@ -307,8 +310,7 @@ T TetrahedronSolver<T>::ComputeVolume(const TetrahedronShapeFunctionCoefficients
 template<class T>
 Eigen::Matrix<T, TETRAHEDRON_GEOMETRIC_MATRIX_N, TETRAHEDRON_GEOMETRIC_MATRIX_M>
 TetrahedronSolver<T>::ComputeGeometryMatrix(const TetrahedronShapeFunctionCoefficients<
-    T> &coefficients,
-                                            T volume) {
+    T> &coefficients, T volume) {
     Eigen::Matrix<T,
                   TETRAHEDRON_GEOMETRIC_MATRIX_N,
                   TETRAHEDRON_GEOMETRIC_MATRIX_M> geometry_matrix =
@@ -363,17 +365,21 @@ void TetrahedronSolver<T>::AssemblyGeometryMatrix(
 
 template<class T>
 Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
-TetrahedronSolver<T>::ComputeForceVector(const TetrahedronShapeFunctionCoefficients<
-    T> &shape_function_coefficients,
-                                         T volume,
-                                         const FacesArea<T> &faces_area,
-                                         const Eigen::Vector3<T> &body_force,
-                                         const TractionForces<T> &traction_force) {
-    auto consistent_body_force = ComputeBodyForceVector(volume, body_force);
+TetrahedronSolver<T>::ComputeForceVector(
+        const TetrahedronShapeFunctionCoefficients<T> &shape_function_coefficients,
+        T volume,
+        const FacesArea<T> &faces_area,
+        const Eigen::Vector3<T> &body_force,
+        const TractionForces<T>
+        &traction_force,
+        const Material<T> &material) {
+
+    auto consistent_body_force = ComputeBodyForceVector(volume, body_force,
+                                                        material);
     auto consistent_traction_force =
-        ComputeTractionForceVector(shape_function_coefficients,
-                                   faces_area,
-                                   traction_force);
+            ComputeTractionForceVector(shape_function_coefficients,
+                                       faces_area,
+                                       traction_force);
 
     return consistent_body_force + consistent_traction_force;
 }
@@ -382,7 +388,8 @@ template<class T>
 Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N>
 TetrahedronSolver<T>::ComputeBodyForceVector(
     T volume,
-    const Eigen::Vector3<T> &body_force) {
+    const Eigen::Vector3<T> &body_force,
+    const Material<T>& material) {
     Eigen::Vector<T, TETRAHEDRON_FORCE_VECTOR_N> consistent_body_force;
 
     consistent_body_force(0) = body_force.x();
@@ -398,7 +405,7 @@ TetrahedronSolver<T>::ComputeBodyForceVector(
     consistent_body_force(10) = body_force.y();
     consistent_body_force(11) = body_force.z();
 
-    consistent_body_force *= (volume / 4.0);
+    consistent_body_force *= material.density * (volume / 4.0);
 
     return consistent_body_force;
 }
