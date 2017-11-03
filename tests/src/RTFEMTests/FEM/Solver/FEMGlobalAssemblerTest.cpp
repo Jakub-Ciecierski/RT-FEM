@@ -1,4 +1,4 @@
-#include "RTFEMTests/FEM/Solver/FEMAssemblerTest.h"
+#include "RTFEMTests/FEM/Solver/FEMGlobalAssemblerTest.h"
 
 #include <RTFEMTests/Builder/FEMModelSampleBuilder.h>
 
@@ -14,16 +14,16 @@
 
 #include <cmath>
 
-void FEMAssemblerTest::SetUp() {
+void FEMGlobalAssemblerTest::SetUp() {
     FEMModelSampleBuilder builder;
     fem_model_ = builder.CreateRandomFEMModel();
 
     fem_assembler_ = rtfem::make_unique<rtfem::FEMGlobalAssembler<double>>();
 }
 
-void FEMAssemblerTest::TearDown() {}
+void FEMGlobalAssemblerTest::TearDown() {}
 
-TEST_F(FEMAssemblerTest,
+TEST_F(FEMGlobalAssemblerTest,
        SingleFiniteElement_CorrectGlobalStiffnessMatrix_Mathematica) {
     rtfem::FEMGeometry<double> fem_geometry;
     fem_geometry.finite_elements =
@@ -95,7 +95,7 @@ TEST_F(FEMAssemblerTest,
     EXPECT_EQ(expected_stiffness, fem_assembler_data.global_stiffness);
 };
 
-TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions) {
+TEST_F(FEMGlobalAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions) {
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
 
     try{
@@ -108,7 +108,7 @@ TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions) {
     }catch(std::exception exception){}
 }
 
-TEST_F(FEMAssemblerTest, FEMAssembler_Compute_ProperStiffnessDimensions) {
+TEST_F(FEMGlobalAssemblerTest, FEMAssembler_Compute_ProperStiffnessDimensions) {
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
 
     try{

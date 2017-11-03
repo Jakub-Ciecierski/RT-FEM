@@ -12,7 +12,7 @@ template<class T>
 class FEMGlobalAssembler;
 }
 
-class FEMAssemblerTest : public ::testing::Test {
+class FEMGlobalAssemblerTest : public ::testing::Test {
 protected:
     virtual void SetUp() override;
 

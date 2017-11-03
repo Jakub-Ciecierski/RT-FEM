@@ -15,7 +15,8 @@ void BoundaryConditionTest::SetUp() {
 void BoundaryConditionTest::TearDown() {
 }
 
-TEST_F(BoundaryConditionTest, FEMModel_BoundaryAdded_CorrectForceVector) {
+TEST_F(BoundaryConditionTest,
+       FEMStaticAssembler_BoundaryAdded_CorrectForceVector) {
     constexpr double boundary_value1 = 1;
     constexpr double boundary_value2 = 2;
     constexpr double boundary_value3 = 3;

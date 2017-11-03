@@ -1,4 +1,4 @@
-#include "RTFEMTests/FEM/Solver/FEMSolverTest.h"
+#include "RTFEMTests/FEM/Solver/Solvers/FEMStaticSolverTest.h"
 
 #include <RTFEM/FEM/Solver/FEMSolver.h>
 #include <RTFEM/FEM/Solver/FEMSolvers/FEMStaticSolver.h>
@@ -7,15 +7,15 @@
 #include <RTFEMTests/Builder/FEMModelBoxBuilder.h>
 #include <RTFEM/Memory/UniquePointer.h>
 
-void FEMSolverTest::SetUp() {
+void FEMStaticSolverTest::SetUp() {
     FEMModelBoxBuilder builder;
     fem_model_ = builder.Create();
 }
 
-void FEMSolverTest::TearDown() {
+void FEMStaticSolverTest::TearDown() {
 }
 
-TEST_F(FEMSolverTest, FEMSolver_EmptyModel_DisplacemntsAreZero) {
+TEST_F(FEMStaticSolverTest, FEMSolver_EmptyModel_DisplacemntsAreZero) {
     rtfem::FEMStaticSolver<double> fem_solver;
 
     auto fem_solver_output = fem_solver.Solve(*fem_model_);
@@ -25,7 +25,7 @@ TEST_F(FEMSolverTest, FEMSolver_EmptyModel_DisplacemntsAreZero) {
     }
 }
 
-TEST_F(FEMSolverTest, FEMSolver_GravityForce_Displacemnts) {
+TEST_F(FEMStaticSolverTest, FEMSolver_GravityForce_Displacemnts) {
     rtfem::FEMStaticSolver<double> fem_solver;
 
     fem_model_->SetBodyForce(Eigen::Vector3<double>{

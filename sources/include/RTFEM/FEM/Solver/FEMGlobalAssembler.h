@@ -103,6 +103,19 @@ public:
     FEMGlobalAssemblerData<T> Compute(const FEMModel<T>& fem_model);
 
 protected:
+    /**
+     * Iterates through every finite element and assembles data into
+     * Global matrices
+     *
+     * @param fem_assembler_data
+     * @param fem_geometry
+     * @param constitutive_matrix_C
+     */
+    virtual void ComputeAssemblerData(
+        FEMGlobalAssemblerData<T> &fem_assembler_data,
+        const FEMModel<T> &fem_model,
+        Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
+        constitutive_matrix_C);
 
     virtual void ComputeAssemblerDataIteration(
             FEMGlobalAssemblerData<T> &fem_assembler_data,
@@ -112,6 +125,7 @@ protected:
             constitutive_matrix_C,
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
             boolean_assembly_matrix_A);
+
     /**
      * Applies Boundary Conditions to the GlobalStiffness and
      * GlobalForce Vector
@@ -122,20 +136,6 @@ protected:
             FEMGlobalAssemblerData<T> &assembler_data,
             const BoundaryConditionContainer<T> &boundary_conditions);
 private:
-
-    /**
-     * Iterates through every finite element and assembles data into
-     * Global matrices
-     *
-     * @param fem_assembler_data
-     * @param fem_geometry
-     * @param constitutive_matrix_C
-     */
-    void ComputeAssemblerData(
-            FEMGlobalAssemblerData<T> &fem_assembler_data,
-            const FEMModel<T> &fem_model,
-            Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
-            constitutive_matrix_C);
 
     /**
      * Computes Isotropic Constitutive Matrix (C).

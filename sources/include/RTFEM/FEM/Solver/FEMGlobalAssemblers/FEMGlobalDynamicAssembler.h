@@ -8,11 +8,15 @@ namespace rtfem {
 template<class T>
 class FEMGlobalDynamicAssembler : public FEMGlobalAssembler<T>{
 public:
-
     FEMGlobalDynamicAssembler() = default;
     ~FEMGlobalDynamicAssembler() = default;
 
-protected:;
+protected:
+    virtual void ComputeAssemblerData(
+        FEMGlobalAssemblerData<T> &fem_assembler_data,
+        const FEMModel<T> &fem_model,
+        Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
+        constitutive_matrix_C) override;
 
     virtual void ComputeAssemblerDataIteration(
             FEMGlobalAssemblerData<T> &fem_assembler_data,
@@ -22,10 +26,6 @@ protected:;
             &constitutive_matrix_C,
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
             boolean_assembly_matrix_A) override;
-
-    virtual void ApplyBoundaryConditions(
-            FEMGlobalAssemblerData<T> &assembler_data,
-            const BoundaryConditionContainer<T> &boundary_conditions) override;
 
 private:
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
@@ -37,8 +37,18 @@ private:
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputeLocalMassMatrix(T density, T volume);
 
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+    ComputeGlobalDampingMatrix(
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
+        global_mass_matrix,
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
+        global_stiffness_matrix,
+        T damping_mass,
+        T damping_stiffness);
+
 };
 }
 
 
 #endif //PROJECT_FEMDYNAMICASSEMBLER_H
+
