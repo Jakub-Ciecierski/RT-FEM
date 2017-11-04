@@ -16,8 +16,7 @@ public:
 
     virtual FEMSolverOutput<T> Solve(const FEMModel<T>& fem_model) override;
 private:
-    Eigen::Vector<T, Eigen::Dynamic> SolveSystemOfEquations(
-            const FEMGlobalAssemblerData<T> &assembler_data);
+
 };
 }
 

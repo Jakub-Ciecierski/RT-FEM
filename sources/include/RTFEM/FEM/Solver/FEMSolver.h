@@ -1,7 +1,6 @@
 #ifndef PROJECT_FEMSOLVER_H
 #define PROJECT_FEMSOLVER_H
 
-#include <RTFEM/FEM/Solver/FEMSolverTypes.h>
 #include <RTFEM/DataTypes.h>
 
 #include <memory>
@@ -24,8 +23,11 @@ public:
     virtual ~FEMSolver() = default;
 
     virtual FEMSolverOutput<T> Solve(const FEMModel<T>& fem_model) = 0;
+protected:
+    Eigen::Vector<T, Eigen::Dynamic> SolveSystemOfEquations(
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& A,
+        const Eigen::Vector<T, Eigen::Dynamic>& b);
 
-private:
 };
 }
 
