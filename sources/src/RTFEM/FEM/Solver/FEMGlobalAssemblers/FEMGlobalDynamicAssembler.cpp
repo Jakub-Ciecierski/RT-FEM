@@ -92,6 +92,22 @@ FEMGlobalDynamicAssembler<T>::ComputeGlobalDampingMatrix(
         global_stiffness_matrix * damping_stiffness;
 };
 
+template<class T>
+void FEMGlobalDynamicAssembler<T>::ApplyBoundaryConditionsToFEM(
+    FEMGlobalAssemblerData<T> &assembler_data,
+    const BoundaryConditionContainer<T> &boundary_conditions){
+    FEMGlobalAssembler<T>::ApplyBoundaryConditionsToFEM(assembler_data,
+                                                        boundary_conditions);
+
+    this->ApplyBoundaryConditions(assembler_data.global_mass,
+                                  assembler_data.global_force,
+                                  boundary_conditions);
+
+    this->ApplyBoundaryConditions(assembler_data.global_damping,
+                                  assembler_data.global_force,
+                                  boundary_conditions);
+}
+
 template
 class FEMGlobalDynamicAssembler<double>;
 template

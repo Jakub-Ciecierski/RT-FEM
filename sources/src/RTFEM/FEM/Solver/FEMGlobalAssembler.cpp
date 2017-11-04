@@ -28,8 +28,8 @@ FEMGlobalAssemblerData<T> FEMGlobalAssembler<T>::Compute(
                          fem_model,
                          constitutive_matrix_C);
 
-    ApplyBoundaryConditions(fem_assembler_data,
-                            fem_model.boundary_conditions());
+    ApplyBoundaryConditionsToFEM(fem_assembler_data,
+                                 fem_model.boundary_conditions());
 
     return fem_assembler_data;
 }
@@ -204,8 +204,18 @@ FEMGlobalAssembler<T>::ComputePartialGlobalForceVector(
 }
 
 template<class T>
-void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
+void FEMGlobalAssembler<T>::ApplyBoundaryConditionsToFEM(
     FEMGlobalAssemblerData<T> &assembler_data,
+    const BoundaryConditionContainer<T> &boundary_conditions) {
+    ApplyBoundaryConditions(assembler_data.global_stiffness,
+                            assembler_data.global_force,
+                            boundary_conditions);
+}
+
+template<class T>
+void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
+    Eigen::Vector<T, Eigen::Dynamic>& vector,
     const BoundaryConditionContainer<T> &boundary_conditions) {
 
     for (auto &boundary_condition : boundary_conditions) {
@@ -214,9 +224,9 @@ void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
         for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
             auto boundary_value = boundary_condition.value[i];
 
-            auto column = assembler_data.global_stiffness.col(start_index + i);
+            auto column = matrix.col(start_index + i);
             for (unsigned int c = 0; c < column.size(); c++) {
-                assembler_data.global_force[c] -= boundary_value * column[c];
+                vector[c] -= boundary_value * column[c];
             }
         }
     }
@@ -227,11 +237,11 @@ void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
         for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
             auto boundary_value = boundary_condition.value[i];
 
-            auto column = assembler_data.global_stiffness.col(start_index + i);
+            auto column = matrix.col(start_index + i);
             for (unsigned int c = 0; c < column.size(); c++) {
                 auto index = start_index + i;
                 if (index == c) {
-                    assembler_data.global_force[c] = boundary_value;
+                    vector[c] = boundary_value;
                     column[c] = 1;
                 } else {
                     column[c] = 0;
@@ -241,7 +251,7 @@ void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
 
         for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
             auto index = start_index + i;
-            auto row = assembler_data.global_stiffness.row(index);
+            auto row = matrix.row(index);
             for (unsigned int r = 0; r < row.size(); r++) {
                 if (r == index)
                     row[r] = 1;

@@ -27,6 +27,9 @@ protected:
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
             boolean_assembly_matrix_A) override;
 
+    virtual void ApplyBoundaryConditionsToFEM(
+        FEMGlobalAssemblerData<T> &assembler_data,
+        const BoundaryConditionContainer<T> &boundary_conditions) override;
 private:
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputePartialGlobalMassMatrix(

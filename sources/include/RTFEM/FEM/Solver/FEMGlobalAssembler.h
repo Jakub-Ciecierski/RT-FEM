@@ -132,11 +132,16 @@ protected:
      * @param assembler_data
      * @param boundary_conditions
      */
-    virtual void ApplyBoundaryConditions(
-            FEMGlobalAssemblerData<T> &assembler_data,
-            const BoundaryConditionContainer<T> &boundary_conditions);
-private:
+    virtual void ApplyBoundaryConditionsToFEM(
+        FEMGlobalAssemblerData<T> &assembler_data,
+        const BoundaryConditionContainer<T> &boundary_conditions);
 
+    void ApplyBoundaryConditions(
+        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
+        Eigen::Vector<T, Eigen::Dynamic>& vector,
+        const BoundaryConditionContainer<T> &boundary_conditions);
+
+private:
     /**
      * Computes Isotropic Constitutive Matrix (C).
      * Used to compute Local Stiffness.
