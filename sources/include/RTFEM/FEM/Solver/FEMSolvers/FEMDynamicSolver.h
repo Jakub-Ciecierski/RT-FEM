@@ -13,7 +13,7 @@ public:
     FEMDynamicSolver();
     ~FEMDynamicSolver() = default;
 
-    const FEMSolverOutput<T>& solver_output(){return solver_output_;}
+    const FEMSolverOutput<T>* solver_output(){return &solver_output_;}
 
     T total_time(){return total_time_;}
 
