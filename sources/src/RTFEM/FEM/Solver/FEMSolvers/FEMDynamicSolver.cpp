@@ -5,9 +5,8 @@
 namespace rtfem {
 
 template<class T>
-FEMDynamicSolver<T>::FEMDynamicSolver(T delta_time) :
+FEMDynamicSolver<T>::FEMDynamicSolver() :
     fem_assembler_data_(FEMGlobalAssemblerData<T>{0}),
-    delta_time_(delta_time),
     total_time_(0) {}
 
 template<class T>
@@ -27,18 +26,18 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(const FEMModel<T> &fem_model){
 }
 
 template<class T>
-void FEMDynamicSolver<T>::RunIteration(){
-    ImplicitNewton();
+void FEMDynamicSolver<T>::RunIteration(T delta_time){
+    ImplicitNewton(delta_time);
 
-    total_time_ += delta_time_;
+    total_time_ += delta_time;
 }
 
 template<class T>
-void FEMDynamicSolver<T>::ExplicitNewton(){
+void FEMDynamicSolver<T>::ExplicitNewton(T delta_time){
     displacement_velocity_current_ = displacement_velocity_current_ +
-        (delta_time_ * displacement_acceleration_current_);
+        (delta_time * displacement_acceleration_current_);
     solver_output_.displacement = solver_output_.displacement +
-        (delta_time_ * displacement_velocity_current_);
+        (delta_time * displacement_velocity_current_);
 
     auto right_hand_side =
         fem_assembler_data_.global_force
@@ -51,22 +50,22 @@ void FEMDynamicSolver<T>::ExplicitNewton(){
 }
 
 template<class T>
-void FEMDynamicSolver<T>::ImplicitNewton(){
-    auto delta_time_sqr = delta_time_ * delta_time_;
+void FEMDynamicSolver<T>::ImplicitNewton(T delta_time){
+    auto delta_time_sqr = delta_time * delta_time;
 
     auto lhs = fem_assembler_data_.global_mass
-        + delta_time_ * fem_assembler_data_.global_damping
+        + delta_time * fem_assembler_data_.global_damping
         + delta_time_sqr * fem_assembler_data_.global_stiffness;
 
-    auto rhs = delta_time_ * fem_assembler_data_.global_force
+    auto rhs = delta_time * fem_assembler_data_.global_force
         + fem_assembler_data_.global_mass * displacement_velocity_current_
-        + delta_time_ * (fem_assembler_data_.global_stiffness
+        + delta_time * (fem_assembler_data_.global_stiffness
             * solver_output_.displacement);
 
     displacement_velocity_current_ = this->SolveSystemOfEquations(lhs, rhs);
 
     solver_output_.displacement = solver_output_.displacement
-        + delta_time_ * displacement_velocity_current_;
+        + delta_time * displacement_velocity_current_;
 }
 
 template
