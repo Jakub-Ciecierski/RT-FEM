@@ -19,15 +19,17 @@ struct FEMSolverOutput {
 template<class T>
 class FEMSolver {
 public:
-    FEMSolver() = default;
+    FEMSolver(FEMModel<T>* fem_model);
     virtual ~FEMSolver() = default;
 
-    virtual FEMSolverOutput<T> Solve(const FEMModel<T>& fem_model) = 0;
+    virtual FEMSolverOutput<T> Solve() = 0;
+
 protected:
     Eigen::Vector<T, Eigen::Dynamic> SolveSystemOfEquations(
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& A,
         const Eigen::Vector<T, Eigen::Dynamic>& b);
 
+    FEMModel<T>* fem_model_;
 };
 }
 

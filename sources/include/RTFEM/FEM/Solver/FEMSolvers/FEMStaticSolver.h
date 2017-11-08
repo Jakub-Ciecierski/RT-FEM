@@ -11,10 +11,10 @@ class FEMGlobalAssemblerData;
 template<class T>
 class FEMStaticSolver : public FEMSolver<T>{
 public:
-    FEMStaticSolver() = default;
+    FEMStaticSolver(FEMModel<T>* fem_model);
     ~FEMStaticSolver() = default;
 
-    virtual FEMSolverOutput<T> Solve(const FEMModel<T>& fem_model) override;
+    virtual FEMSolverOutput<T> Solve() override;
 private:
 
 };

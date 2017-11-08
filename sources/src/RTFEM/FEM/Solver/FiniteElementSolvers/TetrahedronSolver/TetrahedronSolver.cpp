@@ -163,6 +163,7 @@ TractionForces<T> TetrahedronSolver<T>::FetchTractionForce(
     traction_forces.force_face2 = ordered_triangle_faces[1].traction_force;
     traction_forces.force_face3 = ordered_triangle_faces[2].traction_force;
     traction_forces.force_face4 = ordered_triangle_faces[3].traction_force;
+
     return traction_forces;
 }
 

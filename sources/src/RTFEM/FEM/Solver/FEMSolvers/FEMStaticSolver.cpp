@@ -5,9 +5,13 @@
 namespace rtfem {
 
 template<class T>
-FEMSolverOutput<T> FEMStaticSolver<T>::Solve(const FEMModel<T>& fem_model){
+FEMStaticSolver<T>::FEMStaticSolver(FEMModel<T> *fem_model) :
+    FEMSolver<T>(fem_model) {}
+
+template<class T>
+FEMSolverOutput<T> FEMStaticSolver<T>::Solve(){
     FEMGlobalAssembler<T> fem_assembler;
-    auto fem_assembler_data = fem_assembler.Compute(fem_model);
+    auto fem_assembler_data = fem_assembler.Compute(*this->fem_model_);
 
     FEMSolverOutput<T> output;
 

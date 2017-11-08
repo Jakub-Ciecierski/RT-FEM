@@ -17,7 +17,6 @@ class Vertex;
 template<class T>
 class FiniteElement;
 
-
 /**
  * Main class representing the FEM Model to be computed by FEM Solvers.
  *
@@ -53,17 +52,15 @@ public:
         boundary_conditions_ = boundary_conditions;
     }
 
-    const Eigen::Vector3<T> &body_force() const {
-        return body_force_;
+    const Eigen::Vector3<T> &total_body_force() const {
+        return dynamic_body_force_;
     }
 
-    /**
-     * Sets Body Force (e.g. gravity) to the entire model.
-     * Body Force is added to each finite element.
-     *
-     * @param body_force
-     */
-    void SetBodyForce(const Eigen::Vector3<T> &body_force);
+    void SetStaticBodyForce(const Eigen::Vector3<T> &body_force);
+    void AddDynamicBodyForce(const Eigen::Vector3<T> &body_force);
+
+    void ResetBodyForce();
+    void ResetTractionForces();
 
 private:
     FEMGeometry<T> fem_geometry_;
@@ -72,7 +69,8 @@ private:
 
     BoundaryConditionContainer<T> boundary_conditions_;
 
-    Eigen::Vector3<T> body_force_;
+    Eigen::Vector3<T> static_body_force_;
+    Eigen::Vector3<T> dynamic_body_force_;
 };
 
 }

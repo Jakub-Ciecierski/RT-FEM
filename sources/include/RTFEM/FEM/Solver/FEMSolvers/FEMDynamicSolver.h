@@ -10,18 +10,22 @@ template<class T>
 class FEMDynamicSolver : public FEMSolver<T>{
 public:
 
-    FEMDynamicSolver();
+    FEMDynamicSolver(FEMModel<T>* fem_model);
     ~FEMDynamicSolver() = default;
 
     const FEMSolverOutput<T>* solver_output(){return &solver_output_;}
 
     T total_time(){return total_time_;}
 
-    virtual FEMSolverOutput<T> Solve(const FEMModel<T> &fem_model) override;
+    virtual FEMSolverOutput<T> Solve() override;
 
     void RunIteration(T delta_time);
 
 private:
+    void ReassembleForces();
+    void SolveForDisplacements(T delta_time);
+    void ResetForces();
+
     void ExplicitNewton(T delta_time);
     void ImplicitNewton(T delta_time);
 

@@ -16,9 +16,9 @@ void FEMStaticSolverTest::TearDown() {
 }
 
 TEST_F(FEMStaticSolverTest, FEMSolver_EmptyModel_DisplacemntsAreZero) {
-    rtfem::FEMStaticSolver<double> fem_solver;
+    rtfem::FEMStaticSolver<double> fem_solver(fem_model_.get());
 
-    auto fem_solver_output = fem_solver.Solve(*fem_model_);
+    auto fem_solver_output = fem_solver.Solve();
 
     for(unsigned int i = 0; i < fem_solver_output.displacement.size(); i++){
         EXPECT_EQ(0, fem_solver_output.displacement[i]);
@@ -26,12 +26,12 @@ TEST_F(FEMStaticSolverTest, FEMSolver_EmptyModel_DisplacemntsAreZero) {
 }
 
 TEST_F(FEMStaticSolverTest, FEMSolver_GravityForce_Displacemnts) {
-    rtfem::FEMStaticSolver<double> fem_solver;
+    rtfem::FEMStaticSolver<double> fem_solver(fem_model_.get());
 
-    fem_model_->SetBodyForce(Eigen::Vector3<double>{
-        0, -9.81* 1000000, 0
+    fem_model_->SetStaticBodyForce(Eigen::Vector3<double>{
+        0, -9.81 * 1000000, 0
     });
-    auto fem_solver_output = fem_solver.Solve(*fem_model_);
+    auto fem_solver_output = fem_solver.Solve();
 
 /*
     for(unsigned int i = 0; i < fem_solver_output.displacement.size(); i++){

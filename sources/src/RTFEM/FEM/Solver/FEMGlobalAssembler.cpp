@@ -51,7 +51,7 @@ void FEMGlobalAssembler<T>::ComputeAssemblerData(
                 finite_element,
                 fem_geometry.vertices,
                 fem_geometry.triangle_faces,
-                fem_model.body_force(),
+                fem_model.total_body_force(),
                 fem_model.material());
 
         auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(

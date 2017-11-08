@@ -1,18 +1,22 @@
 #include "RTFEM/FEM/Solver/FEMSolvers/FEMDynamicSolver.h"
 
 #include <RTFEM/FEM/Solver/FEMGlobalAssemblers/FEMGlobalDynamicAssembler.h>
+#include <RTFEM/FEM/FEMGeometry.h>
+#include <RTFEM/FEM/FEMModel.h>
+#include <iostream>
 
 namespace rtfem {
 
 template<class T>
-FEMDynamicSolver<T>::FEMDynamicSolver() :
+FEMDynamicSolver<T>::FEMDynamicSolver(FEMModel<T>* fem_model) :
+    FEMSolver<T>(fem_model),
     fem_assembler_data_(FEMGlobalAssemblerData<T>{0}),
-    total_time_(0) {}
+    total_time_(0){}
 
 template<class T>
-FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(const FEMModel<T> &fem_model){
+FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
     FEMGlobalDynamicAssembler<T> fem_assembler;
-    fem_assembler_data_ = fem_assembler.Compute(fem_model);
+    fem_assembler_data_ = fem_assembler.Compute(*this->fem_model_);
 
     auto n = fem_assembler_data_.global_stiffness.rows();
     solver_output_.displacement = Eigen::Vector<T, Eigen::Dynamic>::Zero(n);
@@ -27,9 +31,27 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(const FEMModel<T> &fem_model){
 
 template<class T>
 void FEMDynamicSolver<T>::RunIteration(T delta_time){
-    ImplicitNewton(delta_time);
+    ReassembleForces();
+    SolveForDisplacements(delta_time);
+    ResetForces();
+}
 
+template<class T>
+void FEMDynamicSolver<T>::ReassembleForces(){
+    FEMGlobalDynamicAssembler<T> fem_assembler;
+    fem_assembler_data_ = fem_assembler.Compute(*this->fem_model_);
+}
+
+template<class T>
+void FEMDynamicSolver<T>::SolveForDisplacements(T delta_time){
+    ImplicitNewton(delta_time);
     total_time_ += delta_time;
+}
+
+template<class T>
+void FEMDynamicSolver<T>::ResetForces(){
+    this->fem_model_->ResetBodyForce();
+    this->fem_model_->ResetTractionForces();
 }
 
 template<class T>
