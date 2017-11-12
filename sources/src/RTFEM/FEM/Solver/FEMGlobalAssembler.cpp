@@ -217,7 +217,7 @@ void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
     Eigen::Vector<T, Eigen::Dynamic>& vector,
     const BoundaryConditionContainer<T> &boundary_conditions) {
-
+    // https://www.phy.ornl.gov/csep/bf/node10.html
     for (auto &boundary_condition : boundary_conditions) {
         auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;
 

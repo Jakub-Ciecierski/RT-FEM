@@ -3,7 +3,6 @@
 #include <RTFEM/FEM/Solver/FEMGlobalAssemblers/FEMGlobalDynamicAssembler.h>
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/FEMModel.h>
-#include <iostream>
 
 namespace rtfem {
 
@@ -75,19 +74,29 @@ template<class T>
 void FEMDynamicSolver<T>::ImplicitNewton(T delta_time){
     auto delta_time_sqr = delta_time * delta_time;
 
-    auto lhs = fem_assembler_data_.global_mass
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> lhs =
+        fem_assembler_data_.global_mass
         + delta_time * fem_assembler_data_.global_damping
         + delta_time_sqr * fem_assembler_data_.global_stiffness;
 
-    auto rhs = delta_time * fem_assembler_data_.global_force
+    Eigen::Vector<T, Eigen::Dynamic> rhs =
+        delta_time * fem_assembler_data_.global_force
         + fem_assembler_data_.global_mass * displacement_velocity_current_
         + delta_time * (fem_assembler_data_.global_stiffness
             * solver_output_.displacement);
 
-    displacement_velocity_current_ = this->SolveSystemOfEquations(lhs, rhs);
+    FEMGlobalDynamicAssembler<T> fem_assembler;
+    fem_assembler.ApplyBoundaryConditions(
+        lhs, rhs, this->fem_model_->boundary_conditions()
+    );
 
-    solver_output_.displacement = solver_output_.displacement
-        + delta_time * displacement_velocity_current_;
+    displacement_velocity_current_ = this->SolveSystemOfEquations(lhs, rhs);
+    const auto& initial_positions = fem_assembler_data_.global_position;
+    auto current_positions = solver_output_.displacement + initial_positions;
+    auto new_positions = current_positions
+        + (delta_time * displacement_velocity_current_);
+
+    solver_output_.displacement = new_positions - initial_positions;
 }
 
 template

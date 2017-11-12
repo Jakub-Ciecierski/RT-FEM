@@ -49,6 +49,9 @@ private:
         T damping_mass,
         T damping_stiffness);
 
+    void AssembleGlobalPositionVector(
+        const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+        Eigen::Vector<T, Eigen::Dynamic>& global_position);
 };
 }
 

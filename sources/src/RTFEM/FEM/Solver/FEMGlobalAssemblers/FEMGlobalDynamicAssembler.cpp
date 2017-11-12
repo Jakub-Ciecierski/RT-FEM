@@ -2,6 +2,8 @@
 
 #include <RTFEM/FEM/Material.h>
 #include <RTFEM/FEM/FEMModel.h>
+#include <RTFEM/FEM/Vertex.h>
+#include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolver.h>
 
 namespace rtfem {
@@ -21,6 +23,9 @@ void FEMGlobalDynamicAssembler<T>::ComputeAssemblerData(
                                    fem_assembler_data.global_stiffness,
                                    fem_model.material().damping_mass,
                                    fem_model.material().damping_stiffness);
+
+     AssembleGlobalPositionVector(fem_model.fem_geometry().vertices,
+                                  fem_assembler_data.global_position);
 }
 
 template<class T>
@@ -96,6 +101,7 @@ template<class T>
 void FEMGlobalDynamicAssembler<T>::ApplyBoundaryConditionsToFEM(
     FEMGlobalAssemblerData<T> &assembler_data,
     const BoundaryConditionContainer<T> &boundary_conditions){
+    /*
     FEMGlobalAssembler<T>::ApplyBoundaryConditionsToFEM(assembler_data,
                                                         boundary_conditions);
 
@@ -106,7 +112,20 @@ void FEMGlobalDynamicAssembler<T>::ApplyBoundaryConditionsToFEM(
     this->ApplyBoundaryConditions(assembler_data.global_damping,
                                   assembler_data.global_force,
                                   boundary_conditions);
+                                  */
 }
+
+template<class T>
+void FEMGlobalDynamicAssembler<T>::AssembleGlobalPositionVector(
+    const std::vector<std::shared_ptr<Vertex<T>>>& vertices,
+    Eigen::Vector<T, Eigen::Dynamic>& global_position){
+    for(unsigned int i = 0; i < vertices.size(); i++){
+        auto& vertex = vertices[i];
+        global_position[i*DIMENSION_COUNT + 0] = vertex->x();
+        global_position[i*DIMENSION_COUNT + 1] = vertex->y();
+        global_position[i*DIMENSION_COUNT + 2] = vertex->z();
+    }
+};
 
 template
 class FEMGlobalDynamicAssembler<double>;

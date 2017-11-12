@@ -56,12 +56,19 @@ struct FEMGlobalAssemblerData {
             Eigen::Vector<
                 T,
                 Eigen::Dynamic>::
-            Zero(global_dof_count)) {}
+            Zero(global_dof_count)),
+        global_position(
+            Eigen::Vector<
+                T,
+                Eigen::Dynamic>::
+            Zero(global_dof_count)){}
 
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_mass;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_damping;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_stiffness;
     Eigen::Vector<T, Eigen::Dynamic> global_force;
+    // TODO: This is wasting memory! duplication of FemGeometry::Vertex
+    Eigen::Vector<T, Eigen::Dynamic> global_position;
 };
 
 constexpr int CONSTITUTIVE_MATRIX_N = 6;
@@ -102,6 +109,10 @@ public:
      */
     FEMGlobalAssemblerData<T> Compute(const FEMModel<T>& fem_model);
 
+    void ApplyBoundaryConditions(
+        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
+        Eigen::Vector<T, Eigen::Dynamic>& vector,
+        const BoundaryConditionContainer<T> &boundary_conditions);
 protected:
     /**
      * Iterates through every finite element and assembles data into
@@ -134,11 +145,6 @@ protected:
      */
     virtual void ApplyBoundaryConditionsToFEM(
         FEMGlobalAssemblerData<T> &assembler_data,
-        const BoundaryConditionContainer<T> &boundary_conditions);
-
-    void ApplyBoundaryConditions(
-        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
-        Eigen::Vector<T, Eigen::Dynamic>& vector,
         const BoundaryConditionContainer<T> &boundary_conditions);
 
 private:
