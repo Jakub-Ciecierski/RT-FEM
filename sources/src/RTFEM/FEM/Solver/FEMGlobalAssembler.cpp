@@ -214,50 +214,31 @@ void FEMGlobalAssembler<T>::ApplyBoundaryConditionsToFEM(
 
 template<class T>
 void FEMGlobalAssembler<T>::ApplyBoundaryConditions(
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
-    Eigen::Vector<T, Eigen::Dynamic>& vector,
-    const BoundaryConditionContainer<T> &boundary_conditions) {
+        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
+        Eigen::Vector<T, Eigen::Dynamic>& vector,
+        const BoundaryConditionContainer<T> &boundary_conditions) {
     // https://www.phy.ornl.gov/csep/bf/node10.html
-    for (auto &boundary_condition : boundary_conditions) {
+    for(const auto& boundary_condition : boundary_conditions){
         auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;
-
-        for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
-            auto boundary_value = boundary_condition.value[i];
-
-            auto column = matrix.col(start_index + i);
-            for (unsigned int c = 0; c < column.size(); c++) {
-                vector[c] -= boundary_value * column[c];
+        for(unsigned int d = 0; d < DIMENSION_COUNT; d++){
+            auto bc_index = start_index + d;
+            // 1)
+            for (unsigned int i = 0; i < vector.size(); i++) {
+                vector(i) = vector(i) -
+                        (matrix(i, bc_index) * boundary_condition.value(d));
             }
-        }
-    }
 
-    for (auto &boundary_condition : boundary_conditions) {
-        auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;
-
-        for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
-            auto boundary_value = boundary_condition.value[i];
-
-            auto column = matrix.col(start_index + i);
-            for (unsigned int c = 0; c < column.size(); c++) {
-                auto index = start_index + i;
-                if (index == c) {
-                    vector[c] = boundary_value;
-                    column[c] = 1;
-                } else {
-                    column[c] = 0;
-                }
+            // 2)
+            for(unsigned int i = 0; i < matrix.rows(); i++){
+                matrix(i, bc_index) = 0;
+                matrix(bc_index, i) = 0;
             }
-        }
 
-        for (unsigned int i = 0; i < DIMENSION_COUNT; i++) {
-            auto index = start_index + i;
-            auto row = matrix.row(index);
-            for (unsigned int r = 0; r < row.size(); r++) {
-                if (r == index)
-                    row[r] = 1;
-                else
-                    row[r] = 0;
-            }
+            // 3)
+            matrix(bc_index, bc_index) = 1;
+
+            // 4)
+            vector(bc_index) = boundary_condition.value(d);
         }
     }
 }
