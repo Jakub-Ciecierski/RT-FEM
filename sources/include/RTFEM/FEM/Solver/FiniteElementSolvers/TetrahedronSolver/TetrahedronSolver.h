@@ -62,7 +62,7 @@ public:
     virtual FiniteElementSolverData<T> Solve(
         std::shared_ptr<FiniteElement<T>> finite_element,
         const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
-        const std::vector<TriangleFace<T>> &triangle_faces,
+        std::vector<TriangleFace<T>> &triangle_faces,
         const Eigen::Vector3<T> &body_force,
         const Material<T>& material) override;
 
@@ -74,6 +74,17 @@ public:
 
 private:
 
+    std::vector<TriangleFace<T>*> FetchOrderedTriangleFaces(
+        unsigned int vertex_index1,
+        unsigned int vertex_index2,
+        unsigned int vertex_index3,
+        unsigned int vertex_index4,
+        TriangleFace<T>& triangle_face1,
+        TriangleFace<T>& triangle_face2,
+        TriangleFace<T>& triangle_face3,
+        TriangleFace<T>& triangle_face4
+    );
+
     /**
      * Fetches triaction forces from each triangle face.
      * The ordering is important and is respected in farther computations.
@@ -84,19 +95,18 @@ private:
      * @return
      */
     TractionForces<T> FetchTractionForce(
-        unsigned int vertex_index1,
-        unsigned int vertex_index2,
-        unsigned int vertex_index3,
-        unsigned int vertex_index4,
-        const TriangleFace<T>& triangle_face1,
-        const TriangleFace<T>& triangle_face2,
-        const TriangleFace<T>& triangle_face3,
-        const TriangleFace<T>& triangle_face4);
+        const std::vector<TriangleFace<T>*>& ordered_triangle_faces);
 
     Edges<T> ComputeEdgesCache(const Vertex<T> &v1, const Vertex<T> &v2,
                                const Vertex<T> &v3, const Vertex<T> &v4);
 
-    FacesArea<T> ComputeFacesArea(const Edges<T> &edges);
+    FacesNormal<T> ComputeFacesNormal(const Edges<T> &edges);
+    FacesArea<T> ComputeFacesArea(const FacesNormal<T>& face_normals);
+    void NormalizeFacesNormal(FacesNormal<T> &normals);
+    void SaveTriangleFaceData(
+        std::vector<TriangleFace<T>*>& ordered_triangle_faces,
+        const FacesArea<T>& faces_area,
+        const FacesNormal<T>& faces_normal);
 
     /**
      * Computes The coefficients on linear tetrahedron shape function.

@@ -13,7 +13,7 @@ template<class T>
 FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     std::shared_ptr<FiniteElement<T>> finite_element,
     const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
-    const std::vector<TriangleFace<T>> &triangle_faces,
+    std::vector<TriangleFace<T>> &triangle_faces,
     const Eigen::Vector3<T> &body_force,
     const Material<T>& material){
     auto vertex_index1 = finite_element->vertices_indices()[0];
@@ -26,21 +26,28 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     auto vertex3 = vertices[vertex_index3];
     auto vertex4 = vertices[vertex_index4];
 
-    const auto& triangle_face1
+    auto& triangle_face1
         = triangle_faces[finite_element->faces_indices()[0]];
-    const auto& triangle_face2
+    auto& triangle_face2
         = triangle_faces[finite_element->faces_indices()[1]];
-    const auto& triangle_face3
+    auto& triangle_face3
         = triangle_faces[finite_element->faces_indices()[2]];
-    const auto& triangle_face4
+    auto& triangle_face4
         = triangle_faces[finite_element->faces_indices()[3]];
 
-    TractionForces<T> traction_forces = FetchTractionForce(
+    auto ordered_triangle_faces = FetchOrderedTriangleFaces(
         vertex_index1, vertex_index2, vertex_index3, vertex_index4,
         triangle_face1, triangle_face2, triangle_face3, triangle_face4);
 
+    TractionForces<T> traction_forces = FetchTractionForce(
+        ordered_triangle_faces);
+
     auto edges = ComputeEdgesCache(*vertex1, *vertex2, *vertex3, *vertex4);
-    auto faces_area = ComputeFacesArea(edges);
+    auto faces_normal = ComputeFacesNormal(edges);
+    auto faces_area = ComputeFacesArea(faces_normal);
+    NormalizeFacesNormal(faces_normal);
+    SaveTriangleFaceData(ordered_triangle_faces, faces_area, faces_normal);
+
     auto shape_function_coefficients =
         ComputeShapeFunctionCoefficients(*vertex1, *vertex2,
                                          *vertex3, *vertex4,
@@ -78,16 +85,16 @@ TetrahedronSolver<T>::SolveJacobianInverse(
 }
 
 template<class T>
-TractionForces<T> TetrahedronSolver<T>::FetchTractionForce(
+std::vector<TriangleFace<T>*> TetrahedronSolver<T>::FetchOrderedTriangleFaces(
     unsigned int vertex_index1,
     unsigned int vertex_index2,
     unsigned int vertex_index3,
     unsigned int vertex_index4,
-    const TriangleFace<T>& triangle_face1,
-    const TriangleFace<T>& triangle_face2,
-    const TriangleFace<T>& triangle_face3,
-    const TriangleFace<T>& triangle_face4){
-    std::vector<TriangleFace<T>> ordered_triangle_faces;
+    TriangleFace<T>& triangle_face1,
+    TriangleFace<T>& triangle_face2,
+    TriangleFace<T>& triangle_face3,
+    TriangleFace<T>& triangle_face4){
+    std::vector<TriangleFace<T>*> ordered_triangle_faces;
 
     const auto triangle_first = TriangleFace<T>{vertex_index2,
                                                 vertex_index3,
@@ -101,68 +108,74 @@ TractionForces<T> TetrahedronSolver<T>::FetchTractionForce(
     const auto triangle_fourth = TriangleFace<T>{vertex_index1,
                                                  vertex_index2,
                                                  vertex_index3};
-
     // 0
     if(triangle_face1 == triangle_first){
-        ordered_triangle_faces.push_back(triangle_face1);
+        ordered_triangle_faces.push_back(&triangle_face1);
     }
     else if(triangle_face2 == triangle_first){
-        ordered_triangle_faces.push_back(triangle_face2);
+        ordered_triangle_faces.push_back(&triangle_face2);
     }
     else if(triangle_face3 == triangle_first){
-        ordered_triangle_faces.push_back(triangle_face3);
+        ordered_triangle_faces.push_back(&triangle_face3);
     }
     else if(triangle_face4 == triangle_first){
-        ordered_triangle_faces.push_back(triangle_face4);
+        ordered_triangle_faces.push_back(&triangle_face4);
     }
 
     // 1
     if(triangle_face1 == triangle_second){
-        ordered_triangle_faces.push_back(triangle_face1);
+        ordered_triangle_faces.push_back(&triangle_face1);
     }
     else if(triangle_face2 == triangle_second){
-        ordered_triangle_faces.push_back(triangle_face2);
+        ordered_triangle_faces.push_back(&triangle_face2);
     }
     else if(triangle_face3 == triangle_second){
-        ordered_triangle_faces.push_back(triangle_face3);
+        ordered_triangle_faces.push_back(&triangle_face3);
     }
     else if(triangle_face4 == triangle_second){
-        ordered_triangle_faces.push_back(triangle_face4);
+        ordered_triangle_faces.push_back(&triangle_face4);
     }
 
     // 2
     if(triangle_face1 == triangle_third){
-        ordered_triangle_faces.push_back(triangle_face1);
+        ordered_triangle_faces.push_back(&triangle_face1);
     }
     else if(triangle_face2 == triangle_third){
-        ordered_triangle_faces.push_back(triangle_face2);
+        ordered_triangle_faces.push_back(&triangle_face2);
     }
     else if(triangle_face3 == triangle_third){
-        ordered_triangle_faces.push_back(triangle_face3);
+        ordered_triangle_faces.push_back(&triangle_face3);
     }
     else if(triangle_face4 == triangle_third){
-        ordered_triangle_faces.push_back(triangle_face4);
+        ordered_triangle_faces.push_back(&triangle_face4);
     }
 
     // 3
     if(triangle_face1 == triangle_fourth){
-        ordered_triangle_faces.push_back(triangle_face1);
+        ordered_triangle_faces.push_back(&triangle_face1);
     }
     else if(triangle_face2 == triangle_fourth){
-        ordered_triangle_faces.push_back(triangle_face2);
+        ordered_triangle_faces.push_back(&triangle_face2);
     }
     else if(triangle_face3 == triangle_fourth){
-        ordered_triangle_faces.push_back(triangle_face3);
+        ordered_triangle_faces.push_back(&triangle_face3);
     }
     else if(triangle_face4 == triangle_fourth){
-        ordered_triangle_faces.push_back(triangle_face4);
+        ordered_triangle_faces.push_back(&triangle_face4);
     }
 
+    return ordered_triangle_faces;
+}
+
+template<class T>
+TractionForces<T> TetrahedronSolver<T>::FetchTractionForce(
+    const std::vector<TriangleFace<T>*>& ordered_triangle_faces){
+
     TractionForces<T> traction_forces;
-    traction_forces.force_face1 = ordered_triangle_faces[0].traction_force;
-    traction_forces.force_face2 = ordered_triangle_faces[1].traction_force;
-    traction_forces.force_face3 = ordered_triangle_faces[2].traction_force;
-    traction_forces.force_face4 = ordered_triangle_faces[3].traction_force;
+    traction_forces.force_face1 = ordered_triangle_faces[0]->traction_force;
+    traction_forces.force_face2 = ordered_triangle_faces[1]->traction_force;
+    traction_forces.force_face3 = ordered_triangle_faces[2]->traction_force;
+    traction_forces.force_face4 = ordered_triangle_faces[3]->traction_force;
 
     return traction_forces;
 }
@@ -211,23 +224,60 @@ Edges<T> TetrahedronSolver<T>::ComputeEdgesCache(const Vertex<T> &v1,
 }
 
 template<class T>
-FacesArea<T> TetrahedronSolver<T>::ComputeFacesArea(const Edges<T> &edges) {
-    FacesArea<T> faces_area;
+FacesNormal<T> TetrahedronSolver<T>::ComputeFacesNormal(const Edges<T> &edges) {
+    FacesNormal<T> faces_normals;
 
-    faces_area.area1 =
+    faces_normals.normal1 =
         Eigen::Vector<T, 3>(edges.x32, edges.y32, edges.z32).cross(
-            Eigen::Vector<T, 3>(edges.x42, edges.y42, edges.z42)).norm();
-    faces_area.area2 =
+            Eigen::Vector<T, 3>(edges.x42, edges.y42, edges.z42));
+    faces_normals.normal2 =
         Eigen::Vector<T, 3>(edges.x43, edges.y43, edges.z43).cross(
-            Eigen::Vector<T, 3>(edges.x13, edges.y13, edges.z13)).norm();
-    faces_area.area3 =
+            Eigen::Vector<T, 3>(edges.x13, edges.y13, edges.z13));
+    faces_normals.normal3 =
         Eigen::Vector<T, 3>(edges.x14, edges.y14, edges.z14).cross(
-            Eigen::Vector<T, 3>(edges.x24, edges.y24, edges.z24)).norm();
-    faces_area.area4 =
+            Eigen::Vector<T, 3>(edges.x24, edges.y24, edges.z24));
+    faces_normals.normal4 =
         Eigen::Vector<T, 3>(edges.x21, edges.y21, edges.z21).cross(
-            Eigen::Vector<T, 3>(edges.x31, edges.y31, edges.z31)).norm();
+            Eigen::Vector<T, 3>(edges.x31, edges.y31, edges.z31));
+    return faces_normals;
+}
+
+
+template<class T>
+FacesArea<T> TetrahedronSolver<T>::ComputeFacesArea(
+    const FacesNormal<T>& face_normals) {
+    FacesArea<T> faces_area;
+    T half = 0.5;
+    faces_area.area1 = half * face_normals.normal1.norm();
+    faces_area.area2 = half * face_normals.normal2.norm();
+    faces_area.area3 = half * face_normals.normal3.norm();
+    faces_area.area4 = half * face_normals.normal4.norm();
 
     return faces_area;
+}
+
+template<class T>
+void TetrahedronSolver<T>::NormalizeFacesNormal(FacesNormal<T> &normals){
+    normals.normal1.normalize();
+    normals.normal2.normalize();
+    normals.normal3.normalize();
+    normals.normal4.normalize();
+}
+
+template<class T>
+void TetrahedronSolver<T>::SaveTriangleFaceData(
+    std::vector<TriangleFace<T>*>& ordered_triangle_faces,
+    const FacesArea<T>& faces_area,
+    const FacesNormal<T>& faces_normal){
+    ordered_triangle_faces[0]->area = faces_area.area1;
+    ordered_triangle_faces[1]->area = faces_area.area2;
+    ordered_triangle_faces[2]->area = faces_area.area3;
+    ordered_triangle_faces[3]->area = faces_area.area4;
+
+    ordered_triangle_faces[0]->normal = faces_normal.normal1;
+    ordered_triangle_faces[1]->normal = faces_normal.normal2;
+    ordered_triangle_faces[2]->normal = faces_normal.normal3;
+    ordered_triangle_faces[3]->normal = faces_normal.normal4;
 }
 
 template<class T>

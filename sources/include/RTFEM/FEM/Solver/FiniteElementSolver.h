@@ -66,7 +66,7 @@ public:
     virtual FiniteElementSolverData<T> Solve(
         std::shared_ptr<FiniteElement<T>> finite_element,
         const std::vector<std::shared_ptr<Vertex<T>>> &vertices,
-        const std::vector<TriangleFace<T>> &triangle_faces,
+        std::vector<TriangleFace<T>> &triangle_faces,
         const Eigen::Vector3<T> &body_force,
         const Material<T>& material) = 0;
 };

@@ -1,6 +1,8 @@
 #ifndef PROJECT_TETRAHEDRONSOLVERDATA_H
 #define PROJECT_TETRAHEDRONSOLVERDATA_H
 
+#include <RTFEM/DataTypes.h>
+
 namespace rtfem {
 
 /**
@@ -67,6 +69,14 @@ struct Edges {
     T y12 = 0;
     T y43 = 0;
     T y21 = 0;
+};
+
+template<class T>
+struct FacesNormal {
+    Eigen::Vector3<T> normal1;
+    Eigen::Vector3<T> normal2;
+    Eigen::Vector3<T> normal3;
+    Eigen::Vector3<T> normal4;
 };
 
 template<class T>
