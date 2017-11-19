@@ -14,7 +14,7 @@ public:
 protected:
     virtual void ComputeAssemblerData(
         FEMGlobalAssemblerData<T> &fem_assembler_data,
-        const FEMModel<T> &fem_model,
+        FEMModel<T> &fem_model,
         Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
         constitutive_matrix_C) override;
 

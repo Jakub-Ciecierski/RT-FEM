@@ -11,7 +11,7 @@ namespace rtfem {
 template<class T>
 void FEMGlobalDynamicAssembler<T>::ComputeAssemblerData(
     FEMGlobalAssemblerData<T> &fem_assembler_data,
-    const FEMModel<T> &fem_model,
+    FEMModel<T> &fem_model,
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
     constitutive_matrix_C){
     FEMGlobalAssembler<T>::ComputeAssemblerData(fem_assembler_data,

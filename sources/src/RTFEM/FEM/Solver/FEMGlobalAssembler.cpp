@@ -17,7 +17,7 @@ namespace rtfem {
 
 template<class T>
 FEMGlobalAssemblerData<T> FEMGlobalAssembler<T>::Compute(
-    const FEMModel<T>& fem_model) {
+    FEMModel<T>& fem_model) {
     auto global_dof_count =
         DIMENSION_COUNT * fem_model.fem_geometry().vertices.size();
     FEMGlobalAssemblerData<T> fem_assembler_data(global_dof_count);
@@ -37,13 +37,11 @@ FEMGlobalAssemblerData<T> FEMGlobalAssembler<T>::Compute(
 template<class T>
 void FEMGlobalAssembler<T>::ComputeAssemblerData(
     FEMGlobalAssemblerData<T> &fem_assembler_data,
-    const FEMModel<T> &fem_model,
+    FEMModel<T> &fem_model,
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
     constitutive_matrix_C) {
-    auto fem_geometry = fem_model.fem_geometry();
+    auto& fem_geometry = fem_model.fem_geometry();
     for (auto &finite_element : fem_geometry.finite_elements) {
-        auto fem_geometry = fem_model.fem_geometry();
-
         auto finite_element_solver =
                 GetFiniteElementSolver(finite_element->type());
 

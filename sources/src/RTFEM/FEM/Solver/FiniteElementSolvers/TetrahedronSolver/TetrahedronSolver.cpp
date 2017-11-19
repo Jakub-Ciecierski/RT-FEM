@@ -6,6 +6,7 @@
 #include <RTFEM/FEM/Material.h>
 
 #include <Eigen/Geometry>
+#include <iostream>
 
 namespace rtfem {
 
@@ -239,6 +240,7 @@ FacesNormal<T> TetrahedronSolver<T>::ComputeFacesNormal(const Edges<T> &edges) {
     faces_normals.normal4 =
         Eigen::Vector<T, 3>(edges.x21, edges.y21, edges.z21).cross(
             Eigen::Vector<T, 3>(edges.x31, edges.y31, edges.z31));
+
     return faces_normals;
 }
 

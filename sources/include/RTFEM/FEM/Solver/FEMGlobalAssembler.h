@@ -107,7 +107,7 @@ public:
      * @param fem_model
      * @return
      */
-    FEMGlobalAssemblerData<T> Compute(const FEMModel<T>& fem_model);
+    FEMGlobalAssemblerData<T> Compute(FEMModel<T>& fem_model);
 
     void ApplyBoundaryConditions(
         Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
@@ -124,7 +124,7 @@ protected:
      */
     virtual void ComputeAssemblerData(
         FEMGlobalAssemblerData<T> &fem_assembler_data,
-        const FEMModel<T> &fem_model,
+        FEMModel<T> &fem_model,
         Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
         constitutive_matrix_C);
 
