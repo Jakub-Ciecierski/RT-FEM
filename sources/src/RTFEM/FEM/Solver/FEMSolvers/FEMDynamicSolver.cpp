@@ -4,6 +4,8 @@
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/FEMModel.h>
 
+#include <iostream>
+
 namespace rtfem {
 
 template<class T>

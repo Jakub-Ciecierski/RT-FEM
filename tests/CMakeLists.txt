@@ -8,6 +8,7 @@ set(SRC_DIR src)
 set(DEPS_DIR dependencies)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+set(CMAKE_NVCC_FLAGS "${CMAKE_NVCC_FLAGS}; -arch=compute_61 -code=sm_61 -Wall")
 
 #---------------------------------
 # MACROS
@@ -27,13 +28,11 @@ ENDMACRO()
 
 # INCLUDE AUTOMATIC SEARCH
 FIND_INCLUDE_DIR(INC_DIRS ./include/*.h)
-include_directories(${INC_DIR} ${INC_DIR})
+include_directories(${INC_DIR})
 
 # SOURCES AUTOMATIC SEARCH
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 set(SOURCE_FILES )
-
-add_executable(${APP_NAME} ${SOURCE_FILES} ${SRC_FILES} ${INC_DIR} ${INC_DIR})
 
 #----------------------------------
 # EXTERNAL
@@ -49,9 +48,17 @@ include_directories(../external/eigen/)
 
 include_directories(../sources/include)
 
+set(CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_PATH})
+find_package(CUDA REQUIRED)
+
 #---------------------------------
 # LINK
 #---------------------------------
+
+cuda_add_executable(${APP_NAME}
+        ${SOURCE_FILES}
+        ${SRC_FILES}
+        ${INC_DIR})
 
 target_link_libraries(${APP_NAME} rtfem)
 target_link_libraries(${APP_NAME} tet)

@@ -6,6 +6,10 @@
 
 namespace rtfem {
 
+/**
+ * http://www.sciencedirect.com/science/article/pii/S0045794915001479
+ * @tparam T
+ */
 template<class T>
 class FEMDynamicSolver : public FEMSolver<T>{
 public:

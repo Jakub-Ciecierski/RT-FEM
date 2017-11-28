@@ -10,4 +10,3 @@ add_subdirectory(sources)
 if (${BUILD_UNITTESTS})
     add_subdirectory(tests)
 endif()
-

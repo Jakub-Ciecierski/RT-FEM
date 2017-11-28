@@ -25,10 +25,11 @@ cmake .
 ### Requirements
 The following software is required to be installed: 
 * Cmake 3.3
-
+* CUDA 8
+    * Set environment variable CUDA_BIN_PATH to root directory (e.g. /opt/cuda/)
 ### External Dependencies
 External Dependencies can be found in ./external and tests/external directories. <br/>
-They are installed automatically when using cmake installation.
+These are installed automatically when using cmake installation.
 * TetGen (external/tetgen1.5.0)
     * 3D Tetrahedron meshing algorithm
 * Eigen (external/eigen)
