@@ -5,11 +5,12 @@
 
 namespace rtfem {
 
-class LinearSolver {
+class GPULinearSolver {
 public:
-    LinearSolver() = default;
-    ~LinearSolver() = default;
+    GPULinearSolver() = default;
+    ~GPULinearSolver() = default;
 
+    CUDA_HOST_MEMBER void Solve(double* A, double* b, int n, double* x);
 private:
 };
 
