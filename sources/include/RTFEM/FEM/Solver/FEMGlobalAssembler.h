@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <vector>
+#include <RTFEM/Timer.h>
 
 namespace rtfem {
 
@@ -71,6 +72,32 @@ struct FEMGlobalAssemblerData {
     Eigen::Vector<T, Eigen::Dynamic> global_position;
 };
 
+class FEMGlobalAssemblerTimer : public Timer {
+public:
+    double TotalTime() const {
+        return finite_element_solver_time +
+               boolean_assembly_matrix_time +
+               partial_global_stiffness_time +
+               partial_global_mass_time +
+               partial_global_damping_time +
+               partial_global_force_time;
+    }
+
+    void ComputeAverage(int n) {
+        finite_element_solver_time /= n;
+        boolean_assembly_matrix_time /= n;
+        partial_global_stiffness_time /= n;
+        partial_global_force_time /= n;
+    }
+
+    double finite_element_solver_time = 0;
+    double boolean_assembly_matrix_time = 0;
+    double partial_global_stiffness_time = 0;
+    double partial_global_mass_time = 0;
+    double partial_global_damping_time = 0;
+    double partial_global_force_time = 0;
+};
+
 constexpr int CONSTITUTIVE_MATRIX_N = 6;
 constexpr unsigned int DIMENSION_COUNT = 3;
 
@@ -95,6 +122,8 @@ public:
     FEMGlobalAssembler() = default;
     virtual ~FEMGlobalAssembler() = default;
 
+    const FEMGlobalAssemblerTimer& timer(){return timer_;}
+
     /**
      * Computes Global Stiffness Matrix (K) and Global Force Vector (Q).
      *
@@ -107,7 +136,8 @@ public:
      * @param fem_model
      * @return
      */
-    FEMGlobalAssemblerData<T> Compute(FEMModel<T>& fem_model);
+    FEMGlobalAssemblerData<T> Compute(FEMModel<T> &fem_model,
+                                      bool force_only = false);
 
     void ApplyBoundaryConditions(
         Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
@@ -126,7 +156,8 @@ protected:
         FEMGlobalAssemblerData<T> &fem_assembler_data,
         FEMModel<T> &fem_model,
         Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
-        constitutive_matrix_C);
+        constitutive_matrix_C,
+        bool force_only);
 
     virtual void ComputeAssemblerDataIteration(
             FEMGlobalAssemblerData<T> &fem_assembler_data,
@@ -135,7 +166,8 @@ protected:
             const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N,CONSTITUTIVE_MATRIX_N> &
             constitutive_matrix_C,
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-            boolean_assembly_matrix_A);
+            boolean_assembly_matrix_A,
+            bool force_only);
 
     /**
      * Applies Boundary Conditions to the GlobalStiffness and
@@ -147,6 +179,7 @@ protected:
         FEMGlobalAssemblerData<T> &assembler_data,
         const BoundaryConditionContainer<T> &boundary_conditions);
 
+    FEMGlobalAssemblerTimer timer_;
 private:
     /**
      * Computes Isotropic Constitutive Matrix (C).
@@ -233,7 +266,6 @@ private:
         const Eigen::Matrix<T,
                             Eigen::Dynamic,
                             Eigen::Dynamic> &boolean_assembly_matrix_A);
-
 };
 }
 

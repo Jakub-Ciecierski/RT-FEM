@@ -21,6 +21,8 @@ public:
 
     T total_time(){return total_time_;}
 
+    const FEMSolverTimer& timer(){return timer_;}
+
     virtual FEMSolverOutput<T> Solve() override;
 
     void RunIteration(T delta_time);
@@ -31,9 +33,12 @@ private:
     void ResetForces();
 
     void ExplicitNewton(T delta_time);
-    void ImplicitNewton(T delta_time);
+    void ImplicitNewtonGPU(T delta_time);
+    void ImplicitNewtonCPU(T delta_time);
 
     FEMSolverOutput<T> solver_output_;
+
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> left_hand_side_;
 
     Eigen::Vector<T, Eigen::Dynamic> displacement_velocity_current_;
     Eigen::Vector<T, Eigen::Dynamic> displacement_acceleration_current_;
@@ -41,6 +46,8 @@ private:
     FEMGlobalAssemblerData<T> fem_assembler_data_;
 
     T total_time_;
+
+    FEMSolverTimer timer_;
 };
 }
 

@@ -13,19 +13,27 @@ void FEMGlobalDynamicAssembler<T>::ComputeAssemblerData(
     FEMGlobalAssemblerData<T> &fem_assembler_data,
     FEMModel<T> &fem_model,
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
-    constitutive_matrix_C){
+    constitutive_matrix_C,
+    bool force_only){
     FEMGlobalAssembler<T>::ComputeAssemblerData(fem_assembler_data,
                                                 fem_model,
-                                                constitutive_matrix_C);
+                                                constitutive_matrix_C,
+                                                force_only);
+    this->timer_.Start();
+    if(!force_only){
+        fem_assembler_data.global_damping =
+                ComputeGlobalDampingMatrix(fem_assembler_data.global_mass,
+                                           fem_assembler_data.global_stiffness,
+                                           fem_model.material().damping_mass,
+                                           fem_model.material().damping_stiffness);
+    }
 
-    fem_assembler_data.global_damping =
-        ComputeGlobalDampingMatrix(fem_assembler_data.global_mass,
-                                   fem_assembler_data.global_stiffness,
-                                   fem_model.material().damping_mass,
-                                   fem_model.material().damping_stiffness);
-
-     AssembleGlobalPositionVector(fem_model.fem_geometry().vertices,
-                                  fem_assembler_data.global_position);
+    this->timer_.partial_global_damping_time +=
+            this->timer_.Stop();
+    if(!force_only){
+        AssembleGlobalPositionVector(fem_model.fem_geometry().vertices,
+                                     fem_assembler_data.global_position);
+    }
 }
 
 template<class T>
@@ -36,16 +44,24 @@ void FEMGlobalDynamicAssembler<T>::ComputeAssemblerDataIteration(
         const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
         constitutive_matrix_C,
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-        boolean_assembly_matrix_A) {
-    FEMGlobalAssembler<T>::ComputeAssemblerDataIteration(fem_assembler_data,
-                                                         finite_element_solver_data,
-                                                         fem_model,
-                                                         constitutive_matrix_C,
-                                                         boolean_assembly_matrix_A);
-    fem_assembler_data.global_mass +=
-            ComputePartialGlobalMassMatrix(fem_model.material().density,
-                                           finite_element_solver_data.volume,
-                                           boolean_assembly_matrix_A);
+        boolean_assembly_matrix_A,
+        bool force_only) {
+    FEMGlobalAssembler<T>::ComputeAssemblerDataIteration(
+            fem_assembler_data,
+            finite_element_solver_data,
+            fem_model,
+            constitutive_matrix_C,
+            boolean_assembly_matrix_A,
+            force_only);
+    this->timer_.Start();
+    if(!force_only){
+        fem_assembler_data.global_mass +=
+                ComputePartialGlobalMassMatrix(fem_model.material().density,
+                                               finite_element_solver_data.volume,
+                                               boolean_assembly_matrix_A);
+    }
+    this->timer_.partial_global_mass_time +=
+            this->timer_.Stop();
 }
 
 template<class T>

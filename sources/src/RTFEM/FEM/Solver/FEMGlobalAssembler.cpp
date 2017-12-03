@@ -12,12 +12,14 @@
 #include <RTFEM/FEM/BoundaryCondition.h>
 
 #include <iostream>
+#include <chrono>
 
 namespace rtfem {
 
 template<class T>
 FEMGlobalAssemblerData<T> FEMGlobalAssembler<T>::Compute(
-    FEMModel<T>& fem_model) {
+    FEMModel<T>& fem_model,
+    bool force_only) {
     auto global_dof_count =
         DIMENSION_COUNT * fem_model.fem_geometry().vertices.size();
     FEMGlobalAssemblerData<T> fem_assembler_data(global_dof_count);
@@ -26,7 +28,8 @@ FEMGlobalAssemblerData<T> FEMGlobalAssembler<T>::Compute(
 
     ComputeAssemblerData(fem_assembler_data,
                          fem_model,
-                         constitutive_matrix_C);
+                         constitutive_matrix_C,
+                         force_only);
 
     ApplyBoundaryConditionsToFEM(fem_assembler_data,
                                  fem_model.boundary_conditions());
@@ -39,9 +42,14 @@ void FEMGlobalAssembler<T>::ComputeAssemblerData(
     FEMGlobalAssemblerData<T> &fem_assembler_data,
     FEMModel<T> &fem_model,
     Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
-    constitutive_matrix_C) {
+    constitutive_matrix_C,
+    bool force_only) {
     auto& fem_geometry = fem_model.fem_geometry();
+
+    timer_ = FEMGlobalAssemblerTimer{};
+
     for (auto &finite_element : fem_geometry.finite_elements) {
+        timer_.Start();
         auto finite_element_solver =
                 GetFiniteElementSolver(finite_element->type());
 
@@ -51,16 +59,20 @@ void FEMGlobalAssembler<T>::ComputeAssemblerData(
                 fem_geometry.triangle_faces,
                 fem_model.total_body_force(),
                 fem_model.material());
+        timer_.finite_element_solver_time += timer_.Stop();
 
+        timer_.Start();
         auto boolean_assembly_matrix_A = ComputeBooleanAssemblyMatrix(
                 finite_element, fem_geometry.vertices);
+        timer_.boolean_assembly_matrix_time += timer_.Stop();
 
         ComputeAssemblerDataIteration(
                 fem_assembler_data,
                 finite_element_solver_data,
                 fem_model,
                 constitutive_matrix_C,
-                boolean_assembly_matrix_A);
+                boolean_assembly_matrix_A,
+                force_only);
     }
 }
 
@@ -72,17 +84,25 @@ void FEMGlobalAssembler<T>::ComputeAssemblerDataIteration(
         const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
         constitutive_matrix_C,
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-        boolean_assembly_matrix_A){
-    fem_assembler_data.global_stiffness +=
-            ComputePartialGlobalStiffnessMatrix(
-                    finite_element_solver_data.geometry_matrix,
-                    constitutive_matrix_C,
-                    boolean_assembly_matrix_A,
-                    finite_element_solver_data.volume);
+        boolean_assembly_matrix_A,
+        bool force_only){
+    timer_.Start();
+    if(!force_only){
+        fem_assembler_data.global_stiffness +=
+                ComputePartialGlobalStiffnessMatrix(
+                        finite_element_solver_data.geometry_matrix,
+                        constitutive_matrix_C,
+                        boolean_assembly_matrix_A,
+                        finite_element_solver_data.volume);
+    }
+    timer_.partial_global_stiffness_time += timer_.Stop();
+
+    timer_.Start();
     fem_assembler_data.global_force +=
             ComputePartialGlobalForceVector(
                     finite_element_solver_data.force_vector,
                     boolean_assembly_matrix_A);
+    timer_.partial_global_force_time += timer_.Stop();
 }
 
 template<class T>

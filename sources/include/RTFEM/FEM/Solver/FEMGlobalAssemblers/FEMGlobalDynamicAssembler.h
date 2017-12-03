@@ -13,10 +13,11 @@ public:
 
 protected:
     virtual void ComputeAssemblerData(
-        FEMGlobalAssemblerData<T> &fem_assembler_data,
-        FEMModel<T> &fem_model,
-        Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
-        constitutive_matrix_C) override;
+            FEMGlobalAssemblerData<T> &fem_assembler_data,
+            FEMModel<T> &fem_model,
+            Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N> &
+            constitutive_matrix_C,
+            bool force_only) override;
 
     virtual void ComputeAssemblerDataIteration(
             FEMGlobalAssemblerData<T> &fem_assembler_data,
@@ -25,7 +26,8 @@ protected:
             const Eigen::Matrix<T, CONSTITUTIVE_MATRIX_N, CONSTITUTIVE_MATRIX_N>
             &constitutive_matrix_C,
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-            boolean_assembly_matrix_A) override;
+            boolean_assembly_matrix_A,
+            bool force_only) override;
 
     virtual void ApplyBoundaryConditionsToFEM(
         FEMGlobalAssemblerData<T> &assembler_data,

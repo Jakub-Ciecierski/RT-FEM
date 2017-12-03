@@ -7,7 +7,8 @@ namespace rtfem {
 
 template<class T>
 FEMSolver<T>::FEMSolver(FEMModel<T>* fem_model) :
-    fem_model_(fem_model){}
+    fem_model_(fem_model),
+    type_(FEMSolverType::GPU){}
 
 template<class T>
 Eigen::Vector<T, Eigen::Dynamic>

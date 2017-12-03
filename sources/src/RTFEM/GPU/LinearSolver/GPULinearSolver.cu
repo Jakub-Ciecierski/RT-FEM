@@ -5,26 +5,28 @@
 #include <assert.h>
 #include <cstdlib>
 #include <cstdio>
+#include <stdexcept>
 
 namespace rtfem {
 
+template <class T>
 CUDA_HOST_MEMBER
-void GPULinearSolver::Solve(double* A, double* b, int n, double* x){
+void GPULinearSolver<T>::Solve(T* A, T* b, int n, T* x){
     cusolverDnHandle_t cusolverH = nullptr;
     cudaStream_t stream = nullptr;
 
     // Host
-    double* LU = (double*)malloc(sizeof(double) * n * n);
+    T* LU = (T*)malloc(sizeof(T) * n * n);
     int* Ipivot = (int*)malloc(sizeof(int) * n);
     int info = 0;
 
     // Device
-    double* d_A = nullptr;
-    double* d_b = nullptr;
+    T* d_A = nullptr;
+    T* d_b = nullptr;
     int* d_pivot = nullptr;
     int* d_info = nullptr;
     int lwork = 0;
-    double* d_work = nullptr;
+    T* d_work = nullptr;
     cudaError_t cuda_error = cudaSuccess;
 
     /* step 1: create cusolver handle, bind a stream */
@@ -39,18 +41,18 @@ void GPULinearSolver::Solve(double* A, double* b, int n, double* x){
     assert(CUSOLVER_STATUS_SUCCESS == status);
 
     /* step 2: copy A to device */
-    cuda_error = cudaMalloc ((void**)&d_A, sizeof(double) * n * n);
+    cuda_error = cudaMalloc ((void**)&d_A, sizeof(T) * n * n);
     assert(cudaSuccess == cuda_error);
-    cuda_error = cudaMalloc ((void**)&d_b, sizeof(double) * n);
+    cuda_error = cudaMalloc ((void**)&d_b, sizeof(T) * n);
     assert(cudaSuccess == cuda_error);
     cuda_error = cudaMalloc ((void**)&d_pivot, sizeof(int) * n);
     assert(cudaSuccess == cuda_error);
     cuda_error = cudaMalloc ((void**)&d_info, sizeof(int));
     assert(cudaSuccess == cuda_error);
 
-    cuda_error = cudaMemcpy(d_A, A, sizeof(double)*n*n, cudaMemcpyHostToDevice);
+    cuda_error = cudaMemcpy(d_A, A, sizeof(T)*n*n, cudaMemcpyHostToDevice);
     assert(cudaSuccess == cuda_error);
-    cuda_error = cudaMemcpy(d_b, b, sizeof(double)*n, cudaMemcpyHostToDevice);
+    cuda_error = cudaMemcpy(d_b, b, sizeof(T)*n, cudaMemcpyHostToDevice);
     assert(cudaSuccess == cuda_error);
 
     /* step 3: query working space of getrf */
@@ -63,7 +65,7 @@ void GPULinearSolver::Solve(double* A, double* b, int n, double* x){
         &lwork);
     assert(CUSOLVER_STATUS_SUCCESS == status);
 
-    cuda_error = cudaMalloc((void**)&d_work, sizeof(double)*lwork);
+    cuda_error = cudaMalloc((void**)&d_work, sizeof(T)*lwork);
     assert(cudaSuccess == cuda_error);
 
     /* step 4: LU factorization */
@@ -84,7 +86,7 @@ void GPULinearSolver::Solve(double* A, double* b, int n, double* x){
                             cudaMemcpyDeviceToHost);
     assert(cudaSuccess == cuda_error);
 
-    cuda_error = cudaMemcpy(LU, d_A, sizeof(double)*n*n,
+    cuda_error = cudaMemcpy(LU, d_A, sizeof(T)*n*n,
                            cudaMemcpyDeviceToHost);
     assert(cudaSuccess == cuda_error);
 
@@ -120,7 +122,7 @@ void GPULinearSolver::Solve(double* A, double* b, int n, double* x){
     assert(CUSOLVER_STATUS_SUCCESS == status);
     assert(cudaSuccess == cuda_error);
 
-    cuda_error = cudaMemcpy(x, d_b, sizeof(double)*n,
+    cuda_error = cudaMemcpy(x, d_b, sizeof(T)*n,
                             cudaMemcpyDeviceToHost);
     assert(cudaSuccess == cuda_error);
 
@@ -142,5 +144,16 @@ void GPULinearSolver::Solve(double* A, double* b, int n, double* x){
     //cudaDeviceReset();
 }
 
+template <>
+CUDA_HOST_MEMBER
+void GPULinearSolver<float>::Solve(float* A, float* b, int n, float* x){
+    throw std::invalid_argument(
+            "GPULinearSolver<float>::Solve not implemented");
+}
+
+template
+class GPULinearSolver<double>;
+template
+class GPULinearSolver<float>;
 
 }

@@ -49,7 +49,7 @@ include_directories(../external/eigen/)
 include_directories(../sources/include)
 
 set(CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_PATH})
-find_package(CUDA REQUIRED)
+find_package(CUDA 8 REQUIRED COMPONENTS cusolver)
 
 #---------------------------------
 # LINK
@@ -61,5 +61,8 @@ cuda_add_executable(${APP_NAME}
         ${INC_DIR})
 
 target_link_libraries(${APP_NAME} rtfem)
+target_link_libraries(${APP_NAME} $ENV{CUDA_BIN_PATH}/lib64/stubs/libcusolver.so)
 target_link_libraries(${APP_NAME} tet)
 target_link_libraries(${APP_NAME} gtest gtest_main)
+
+message(${CUDA_cusolver_LIBRARY})

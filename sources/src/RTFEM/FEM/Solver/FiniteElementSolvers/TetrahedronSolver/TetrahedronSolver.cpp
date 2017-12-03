@@ -56,6 +56,7 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
 
     FiniteElementSolverData<T> data;
     data.volume = ComputeVolume(shape_function_coefficients);
+    finite_element->SetVolume(data.volume);
     data.geometry_matrix =
         ComputeGeometryMatrix(shape_function_coefficients, data.volume);
     data.force_vector = ComputeForceVector(shape_function_coefficients,
