@@ -46,13 +46,16 @@ FiniteElementSolverData<T> TetrahedronSolver<T>::Solve(
     auto edges = ComputeEdgesCache(*vertex1, *vertex2, *vertex3, *vertex4);
     auto faces_normal = ComputeFacesNormal(edges);
     auto faces_area = ComputeFacesArea(faces_normal);
-    NormalizeFacesNormal(faces_normal);
-    SaveTriangleFaceData(ordered_triangle_faces, faces_area, faces_normal);
 
     auto shape_function_coefficients =
         ComputeShapeFunctionCoefficients(*vertex1, *vertex2,
                                          *vertex3, *vertex4,
                                          edges);
+    NormalizeFacesNormal(faces_normal);
+    SaveTriangleFaceData(ordered_triangle_faces,
+                         faces_area,
+                         faces_normal,
+                         shape_function_coefficients);
 
     FiniteElementSolverData<T> data;
     data.volume = ComputeVolume(shape_function_coefficients);
@@ -271,7 +274,8 @@ template<class T>
 void TetrahedronSolver<T>::SaveTriangleFaceData(
     std::vector<TriangleFace<T>*>& ordered_triangle_faces,
     const FacesArea<T>& faces_area,
-    const FacesNormal<T>& faces_normal){
+    const FacesNormal<T>& faces_normal,
+    const TetrahedronShapeFunctionCoefficients<T>& coefficients){
     ordered_triangle_faces[0]->area = faces_area.area1;
     ordered_triangle_faces[1]->area = faces_area.area2;
     ordered_triangle_faces[2]->area = faces_area.area3;
@@ -281,6 +285,22 @@ void TetrahedronSolver<T>::SaveTriangleFaceData(
     ordered_triangle_faces[1]->normal = faces_normal.normal2;
     ordered_triangle_faces[2]->normal = faces_normal.normal3;
     ordered_triangle_faces[3]->normal = faces_normal.normal4;
+
+    ordered_triangle_faces[0]->B = coefficients.B1;
+    ordered_triangle_faces[0]->C = coefficients.C1;
+    ordered_triangle_faces[0]->D = coefficients.D1;
+
+    ordered_triangle_faces[1]->B = coefficients.B2;
+    ordered_triangle_faces[1]->C = coefficients.C2;
+    ordered_triangle_faces[1]->D = coefficients.D2;
+
+    ordered_triangle_faces[2]->B = coefficients.B3;
+    ordered_triangle_faces[2]->C = coefficients.C3;
+    ordered_triangle_faces[2]->D = coefficients.D3;
+
+    ordered_triangle_faces[3]->B = coefficients.B4;
+    ordered_triangle_faces[3]->C = coefficients.C4;
+    ordered_triangle_faces[3]->D = coefficients.D4;
 }
 
 template<class T>

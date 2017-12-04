@@ -37,6 +37,8 @@ public:
     virtual unsigned int GetVertexCount() const = 0;
     virtual unsigned int GetFaceCount() const = 0;
 
+    void SetFacesIndices(const std::vector<unsigned int> &faces_indices);
+
     void SetVolume(T volume);
 protected:
     std::vector<unsigned int> vertices_indices_;

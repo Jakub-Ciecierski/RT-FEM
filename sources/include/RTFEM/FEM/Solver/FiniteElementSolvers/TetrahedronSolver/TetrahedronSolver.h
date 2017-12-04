@@ -106,7 +106,8 @@ private:
     void SaveTriangleFaceData(
         std::vector<TriangleFace<T>*>& ordered_triangle_faces,
         const FacesArea<T>& faces_area,
-        const FacesNormal<T>& faces_normal);
+        const FacesNormal<T>& faces_normal,
+        const TetrahedronShapeFunctionCoefficients<T>& coefficients);
 
     /**
      * Computes The coefficients on linear tetrahedron shape function.

@@ -28,7 +28,8 @@ struct TriangleFace {
                             is_boundary_face(false),
                             traction_force(0),
                             area(0),
-                            normal(Eigen::Vector3<T>::Zero()) {}
+                            normal(Eigen::Vector3<T>::Zero()),
+                            B(0), C(0), D(0) {}
 
     TriangleFace(
         unsigned int v1_,
@@ -38,7 +39,8 @@ struct TriangleFace {
                                   is_boundary_face(is_boundary_face_),
                                   traction_force(0),
                                   area(0),
-                                  normal(Eigen::Vector3<T>::Zero()) {}
+                                  normal(Eigen::Vector3<T>::Zero()),
+                                  B(0), C(0), D(0){}
     unsigned int v1;
     unsigned int v2;
     unsigned int v3;
@@ -49,6 +51,11 @@ struct TriangleFace {
 
     T area;
     Eigen::Vector3<T> normal;
+
+    // Used to assemble traction force
+    T B;
+    T C;
+    T D;
 
     bool operator==(const TriangleFace& other) const {
         std::vector<unsigned int> indices{v1, v2, v3};

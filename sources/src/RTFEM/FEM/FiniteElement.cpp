@@ -8,6 +8,12 @@ FiniteElement<T>::FiniteElement(const FiniteElementType &&type) :
         type_(type) {}
 
 template<class T>
+void FiniteElement<T>::SetFacesIndices(
+    const std::vector<unsigned int> &faces_indices){
+    faces_indices_ = faces_indices;
+}
+
+template<class T>
 void FiniteElement<T>::SetVolume(T volume){
     volume_ = volume;
 }
