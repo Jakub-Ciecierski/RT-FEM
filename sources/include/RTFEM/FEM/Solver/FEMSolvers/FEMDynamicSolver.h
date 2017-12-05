@@ -6,6 +6,9 @@
 
 namespace rtfem {
 
+template<class T>
+class GPULinearSolver;
+
 /**
  * http://www.sciencedirect.com/science/article/pii/S0045794915001479
  * @tparam T
@@ -35,6 +38,8 @@ private:
     void ExplicitNewton(T delta_time);
     void ImplicitNewtonGPU(T delta_time);
     void ImplicitNewtonCPU(T delta_time);
+
+    std::unique_ptr<GPULinearSolver<T>> gpu_linear_solver_;
 
     FEMSolverOutput<T> solver_output_;
 

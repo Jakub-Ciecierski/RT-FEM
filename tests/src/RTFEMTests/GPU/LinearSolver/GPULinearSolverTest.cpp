@@ -15,7 +15,8 @@ TEST_F(GPULinearSolverTest, Intergration){
     double X[n];
 
     rtfem::GPULinearSolver<double> solver;
-    solver.Solve(A, B, n, X);
+    solver.PreSolve(A, n);
+    solver.Solve(B, n, X);
 
     for(unsigned int i = 0; i < n; i++){
         std::cout << "X[" << i << "] = " << X[i] << std::endl;

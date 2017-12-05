@@ -1,32 +1,38 @@
 #include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
 
-#include <cusolverDn.h>
-
 #include <assert.h>
 #include <cstdlib>
 #include <cstdio>
 #include <stdexcept>
 
+#include <cusolverDn.h>
+
 namespace rtfem {
+
+template<class T>
+GPULinearSolver<T>::GPULinearSolver() :
+    d_A(nullptr),
+    d_b(nullptr),
+    d_pivot(nullptr),
+    d_info(nullptr),
+    d_work(nullptr),
+    cusolverH(nullptr),
+    stream(nullptr) {}
+
+template <class T>
+GPULinearSolver<T>::~GPULinearSolver(){
+    Terminate();
+}
 
 template <class T>
 CUDA_HOST_MEMBER
-void GPULinearSolver<T>::Solve(T* A, T* b, int n, T* x){
-    cusolverDnHandle_t cusolverH = nullptr;
-    cudaStream_t stream = nullptr;
+void GPULinearSolver<T>::PreSolve(T* A, int n){
+    n_ = n;
 
     // Host
-    T* LU = (T*)malloc(sizeof(T) * n * n);
-    int* Ipivot = (int*)malloc(sizeof(int) * n);
     int info = 0;
-
-    // Device
-    T* d_A = nullptr;
-    T* d_b = nullptr;
-    int* d_pivot = nullptr;
-    int* d_info = nullptr;
     int lwork = 0;
-    T* d_work = nullptr;
+
     cudaError_t cuda_error = cudaSuccess;
 
     /* step 1: create cusolver handle, bind a stream */
@@ -51,8 +57,6 @@ void GPULinearSolver<T>::Solve(T* A, T* b, int n, T* x){
     assert(cudaSuccess == cuda_error);
 
     cuda_error = cudaMemcpy(d_A, A, sizeof(T)*n*n, cudaMemcpyHostToDevice);
-    assert(cudaSuccess == cuda_error);
-    cuda_error = cudaMemcpy(d_b, b, sizeof(T)*n, cudaMemcpyHostToDevice);
     assert(cudaSuccess == cuda_error);
 
     /* step 3: query working space of getrf */
@@ -82,14 +86,6 @@ void GPULinearSolver<T>::Solve(T* A, T* b, int n, T* x){
     assert(CUSOLVER_STATUS_SUCCESS == status);
     assert(cudaSuccess == cuda_error);
 
-    cuda_error = cudaMemcpy(Ipivot , d_pivot, sizeof(int)*n,
-                            cudaMemcpyDeviceToHost);
-    assert(cudaSuccess == cuda_error);
-
-    cuda_error = cudaMemcpy(LU, d_A, sizeof(T)*n*n,
-                           cudaMemcpyDeviceToHost);
-    assert(cudaSuccess == cuda_error);
-
     cuda_error = cudaMemcpy(&info, d_info, sizeof(int), cudaMemcpyDeviceToHost);
     assert(cudaSuccess == cuda_error);
 
@@ -98,15 +94,24 @@ void GPULinearSolver<T>::Solve(T* A, T* b, int n, T* x){
         exit(1);
     }
 
+}
 
-    /*
-     * step 5: solve A*X = B
-     *       | 1 |       | -0.3333 |
-     *   B = | 2 |,  X = |  0.6667 |
-     *       | 3 |       |  0      |
-     *
-     */
-    status = cusolverDnDgetrs(
+template <>
+CUDA_HOST_MEMBER
+void GPULinearSolver<float>::PreSolve(float* A, int n){
+    throw std::invalid_argument(
+        "GPULinearSolver<float>::Solve not implemented");
+}
+
+template <class T>
+CUDA_HOST_MEMBER
+void GPULinearSolver<T>::Solve(T* b, int n, T* x){
+    cudaError_t cuda_error = cudaSuccess;
+
+    cuda_error = cudaMemcpy(d_b, b, sizeof(T)*n, cudaMemcpyHostToDevice);
+    assert(cudaSuccess == cuda_error);
+
+    auto status = cusolverDnDgetrs(
         cusolverH,
         CUBLAS_OP_N,
         n,
@@ -125,30 +130,26 @@ void GPULinearSolver<T>::Solve(T* A, T* b, int n, T* x){
     cuda_error = cudaMemcpy(x, d_b, sizeof(T)*n,
                             cudaMemcpyDeviceToHost);
     assert(cudaSuccess == cuda_error);
+}
 
-    /* free resources */
+template <>
+CUDA_HOST_MEMBER
+void GPULinearSolver<float>::Solve(float* b, int n, float* x){
+    throw std::invalid_argument(
+            "GPULinearSolver<float>::Solve not implemented");
+}
+
+template <class T>
+CUDA_HOST_MEMBER
+void GPULinearSolver<T>::Terminate(){
     if (d_A    ) cudaFree(d_A);
     if (d_b    ) cudaFree(d_b);
     if (d_pivot) cudaFree(d_pivot);
     if (d_info ) cudaFree(d_info);
     if (d_work ) cudaFree(d_work);
 
-    if(LU)
-        free(LU);
-    if(Ipivot)
-        free(Ipivot);
-
     if (cusolverH   ) cusolverDnDestroy(cusolverH);
     if (stream      ) cudaStreamDestroy(stream);
-
-    //cudaDeviceReset();
-}
-
-template <>
-CUDA_HOST_MEMBER
-void GPULinearSolver<float>::Solve(float* A, float* b, int n, float* x){
-    throw std::invalid_argument(
-            "GPULinearSolver<float>::Solve not implemented");
 }
 
 template
