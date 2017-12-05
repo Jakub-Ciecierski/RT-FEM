@@ -3,11 +3,9 @@
 
 #include <RTFEM/FEM/Solver/FEMSolver.h>
 #include <RTFEM/FEM/Solver/FEMGlobalAssembler.h>
+#include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
 
 namespace rtfem {
-
-template<class T>
-class GPULinearSolver;
 
 /**
  * http://www.sciencedirect.com/science/article/pii/S0045794915001479
@@ -39,15 +37,13 @@ private:
     void ImplicitNewtonGPU(T delta_time);
     void ImplicitNewtonCPU(T delta_time);
 
-    std::unique_ptr<GPULinearSolver<T>> gpu_linear_solver_;
+    GPULinearSolver<T> gpu_linear_solver_;
 
     FEMSolverOutput<T> solver_output_;
 
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> left_hand_side_;
-
     Eigen::Vector<T, Eigen::Dynamic> displacement_velocity_current_;
     Eigen::Vector<T, Eigen::Dynamic> displacement_acceleration_current_;
-
     FEMGlobalAssemblerData<T> fem_assembler_data_;
 
     T total_time_;

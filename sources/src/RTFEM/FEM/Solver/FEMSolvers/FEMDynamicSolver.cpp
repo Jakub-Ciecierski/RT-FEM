@@ -6,7 +6,6 @@
 #include <RTFEM/FEM/Solver/FEMGlobalAssemblers/FEMFastForceAssembler.h>
 #include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
 #include <RTFEM/Memory/UniquePointer.h>
-#include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
 
 #include <iostream>
 
@@ -15,7 +14,6 @@ namespace rtfem {
 template<class T>
 FEMDynamicSolver<T>::FEMDynamicSolver(FEMModel<T>* fem_model) :
     FEMSolver<T>(fem_model),
-    gpu_linear_solver_(nullptr),
     fem_assembler_data_(FEMGlobalAssemblerData<T>{0}),
     total_time_(0){}
 
@@ -37,8 +35,7 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
             + delta_time * fem_assembler_data_.global_damping
             + delta_time_sqr * fem_assembler_data_.global_stiffness;
 
-    gpu_linear_solver_ = rtfem::make_unique<GPULinearSolver<T>>();
-    gpu_linear_solver_->PreSolve(left_hand_side_.data(), n);
+    gpu_linear_solver_.PreSolve(left_hand_side_.data(), n);
 
     total_time_ = 0;
 
@@ -128,9 +125,8 @@ void FEMDynamicSolver<T>::ImplicitNewtonGPU(T delta_time){
     timer_.boundary_conditions_solve_time = timer_.Stop();
 
     timer_.Start();
-    GPULinearSolver<T> gpu_linear_solver;
-    gpu_linear_solver.Solve(rhs.data(), rhs.size(),
-                            displacement_velocity_current_.data());
+    gpu_linear_solver_.Solve(rhs.data(), rhs.size(),
+                             displacement_velocity_current_.data());
     timer_.cuda_solve_time = timer_.Stop();
 
     timer_.Start();
