@@ -10,6 +10,7 @@
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/FEM/BoundaryConditionContainer.h>
 #include <RTFEM/FEM/BoundaryCondition.h>
+#include "RTFEM/GPU/GPUMMMultiplication.cuh"
 
 #include <iostream>
 #include <chrono>
@@ -88,12 +89,12 @@ void FEMGlobalAssembler<T>::ComputeAssemblerDataIteration(
         bool force_only){
     timer_.Start();
     if(!force_only){
-        fem_assembler_data.global_stiffness +=
-                ComputePartialGlobalStiffnessMatrix(
-                        finite_element_solver_data.geometry_matrix,
-                        constitutive_matrix_C,
-                        boolean_assembly_matrix_A,
-                        finite_element_solver_data.volume);
+        ComputePartialGlobalStiffnessMatrix(
+                finite_element_solver_data.geometry_matrix,
+                constitutive_matrix_C,
+                boolean_assembly_matrix_A,
+                finite_element_solver_data.volume,
+                fem_assembler_data.global_stiffness);
     }
     timer_.partial_global_stiffness_time += timer_.Stop();
 
@@ -176,22 +177,48 @@ FEMGlobalAssembler<T>::ComputeBooleanAssemblyMatrix(
 }
 
 template<class T>
-Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+void
 FEMGlobalAssembler<T>::ComputePartialGlobalStiffnessMatrix(
-    const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
-    const Eigen::Matrix<T,
-                        CONSTITUTIVE_MATRIX_N,
-                        CONSTITUTIVE_MATRIX_N> &constitutive_matrix_C,
-    const Eigen::Matrix<T,
-                        Eigen::Dynamic,
-                        Eigen::Dynamic> &boolean_assembly_matrix_A,
-    T volume) {
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
+        const Eigen::Matrix<T,
+                CONSTITUTIVE_MATRIX_N,
+                CONSTITUTIVE_MATRIX_N> &constitutive_matrix_C,
+        const Eigen::Matrix<T,
+                Eigen::Dynamic,
+                Eigen::Dynamic> &boolean_assembly_matrix_A,
+        T volume,
+        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_stiffness) {
     auto local_stiffness_k = ComputeLocalStiffness(geometry_matrix,
                                                    constitutive_matrix_C,
                                                    volume);
 
+    int m = boolean_assembly_matrix_A.rows();
+    int k = boolean_assembly_matrix_A.cols();
+    int n = local_stiffness_k.cols();
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> C
+            = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(k, n);
+
+    GPUMMMultiplication<T> gpu_mm;
+    gpu_mm.Solve(
+            boolean_assembly_matrix_A.transpose().data(),
+            local_stiffness_k.data(),
+            C.data(),
+            1, 0,
+            k, m, n,
+            MatrixOperation::None,
+            MatrixOperation::None);
+
+    gpu_mm.Solve(
+            C.data(),
+            boolean_assembly_matrix_A.data(),
+            global_stiffness.data(),
+            1, 1,
+            k, n, k,
+            MatrixOperation::None,
+            MatrixOperation::None);
+    /*
     return boolean_assembly_matrix_A.transpose() * local_stiffness_k
-        * boolean_assembly_matrix_A;
+           * boolean_assembly_matrix_A;*/
 }
 
 template<class T>

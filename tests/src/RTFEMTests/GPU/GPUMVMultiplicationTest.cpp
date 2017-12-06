@@ -1,15 +1,15 @@
-#include "RTFEMTests/GPU/GPUMatrixMultiplicationTest.h"
+#include "RTFEMTests/GPU/GPUMVMultiplicationTest.h"
 
-#include "RTFEM/GPU/GPUMatrixMultiplication.cuh"
+#include "RTFEM/GPU/GPUMVMultiplication.cuh"
 #include "RTFEM/DataTypes.h"
 
-void GPUMatrixMultiplicationTest::SetUp() {
+void GPUMVMultiplicationTest::SetUp() {
 }
 
-void GPUMatrixMultiplicationTest::TearDown() {
+void GPUMVMultiplicationTest::TearDown() {
 }
 
-TEST_F(GPUMatrixMultiplicationTest, MatrixVector_ProperMultiplicationResults){
+TEST_F(GPUMVMultiplicationTest, MatrixVector_ProperMultiplicationResults){
     constexpr int n = 3;
     Eigen::Matrix<double, n, n> A;
     A << 1, 2, 3,
@@ -21,7 +21,7 @@ TEST_F(GPUMatrixMultiplicationTest, MatrixVector_ProperMultiplicationResults){
 
     Eigen::Vector<double, n> y;
 
-    rtfem::GPUMatrixMultiplication<double> gpu_multiplication;
+    rtfem::GPUMVMultiplication<double> gpu_multiplication;
     gpu_multiplication.PreSolve(A.data(), n);
     gpu_multiplication.Solve(x.data(), 1, y.data(), 0);
 

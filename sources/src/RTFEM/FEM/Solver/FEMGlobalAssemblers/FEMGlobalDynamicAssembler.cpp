@@ -5,6 +5,7 @@
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolver.h>
+#include "RTFEM/GPU/GPUMMMultiplication.cuh"
 
 namespace rtfem {
 
@@ -55,25 +56,61 @@ void FEMGlobalDynamicAssembler<T>::ComputeAssemblerDataIteration(
             force_only);
     this->timer_.Start();
     if(!force_only){
-        fem_assembler_data.global_mass +=
-                ComputePartialGlobalMassMatrix(fem_model.material().density,
-                                               finite_element_solver_data.volume,
-                                               boolean_assembly_matrix_A);
+        ComputePartialGlobalMassMatrix(fem_model.material().density,
+                                       finite_element_solver_data.volume,
+                                       boolean_assembly_matrix_A,
+                                       fem_assembler_data.global_mass);
     }
     this->timer_.partial_global_mass_time +=
             this->timer_.Stop();
 }
 
 template<class T>
-Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+void
 FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
         T density, T volume,
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-        boolean_assembly_matrix_A){
+        boolean_assembly_matrix_A,
+        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass){
     auto local_mass_matrix = ComputeLocalMassMatrix(density, volume);
 
+    int m = boolean_assembly_matrix_A.rows();
+    int k = boolean_assembly_matrix_A.cols();
+    int n = local_mass_matrix.cols();
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> C
+            = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(k, n);
+
+    /**
+     * A - k x m
+     * B - m x n
+     * C - k x n
+     */
+    GPUMMMultiplication<T> gpu_mm;
+    gpu_mm.Solve(
+            boolean_assembly_matrix_A.transpose().data(),
+            local_mass_matrix.data(),
+            C.data(),
+            1, 0,
+            k, m, n,
+            MatrixOperation::None,
+            MatrixOperation::None);
+
+    /**
+     * A - k x n
+     * B - m x k
+     * C - k x k
+     */
+    gpu_mm.Solve(
+            C.data(),
+            boolean_assembly_matrix_A.data(),
+            global_mass.data(),
+            1, 1,
+            k, n, k,
+            MatrixOperation::None,
+            MatrixOperation::None);
+    /*
     return boolean_assembly_matrix_A.transpose() * local_mass_matrix
-        * boolean_assembly_matrix_A;
+        * boolean_assembly_matrix_A;*/
 };
 
 template<class T>
@@ -117,18 +154,7 @@ template<class T>
 void FEMGlobalDynamicAssembler<T>::ApplyBoundaryConditionsToFEM(
     FEMGlobalAssemblerData<T> &assembler_data,
     const BoundaryConditionContainer<T> &boundary_conditions){
-    /*
-    FEMGlobalAssembler<T>::ApplyBoundaryConditionsToFEM(assembler_data,
-                                                        boundary_conditions);
 
-    this->ApplyBoundaryConditions(assembler_data.global_mass,
-                                  assembler_data.global_force,
-                                  boundary_conditions);
-
-    this->ApplyBoundaryConditions(assembler_data.global_damping,
-                                  assembler_data.global_force,
-                                  boundary_conditions);
-                                  */
 }
 
 template<class T>

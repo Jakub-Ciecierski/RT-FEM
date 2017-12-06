@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-class GPUMatrixMultiplicationTest : public ::testing::Test {
+class GPUMVMultiplicationTest : public ::testing::Test {
 protected:
     virtual void SetUp() override;
 

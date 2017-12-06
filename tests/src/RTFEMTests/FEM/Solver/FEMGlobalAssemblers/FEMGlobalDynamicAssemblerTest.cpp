@@ -19,6 +19,11 @@ void FEMGlobalDynamicAssemblerTest::TearDown() {
 
 TEST_F(FEMGlobalDynamicAssemblerTest, MassMatrix_IsSymetric){
     auto output = fem_assembler_->Compute(*fem_model_);
+
+    std::cout << output.global_mass << std::endl;
+    std::cout << std::endl;
+    std::cout << output.global_mass.transpose() << std::endl;
+
     EXPECT_EQ(output.global_mass.transpose(), output.global_mass);
 }
 

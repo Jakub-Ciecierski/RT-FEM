@@ -1,4 +1,4 @@
-#include "RTFEM/GPU/GPUMatrixMultiplication.cuh"
+#include "RTFEM/GPU/GPUMVMultiplication.cuh"
 
 #include <cublas_v2.h>
 #include <cuda_runtime.h>
@@ -10,15 +10,15 @@
 namespace rtfem {
 
 template<class T>
-GPUMatrixMultiplication<T>::GPUMatrixMultiplication() : d_A_(nullptr), n_(0) {}
+GPUMVMultiplication<T>::GPUMVMultiplication() : d_A_(nullptr), n_(0) {}
 
 template<class T>
-GPUMatrixMultiplication<T>::~GPUMatrixMultiplication(){
+GPUMVMultiplication<T>::~GPUMVMultiplication(){
     Terminate();
 }
 
 template<class T>
-void GPUMatrixMultiplication<T>::PreSolve(T* A, int n){
+void GPUMVMultiplication<T>::PreSolve(T* A, int n){
     n_ = n;
     cudaError_t cuda_error;
     cublasStatus_t status;
@@ -34,13 +34,13 @@ void GPUMatrixMultiplication<T>::PreSolve(T* A, int n){
 }
 
 template<>
-void GPUMatrixMultiplication<float>::PreSolve(float* A, int n){
+void GPUMVMultiplication<float>::PreSolve(float* A, int n){
     throw std::invalid_argument(
-            "GPUMatrixMultiplication<float>::PreSolve not implemented");
+            "GPUMVMultiplication<float>::PreSolve not implemented");
 }
 
 template<class T>
-void GPUMatrixMultiplication<T>::Solve(T* x, T alpha,
+void GPUMVMultiplication<T>::Solve(T* x, T alpha,
                                        T* y, T beta){
     T *d_x = nullptr;
     T *d_y = nullptr;
@@ -72,21 +72,21 @@ void GPUMatrixMultiplication<T>::Solve(T* x, T alpha,
 }
 
 template<>
-void GPUMatrixMultiplication<float>::Solve(float* x, float alpha,
-                                           float* y, float beta){
+void GPUMVMultiplication<float>::Solve(float *x, float alpha,
+                                       float *y, float beta) {
     throw std::invalid_argument(
-            "GPUMatrixMultiplication<float>::Solve not implemented");
+            "GPUMVMultiplication<float>::Solve not implemented");
 }
 
 template<class T>
-void GPUMatrixMultiplication<T>::Terminate(){
+void GPUMVMultiplication<T>::Terminate(){
     cudaFree(d_A_);
     cublasDestroy(cublas_handle_);
 }
 
 template
-class GPUMatrixMultiplication<double>;
+class GPUMVMultiplication<double>;
 template
-class GPUMatrixMultiplication<float>;
+class GPUMVMultiplication<float>;
 
 }

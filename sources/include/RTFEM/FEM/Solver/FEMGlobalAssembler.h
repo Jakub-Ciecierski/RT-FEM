@@ -227,7 +227,7 @@ private:
      * @param local_stiffness_k
      * @return
      */
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+    void
     ComputePartialGlobalStiffnessMatrix(
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
         const Eigen::Matrix<T,
@@ -236,7 +236,8 @@ private:
         const Eigen::Matrix<T,
                             Eigen::Dynamic,
                             Eigen::Dynamic> &boolean_assembly_matrix_A,
-        T volume);
+        T volume,
+        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_stiffness);
 
     /**
      * Computes Local Stiffness (k) of a given element.

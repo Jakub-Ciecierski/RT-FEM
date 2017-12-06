@@ -10,11 +10,11 @@ namespace rtfem {
  * Uses cublas library
  */
 template<class T>
-class GPUMatrixMultiplication {
+class GPUMVMultiplication {
 public:
 
-    GPUMatrixMultiplication();
-    ~GPUMatrixMultiplication();
+    GPUMVMultiplication();
+    ~GPUMVMultiplication();
 
     void PreSolve(T* A, int n);
 

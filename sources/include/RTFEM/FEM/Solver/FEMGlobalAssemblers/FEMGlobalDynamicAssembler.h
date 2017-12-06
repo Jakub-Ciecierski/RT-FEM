@@ -33,11 +33,12 @@ protected:
         FEMGlobalAssemblerData<T> &assembler_data,
         const BoundaryConditionContainer<T> &boundary_conditions) override;
 private:
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+    void
     ComputePartialGlobalMassMatrix(
             T density, T volume,
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-            boolean_assembly_matrix_A);
+            boolean_assembly_matrix_A,
+            Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass);
 
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputeLocalMassMatrix(T density, T volume);
