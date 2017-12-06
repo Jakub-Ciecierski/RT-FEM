@@ -18,10 +18,8 @@ void FEMGlobalDynamicAssemblerTest::TearDown() {
 }
 
 TEST_F(FEMGlobalDynamicAssemblerTest, MassMatrix_IsSymetric){
-    try {
-        auto output = fem_assembler_->Compute(*fem_model_);
-        EXPECT_EQ(output.global_mass.transpose(), output.global_mass);
-    }catch(const std::exception& exception){}
+    auto output = fem_assembler_->Compute(*fem_model_);
+    EXPECT_EQ(output.global_mass.transpose(), output.global_mass);
 }
 
 TEST_F(FEMGlobalDynamicAssemblerTest, DampingMatrix_IsSymetric) {
@@ -29,8 +27,6 @@ TEST_F(FEMGlobalDynamicAssemblerTest, DampingMatrix_IsSymetric) {
     material.damping_mass = 1;
     material.damping_stiffness = 1;
     fem_model_->material(material);
-    try {
-        auto output = fem_assembler_->Compute(*fem_model_);
-        EXPECT_EQ(output.global_damping.transpose(), output.global_damping);
-    } catch (const std::exception &exception) {}
+    auto output = fem_assembler_->Compute(*fem_model_);
+    EXPECT_EQ(output.global_damping.transpose(), output.global_damping);
 }

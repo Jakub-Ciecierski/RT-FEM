@@ -100,7 +100,7 @@ template <>
 CUDA_HOST_MEMBER
 void GPULinearSolver<float>::PreSolve(float* A, int n){
     throw std::invalid_argument(
-        "GPULinearSolver<float>::Solve not implemented");
+        "GPULinearSolver<float>::PreSolve not implemented");
 }
 
 template <class T>

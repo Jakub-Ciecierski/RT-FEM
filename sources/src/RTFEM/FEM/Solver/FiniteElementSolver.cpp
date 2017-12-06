@@ -2,6 +2,15 @@
 
 namespace rtfem {
 
+template<class T>
+FiniteElementSolver<T>::FiniteElementSolver() :
+        status_(FiniteElementSolverStatus::OK){}
+
+template<class T>
+const FiniteElementSolverStatus& FiniteElementSolver<T>::GetStatus(){
+    return status_;
+}
+
 template
 class FiniteElementSolver<double>;
 template

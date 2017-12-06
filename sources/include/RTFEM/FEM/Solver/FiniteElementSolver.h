@@ -54,13 +54,17 @@ struct TractionForces {
     T force_face4 = 0;
 };
 
+enum class FiniteElementSolverStatus{
+    OK, ERROR_VOLUME_0, ERROR_VOLUME_NEGATIVE
+};
+
 /**
  * Computes FiniteElementSolverData for a given FiniteElement.
  */
 template<class T>
 class FiniteElementSolver {
 public:
-    FiniteElementSolver() = default;
+    FiniteElementSolver();
     virtual ~FiniteElementSolver() = default;
 
     virtual FiniteElementSolverData<T> Solve(
@@ -69,6 +73,10 @@ public:
         std::vector<TriangleFace<T>> &triangle_faces,
         const Eigen::Vector3<T> &body_force,
         const Material<T>& material) = 0;
+
+    const FiniteElementSolverStatus& GetStatus();
+protected:
+    FiniteElementSolverStatus status_;
 };
 }
 

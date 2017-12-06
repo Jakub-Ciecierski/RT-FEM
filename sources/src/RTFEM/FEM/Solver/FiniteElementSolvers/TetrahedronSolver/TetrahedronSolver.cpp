@@ -370,12 +370,10 @@ T TetrahedronSolver<T>::ComputeVolume(const TetrahedronShapeFunctionCoefficients
         + (coefficients.A3 / 6.0)
         + (coefficients.A4 / 6.0);
     if (volume == 0) {
-        throw std::invalid_argument(
-            "TetrahedronSolver<T>::Solve: Element with 0 volume");
+        this->status_ = FiniteElementSolverStatus::ERROR_VOLUME_0;
     }
     if (volume < 0) {
-        throw std::invalid_argument(
-            "TetrahedronSolver<T>::Solve: Element with negative volume");
+        this->status_ = FiniteElementSolverStatus::ERROR_VOLUME_NEGATIVE;
     }
 
     return volume;

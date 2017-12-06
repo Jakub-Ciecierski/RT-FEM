@@ -4,6 +4,7 @@
 #include <RTFEM/FEM/Solver/FEMSolver.h>
 #include <RTFEM/FEM/Solver/FEMGlobalAssembler.h>
 #include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
+#include "RTFEM/GPU/GPUMatrixMultiplication.cuh"
 
 namespace rtfem {
 
@@ -33,11 +34,13 @@ private:
     void SolveForDisplacements(T delta_time);
     void ResetForces();
 
-    void ExplicitNewton(T delta_time);
     void ImplicitNewtonGPU(T delta_time);
     void ImplicitNewtonCPU(T delta_time);
 
     GPULinearSolver<T> gpu_linear_solver_;
+
+    GPUMatrixMultiplication<T> gpu_multiplication_rhs_mass_;
+    GPUMatrixMultiplication<T> gpu_multiplication_rhs_stiffness_;
 
     FEMSolverOutput<T> solver_output_;
 

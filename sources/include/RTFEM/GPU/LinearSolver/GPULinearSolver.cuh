@@ -11,6 +11,10 @@ typedef __device_builtin__ struct CUstream_st *cudaStream_t;
 
 namespace rtfem {
 
+/**
+ * Uses cusolver library
+ * @tparam T
+ */
 template <class T>
 class GPULinearSolver {
 public:

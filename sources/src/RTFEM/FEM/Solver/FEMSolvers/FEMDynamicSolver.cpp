@@ -37,6 +37,14 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
 
     gpu_linear_solver_.PreSolve(left_hand_side_.data(), n);
 
+    gpu_multiplication_rhs_mass_.PreSolve(
+            fem_assembler_data_.global_mass.data(),
+            fem_assembler_data_.global_mass.rows());
+
+    gpu_multiplication_rhs_stiffness_.PreSolve(
+            fem_assembler_data_.global_stiffness.data(),
+            fem_assembler_data_.global_stiffness.rows());
+
     total_time_ = 0;
 
     return solver_output_;
@@ -91,30 +99,25 @@ void FEMDynamicSolver<T>::ResetForces(){
 }
 
 template<class T>
-void FEMDynamicSolver<T>::ExplicitNewton(T delta_time){
-    displacement_velocity_current_ = displacement_velocity_current_ +
-        (delta_time * displacement_acceleration_current_);
-    solver_output_.displacement = solver_output_.displacement +
-        (delta_time * displacement_velocity_current_);
-
-    auto right_hand_side =
-        fem_assembler_data_.global_force
-            - (fem_assembler_data_.global_damping * displacement_velocity_current_)
-            - (fem_assembler_data_.global_stiffness * solver_output_.displacement);
-
-    displacement_acceleration_current_ = this->SolveSystemOfEquations(
-        fem_assembler_data_.global_mass,
-        right_hand_side);
-}
-
-template<class T>
 void FEMDynamicSolver<T>::ImplicitNewtonGPU(T delta_time){
+/*
+    delta_time * fem_assembler_data_.global_force
+        + fem_assembler_data_.global_mass * displacement_velocity_current_
+        + delta_time * (fem_assembler_data_.global_stiffness
+            * solver_output_.displacement);
+*/
     timer_.Start();
-    Eigen::Vector<T, Eigen::Dynamic> rhs =
-        delta_time * fem_assembler_data_.global_force
-            + fem_assembler_data_.global_mass * displacement_velocity_current_
-            + delta_time * (fem_assembler_data_.global_stiffness
-                * solver_output_.displacement);
+    gpu_multiplication_rhs_mass_.Solve(
+            displacement_velocity_current_.data(),
+            1.0,
+            fem_assembler_data_.global_force.data(),
+            delta_time);
+    gpu_multiplication_rhs_stiffness_.Solve(
+            solver_output_.displacement.data(),
+            delta_time,
+            fem_assembler_data_.global_force.data(),
+            1.0);
+    auto& rhs = fem_assembler_data_.global_force;
     timer_.rhs_solve_time = timer_.Stop();
 
     timer_.Start();

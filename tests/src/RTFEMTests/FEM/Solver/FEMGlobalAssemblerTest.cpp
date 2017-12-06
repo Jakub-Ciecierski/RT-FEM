@@ -98,27 +98,22 @@ TEST_F(FEMGlobalAssemblerTest,
 TEST_F(FEMGlobalAssemblerTest, FEMAssembler_Compute_ProperForceVectorDimensions) {
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
 
-    try{
-        auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
+    auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
 
-        unsigned int
-            expected_row_count = fem_model_->fem_geometry().vertices.size() * 3;
-        EXPECT_EQ(expected_row_count, fem_assembler_data.global_force.rows());
-        EXPECT_EQ((unsigned int) 1, fem_assembler_data.global_force.cols());
-    }catch(std::exception exception){}
+    unsigned int
+        expected_row_count = fem_model_->fem_geometry().vertices.size() * 3;
+    EXPECT_EQ(expected_row_count, fem_assembler_data.global_force.rows());
+    EXPECT_EQ((unsigned int) 1, fem_assembler_data.global_force.cols());
 }
 
 TEST_F(FEMGlobalAssemblerTest, FEMAssembler_Compute_ProperStiffnessDimensions) {
     auto fem_model = FEMModelSampleBuilder().CreateRandomFEMModel();
+    auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
 
-    try{
-        auto fem_assembler_data = fem_assembler_->Compute(*fem_model);
-
-        unsigned int
-            expected_row_count = fem_model_->fem_geometry().vertices.size() * 3;
-        unsigned int expected_column_count = expected_row_count;
-        EXPECT_EQ(expected_row_count, fem_assembler_data.global_stiffness.rows());
-        EXPECT_EQ(expected_column_count,
-                  fem_assembler_data.global_stiffness.cols());
-    }catch(std::exception exception){}
+    unsigned int
+        expected_row_count = fem_model_->fem_geometry().vertices.size() * 3;
+    unsigned int expected_column_count = expected_row_count;
+    EXPECT_EQ(expected_row_count, fem_assembler_data.global_stiffness.rows());
+    EXPECT_EQ(expected_column_count,
+              fem_assembler_data.global_stiffness.cols());
 }

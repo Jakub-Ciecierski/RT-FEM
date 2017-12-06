@@ -62,6 +62,7 @@ cuda_add_executable(${APP_NAME}
 
 target_link_libraries(${APP_NAME} rtfem)
 target_link_libraries(${APP_NAME} $ENV{CUDA_BIN_PATH}/lib64/stubs/libcusolver.so)
+target_link_libraries(${APP_NAME} $ENV{CUDA_BIN_PATH}/lib64/stubs/libcublas.so)
 target_link_libraries(${APP_NAME} tet)
 target_link_libraries(${APP_NAME} gtest gtest_main)
 
