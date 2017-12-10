@@ -38,14 +38,14 @@ private:
             T density, T volume,
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
             boolean_assembly_matrix_A,
-            Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass);
+            Eigen::DiagonalMatrix<T, Eigen::Dynamic>& global_mass);
 
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+    Eigen::DiagonalMatrix<T, Eigen::Dynamic>
     ComputeLocalMassMatrix(T density, T volume);
 
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
     ComputeGlobalDampingMatrix(
-        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
+        const Eigen::DiagonalMatrix<T, Eigen::Dynamic>&
         global_mass_matrix,
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
         global_stiffness_matrix,

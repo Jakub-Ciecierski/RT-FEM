@@ -30,20 +30,22 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
 
     T delta_time = 1.0 / 60.0;
     T delta_time_sqr = delta_time * delta_time;
+    auto global_mass = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>(
+        fem_assembler_data_.global_mass_diagonal);
     left_hand_side_ =
-            fem_assembler_data_.global_mass
+        global_mass
             + delta_time * fem_assembler_data_.global_damping
             + delta_time_sqr * fem_assembler_data_.global_stiffness;
 
     gpu_linear_solver_.PreSolve(left_hand_side_.data(), n);
 
     gpu_multiplication_rhs_mass_.PreSolve(
-            fem_assembler_data_.global_mass.data(),
-            fem_assembler_data_.global_mass.rows());
+        global_mass.data(),
+        global_mass.rows());
 
     gpu_multiplication_rhs_stiffness_.PreSolve(
-            fem_assembler_data_.global_stiffness.data(),
-            fem_assembler_data_.global_stiffness.rows());
+        fem_assembler_data_.global_stiffness.data(),
+        fem_assembler_data_.global_stiffness.rows());
 
     total_time_ = 0;
 
@@ -137,9 +139,11 @@ void FEMDynamicSolver<T>::ImplicitNewtonGPU(T delta_time){
 
 template<class T>
 void FEMDynamicSolver<T>::ImplicitNewtonCPU(T delta_time){
+    auto global_mass = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>(
+        fem_assembler_data_.global_mass_diagonal);
     Eigen::Vector<T, Eigen::Dynamic> rhs =
         delta_time * fem_assembler_data_.global_force
-        + fem_assembler_data_.global_mass * displacement_velocity_current_
+        + global_mass * displacement_velocity_current_
         + delta_time * (fem_assembler_data_.global_stiffness
             * solver_output_.displacement);
 

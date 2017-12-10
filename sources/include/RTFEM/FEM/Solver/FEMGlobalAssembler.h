@@ -35,12 +35,11 @@ enum class FiniteElementType;
 template<class T>
 struct FEMGlobalAssemblerData {
     FEMGlobalAssemblerData(unsigned int global_dof_count) :
-        global_mass(
-            Eigen::Matrix<
-                    T,
-                    Eigen::Dynamic,
-                    Eigen::Dynamic>::
-            Zero(global_dof_count, global_dof_count)),
+        global_mass_diagonal(
+            Eigen::Vector<
+                T,
+                Eigen::Dynamic>::
+            Zero(global_dof_count)),
         global_damping(
             Eigen::Matrix<
                     T,
@@ -64,7 +63,7 @@ struct FEMGlobalAssemblerData {
                 Eigen::Dynamic>::
             Zero(global_dof_count)){}
 
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_mass;
+    Eigen::DiagonalMatrix<T, Eigen::Dynamic> global_mass_diagonal;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_damping;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> global_stiffness;
     Eigen::Vector<T, Eigen::Dynamic> global_force;

@@ -5,6 +5,7 @@
 #include <RTFEM/FEM/Vertex.h>
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/Solver/FiniteElementSolver.h>
+#include <iostream>
 #include "RTFEM/GPU/GPUMMMultiplication.cuh"
 
 namespace rtfem {
@@ -23,10 +24,11 @@ void FEMGlobalDynamicAssembler<T>::ComputeAssemblerData(
     this->timer_.Start();
     if(!force_only){
         fem_assembler_data.global_damping =
-                ComputeGlobalDampingMatrix(fem_assembler_data.global_mass,
-                                           fem_assembler_data.global_stiffness,
-                                           fem_model.material().damping_mass,
-                                           fem_model.material().damping_stiffness);
+            ComputeGlobalDampingMatrix(
+                fem_assembler_data.global_mass_diagonal,
+                fem_assembler_data.global_stiffness,
+                fem_model.material().damping_mass,
+                fem_model.material().damping_stiffness);
     }
 
     this->timer_.partial_global_damping_time +=
@@ -59,7 +61,7 @@ void FEMGlobalDynamicAssembler<T>::ComputeAssemblerDataIteration(
         ComputePartialGlobalMassMatrix(fem_model.material().density,
                                        finite_element_solver_data.volume,
                                        boolean_assembly_matrix_A,
-                                       fem_assembler_data.global_mass);
+                                       fem_assembler_data.global_mass_diagonal);
     }
     this->timer_.partial_global_mass_time +=
             this->timer_.Stop();
@@ -71,7 +73,7 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
         T density, T volume,
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
         boolean_assembly_matrix_A,
-        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass){
+        Eigen::DiagonalMatrix<T, Eigen::Dynamic>& global_mass){
     auto local_mass_matrix = ComputeLocalMassMatrix(density, volume);
     Timer timer;
     timer.Start();
@@ -79,19 +81,15 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic,
             Eigen::ColMajor> A_T = boolean_assembly_matrix_A.transpose();
 
+    global_mass.diagonal() += (A_T * local_mass_matrix.diagonal());
     this->timer_.partial_global_mass_time_transpose += timer.Stop();
-
+    /*
     int m = boolean_assembly_matrix_A.rows();
     int k = boolean_assembly_matrix_A.cols();
     int n = local_mass_matrix.cols();
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> C
             = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(k, n);
 
-    /**
-     * A - k x m
-     * B - m x n
-     * C - k x n
-     */
     timer.Start();
     GPUMMMultiplication<T> gpu_mm;
     gpu_mm.Solve(
@@ -104,11 +102,6 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
             MatrixOperation::None);
     this->timer_.partial_global_mass_time_cuda1 += timer.Stop();
 
-/**
-     * A - k x n
-     * B - m x k
-     * C - k x k
-     */
     timer.Start();
     gpu_mm.Solve(
             C.data(),
@@ -119,27 +112,18 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
             MatrixOperation::None,
             MatrixOperation::None);
     this->timer_.partial_global_mass_time_cuda2 += timer.Stop();
+    */
 };
 
 template<class T>
-Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
+Eigen::DiagonalMatrix<T, Eigen::Dynamic>
 FEMGlobalDynamicAssembler<T>::ComputeLocalMassMatrix(T density, T volume){
-    Eigen::Matrix<T, 12, 12> mass_matrix;
-    mass_matrix <<
-                2,0,0,1,0,0,1,0,0,1,0,0,
-                0,2,0,0,1,0,0,1,0,0,1,0,
-                0,0,2,0,0,1,0,0,1,0,0,1,
-                1,0,0,2,0,0,1,0,0,1,0,0,
-                0,1,0,0,2,0,0,1,0,0,1,0,
-                0,0,1,0,0,2,0,0,1,0,0,1,
-                1,0,0,1,0,0,2,0,0,1,0,0,
-                0,1,0,0,1,0,0,2,0,0,1,0,
-                0,0,1,0,0,1,0,0,2,0,0,1,
-                1,0,0,1,0,0,1,0,0,2,0,0,
-                0,1,0,0,1,0,0,1,0,0,2,0,
-                0,0,1,0,0,1,0,0,1,0,0,2;
+    Eigen::DiagonalMatrix<T, 12> mass_matrix;
+
+    mass_matrix.diagonal() << 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1;
+
     const T divider = 20;
-    mass_matrix *= density * volume / divider;
+    mass_matrix.diagonal() *= density * volume / divider;
 
     return mass_matrix;
 };
@@ -147,14 +131,16 @@ FEMGlobalDynamicAssembler<T>::ComputeLocalMassMatrix(T density, T volume){
 template<class T>
 Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>
 FEMGlobalDynamicAssembler<T>::ComputeGlobalDampingMatrix(
-    const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
+    const Eigen::DiagonalMatrix<T, Eigen::Dynamic>&
     global_mass_matrix,
     const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
     global_stiffness_matrix,
     T damping_mass,
     T damping_stiffness){
+    auto global_mass = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>(
+        global_mass_matrix);
     return
-        global_mass_matrix * damping_mass +
+        global_mass * damping_mass +
         global_stiffness_matrix * damping_stiffness;
 };
 

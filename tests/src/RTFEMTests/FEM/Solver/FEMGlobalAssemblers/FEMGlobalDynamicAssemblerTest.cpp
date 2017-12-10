@@ -17,16 +17,6 @@ void FEMGlobalDynamicAssemblerTest::SetUp() {
 void FEMGlobalDynamicAssemblerTest::TearDown() {
 }
 
-TEST_F(FEMGlobalDynamicAssemblerTest, MassMatrix_IsSymetric){
-    auto output = fem_assembler_->Compute(*fem_model_);
-
-    std::cout << output.global_mass << std::endl;
-    std::cout << std::endl;
-    std::cout << output.global_mass.transpose() << std::endl;
-
-    EXPECT_EQ(output.global_mass.transpose(), output.global_mass);
-}
-
 TEST_F(FEMGlobalDynamicAssemblerTest, DampingMatrix_IsSymetric) {
     auto material = fem_model_->material();
     material.damping_mass = 1;
