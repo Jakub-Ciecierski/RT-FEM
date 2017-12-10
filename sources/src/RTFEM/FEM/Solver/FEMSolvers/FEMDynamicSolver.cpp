@@ -100,12 +100,6 @@ void FEMDynamicSolver<T>::ResetForces(){
 
 template<class T>
 void FEMDynamicSolver<T>::ImplicitNewtonGPU(T delta_time){
-/*
-    delta_time * fem_assembler_data_.global_force
-        + fem_assembler_data_.global_mass * displacement_velocity_current_
-        + delta_time * (fem_assembler_data_.global_stiffness
-            * solver_output_.displacement);
-*/
     timer_.Start();
     gpu_multiplication_rhs_mass_.Solve(
             displacement_velocity_current_.data(),

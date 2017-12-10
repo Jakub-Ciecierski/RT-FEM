@@ -119,9 +119,6 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
             MatrixOperation::None,
             MatrixOperation::None);
     this->timer_.partial_global_mass_time_cuda2 += timer.Stop();
-    /*
-    return boolean_assembly_matrix_A.transpose() * local_mass_matrix
-        * boolean_assembly_matrix_A;*/
 };
 
 template<class T>
