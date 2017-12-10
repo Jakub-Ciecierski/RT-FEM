@@ -73,6 +73,13 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
         boolean_assembly_matrix_A,
         Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass){
     auto local_mass_matrix = ComputeLocalMassMatrix(density, volume);
+    Timer timer;
+    timer.Start();
+
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic,
+            Eigen::ColMajor> A_T = boolean_assembly_matrix_A.transpose();
+
+    this->timer_.partial_global_mass_time_transpose += timer.Stop();
 
     int m = boolean_assembly_matrix_A.rows();
     int k = boolean_assembly_matrix_A.cols();
@@ -85,21 +92,24 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
      * B - m x n
      * C - k x n
      */
+    timer.Start();
     GPUMMMultiplication<T> gpu_mm;
     gpu_mm.Solve(
-            boolean_assembly_matrix_A.transpose().data(),
+            A_T.data(),
             local_mass_matrix.data(),
             C.data(),
             1, 0,
             k, m, n,
             MatrixOperation::None,
             MatrixOperation::None);
+    this->timer_.partial_global_mass_time_cuda1 += timer.Stop();
 
-    /**
+/**
      * A - k x n
      * B - m x k
      * C - k x k
      */
+    timer.Start();
     gpu_mm.Solve(
             C.data(),
             boolean_assembly_matrix_A.data(),
@@ -108,6 +118,7 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
             k, n, k,
             MatrixOperation::None,
             MatrixOperation::None);
+    this->timer_.partial_global_mass_time_cuda2 += timer.Stop();
     /*
     return boolean_assembly_matrix_A.transpose() * local_mass_matrix
         * boolean_assembly_matrix_A;*/

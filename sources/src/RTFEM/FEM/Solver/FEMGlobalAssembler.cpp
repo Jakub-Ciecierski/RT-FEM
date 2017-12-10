@@ -191,16 +191,47 @@ FEMGlobalAssembler<T>::ComputePartialGlobalStiffnessMatrix(
     auto local_stiffness_k = ComputeLocalStiffness(geometry_matrix,
                                                    constitutive_matrix_C,
                                                    volume);
+    auto A = boolean_assembly_matrix_A;
+    /*
+    A <<
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1;
+*/
+    A <<
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1;
+    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic,
+            Eigen::ColMajor> A_T = A.transpose();
 
-    int m = boolean_assembly_matrix_A.rows();
-    int k = boolean_assembly_matrix_A.cols();
+    int m = A.rows();
+    int k = A.cols();
     int n = local_stiffness_k.cols();
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> C
             = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(k, n);
 
     GPUMMMultiplication<T> gpu_mm;
     gpu_mm.Solve(
-            boolean_assembly_matrix_A.transpose().data(),
+            A_T.data(),
             local_stiffness_k.data(),
             C.data(),
             1, 0,
@@ -210,15 +241,37 @@ FEMGlobalAssembler<T>::ComputePartialGlobalStiffnessMatrix(
 
     gpu_mm.Solve(
             C.data(),
-            boolean_assembly_matrix_A.data(),
+            A.data(),
             global_stiffness.data(),
             1, 1,
             k, n, k,
             MatrixOperation::None,
             MatrixOperation::None);
+
+    std::cout << "local_stiffness_k" << std::endl;
+    std::cout << local_stiffness_k << std::endl;
+
+    std::cout << "A" << std::endl;
+    std::cout << A << std::endl;
+
+    std::cout << "global_stiffness" << std::endl;
+    std::cout << global_stiffness << std::endl;
+
     /*
     return boolean_assembly_matrix_A.transpose() * local_stiffness_k
            * boolean_assembly_matrix_A;*/
+}
+
+template<class T>
+void FEMGlobalAssembler<T>::ComputePartialGlobalStiffnessMatrix2(
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
+        const Eigen::Matrix<T,
+                CONSTITUTIVE_MATRIX_N,
+                CONSTITUTIVE_MATRIX_N> &constitutive_matrix_C,
+        const FiniteElement<T>& finite_element,
+        T volume,
+        Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_stiffness){
+
 }
 
 template<class T>

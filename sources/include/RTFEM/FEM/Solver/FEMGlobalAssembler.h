@@ -93,7 +93,12 @@ public:
     double finite_element_solver_time = 0;
     double boolean_assembly_matrix_time = 0;
     double partial_global_stiffness_time = 0;
+
     double partial_global_mass_time = 0;
+    double partial_global_mass_time_transpose = 0;
+    double partial_global_mass_time_cuda1 = 0;
+    double partial_global_mass_time_cuda2 = 0;
+
     double partial_global_damping_time = 0;
     double partial_global_force_time = 0;
 };
@@ -238,6 +243,16 @@ private:
                             Eigen::Dynamic> &boolean_assembly_matrix_A,
         T volume,
         Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_stiffness);
+
+    void
+    ComputePartialGlobalStiffnessMatrix2(
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &geometry_matrix,
+            const Eigen::Matrix<T,
+                    CONSTITUTIVE_MATRIX_N,
+                    CONSTITUTIVE_MATRIX_N> &constitutive_matrix_C,
+            const FiniteElement<T>& finite_element,
+            T volume,
+            Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_stiffness);
 
     /**
      * Computes Local Stiffness (k) of a given element.
