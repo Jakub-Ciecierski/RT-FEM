@@ -35,6 +35,15 @@ private:
     void ResetForces();
 
     void ImplicitNewtonGPU(T delta_time);
+    void SolveRHSGPU(T delta_time,
+                     Eigen::Vector<T, Eigen::Dynamic>& global_force);
+    void SolveBoundaryConditions(Eigen::Vector<T, Eigen::Dynamic>& rhs);
+    void SolveLinearSystem(const Eigen::Vector<T, Eigen::Dynamic>& rhs,
+                           Eigen::Vector<T, Eigen::Dynamic>& velocity);
+    void SolveIntegration(
+        T delta_time,
+        const Eigen::Vector<T, Eigen::Dynamic>& new_velocity);
+
     void ImplicitNewtonCPU(T delta_time);
 
     GPULinearSolver<T> gpu_linear_solver_;

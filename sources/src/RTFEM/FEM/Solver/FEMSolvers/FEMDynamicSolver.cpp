@@ -7,8 +7,6 @@
 #include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
 #include <RTFEM/Memory/UniquePointer.h>
 
-#include <iostream>
-
 namespace rtfem {
 
 template<class T>
@@ -102,32 +100,58 @@ void FEMDynamicSolver<T>::ResetForces(){
 
 template<class T>
 void FEMDynamicSolver<T>::ImplicitNewtonGPU(T delta_time){
+    SolveRHSGPU(delta_time, fem_assembler_data_.global_force);
+    auto& rhs = fem_assembler_data_.global_force;
+    SolveBoundaryConditions(rhs);
+    SolveLinearSystem(rhs, displacement_velocity_current_);
+    SolveIntegration(delta_time, displacement_velocity_current_);
+}
+
+template<class T>
+void FEMDynamicSolver<T>::SolveRHSGPU(
+    T delta_time,
+    Eigen::Vector<T, Eigen::Dynamic>& global_force){
     timer_.Start();
     gpu_multiplication_rhs_mass_.Solve(
-            displacement_velocity_current_.data(),
-            1.0,
-            fem_assembler_data_.global_force.data(),
-            delta_time);
+        displacement_velocity_current_.data(),
+        1.0,
+        global_force.data(),
+        delta_time);
     gpu_multiplication_rhs_stiffness_.Solve(
-            solver_output_.displacement.data(),
-            delta_time,
-            fem_assembler_data_.global_force.data(),
-            1.0);
-    auto& rhs = fem_assembler_data_.global_force;
-    timer_.rhs_solve_time = timer_.Stop();
+        solver_output_.displacement.data(),
+        delta_time,
+        global_force.data(),
+        1.0);
 
+    timer_.rhs_solve_time = timer_.Stop();
+}
+
+template<class T>
+void FEMDynamicSolver<T>::SolveBoundaryConditions(
+    Eigen::Vector<T, Eigen::Dynamic>& rhs){
     timer_.Start();
     FEMGlobalDynamicAssembler<T> fem_assembler;
     fem_assembler.ApplyBoundaryConditions(
-            left_hand_side_, rhs, this->fem_model_->boundary_conditions()
+        left_hand_side_, rhs, this->fem_model_->boundary_conditions()
     );
     timer_.boundary_conditions_solve_time = timer_.Stop();
+}
 
+template<class T>
+void FEMDynamicSolver<T>::SolveLinearSystem(
+    const Eigen::Vector<T, Eigen::Dynamic>& rhs,
+    Eigen::Vector<T, Eigen::Dynamic>& velocity){
     timer_.Start();
     gpu_linear_solver_.Solve(rhs.data(), rhs.size(),
-                             displacement_velocity_current_.data());
-    timer_.cuda_solve_time = timer_.Stop();
+                             velocity.data());
 
+    timer_.cuda_solve_time = timer_.Stop();
+}
+
+template<class T>
+void FEMDynamicSolver<T>::SolveIntegration(
+    T delta_time,
+    const Eigen::Vector<T, Eigen::Dynamic>& new_velocity){
     timer_.Start();
     const auto& initial_positions = fem_assembler_data_.global_position;
     auto current_positions = solver_output_.displacement + initial_positions;

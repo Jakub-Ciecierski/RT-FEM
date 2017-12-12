@@ -83,36 +83,6 @@ FEMGlobalDynamicAssembler<T>::ComputePartialGlobalMassMatrix(
 
     global_mass.diagonal() += (A_T * local_mass_matrix.diagonal());
     this->timer_.partial_global_mass_time_transpose += timer.Stop();
-    /*
-    int m = boolean_assembly_matrix_A.rows();
-    int k = boolean_assembly_matrix_A.cols();
-    int n = local_mass_matrix.cols();
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> C
-            = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(k, n);
-
-    timer.Start();
-    GPUMMMultiplication<T> gpu_mm;
-    gpu_mm.Solve(
-            A_T.data(),
-            local_mass_matrix.data(),
-            C.data(),
-            1, 0,
-            k, m, n,
-            MatrixOperation::None,
-            MatrixOperation::None);
-    this->timer_.partial_global_mass_time_cuda1 += timer.Stop();
-
-    timer.Start();
-    gpu_mm.Solve(
-            C.data(),
-            boolean_assembly_matrix_A.data(),
-            global_mass.data(),
-            1, 1,
-            k, n, k,
-            MatrixOperation::None,
-            MatrixOperation::None);
-    this->timer_.partial_global_mass_time_cuda2 += timer.Stop();
-    */
 };
 
 template<class T>

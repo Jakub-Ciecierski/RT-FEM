@@ -22,7 +22,7 @@ public:
     ~GPULinearSolver();
 
     CUDA_HOST_MEMBER void PreSolve(T* A, int n);
-    CUDA_HOST_MEMBER void Solve(T* b, int n, T* x);
+    CUDA_HOST_MEMBER void Solve(const T* b, int n, T* x);
 
 private:
     CUDA_HOST_MEMBER void Terminate();

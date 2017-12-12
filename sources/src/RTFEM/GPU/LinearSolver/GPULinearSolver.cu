@@ -105,7 +105,7 @@ void GPULinearSolver<float>::PreSolve(float* A, int n){
 
 template <class T>
 CUDA_HOST_MEMBER
-void GPULinearSolver<T>::Solve(T* b, int n, T* x){
+void GPULinearSolver<T>::Solve(const T* b, int n, T* x){
     cudaError_t cuda_error = cudaSuccess;
 
     cuda_error = cudaMemcpy(d_b, b, sizeof(T)*n, cudaMemcpyHostToDevice);
@@ -134,7 +134,7 @@ void GPULinearSolver<T>::Solve(T* b, int n, T* x){
 
 template <>
 CUDA_HOST_MEMBER
-void GPULinearSolver<float>::Solve(float* b, int n, float* x){
+void GPULinearSolver<float>::Solve(const float* b, int n, float* x){
     throw std::invalid_argument(
             "GPULinearSolver<float>::Solve not implemented");
 }
