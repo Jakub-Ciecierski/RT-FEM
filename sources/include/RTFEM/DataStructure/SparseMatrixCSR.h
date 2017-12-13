@@ -5,6 +5,10 @@
 
 namespace rtfem {
 
+enum class MatrixType{
+    General, Symmetric
+};
+
 /**
  * m x n
  * @tparam T
@@ -16,7 +20,8 @@ public:
                     std::vector<int> row_extents,
                     std::vector<int> columns_indices,
                     unsigned int m,
-                    unsigned int n);
+                    unsigned int n,
+                    MatrixType type);
     ~SparseMatrixCSR() = default;
 
     const std::vector<T>& values() const {return values_;}
@@ -26,6 +31,7 @@ public:
     unsigned int m() const {return m_;}
     unsigned int n() const {return n_;}
 
+    MatrixType type() const { return type_; }
 private:
     std::vector<T> values_;
     std::vector<int> row_extents_;
@@ -33,6 +39,8 @@ private:
 
     unsigned int m_;
     unsigned int n_;
+
+    MatrixType type_;
 };
 }
 

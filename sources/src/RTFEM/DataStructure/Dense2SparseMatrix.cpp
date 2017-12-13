@@ -4,10 +4,14 @@ namespace rtfem {
 
 template<class T>
 SparseMatrixCSR<T> Dense2SparseMatrix<T>::Transform(
-        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-        dense_matrix){
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& dense_matrix,
+        MatrixType type){
     unsigned int m = dense_matrix.rows();
     unsigned int n = dense_matrix.cols();
+
+    if(type == rtfem::MatrixType::Symmetric){
+        assert(n == m);
+    }
 
     std::vector<T> values;
     std::vector<int> row_extents(m+1);
@@ -16,8 +20,12 @@ SparseMatrixCSR<T> Dense2SparseMatrix<T>::Transform(
     row_extents[0] = 0;
     unsigned int last_row_non_zero_elemen_count = 0;
     for(unsigned int i = 0; i < m; i++){
+        unsigned int j_begin = 0;
+        if(type == rtfem::MatrixType::Symmetric){
+            j_begin = i;
+        }
         unsigned int row_non_zero_elemen_count = 0;
-        for(unsigned int j = 0; j < n; j++){
+        for(unsigned int j = j_begin; j < n; j++){
             auto value = dense_matrix(i, j);
             if(value != 0){
                 values.push_back(value);
@@ -34,7 +42,9 @@ SparseMatrixCSR<T> Dense2SparseMatrix<T>::Transform(
     row_extents[m] = row_extents[m - 1] +
                      last_row_non_zero_elemen_count;
 
-    return SparseMatrixCSR<T>(values, row_extents, columns_indices, m, n);
+    return SparseMatrixCSR<T>(values, row_extents, columns_indices,
+                              m, n,
+                              type);
 }
 
 template

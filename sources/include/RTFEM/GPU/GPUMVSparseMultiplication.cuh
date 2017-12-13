@@ -12,6 +12,16 @@ namespace rtfem {
 template<class T>
 class SparseMatrixCSR;
 
+/**
+ * Symmetry issues:
+ * https://devtalk.nvidia.com/default/topic/506693/cusparse-matrix-vector-multiplication-algorithm/
+ *
+ * Given the fact that the transpose operation y=L^T*x
+ * is 10x slower than non-transpose version y=L*x, the symmetric
+ * property does not show up any performance gain
+ *
+ * @tparam T
+ */
 template<class T>
 class GPUMVSparseMultiplication {
 public:

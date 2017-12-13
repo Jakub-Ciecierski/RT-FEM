@@ -36,7 +36,14 @@ void GPUMVSparseMultiplication<T>::PreSolve(const SparseMatrixCSR<T>& A){
     cusparseStatus = cusparseCreateMatDescr(&description);
     assert(cusparseStatus == CUSPARSE_STATUS_SUCCESS);
 
-    cusparseSetMatType(description, CUSPARSE_MATRIX_TYPE_GENERAL);
+    switch(A.type()){
+        case MatrixType::General:
+            cusparseSetMatType(description, CUSPARSE_MATRIX_TYPE_GENERAL);
+            break;
+        case MatrixType::Symmetric:
+            cusparseSetMatType(description, CUSPARSE_MATRIX_TYPE_SYMMETRIC);
+            break;
+    }
     cusparseSetMatIndexBase(description, CUSPARSE_INDEX_BASE_ZERO);
 
     cudaError_t cuda_error;

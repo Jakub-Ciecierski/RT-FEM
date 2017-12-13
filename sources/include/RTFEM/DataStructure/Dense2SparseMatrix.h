@@ -6,6 +6,7 @@
 
 namespace rtfem {
 
+
 template<class T>
 class Dense2SparseMatrix {
 public:
@@ -15,7 +16,8 @@ public:
 
     SparseMatrixCSR<T> Transform(
             const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>&
-            dense_matrix);
+            dense_matrix,
+            MatrixType type);
 private:
 };
 }

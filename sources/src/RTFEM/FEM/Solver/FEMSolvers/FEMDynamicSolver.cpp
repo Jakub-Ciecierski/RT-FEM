@@ -39,11 +39,13 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
     gpu_linear_solver_.PreSolve(left_hand_side_.data(), n);
 
     Dense2SparseMatrix<T> dense2sparse;
-    auto mass_sparse = dense2sparse.Transform(global_mass);
+
+    auto mass_sparse = dense2sparse.Transform(global_mass, MatrixType::General);
     gpu_mv_sparse_rhs_mass_.PreSolve(mass_sparse);
 
     auto stiffness_sparse =
-            dense2sparse.Transform(fem_assembler_data_.global_stiffness);
+            dense2sparse.Transform(fem_assembler_data_.global_stiffness,
+                                   MatrixType::General);
     gpu_mv_sparse_rhs_stiffness_.PreSolve(stiffness_sparse);
 
     total_time_ = 0;
