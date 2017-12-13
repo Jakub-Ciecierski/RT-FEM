@@ -10,8 +10,8 @@ SparseMatrixCSR<T> Dense2SparseMatrix<T>::Transform(
     unsigned int n = dense_matrix.cols();
 
     std::vector<T> values;
-    std::vector<unsigned int> row_extents(m+1);
-    std::vector<unsigned int> columns_indices;
+    std::vector<int> row_extents(m+1);
+    std::vector<int> columns_indices;
 
     row_extents[0] = 0;
     unsigned int last_row_non_zero_elemen_count = 0;

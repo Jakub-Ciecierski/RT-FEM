@@ -40,8 +40,8 @@ void GPUMVMultiplication<float>::PreSolve(float* A, int n){
 }
 
 template<class T>
-void GPUMVMultiplication<T>::Solve(T* x, T alpha,
-                                       T* y, T beta){
+void GPUMVMultiplication<T>::Solve(T *x, T alpha,
+                                   T *y, T beta) {
     T *d_x = nullptr;
     T *d_y = nullptr;
 

@@ -4,8 +4,8 @@ namespace rtfem {
 
 template<class T>
 SparseMatrixCSR<T>::SparseMatrixCSR(std::vector<T> values,
-                                    std::vector<unsigned int> row_extents,
-                                    std::vector<unsigned int> columns_indices,
+                                    std::vector<int> row_extents,
+                                    std::vector<int> columns_indices,
                                     unsigned int m,
                                     unsigned int n) :
         values_(values), row_extents_(row_extents),

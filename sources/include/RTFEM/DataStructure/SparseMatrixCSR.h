@@ -13,22 +13,23 @@ template<class T>
 class SparseMatrixCSR {
 public:
     SparseMatrixCSR(std::vector<T> values,
-                    std::vector<unsigned int> row_extents,
-                    std::vector<unsigned int> columns_indices,
+                    std::vector<int> row_extents,
+                    std::vector<int> columns_indices,
                     unsigned int m,
                     unsigned int n);
     ~SparseMatrixCSR() = default;
 
-    const std::vector<T>& values(){return values_;}
-    const std::vector<unsigned int>& row_extents(){return row_extents_;}
-    const std::vector<unsigned int>& columns_indices(){return columns_indices_;}
-    unsigned int m(){return m_;}
-    unsigned int n(){return n_;}
+    const std::vector<T>& values() const {return values_;}
+    const std::vector<int>& row_extents() const {return row_extents_;}
+    const std::vector<int>& columns_indices() const {return
+                columns_indices_;}
+    unsigned int m() const {return m_;}
+    unsigned int n() const {return n_;}
 
 private:
     std::vector<T> values_;
-    std::vector<unsigned int> row_extents_;
-    std::vector<unsigned int> columns_indices_;
+    std::vector<int> row_extents_;
+    std::vector<int> columns_indices_;
 
     unsigned int m_;
     unsigned int n_;
