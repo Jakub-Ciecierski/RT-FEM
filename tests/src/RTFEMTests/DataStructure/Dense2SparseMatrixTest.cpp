@@ -24,7 +24,6 @@ TEST_F(Dense2SparseMatrixTest, Test1){
     std::vector<int> row_extends = {0, 0, 2, 3, 4};
     std::vector<int> column_indices = {0, 1, 2, 1};
 
-
     EXPECT_EQ(values, sparse_matrix.values());
     EXPECT_EQ(row_extends, sparse_matrix.row_extents());
     EXPECT_EQ(column_indices, sparse_matrix.columns_indices());

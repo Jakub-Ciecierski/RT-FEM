@@ -5,6 +5,7 @@
 #include <RTFEM/FEM/Solver/FEMGlobalAssembler.h>
 #include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
 #include "RTFEM/GPU/GPUMVMultiplication.cuh"
+#include "RTFEM/GPU/GPUMVSparseMultiplication.cuh"
 
 namespace rtfem {
 
@@ -48,8 +49,8 @@ private:
 
     GPULinearSolver<T> gpu_linear_solver_;
 
-    GPUMVMultiplication<T> gpu_multiplication_rhs_mass_;
-    GPUMVMultiplication<T> gpu_multiplication_rhs_stiffness_;
+    GPUMVSparseMultiplication<T> gpu_mv_sparse_rhs_mass_;
+    GPUMVSparseMultiplication<T> gpu_mv_sparse_rhs_stiffness_;
 
     FEMSolverOutput<T> solver_output_;
 

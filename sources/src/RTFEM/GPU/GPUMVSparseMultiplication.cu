@@ -6,75 +6,110 @@
 #include <assert.h>
 
 #include <RTFEM/DataStructure/SparseMatrixCSR.h>
+#include <stdexcept>
 
 namespace rtfem {
 
 template<class T>
-void GPUMVSparseMultiplication<T>::Solve(
-        const SparseMatrixCSR<T>& A,
-        T* x, T alpha,
-        T* y, T beta){
-    int *d_col, *d_row;
-    double *d_val;
-    double *d_x;
-    double *d_y;
+GPUMVSparseMultiplication<T>::GPUMVSparseMultiplication() : N(0),
+                                                            nnz(0),
+                                                            d_col(nullptr),
+                                                            d_row(nullptr),
+                                                            d_val(nullptr),
+                                                            d_x(nullptr),
+                                                            d_y(nullptr) {}
 
-    int nz = A.values().size();
-    int N = A.n();
+template<class T>
+GPUMVSparseMultiplication<T>::~GPUMVSparseMultiplication(){
+    Terminate();
+}
 
-    cublasHandle_t cublasHandle = 0;
-    cublasStatus_t cublasStatus;
-    cudaError_t cuda_error;
+template<class T>
+void GPUMVSparseMultiplication<T>::PreSolve(const SparseMatrixCSR<T>& A){
+    nnz = A.values().size();
+    N = A.n();
 
-    cublasStatus = cublasCreate(&cublasHandle);
-    assert(cublasStatus == CUBLAS_STATUS_SUCCESS);
-
-    cusparseHandle_t cusparseHandle = 0;
     cusparseStatus_t cusparseStatus;
-
     cusparseStatus = cusparseCreate(&cusparseHandle);
     assert(cusparseStatus == CUSPARSE_STATUS_SUCCESS);
 
-    cusparseMatDescr_t descr = 0;
-    cusparseStatus = cusparseCreateMatDescr(&descr);
+    cusparseStatus = cusparseCreateMatDescr(&description);
     assert(cusparseStatus == CUSPARSE_STATUS_SUCCESS);
 
-    cusparseSetMatType(descr, CUSPARSE_MATRIX_TYPE_GENERAL);
-    cusparseSetMatIndexBase(descr, CUSPARSE_INDEX_BASE_ZERO);
+    cusparseSetMatType(description, CUSPARSE_MATRIX_TYPE_GENERAL);
+    cusparseSetMatIndexBase(description, CUSPARSE_INDEX_BASE_ZERO);
 
-    cuda_error = cudaMalloc((void **)&d_col, nz*sizeof(int));
+    cudaError_t cuda_error;
+    cuda_error = cudaMalloc((void **)&d_col, nnz*sizeof(int));
     assert(cuda_error == cudaSuccess);
     cuda_error = cudaMalloc((void **)&d_row, (N+1)*sizeof(int));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&d_val, nz*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_val, nnz*sizeof(T));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&d_x, N*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_x, N*sizeof(T));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&y, N*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_y, N*sizeof(T));
     assert(cuda_error == cudaSuccess);
 
     cudaMemcpy(d_col, A.columns_indices().data(),
-               nz*sizeof(int),
+               nnz*sizeof(int),
                cudaMemcpyHostToDevice);
     cudaMemcpy(d_row, A.row_extents().data(),
                (N+1)*sizeof(int),
                cudaMemcpyHostToDevice);
     cudaMemcpy(d_val, A.values().data(),
-               nz*sizeof(double),
+               nnz*sizeof(T),
                cudaMemcpyHostToDevice);
-    cudaMemcpy(d_x, x, N*sizeof(double), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_y, y, N*sizeof(double), cudaMemcpyHostToDevice);
+}
 
-    cusparseDcsrmv(cusparseHandle, CUSPARSE_OPERATION_NON_TRANSPOSE,
-                   N, N, nz,
-                   &alpha,
-                   descr,
-                   d_val, d_row, d_col,
-                   d_x,
-                   &beta, d_y);
+template<>
+void GPUMVSparseMultiplication<float>::PreSolve(
+        const SparseMatrixCSR<float>& A){
+    throw std::invalid_argument(
+            "GPUMVSparseMultiplication<float>::Solve not implemented");
+}
 
+template<class T>
+void GPUMVSparseMultiplication<T>::Solve(
+        T* x, T alpha,
+        T* y, T beta){
+    cudaError_t cuda_error;
+
+    cuda_error = cudaMemcpy(d_x, x, N*sizeof(T), cudaMemcpyHostToDevice);
+    assert(cuda_error == cudaSuccess);
+    cuda_error = cudaMemcpy(d_y, y, N*sizeof(T), cudaMemcpyHostToDevice);
+    assert(cuda_error == cudaSuccess);
+
+    cusparseStatus_t cusparseStatus;
+    cusparseStatus = cusparseDcsrmv(cusparseHandle,
+                                    CUSPARSE_OPERATION_NON_TRANSPOSE,
+                                    N, N, nnz,
+                                    &alpha,
+                                    description,
+                                    d_val, d_row, d_col,
+                                    d_x,
+                                    &beta,
+                                    d_y);
+    cuda_error = cudaDeviceSynchronize();
+    assert(cuda_error == cudaSuccess);
+    assert(cusparseStatus == CUSPARSE_STATUS_SUCCESS);
+
+    cuda_error = cudaMemcpy(y, d_y, sizeof(T)*N,
+                            cudaMemcpyDeviceToHost);
+    assert(cuda_error == cudaSuccess);
+}
+
+template<>
+void GPUMVSparseMultiplication<float>::Solve(
+        float* x, float alpha,
+        float* y, float beta){
+    throw std::invalid_argument(
+            "GPUMVSparseMultiplication<float>::Solve not implemented");
+}
+
+template<class T>
+void GPUMVSparseMultiplication<T>::Terminate(){
     cusparseDestroy(cusparseHandle);
-    cublasDestroy(cublasHandle);
 
     cudaFree(d_col);
     cudaFree(d_row);
@@ -82,5 +117,10 @@ void GPUMVSparseMultiplication<T>::Solve(
     cudaFree(d_x);
     cudaFree(d_y);
 }
+
+template
+class GPUMVSparseMultiplication<double>;
+template
+class GPUMVSparseMultiplication<float>;
 
 }

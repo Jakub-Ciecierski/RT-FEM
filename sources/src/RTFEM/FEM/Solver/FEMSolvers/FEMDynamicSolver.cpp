@@ -6,6 +6,7 @@
 #include <RTFEM/FEM/Solver/FEMGlobalAssemblers/FEMFastForceAssembler.h>
 #include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
 #include <RTFEM/Memory/UniquePointer.h>
+#include <RTFEM/DataStructure/Dense2SparseMatrix.h>
 
 namespace rtfem {
 
@@ -37,13 +38,13 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
 
     gpu_linear_solver_.PreSolve(left_hand_side_.data(), n);
 
-    gpu_multiplication_rhs_mass_.PreSolve(
-        global_mass.data(),
-        global_mass.rows());
+    Dense2SparseMatrix<T> dense2sparse;
+    auto mass_sparse = dense2sparse.Transform(global_mass);
+    gpu_mv_sparse_rhs_mass_.PreSolve(mass_sparse);
 
-    gpu_multiplication_rhs_stiffness_.PreSolve(
-        fem_assembler_data_.global_stiffness.data(),
-        fem_assembler_data_.global_stiffness.rows());
+    auto stiffness_sparse =
+            dense2sparse.Transform(fem_assembler_data_.global_stiffness);
+    gpu_mv_sparse_rhs_stiffness_.PreSolve(stiffness_sparse);
 
     total_time_ = 0;
 
@@ -112,16 +113,16 @@ void FEMDynamicSolver<T>::SolveRHSGPU(
     T delta_time,
     Eigen::Vector<T, Eigen::Dynamic>& global_force){
     timer_.Start();
-    gpu_multiplication_rhs_mass_.Solve(
+    gpu_mv_sparse_rhs_mass_.Solve(
         displacement_velocity_current_.data(),
         1.0,
         global_force.data(),
         delta_time);
-    gpu_multiplication_rhs_stiffness_.Solve(
-        solver_output_.displacement.data(),
-        delta_time,
-        global_force.data(),
-        1.0);
+    gpu_mv_sparse_rhs_stiffness_.Solve(
+            solver_output_.displacement.data(),
+            delta_time,
+            global_force.data(),
+            1.0);
 
     timer_.rhs_solve_time = timer_.Stop();
 }
