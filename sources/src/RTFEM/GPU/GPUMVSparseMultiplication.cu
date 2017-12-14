@@ -116,6 +116,7 @@ void GPUMVSparseMultiplication<float>::Solve(
 
 template<class T>
 void GPUMVSparseMultiplication<T>::Terminate(){
+    cusparseDestroyMatDescr(description);
     cusparseDestroy(cusparseHandle);
 
     cudaFree(d_col);

@@ -260,21 +260,11 @@ void GPUSparseCGPrecondLinearSolver<T>::Terminate(){
         cusparseDestroySolveAnalysisInfo(infoA);
         cusparseDestroySolveAnalysisInfo(info_u);
 
-        /* Free device memory */
-        if(this->d_col)
-            cudaFree(this->d_col);
-        if(this->d_row)
-            cudaFree(this->d_row);
-        if(this->d_val)
-            cudaFree(this->d_val);
-        if(this->d_x)
-            cudaFree(this->d_x);
+        cusparseDestroyMatDescr(descrL);
+        cusparseDestroyMatDescr(descrU);
+
         if(this->d_y)
             cudaFree(this->d_y);
-        if(this->d_r)
-            cudaFree(this->d_r);
-        if(this->d_p)
-            cudaFree(this->d_p);
         if(this->d_omega)
             cudaFree(this->d_omega);
         if(this->d_valsILU0)

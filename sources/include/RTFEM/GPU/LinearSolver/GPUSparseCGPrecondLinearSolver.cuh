@@ -11,6 +11,10 @@ typedef struct cusparseSolveAnalysisInfo *cusparseSolveAnalysisInfo_t;
 
 namespace rtfem {
 
+/**
+ * Cuda sample
+ * @tparam T
+ */
 template<class T>
 class GPUSparseCGPrecondLinearSolver : public GPUSparseCGLinearSolver<T>{
 public:

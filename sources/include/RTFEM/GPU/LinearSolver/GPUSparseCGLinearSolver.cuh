@@ -5,6 +5,10 @@
 
 namespace rtfem {
 
+/**
+ * Cuda sample
+ * @tparam T
+ */
 template<class T>
 class GPUSparseCGLinearSolver : public GPUSparseLinearSolver<T>{
 public:

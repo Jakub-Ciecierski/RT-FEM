@@ -3,7 +3,6 @@
 #include <RTFEM/DataStructure/SparseMatrixCSR.h>
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include <cuda_runtime.h>
 #include <cusparse.h>
@@ -50,16 +49,16 @@ void GPUSparseCGLinearSolver<T>::PreSolve(const SparseMatrixCSR<T>& A){
     assert(cuda_error == cudaSuccess);
     cuda_error = cudaMalloc((void **)&this->d_row, (this->N+1)*sizeof(int));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&this->d_val, this->nnz*sizeof(double));
+    cuda_error = cudaMalloc((void **)&this->d_val, this->nnz*sizeof(T));
     assert(cuda_error == cudaSuccess);
 
-    cuda_error = cudaMalloc((void **)&d_x, this->N*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_x, this->N*sizeof(T));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&d_r, this->N*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_r, this->N*sizeof(T));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&d_p, this->N*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_p, this->N*sizeof(T));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&d_Ax, this->N*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_Ax, this->N*sizeof(T));
     assert(cuda_error == cudaSuccess);
 
     cudaMemcpy(this->d_col, A.columns_indices().data(),
@@ -67,7 +66,7 @@ void GPUSparseCGLinearSolver<T>::PreSolve(const SparseMatrixCSR<T>& A){
     cudaMemcpy(this->d_row, A.row_extents().data(),
                (this->N+1)*sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(this->d_val, A.values().data(),
-               this->nnz*sizeof(double), cudaMemcpyHostToDevice);
+               this->nnz*sizeof(T), cudaMemcpyHostToDevice);
 }
 
 template<>
@@ -86,8 +85,8 @@ void GPUSparseCGLinearSolver<T>::Solve(
     int k;
     T alpha, beta, alpham1;
 
-    cudaMemcpy(d_x, x, this->N*sizeof(double), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_r, B, this->N*sizeof(double), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_x, x, this->N*sizeof(T), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_r, B, this->N*sizeof(T), cudaMemcpyHostToDevice);
 
     alpha = 1.0;
     alpham1 = -1.0;
@@ -137,7 +136,7 @@ void GPUSparseCGLinearSolver<T>::Solve(
         k++;
     }
 
-    cudaMemcpy(x, d_x, this->N*sizeof(double), cudaMemcpyDeviceToHost);
+    cudaMemcpy(x, d_x, this->N*sizeof(T), cudaMemcpyDeviceToHost);
 }
 
 template<>
@@ -150,6 +149,9 @@ void GPUSparseCGLinearSolver<float>::Solve(
 template<class T>
 void GPUSparseCGLinearSolver<T>::Terminate(){
     if(this->pre_solved_) {
+        if(this->description)
+            cusparseDestroyMatDescr(this->description);
+
         if(this->cusparseHandle)
             cusparseDestroy(this->cusparseHandle);
         if(this->cublasHandle)
