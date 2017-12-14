@@ -58,29 +58,35 @@ void FEMDynamicSolver<T>::InitPreSolveLHS(
     T delta_time = 1.0 / 60.0;
     T delta_time_sqr = delta_time * delta_time;
 
-    left_hand_side_ =
+    left_hand_side_bc_ =
             global_mass
             + delta_time * fem_assembler_data_.global_damping
             + delta_time_sqr * fem_assembler_data_.global_stiffness;
+    left_hand_side_no_bc_ = left_hand_side_bc_;
+
+    FEMGlobalDynamicAssembler<T> fem_assembler;
+    fem_assembler.ApplyBoundaryConditionsMatrix(
+            left_hand_side_bc_, this->fem_model_->boundary_conditions()
+    );
 
     switch(solvers_.type) {
         case LinearSystemSolverType::CG: {
             Dense2SparseMatrix<T> dense2sparse;
-            auto sparse_lhs = dense2sparse.Transform(left_hand_side_,
+            auto sparse_lhs = dense2sparse.Transform(left_hand_side_bc_,
                                                      MatrixType::General);
             solvers_.gpu_sparse_linear_solver_->PreSolve(sparse_lhs);
             break;
         }
         case LinearSystemSolverType::CG_PreCond:{
             Dense2SparseMatrix<T> dense2sparse;
-            auto sparse_lhs = dense2sparse.Transform(left_hand_side_,
+            auto sparse_lhs = dense2sparse.Transform(left_hand_side_bc_,
                                                      MatrixType::General);
             solvers_.gpu_sparse_precond_linear_solver_->PreSolve(sparse_lhs);
             break;
         }
         case LinearSystemSolverType::LU: {
-            solvers_.gpu_linear_solver_->PreSolve(left_hand_side_.data(),
-                                                 left_hand_side_.rows());
+            solvers_.gpu_linear_solver_->PreSolve(left_hand_side_bc_.data(),
+                                                  left_hand_side_bc_.rows());
             break;
         }
     }
@@ -163,10 +169,10 @@ void FEMDynamicSolver<T>::SolveRHSGPU(
     Eigen::Vector<T, Eigen::Dynamic>& global_force){
     timer_.Start();
     gpu_mv_sparse_rhs_mass_.Solve(
-        displacement_velocity_current_.data(),
-        1.0,
-        global_force.data(),
-        delta_time);
+            displacement_velocity_current_.data(),
+            1.0,
+            global_force.data(),
+            delta_time);
     gpu_mv_sparse_rhs_stiffness_.Solve(
             solver_output_.displacement.data(),
             delta_time,
@@ -181,8 +187,8 @@ void FEMDynamicSolver<T>::SolveBoundaryConditions(
     Eigen::Vector<T, Eigen::Dynamic>& rhs){
     timer_.Start();
     FEMGlobalDynamicAssembler<T> fem_assembler;
-    fem_assembler.ApplyBoundaryConditions(
-        left_hand_side_, rhs, this->fem_model_->boundary_conditions()
+    fem_assembler.ApplyBoundaryConditionsVector(
+        left_hand_side_no_bc_, rhs, this->fem_model_->boundary_conditions()
     );
     timer_.boundary_conditions_solve_time = timer_.Stop();
 }
@@ -234,13 +240,10 @@ void FEMDynamicSolver<T>::ImplicitNewtonCPU(T delta_time){
         + delta_time * (fem_assembler_data_.global_stiffness
             * solver_output_.displacement);
 
-    FEMGlobalDynamicAssembler<T> fem_assembler;
-    fem_assembler.ApplyBoundaryConditions(
-        left_hand_side_, rhs, this->fem_model_->boundary_conditions()
-    );
+    SolveBoundaryConditions(rhs);
 
     displacement_velocity_current_ = this->SolveSystemOfEquations(
-            left_hand_side_, rhs);
+            left_hand_side_bc_, rhs);
 
     const auto& initial_positions = fem_assembler_data_.global_position;
     auto current_positions = solver_output_.displacement + initial_positions;

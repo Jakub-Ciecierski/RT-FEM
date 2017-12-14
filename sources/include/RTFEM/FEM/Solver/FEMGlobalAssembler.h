@@ -147,6 +147,13 @@ public:
         Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
         Eigen::Vector<T, Eigen::Dynamic>& vector,
         const BoundaryConditionContainer<T> &boundary_conditions);
+    void ApplyBoundaryConditionsMatrix(
+            Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
+            const BoundaryConditionContainer<T> &boundary_conditions);
+    void ApplyBoundaryConditionsVector(
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
+            Eigen::Vector<T, Eigen::Dynamic>& vector,
+            const BoundaryConditionContainer<T> &boundary_conditions);
 protected:
     /**
      * Iterates through every finite element and assembles data into
