@@ -11,33 +11,74 @@
 namespace rtfem {
 
 template<class T>
-FEMDynamicSolver<T>::FEMDynamicSolver(FEMModel<T>* fem_model) :
+FEMDynamicSolver<T>::FEMDynamicSolver(FEMModel<T>* fem_model,
+                                      LinearSystemSolverType type) :
     FEMSolver<T>(fem_model),
+    solvers_(LinearSystemSolvers<T>{type}),
     fem_assembler_data_(FEMGlobalAssemblerData<T>{0}),
     total_time_(0){}
 
 template<class T>
 FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
+    InitAssembly();
+    auto global_mass = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>(
+            fem_assembler_data_.global_mass_diagonal);
+    InitDisplacementData();
+    InitPreSolveLHS(global_mass);
+    InitPreSolveRHS(global_mass);
+
+    total_time_ = 0;
+
+    return solver_output_;
+}
+
+template<class T>
+void FEMDynamicSolver<T>::InitAssembly(){
     FEMGlobalDynamicAssembler<T> fem_assembler;
     fem_assembler_data_ = fem_assembler.Compute(*this->fem_model_);
+}
 
+template<class T>
+void FEMDynamicSolver<T>::InitDisplacementData(){
     auto n = fem_assembler_data_.global_stiffness.rows();
     solver_output_.displacement = Eigen::Vector<T, Eigen::Dynamic>::Zero(n);
     displacement_velocity_current_ = Eigen::Vector<T, Eigen::Dynamic>::Zero(n);
     displacement_acceleration_current_ = Eigen::Vector<T,
-                                                       Eigen::Dynamic>::Zero(n);
+            Eigen::Dynamic>::Zero(n);
+}
 
+template<class T>
+void FEMDynamicSolver<T>::InitPreSolveLHS(
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass){
     T delta_time = 1.0 / 60.0;
     T delta_time_sqr = delta_time * delta_time;
-    auto global_mass = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>(
-        fem_assembler_data_.global_mass_diagonal);
+
     left_hand_side_ =
-        global_mass
+            global_mass
             + delta_time * fem_assembler_data_.global_damping
             + delta_time_sqr * fem_assembler_data_.global_stiffness;
 
-    gpu_linear_solver_.PreSolve(left_hand_side_.data(), n);
+    switch(solvers_.type){
+        case LinearSystemSolverType::CG: {
+            Dense2SparseMatrix<T> dense2sparse;
+            auto sparse_lhs = dense2sparse.Transform(left_hand_side_,
+                                                     MatrixType::General);
+            solvers_.gpu_sparse_linear_solver_.PreSolve(sparse_lhs);
+            break;
+        }
+        case LinearSystemSolverType::CG_PreCond:
+            break;
+        case LinearSystemSolverType::LU: {
+            solvers_.gpu_linear_solver_.PreSolve(left_hand_side_.data(),
+                                                 left_hand_side_.rows());
+            break;
+        }
+    }
+}
 
+template<class T>
+void FEMDynamicSolver<T>::InitPreSolveRHS(
+        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass){
     Dense2SparseMatrix<T> dense2sparse;
 
     auto mass_sparse = dense2sparse.Transform(global_mass, MatrixType::General);
@@ -47,10 +88,6 @@ FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
             dense2sparse.Transform(fem_assembler_data_.global_stiffness,
                                    MatrixType::General);
     gpu_mv_sparse_rhs_stiffness_.PreSolve(stiffness_sparse);
-
-    total_time_ = 0;
-
-    return solver_output_;
 }
 
 template<class T>
@@ -145,8 +182,19 @@ void FEMDynamicSolver<T>::SolveLinearSystem(
     const Eigen::Vector<T, Eigen::Dynamic>& rhs,
     Eigen::Vector<T, Eigen::Dynamic>& velocity){
     timer_.Start();
-    gpu_linear_solver_.Solve(rhs.data(), rhs.size(),
-                             velocity.data());
+
+    switch(solvers_.type){
+        case LinearSystemSolverType::CG:
+            solvers_.gpu_sparse_linear_solver_.Solve(
+                    rhs.data(), velocity.data());
+            break;
+        case LinearSystemSolverType::CG_PreCond:
+            break;
+        case LinearSystemSolverType::LU:
+            solvers_.gpu_linear_solver_.Solve(
+                    rhs.data(), rhs.size(), velocity.data());
+            break;
+    }
 
     timer_.cuda_solve_time = timer_.Stop();
 }
@@ -193,5 +241,10 @@ template
 class FEMDynamicSolver<double>;
 template
 class FEMDynamicSolver<float>;
+
+template
+class LinearSystemSolvers<double>;
+template
+class LinearSystemSolvers<float>;
 
 }

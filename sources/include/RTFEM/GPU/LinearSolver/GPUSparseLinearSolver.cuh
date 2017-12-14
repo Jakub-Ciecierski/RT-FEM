@@ -1,18 +1,48 @@
 #ifndef PROJECT_GPUSPARSELINEARSOLVER_H
 #define PROJECT_GPUSPARSELINEARSOLVER_H
 
+struct cusparseContext;
+typedef struct cusparseContext *cusparseHandle_t;
+
+struct cublasContext;
+typedef struct cublasContext *cublasHandle_t;
+
+struct cusparseMatDescr;
+typedef struct cusparseMatDescr *cusparseMatDescr_t;
+
 namespace rtfem {
+
+template<class T>
+class SparseMatrixCSR;
 
 template<class T>
 class GPUSparseLinearSolver {
 public:
-    GPUSparseLinearSolver() = default;
-    ~GPUSparseLinearSolver() = default;
+    GPUSparseLinearSolver();
+    ~GPUSparseLinearSolver();
 
-    void Solve();
+    void PreSolve(const SparseMatrixCSR<T>& A);
+
+    void Solve(const T* b, T* x);
 private:
+    void Terminate();
 
-    void genTridiag(int *I, int *J, double *val, int N, int nz);
+    int *d_col;
+    int *d_row;
+    T *d_val;
+    int N;
+    int nnz;
+
+    T *d_x;
+    T *d_r;
+    T *d_p;
+    T *d_Ax;
+
+    cusparseHandle_t cusparseHandle;
+    cublasHandle_t cublasHandle;
+    cusparseMatDescr_t description;
+
+    bool pre_solved_;
 };
 
 }

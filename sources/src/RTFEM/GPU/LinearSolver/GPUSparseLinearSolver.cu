@@ -1,76 +1,67 @@
 #include "RTFEM/GPU/LinearSolver/GPUSparseLinearSolver.cuh"
 
+#include <RTFEM/DataStructure/SparseMatrixCSR.h>
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 
 #include <cuda_runtime.h>
 #include <cusparse.h>
 #include <cublas_v2.h>
 #include <assert.h>
+#include <stdexcept>
 
 namespace rtfem {
 
 template<class T>
-void GPUSparseLinearSolver<T>::Solve(){
-    int N = 0, nz = 0, *I = NULL, *J = NULL;
-    double *val = NULL;
-    const double tol = 1e-5f;
-    const int max_iter = 10000;
-    double *x;
-    double *rhs;
-    double a, b, na, r0, r1;
-    int *d_col, *d_row;
-    double *d_val, *d_x, dot;
-    double *d_r, *d_p, *d_Ax;
-    int k;
-    double alpha, beta, alpham1;
+GPUSparseLinearSolver<T>::GPUSparseLinearSolver() :
+        d_col(nullptr),
+        d_row(nullptr),
+        d_val(nullptr),
+        N(0),
+        nnz(0),
+        d_x(nullptr),
+        d_r(nullptr),
+        d_p(nullptr),
+        d_Ax(nullptr),
+        cusparseHandle(nullptr),
+        cublasHandle(nullptr),
+        description(nullptr),
+        pre_solved_(false){}
 
-    /* Generate a random tridiagonal symmetric matrix in CSR format */
-    N = 1048576;
-    nz = (N-2)*3 + 4;
-    I = (int *)malloc(sizeof(int)*(N+1));
-    J = (int *)malloc(sizeof(int)*nz);
-    val = (double *)malloc(sizeof(double)*nz);
-    genTridiag(I, J, val, N, nz);
+template<class T>
+GPUSparseLinearSolver<T>::~GPUSparseLinearSolver(){
+    Terminate();
+}
 
-    x = (double *)malloc(sizeof(double)*N);
-    rhs = (double *)malloc(sizeof(double)*N);
+template<class T>
+void GPUSparseLinearSolver<T>::PreSolve(const SparseMatrixCSR<T>& A){
+    pre_solved_ = true;
+    N = A.n();
+    nnz = A.values().size();
 
-    for (int i = 0; i < N; i++)
-    {
-        rhs[i] = 1.0;
-        x[i] = 0.0;
-    }
-
-    /* Get handle to the CUBLAS context */
-    cublasHandle_t cublasHandle = 0;
     cublasStatus_t cublasStatus;
     cudaError_t cuda_error;
     cublasStatus = cublasCreate(&cublasHandle);
-
     assert(cublasStatus == CUBLAS_STATUS_SUCCESS);
 
-    /* Get handle to the CUSPARSE context */
-    cusparseHandle_t cusparseHandle = 0;
     cusparseStatus_t cusparseStatus;
     cusparseStatus = cusparseCreate(&cusparseHandle);
     assert(cusparseStatus == CUSPARSE_STATUS_SUCCESS);
 
-    cusparseMatDescr_t descr = 0;
-    cusparseStatus = cusparseCreateMatDescr(&descr);
-
+    cusparseStatus = cusparseCreateMatDescr(&description);
     assert(cusparseStatus == CUSPARSE_STATUS_SUCCESS);
 
-    cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
-    cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ZERO);
+    cusparseSetMatType(description, CUSPARSE_MATRIX_TYPE_GENERAL);
+    cusparseSetMatIndexBase(description, CUSPARSE_INDEX_BASE_ZERO);
 
-    cuda_error = cudaMalloc((void **)&d_col, nz*sizeof(int));
+    cuda_error = cudaMalloc((void **)&d_col, nnz*sizeof(int));
     assert(cuda_error == cudaSuccess);
     cuda_error = cudaMalloc((void **)&d_row, (N+1)*sizeof(int));
     assert(cuda_error == cudaSuccess);
-    cuda_error = cudaMalloc((void **)&d_val, nz*sizeof(double));
+    cuda_error = cudaMalloc((void **)&d_val, nnz*sizeof(double));
     assert(cuda_error == cudaSuccess);
+
     cuda_error = cudaMalloc((void **)&d_x, N*sizeof(double));
     assert(cuda_error == cudaSuccess);
     cuda_error = cudaMalloc((void **)&d_r, N*sizeof(double));
@@ -80,22 +71,44 @@ void GPUSparseLinearSolver<T>::Solve(){
     cuda_error = cudaMalloc((void **)&d_Ax, N*sizeof(double));
     assert(cuda_error == cudaSuccess);
 
-    cudaMemcpy(d_col, J, nz*sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_row, I, (N+1)*sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_val, val, nz*sizeof(double), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_col, A.columns_indices().data(),
+               nnz*sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_row, A.row_extents().data(),
+               (N+1)*sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_val, A.values().data(),
+               nnz*sizeof(double), cudaMemcpyHostToDevice);
+}
+
+template<>
+void GPUSparseLinearSolver<float>::PreSolve(const SparseMatrixCSR<float>& A){
+    throw std::invalid_argument(
+            "GPUSparseLinearSolver<float>::PreSolve not implemented");
+}
+
+template<class T>
+void GPUSparseLinearSolver<T>::Solve(
+        const T* B, T* x){
+    const T tol = 1e-4f;
+    const int max_iter = 100;
+    T a, b, na, r0, r1;
+    T dot;
+    int k;
+    T alpha, beta, alpham1;
+
     cudaMemcpy(d_x, x, N*sizeof(double), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_r, rhs, N*sizeof(double), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_r, B, N*sizeof(double), cudaMemcpyHostToDevice);
 
     alpha = 1.0;
     alpham1 = -1.0;
     beta = 0.0;
-    r0 = 0.;
+    r0 = 0.0;
 
-    cusparseDcsrmv(cusparseHandle,CUSPARSE_OPERATION_NON_TRANSPOSE, N, N, nz,
-                   &alpha, descr, d_val, d_row, d_col, d_x, &beta, d_Ax);
+    cusparseDcsrmv(cusparseHandle,CUSPARSE_OPERATION_NON_TRANSPOSE,
+                   N, N, nnz,
+                   &alpha, description, d_val, d_row, d_col, d_x, &beta, d_Ax);
 
     cublasDaxpy(cublasHandle, N, &alpham1, d_Ax, 1, d_r, 1);
-    cublasStatus = cublasDdot(cublasHandle, N, d_r, 1, d_r, 1, &r1);
+    cublasDdot(cublasHandle, N, d_r, 1, d_r, 1, &r1);
 
     k = 1;
 
@@ -104,109 +117,62 @@ void GPUSparseLinearSolver<T>::Solve(){
         if (k > 1)
         {
             b = r1 / r0;
-            cublasStatus = cublasDscal(cublasHandle, N, &b, d_p, 1);
-            cublasStatus = cublasDaxpy(cublasHandle, N, &alpha, d_r, 1, d_p, 1);
+            cublasDscal(cublasHandle, N, &b, d_p, 1);
+            cublasDaxpy(cublasHandle, N, &alpha, d_r, 1, d_p, 1);
         }
         else
         {
-            cublasStatus = cublasDcopy(cublasHandle, N, d_r, 1, d_p, 1);
+            cublasDcopy(cublasHandle, N, d_r, 1, d_p, 1);
         }
 
         cusparseDcsrmv(cusparseHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, N,
-                       N, nz, &alpha, descr, d_val, d_row, d_col, d_p, &beta, d_Ax);
-        cublasStatus = cublasDdot(cublasHandle, N, d_p, 1, d_Ax, 1, &dot);
+                       N, nnz, &alpha, description, d_val, d_row, d_col, d_p,
+                       &beta, d_Ax);
+        cublasDdot(cublasHandle, N, d_p, 1, d_Ax, 1, &dot);
         a = r1 / dot;
 
-        cublasStatus = cublasDaxpy(cublasHandle, N, &a, d_p, 1, d_x, 1);
+        cublasDaxpy(cublasHandle, N, &a, d_p, 1, d_x, 1);
         na = -a;
-        cublasStatus = cublasDaxpy(cublasHandle, N, &na, d_Ax, 1, d_r, 1);
+        cublasDaxpy(cublasHandle, N, &na, d_Ax, 1, d_r, 1);
 
         r0 = r1;
-        cublasStatus = cublasDdot(cublasHandle, N, d_r, 1, d_r, 1, &r1);
+        cublasDdot(cublasHandle, N, d_r, 1, d_r, 1, &r1);
         cudaThreadSynchronize();
-        printf("iteration = %3d, residual = %e\n", k, sqrt(r1));
         k++;
     }
 
     cudaMemcpy(x, d_x, N*sizeof(double), cudaMemcpyDeviceToHost);
+}
 
-    double rsum, diff, err = 0.0;
-
-    for (int i = 0; i < N; i++)
-    {
-        rsum = 0.0;
-
-        for (int j = I[i]; j < I[i+1]; j++)
-        {
-            rsum += val[j]*x[J[j]];
-        }
-
-        diff = fabs(rsum - rhs[i]);
-
-        if (diff > err)
-        {
-            err = diff;
-        }
-    }
-
-    cusparseDestroy(cusparseHandle);
-    cublasDestroy(cublasHandle);
-
-    free(I);
-    free(J);
-    free(val);
-    free(x);
-    free(rhs);
-    cudaFree(d_col);
-    cudaFree(d_row);
-    cudaFree(d_val);
-    cudaFree(d_x);
-    cudaFree(d_r);
-    cudaFree(d_p);
-    cudaFree(d_Ax);
-
-    printf("Test Summary:  Error amount = %f\n", err);
-    return;
+template<>
+void GPUSparseLinearSolver<float>::Solve(
+        const float* b, float* x){
+    throw std::invalid_argument(
+            "GPUSparseLinearSolver<float>::Solve not implemented");
 }
 
 template<class T>
-void GPUSparseLinearSolver<T>::genTridiag(int *I, int *J, double *val, int N, int nz)
-{
-    I[0] = 0, J[0] = 0, J[1] = 1;
-    val[0] = (double)rand()/RAND_MAX + 10.0f;
-    val[1] = (double)rand()/RAND_MAX;
-    int start;
-
-    for (int i = 1; i < N; i++)
-    {
-        if (i > 1)
-        {
-            I[i] = I[i-1]+3;
-        }
-        else
-        {
-            I[1] = 2;
-        }
-
-        start = (i-1)*3 + 2;
-        J[start] = i - 1;
-        J[start+1] = i;
-
-        if (i < N-1)
-        {
-            J[start+2] = i + 1;
-        }
-
-        val[start] = val[start-1];
-        val[start+1] = (double)rand()/RAND_MAX + 10.0f;
-
-        if (i < N-1)
-        {
-            val[start+2] = (double)rand()/RAND_MAX;
-        }
+void GPUSparseLinearSolver<T>::Terminate(){
+    if(pre_solved_) {
+        if(cusparseHandle)
+            cusparseDestroy(cusparseHandle);
+        if(cublasHandle)
+            cublasDestroy(cublasHandle);
+        if(d_col)
+            cudaFree(d_col);
+        if(d_row)
+            cudaFree(d_row);
+        if(d_val)
+            cudaFree(d_val);
+        if(d_x)
+            cudaFree(d_x);
+        if(d_r)
+            cudaFree(d_r);
+        if(d_p)
+            cudaFree(d_p);
+        if(d_Ax)
+            cudaFree(d_Ax);
     }
-
-    I[N] = nz;
 }
 
 template

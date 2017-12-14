@@ -4,10 +4,23 @@
 #include <RTFEM/FEM/Solver/FEMSolver.h>
 #include <RTFEM/FEM/Solver/FEMGlobalAssembler.h>
 #include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPUSparseLinearSolver.cuh"
 #include "RTFEM/GPU/GPUMVMultiplication.cuh"
 #include "RTFEM/GPU/GPUMVSparseMultiplication.cuh"
 
 namespace rtfem {
+
+enum class LinearSystemSolverType{
+    LU, CG, CG_PreCond
+};
+
+template<class T>
+struct LinearSystemSolvers{
+    LinearSystemSolverType type;
+
+    GPUSparseLinearSolver<T> gpu_sparse_linear_solver_;
+    GPULinearSolver<T> gpu_linear_solver_;
+};
 
 /**
  * http://www.sciencedirect.com/science/article/pii/S0045794915001479
@@ -17,7 +30,8 @@ template<class T>
 class FEMDynamicSolver : public FEMSolver<T>{
 public:
 
-    FEMDynamicSolver(FEMModel<T>* fem_model);
+    FEMDynamicSolver(FEMModel<T>* fem_model,
+                     LinearSystemSolverType type);
     ~FEMDynamicSolver() = default;
 
     const FEMSolverOutput<T>* solver_output(){return &solver_output_;}
@@ -31,6 +45,14 @@ public:
     void RunIteration(T delta_time);
 
 private:
+    void InitAssembly();
+    void InitDisplacementData();
+    void InitPreSolveLHS(
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass);
+    void InitPreSolveRHS(
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass
+    );
+
     void ReassembleForces();
     void SolveForDisplacements(T delta_time);
     void ResetForces();
@@ -47,7 +69,7 @@ private:
 
     void ImplicitNewtonCPU(T delta_time);
 
-    GPULinearSolver<T> gpu_linear_solver_;
+    LinearSystemSolvers<T> solvers_;
 
     GPUMVSparseMultiplication<T> gpu_mv_sparse_rhs_mass_;
     GPUMVSparseMultiplication<T> gpu_mv_sparse_rhs_stiffness_;

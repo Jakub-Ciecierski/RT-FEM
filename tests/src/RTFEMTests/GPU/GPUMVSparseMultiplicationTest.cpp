@@ -61,10 +61,5 @@ TEST_F(GPUMVSparseMultiplicationTest, SparseMatrix){
 
     auto expected_result = dense_matrix * vector;
 
-    std::cout << "expected_result" << std::endl;
-    std::cout << expected_result << std::endl;
-    std::cout << "out_vector" << std::endl;
-    std::cout << out_vector << std::endl;
-
     EXPECT_EQ(expected_result, out_vector);
 }

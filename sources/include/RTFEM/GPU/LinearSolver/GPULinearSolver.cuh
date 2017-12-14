@@ -39,6 +39,8 @@ private:
 
     cusolverDnHandle_t cusolverH;
     cudaStream_t stream;
+
+    bool pre_solved_;
 };
 
 }

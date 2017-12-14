@@ -17,7 +17,8 @@ GPULinearSolver<T>::GPULinearSolver() :
     d_info(nullptr),
     d_work(nullptr),
     cusolverH(nullptr),
-    stream(nullptr) {}
+    stream(nullptr),
+    pre_solved_(false){}
 
 template <class T>
 GPULinearSolver<T>::~GPULinearSolver(){
@@ -27,6 +28,7 @@ GPULinearSolver<T>::~GPULinearSolver(){
 template <class T>
 CUDA_HOST_MEMBER
 void GPULinearSolver<T>::PreSolve(T* A, int n){
+    pre_solved_ = true;
     n_ = n;
 
     // Host
@@ -142,14 +144,16 @@ void GPULinearSolver<float>::Solve(const float* b, int n, float* x){
 template <class T>
 CUDA_HOST_MEMBER
 void GPULinearSolver<T>::Terminate(){
-    if (d_A    ) cudaFree(d_A);
-    if (d_b    ) cudaFree(d_b);
-    if (d_pivot) cudaFree(d_pivot);
-    if (d_info ) cudaFree(d_info);
-    if (d_work ) cudaFree(d_work);
+    if(pre_solved_) {
+        if (d_A) cudaFree(d_A);
+        if (d_b) cudaFree(d_b);
+        if (d_pivot) cudaFree(d_pivot);
+        if (d_info) cudaFree(d_info);
+        if (d_work) cudaFree(d_work);
 
-    if (cusolverH   ) cusolverDnDestroy(cusolverH);
-    if (stream      ) cudaStreamDestroy(stream);
+        if (cusolverH) cusolverDnDestroy(cusolverH);
+        if (stream) cudaStreamDestroy(stream);
+    }
 }
 
 template
