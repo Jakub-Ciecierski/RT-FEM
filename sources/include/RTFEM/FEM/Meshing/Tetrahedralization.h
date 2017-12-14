@@ -25,6 +25,9 @@ struct TetrahedralizationOptions {
      * 0 indicates no constraint
      */
     float maximum_volume = 0;
+
+    float max_radius_edge_ratio = 2.0f;
+    int min_dihedral_angle_degree = 0;
 };
 
 /**

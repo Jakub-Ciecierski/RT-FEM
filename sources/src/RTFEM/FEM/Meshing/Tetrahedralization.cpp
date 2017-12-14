@@ -92,7 +92,20 @@ void Tetrahedralization<T>::SetupInputOptions(
     tetgenbehavior &tetgen_options) {
     std::vector<char> commandline;
     commandline.push_back('p');
+
+    // 4.2.3
     commandline.push_back('q');
+    auto max_radius_edge_ratio_str =
+            std::to_string(options_.max_radius_edge_ratio);
+    for (unsigned int i = 0; i < max_radius_edge_ratio_str.size(); i++) {
+        commandline.push_back(max_radius_edge_ratio_str[i]);
+    }
+    commandline.push_back('/');
+    auto min_dihedral_angle_degree_str =
+            std::to_string(options_.min_dihedral_angle_degree);
+    for (unsigned int i = 0; i < min_dihedral_angle_degree_str.size(); i++) {
+        commandline.push_back(min_dihedral_angle_degree_str[i]);
+    }
 
     if (options_.maximum_volume > 0) {
         commandline.push_back('a');
