@@ -14,9 +14,14 @@ template<class T>
 FEMDynamicSolver<T>::FEMDynamicSolver(FEMModel<T>* fem_model,
                                       LinearSystemSolverType type) :
     FEMSolver<T>(fem_model),
-    solvers_(LinearSystemSolvers<T>{type}),
     fem_assembler_data_(FEMGlobalAssemblerData<T>{0}),
-    total_time_(0){}
+    total_time_(0){
+    solvers_ = LinearSystemSolvers<T>{
+            type,
+            rtfem::make_unique<GPUSparseLinearSolver<T>>(),
+            rtfem::make_unique<GPUSparsePreCondLinearSolver<T>>(),
+            rtfem::make_unique<GPULinearSolver<T>>()};
+}
 
 template<class T>
 FEMSolverOutput<T> FEMDynamicSolver<T>::Solve(){
@@ -58,18 +63,23 @@ void FEMDynamicSolver<T>::InitPreSolveLHS(
             + delta_time * fem_assembler_data_.global_damping
             + delta_time_sqr * fem_assembler_data_.global_stiffness;
 
-    switch(solvers_.type){
+    switch(solvers_.type) {
         case LinearSystemSolverType::CG: {
             Dense2SparseMatrix<T> dense2sparse;
             auto sparse_lhs = dense2sparse.Transform(left_hand_side_,
                                                      MatrixType::General);
-            solvers_.gpu_sparse_linear_solver_.PreSolve(sparse_lhs);
+            solvers_.gpu_sparse_linear_solver_->PreSolve(sparse_lhs);
             break;
         }
-        case LinearSystemSolverType::CG_PreCond:
+        case LinearSystemSolverType::CG_PreCond:{
+            Dense2SparseMatrix<T> dense2sparse;
+            auto sparse_lhs = dense2sparse.Transform(left_hand_side_,
+                                                     MatrixType::General);
+            solvers_.gpu_sparse_precond_linear_solver_->PreSolve(sparse_lhs);
             break;
+        }
         case LinearSystemSolverType::LU: {
-            solvers_.gpu_linear_solver_.PreSolve(left_hand_side_.data(),
+            solvers_.gpu_linear_solver_->PreSolve(left_hand_side_.data(),
                                                  left_hand_side_.rows());
             break;
         }
@@ -185,13 +195,15 @@ void FEMDynamicSolver<T>::SolveLinearSystem(
 
     switch(solvers_.type){
         case LinearSystemSolverType::CG:
-            solvers_.gpu_sparse_linear_solver_.Solve(
+            solvers_.gpu_sparse_linear_solver_->Solve(
                     rhs.data(), velocity.data());
             break;
         case LinearSystemSolverType::CG_PreCond:
+            solvers_.gpu_sparse_precond_linear_solver_->Solve(
+                    rhs.data(), velocity.data());
             break;
         case LinearSystemSolverType::LU:
-            solvers_.gpu_linear_solver_.Solve(
+            solvers_.gpu_linear_solver_->Solve(
                     rhs.data(), rhs.size(), velocity.data());
             break;
     }

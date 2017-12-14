@@ -19,13 +19,13 @@ template<class T>
 class GPUSparseLinearSolver {
 public:
     GPUSparseLinearSolver();
-    ~GPUSparseLinearSolver();
+    virtual ~GPUSparseLinearSolver();
 
-    void PreSolve(const SparseMatrixCSR<T>& A);
+    virtual void PreSolve(const SparseMatrixCSR<T>& A);
 
-    void Solve(const T* b, T* x);
-private:
-    void Terminate();
+    virtual void Solve(const T* b, T* x);
+protected:
+    virtual void Terminate();
 
     int *d_col;
     int *d_row;

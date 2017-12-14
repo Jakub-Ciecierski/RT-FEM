@@ -88,8 +88,8 @@ void GPUSparseLinearSolver<float>::PreSolve(const SparseMatrixCSR<float>& A){
 template<class T>
 void GPUSparseLinearSolver<T>::Solve(
         const T* B, T* x){
-    const T tol = 1e-4f;
-    const int max_iter = 100;
+    const T tol = 1e-5f;
+    const int max_iter = 1000;
     T a, b, na, r0, r1;
     T dot;
     int k;

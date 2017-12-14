@@ -90,12 +90,6 @@ void GPULinearSolver<T>::PreSolve(T* A, int n){
 
     cuda_error = cudaMemcpy(&info, d_info, sizeof(int), cudaMemcpyDeviceToHost);
     assert(cudaSuccess == cuda_error);
-
-    if ( 0 > info ){
-        printf("%d-th parameter is wrong \n", -info);
-        exit(1);
-    }
-
 }
 
 template <>
