@@ -1,6 +1,6 @@
 #include "RTFEMTests/GPU/LinearSolver/GPULinearSolverTest.h"
 
-#include <RTFEM/GPU/LinearSolver/GPULinearSolver.cuh>
+#include <RTFEM/GPU/LinearSolver/GPULULinearSolver.cuh>
 
 void GPULinearSolverTest::SetUp() {
 }
@@ -14,7 +14,7 @@ TEST_F(GPULinearSolverTest, Intergration){
     double B[n] = {1.0, 2.0, 3.0};
     double X[n];
 
-    rtfem::GPULinearSolver<double> solver;
+    rtfem::GPULULinearSolver<double> solver;
     solver.PreSolve(A, n);
     solver.Solve(B, n, X);
 }

@@ -1,4 +1,4 @@
-#include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPULULinearSolver.cuh"
 
 #include <assert.h>
 #include <cstdlib>
@@ -10,7 +10,7 @@
 namespace rtfem {
 
 template<class T>
-GPULinearSolver<T>::GPULinearSolver() :
+GPULULinearSolver<T>::GPULULinearSolver() :
     d_A(nullptr),
     d_b(nullptr),
     d_pivot(nullptr),
@@ -21,13 +21,13 @@ GPULinearSolver<T>::GPULinearSolver() :
     pre_solved_(false){}
 
 template <class T>
-GPULinearSolver<T>::~GPULinearSolver(){
+GPULULinearSolver<T>::~GPULULinearSolver(){
     Terminate();
 }
 
 template <class T>
 CUDA_HOST_MEMBER
-void GPULinearSolver<T>::PreSolve(T* A, int n){
+void GPULULinearSolver<T>::PreSolve(T* A, int n){
     pre_solved_ = true;
     n_ = n;
 
@@ -94,14 +94,14 @@ void GPULinearSolver<T>::PreSolve(T* A, int n){
 
 template <>
 CUDA_HOST_MEMBER
-void GPULinearSolver<float>::PreSolve(float* A, int n){
+void GPULULinearSolver<float>::PreSolve(float* A, int n){
     throw std::invalid_argument(
-        "GPULinearSolver<float>::PreSolve not implemented");
+        "GPULULinearSolver<float>::PreSolve not implemented");
 }
 
 template <class T>
 CUDA_HOST_MEMBER
-void GPULinearSolver<T>::Solve(const T* b, int n, T* x){
+void GPULULinearSolver<T>::Solve(const T* b, int n, T* x){
     cudaError_t cuda_error = cudaSuccess;
 
     cuda_error = cudaMemcpy(d_b, b, sizeof(T)*n, cudaMemcpyHostToDevice);
@@ -130,14 +130,14 @@ void GPULinearSolver<T>::Solve(const T* b, int n, T* x){
 
 template <>
 CUDA_HOST_MEMBER
-void GPULinearSolver<float>::Solve(const float* b, int n, float* x){
+void GPULULinearSolver<float>::Solve(const float* b, int n, float* x){
     throw std::invalid_argument(
-            "GPULinearSolver<float>::Solve not implemented");
+            "GPULULinearSolver<float>::Solve not implemented");
 }
 
 template <class T>
 CUDA_HOST_MEMBER
-void GPULinearSolver<T>::Terminate(){
+void GPULULinearSolver<T>::Terminate(){
     if(pre_solved_) {
         if (d_A) cudaFree(d_A);
         if (d_b) cudaFree(d_b);
@@ -151,8 +151,8 @@ void GPULinearSolver<T>::Terminate(){
 }
 
 template
-class GPULinearSolver<double>;
+class GPULULinearSolver<double>;
 template
-class GPULinearSolver<float>;
+class GPULULinearSolver<float>;
 
 }

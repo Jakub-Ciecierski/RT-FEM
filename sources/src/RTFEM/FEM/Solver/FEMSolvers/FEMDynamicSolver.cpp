@@ -4,7 +4,7 @@
 #include <RTFEM/FEM/FEMGeometry.h>
 #include <RTFEM/FEM/FEMModel.h>
 #include <RTFEM/FEM/Solver/FEMGlobalAssemblers/FEMFastForceAssembler.h>
-#include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPULULinearSolver.cuh"
 #include <RTFEM/Memory/UniquePointer.h>
 #include <RTFEM/DataStructure/Dense2SparseMatrix.h>
 
@@ -18,9 +18,9 @@ FEMDynamicSolver<T>::FEMDynamicSolver(FEMModel<T>* fem_model,
     total_time_(0){
     solvers_ = LinearSystemSolvers<T>{
             type,
-            rtfem::make_unique<GPUSparseLinearSolver<T>>(),
-            rtfem::make_unique<GPUSparsePreCondLinearSolver<T>>(),
-            rtfem::make_unique<GPULinearSolver<T>>()};
+            rtfem::make_unique<GPUSparseCGLinearSolver<T>>(),
+            rtfem::make_unique<GPUSparseCGPrecondLinearSolver<T>>(),
+            rtfem::make_unique<GPULULinearSolver<T>>()};
 }
 
 template<class T>

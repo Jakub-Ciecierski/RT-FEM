@@ -16,10 +16,10 @@ namespace rtfem {
  * @tparam T
  */
 template <class T>
-class GPULinearSolver {
+class GPULULinearSolver {
 public:
-    GPULinearSolver();
-    ~GPULinearSolver();
+    GPULULinearSolver();
+    ~GPULULinearSolver();
 
     CUDA_HOST_MEMBER void PreSolve(T* A, int n);
     CUDA_HOST_MEMBER void Solve(const T* b, int n, T* x);

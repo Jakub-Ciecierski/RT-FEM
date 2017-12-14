@@ -1,7 +1,7 @@
 #ifndef PROJECT_GPUSPARSEPRECONDLINEARSOLVER_H
 #define PROJECT_GPUSPARSEPRECONDLINEARSOLVER_H
 
-#include "RTFEM/GPU/LinearSolver/GPUSparseLinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPUSparseCGLinearSolver.cuh"
 
 struct cusparseSolveAnalysisInfo;
 typedef struct cusparseSolveAnalysisInfo *cusparseSolveAnalysisInfo_t;
@@ -12,11 +12,11 @@ typedef struct cusparseSolveAnalysisInfo *cusparseSolveAnalysisInfo_t;
 namespace rtfem {
 
 template<class T>
-class GPUSparsePreCondLinearSolver : public GPUSparseLinearSolver<T>{
+class GPUSparseCGPrecondLinearSolver : public GPUSparseCGLinearSolver<T>{
 public:
 
-    GPUSparsePreCondLinearSolver();
-    ~GPUSparsePreCondLinearSolver();
+    GPUSparseCGPrecondLinearSolver();
+    ~GPUSparseCGPrecondLinearSolver();
 
     virtual void PreSolve(const SparseMatrixCSR<T>& A) override;
 

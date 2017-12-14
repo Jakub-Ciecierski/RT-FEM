@@ -3,9 +3,9 @@
 
 #include <RTFEM/FEM/Solver/FEMSolver.h>
 #include <RTFEM/FEM/Solver/FEMGlobalAssembler.h>
-#include "RTFEM/GPU/LinearSolver/GPULinearSolver.cuh"
-#include "RTFEM/GPU/LinearSolver/GPUSparseLinearSolver.cuh"
-#include "RTFEM/GPU/LinearSolver/GPUSparsePreCondLinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPULULinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPUSparseCGLinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPUSparseCGPrecondLinearSolver.cuh"
 #include "RTFEM/GPU/GPUMVMultiplication.cuh"
 #include "RTFEM/GPU/GPUMVSparseMultiplication.cuh"
 
@@ -21,7 +21,7 @@ struct LinearSystemSolvers{
 
     std::unique_ptr<GPUSparseLinearSolver<T>> gpu_sparse_linear_solver_;
     std::unique_ptr<GPUSparseLinearSolver<T>> gpu_sparse_precond_linear_solver_;
-    std::unique_ptr<GPULinearSolver<T>> gpu_linear_solver_;
+    std::unique_ptr<GPULULinearSolver<T>> gpu_linear_solver_;
 };
 
 /**

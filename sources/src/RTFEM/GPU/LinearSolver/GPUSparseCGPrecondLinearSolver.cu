@@ -1,4 +1,4 @@
-#include "RTFEM/GPU/LinearSolver/GPUSparsePreCondLinearSolver.cuh"
+#include "RTFEM/GPU/LinearSolver/GPUSparseCGPrecondLinearSolver.cuh"
 
 #include <RTFEM/DataStructure/SparseMatrixCSR.h>
 
@@ -15,7 +15,7 @@
 namespace rtfem {
 
 template<class T>
-GPUSparsePreCondLinearSolver<T>::GPUSparsePreCondLinearSolver() :
+GPUSparseCGPrecondLinearSolver<T>::GPUSparseCGPrecondLinearSolver() :
         d_y(nullptr),
         d_omega(nullptr),
         d_valsILU0(nullptr),
@@ -28,12 +28,12 @@ GPUSparsePreCondLinearSolver<T>::GPUSparsePreCondLinearSolver() :
         descrU(nullptr) {}
 
 template<class T>
-GPUSparsePreCondLinearSolver<T>::~GPUSparsePreCondLinearSolver(){
+GPUSparseCGPrecondLinearSolver<T>::~GPUSparseCGPrecondLinearSolver(){
     Terminate();
 }
 
 template<class T>
-void GPUSparsePreCondLinearSolver<T>::PreSolve(const SparseMatrixCSR<T>& A){
+void GPUSparseCGPrecondLinearSolver<T>::PreSolve(const SparseMatrixCSR<T>& A){
     this->pre_solved_ = true;
 
     this->N = A.n();
@@ -139,14 +139,14 @@ void GPUSparsePreCondLinearSolver<T>::PreSolve(const SparseMatrixCSR<T>& A){
 }
 
 template<>
-void GPUSparsePreCondLinearSolver<float>::PreSolve(
+void GPUSparseCGPrecondLinearSolver<float>::PreSolve(
         const SparseMatrixCSR<float>& A){
     throw std::invalid_argument(
             "GPUSparsePreCondLinearSolver<float>::PreSolve not implemented");
 }
 
 template<class T>
-void GPUSparsePreCondLinearSolver<T>::Solve(const T* b, T* x){
+void GPUSparseCGPrecondLinearSolver<T>::Solve(const T* b, T* x){
     const int max_iter = 1000;
     const T tol = 1e-5f;
 
@@ -247,14 +247,14 @@ void GPUSparsePreCondLinearSolver<T>::Solve(const T* b, T* x){
 }
 
 template<>
-void GPUSparsePreCondLinearSolver<float>::Solve(
+void GPUSparseCGPrecondLinearSolver<float>::Solve(
         const float* B, float* x){
     throw std::invalid_argument(
             "GPUSparsePreCondLinearSolver<float>::Solve not implemented");
 }
 
 template<class T>
-void GPUSparsePreCondLinearSolver<T>::Terminate(){
+void GPUSparseCGPrecondLinearSolver<T>::Terminate(){
     if(this->pre_solved_) {
         /* Destroy parameters */
         cusparseDestroySolveAnalysisInfo(infoA);
@@ -289,8 +289,8 @@ void GPUSparsePreCondLinearSolver<T>::Terminate(){
 }
 
 template
-class GPUSparsePreCondLinearSolver<double>;
+class GPUSparseCGPrecondLinearSolver<double>;
 template
-class GPUSparsePreCondLinearSolver<float>;
+class GPUSparseCGPrecondLinearSolver<float>;
 
 }

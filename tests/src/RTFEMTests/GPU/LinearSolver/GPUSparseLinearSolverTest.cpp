@@ -1,6 +1,6 @@
 #include "RTFEMTests/GPU/LinearSolver/GPUSparseLinearSolverTest.h"
 
-#include <RTFEM/GPU/LinearSolver/GPUSparseLinearSolver.cuh>
+#include <RTFEM/GPU/LinearSolver/GPUSparseCGLinearSolver.cuh>
 #include <RTFEM/DataTypes.h>
 #include "RTFEM/DataStructure/Dense2SparseMatrix.h"
 
@@ -27,7 +27,7 @@ TEST_F(GPUSparseLinearSolverTest, Integration){
     auto sparse_matrix = dense2sparse.Transform(dense_matrix,
                                                 rtfem::MatrixType::General);
 
-    rtfem::GPUSparseLinearSolver<double> gpu_sparse_solver;
+    rtfem::GPUSparseCGLinearSolver<double> gpu_sparse_solver;
     gpu_sparse_solver.PreSolve(sparse_matrix);
     gpu_sparse_solver.Solve(b.data(), x.data());
 

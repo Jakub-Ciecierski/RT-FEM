@@ -18,14 +18,16 @@ class SparseMatrixCSR;
 template<class T>
 class GPUSparseLinearSolver {
 public:
+
     GPUSparseLinearSolver();
-    virtual ~GPUSparseLinearSolver();
 
-    virtual void PreSolve(const SparseMatrixCSR<T>& A);
+    virtual ~GPUSparseLinearSolver() = default;
 
-    virtual void Solve(const T* b, T* x);
+    virtual void PreSolve(const SparseMatrixCSR<T>& A) = 0;
+
+    virtual void Solve(const T* b, T* x) = 0;
 protected:
-    virtual void Terminate();
+    virtual void Terminate() = 0;
 
     int *d_col;
     int *d_row;
@@ -33,18 +35,13 @@ protected:
     int N;
     int nnz;
 
-    T *d_x;
-    T *d_r;
-    T *d_p;
-    T *d_Ax;
-
     cusparseHandle_t cusparseHandle;
     cublasHandle_t cublasHandle;
     cusparseMatDescr_t description;
 
     bool pre_solved_;
 };
-
 }
+
 
 #endif //PROJECT_GPUSPARSELINEARSOLVER_H
