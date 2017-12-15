@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.2.2)  30 JUN 2017 11:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.2.2)  15 DEC 2017 09:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -728,7 +728,7 @@ Package: titletoc 2011/12/15 v1.6 TOC entries
 (/usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
 Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
 )
-(./thesis-template-with-class.aux)
+No file thesis-template-with-class.aux.
 \openout1 = `thesis-template-with-class.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
@@ -749,7 +749,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
 LaTeX Font Info:    ... okay on input line 25.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 25.
 LaTeX Font Info:    ... okay on input line 25.
-
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count117
@@ -828,8 +827,6 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 25.
 LaTeX Info: Redefining \pageref on input line 25.
 LaTeX Info: Redefining \nameref on input line 25.
-
-(./thesis-template-with-class.out) (./thesis-template-with-class.out)
 \@outlinefile=\write3
 \openout3 = `thesis-template-with-class.out'.
 
@@ -837,7 +834,7 @@ LaTeX Info: Redefining \nameref on input line 25.
 (/usr/share/texmf-dist/tex/latex/base/bk12.clo
 File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 45--46
+Underfull \hbox (badness 10000) in paragraph at lines 43--44
 
  []
 
@@ -851,7 +848,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 45--46
 (/usr/share/texmf-dist/tex/latex/base/bk12.clo
 File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
 
  []
 
@@ -859,46 +856,45 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--53
 
 
 ]
-LaTeX Font Info:    Try loading font information for OML+plm on input line 59.
+LaTeX Font Info:    Try loading font information for OML+plm on input line 58.
  (/usr/share/texmf-dist/tex/latex/polski/omlplm.fd
 File: omlplm.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMS+plsy on input line 59.
+LaTeX Font Info:    Try loading font information for OMS+plsy on input line 58.
 
 
 (/usr/share/texmf-dist/tex/latex/polski/omsplsy.fd
 File: omsplsy.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMX+plex on input line 59.
+LaTeX Font Info:    Try loading font information for OMX+plex on input line 58.
 
 
 (/usr/share/texmf-dist/tex/latex/polski/omxplex.fd
 File: omxplex.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <10.95> on input line 59.
+(Font)              <10.95> on input line 58.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <8> on input line 59.
+(Font)              <8> on input line 58.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <6> on input line 59.
-LaTeX Font Info:    Try loading font information for U+msa on input line 59.
+(Font)              <6> on input line 58.
+LaTeX Font Info:    Try loading font information for U+msa on input line 58.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 59.
+LaTeX Font Info:    Try loading font information for U+msb on input line 58.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 59.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 58.
 
 (/usr/share/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ) [5] [6
 
 ]
-(./thesis-template-with-class.toc)
 \tf@toc=\write4
 \openout4 = `thesis-template-with-class.toc'.
 
@@ -910,9 +906,27 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
 ]
 Rozdzia\l  1.
+
+LaTeX Warning: Reference `rownanie' on page 10 undefined on input line 108.
+
+
+LaTeX Warning: Reference `Pitagoras' on page 10 undefined on input line 115.
+
 [10
 
 ]
+
+LaTeX Warning: Citation `Ktos' on page 11 undefined on input line 125.
+
+
+LaTeX Warning: Citation `Innyktos' on page 11 undefined on input line 125.
+
+
+LaTeX Warning: Citation `Ktos' on page 11 undefined on input line 125.
+
+
+LaTeX Warning: Citation `Innyktos' on page 11 undefined on input line 125.
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -929,13 +943,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[11] <politechnika.png, id=155, 366.8907pt x 76.8471pt>
+[11] <politechnika.png, id=77, 483.7272pt x 76.8471pt>
 File: politechnika.png Graphic file (type png)
  <use politechnika.png>
-Package pdftex.def Info: politechnika.png used on input line 194.
-(pdftex.def)             Requested size: 183.44489pt x 38.42345pt.
+Package pdftex.def Info: politechnika.png used on input line 192.
+(pdftex.def)             Requested size: 241.863pt x 38.42345pt.
 
-[12 <./politechnika.png (PNG copy)>]
+[12 <./politechnika.png>]
 Rozdzia\l  2.
 [13
 
@@ -943,14 +957,13 @@ Rozdzia\l  2.
 
 ] [15
 
-] (./thesis-template-with-class.lof)
+]
 \tf@lof=\write5
 \openout5 = `thesis-template-with-class.lof'.
 
  [16
 
 ]
-(./thesis-template-with-class.lot)
 \tf@lot=\write6
 \openout6 = `thesis-template-with-class.lot'.
 
@@ -959,26 +972,38 @@ Rozdzia\l  2.
 ] [18
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 269.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 267.
  [19]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 269.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 267.
+ (./thesis-template-with-class.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 267.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 267.
 
-(./thesis-template-with-class.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 269.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 269.
-Package rerunfilecheck Info: File `thesis-template-with-class.out' has not chan
-ged.
-(rerunfilecheck)             Checksum: 64882840382DDBE2E0577BFB6C8B99C0;1683.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 269.
+
+Package rerunfilecheck Warning: File `thesis-template-with-class.out' has chang
+ed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `thesis-template-with-class.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  64882840382DDBE2E0577BFB6C8B99C0;1683.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 267.
  ) 
 Here is how much of TeX's memory you used:
- 11827 strings out of 493013
- 158285 string characters out of 6139318
- 251096 words of memory out of 5000000
- 15144 multiletter control sequences out of 15000+600000
+ 11800 strings out of 493013
+ 157731 string characters out of 6139318
+ 250809 words of memory out of 5000000
+ 15129 multiletter control sequences out of 15000+600000
  15360 words of font info for 42 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 36i,11n,45p,962b,437s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,11n,45p,962b,439s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/share/texmf-dist/fon
 ts/enc/dvips/pl/plms.enc}{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-sup
 er-t1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/pl/plme.enc}{/usr/share/texmf-
@@ -995,10 +1020,10 @@ x1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr
 st/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf-dist/fonts/type1/
 public/cm-super/sfrm1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super
 /sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on thesis-template-with-class.pdf (19 pages, 300745 bytes).
+Output written on thesis-template-with-class.pdf (19 pages, 277648 bytes).
 PDF statistics:
- 277 PDF objects out of 1000 (max. 8388607)
- 224 compressed objects within 3 object streams
+ 203 PDF objects out of 1000 (max. 8388607)
+ 163 compressed objects within 2 object streams
  52 named destinations out of 1000 (max. 500000)
- 110 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

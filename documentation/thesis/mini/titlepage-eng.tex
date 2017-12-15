@@ -1,40 +1,59 @@
 \documentclass[12pt,twoside,a4paper]{article}
-% compile this with XeLaTeX.
+% compile this with XeLaTeX. Arial and Arial Narrow are needed
 
+\usepackage[utf8]{inputenc}
 \usepackage{fontspec,newunicodechar}
 \defaultfontfeatures{Ligatures=TeX}
 \usepackage[small,sf,bf]{titlesec}
 
+\usepackage{indentfirst}
+\setlength{\parindent}{5mm}
 
+\usepackage{hyphenat}
+\hyphenation{in-for-ma-cyj-nych}
 
+%\usepackage[MeX]{polski}
+\usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{a4wide}
 \geometry{left=20mm,right=20mm,bindingoffset=10mm, top=25mm, bottom=25mm}
 
-\newfontfamily\arial{arial.ttf}
+
+\newfontfamily\arial{Arial}
 
 \linespread{1.5}
-\setlength{\parindent}{0mm}
 
-% ------------------------------------------------------
+\usepackage{xunicode}
+\usepackage{xltxtra}
+ 
+ 
+\usepackage{amsfonts}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{latexsym,xpatch}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{textcomp}
+\usepackage{multirow}
 
-\newcommand{\discipline}{Computer Science}
-\newcommand{\spec}{Name of a specialisation}
-\renewcommand{\title}{Thesis title}
-\renewcommand{\author}{Name Surname}
-\newcommand{\supervisor}{title/degree Name Surname}
-\newcommand{\album}{123456}
-\renewcommand{\year}{2017}
 
+\def\discipline{Computer Science}
+\def\spec{Name of a specialisation}
+\def\title{Thesis title}
+\def\author{Name Surname}
+\def\supervisor{title/degree Name Surname}
+\def\album{123456}
+\def\year{2017}
 
 \begin{document}
-
+\sloppy
 \pagestyle{empty}
 
 
+\hspace{-20pt}\includegraphics[scale=1.]{wut}
+
 \begin{center}
-\includegraphics[scale=1.]{wut}
 \vspace{70pt}
 
 

@@ -12,7 +12,7 @@ Zawartosc:
 6. strona_tytulowa-kilku-autorow.tex - strona tytulowa z dwoma autorami
 7. titlepage-eng.tex - strona tytulowa po angielsku
 
-Strone tytulowa nalezy skompilować za pomoca XeLaTeX-a (dlatego jest oddzielnie). Jak się nie daje u siebie na dysku, można próbować za pomocą kompilatora online (np. sharelatex).
+Strone tytulowa nalezy skompilować za pomoca XeLaTeX-a (dlatego jest oddzielnie).
 
 
 
