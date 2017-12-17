@@ -3,6 +3,11 @@
 \usepackage{indentfirst}
 \setlength{\parindent}{5mm} % wcięcie akapitowe 5mm, zarządzenie Rektora
 
+\usepackage{algorithm}
+\usepackage{mathtools}
+\usepackage{amsmath}
+
+\usepackage[noend]{algpseudocode}
 
 % ------------ Ustawienia autora pracy ---------------
 
@@ -37,22 +42,18 @@
 
 \setcounter{page}{1}
 
+\begin{abstract}
+
+
+
+\end{abstract}
 
 \begin{streszczenie}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
 
 
 \end{streszczenie}
 
-
-\begin{abstract}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
-
-\end{abstract}
 
 % 2. Oświadczenie o autorstwie pracy - w innym pliku
 \makestatement
@@ -67,153 +68,345 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod t
 \cleardoublepage
 \pagestyle{fancy}
 
-\chapter*{Wstęp}
-
-O czym jest praca? Co się w niej znajduje? Jaki jest wkład autora?
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\chapter*{Introduction}
 
 
-% --------------- PODSTAWOWE POJĘCIA ----------------
-\chapter{Rozdział pokazowy}
+% ---------------------------------------------------
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua.
+\chapter{Soft Body Dynamics - Overview}
 
-At vero eos et accusam et justo duo dolores et ea rebum.
+\section{Mass Spring}
+\subsection{Formulation}
+The simplest method to simulate soft body deformation is Mass Spring System.
+Such a system includes a set of $N$ particles with masses $m_i$, positions $x_i$ and velocites $v_i$, where $i \in 1...N$. The particles are connected by a set of springs $S$. A single spring $s \in S$ consists of $s = (i, j, l_0, k_s, k_d)$, where $i$ and $j$ are the indices of connected particles, $l_0$ is the rest length, $k_s$ is the spring stiffness and $k_d$ is the damping coefficient. To calcuate the forces acting on particles $i$ and $j$, we use the following formula:
 
-
-\section{Przykładowa sekcja/podrozdział}
-
-\begin{definition}[Definicja]
-\textit{Definicją} nazywamy wypowiedź o określonej budowie, w której informuje się o znaczeniu pewnego wyrażenia przez wskazanie innego wyrażenia należącego do danego języka i posiadającego to samo znaczenie.
-\end{definition}
-
-\subsection{Podsekcja}
-
-Poniżej podsekcji nie schodzimy.
-
-\begin{definition}
-\textit{Równaniem} nazywamy formę zdaniową postaci $t_1 = t_2$, gdzie $t_1, t_2$ są termami przynajmniej jeden z nich zawiera pewną zmienną.
-\end{definition}
-
-\begin{example}
-Przykładem równania jest
 \begin{equation}
-2+2=4.
+f_{i}^{S} = f^{S}(x_i, x_j) = k_s \dfrac{x_j - x_i}{|x_j - x_i|}(|x_j - x_i| - l_0)
 \end{equation}
-Jeśli nie chcemy numerka, piszemy
-\begin{equation*}
-2+2=4.
-\end{equation*}
-Równanie (\ref{rownanie}) jest fałszywe. Referencje (i kilka innych rzeczy) działają po dwukrotnym przekompilowaniu tex-a.
-\begin{equation}\label{rownanie}
-\int \limits_{0}^{1} x \; dx = \frac{3}{2}.
+\begin{equation}
+f_{j}^{S} = f^{S}(x_j, x_i) = -f^{S}(x_i, x_j)
 \end{equation}
 
-\end{example}
+It is easy to see that the forces conserve momentum, since ($f_i + f_j = 0$)
 
-Twierdzenie \ref{Pitagoras} jest bardzo ciekawe.
+We apply damping by computing the damping forces:
 
-\begin{theorem}[Twierdzenie Pitagorasa]\label{Pitagoras}
-Niech będzie dany trójkąt prostokątny o przyprostokątnych długośći $a$ i $b$ oraz przeciwprostokątnej długości $c$. Wtedy
-\[
-a^2 + b^2 = c^2.
-\]
-\end{theorem}
+\begin{equation}
+f_{i}^{D} = f^{D}(x_i, v_i, x_j, v_j) = k_d (v_j - v_i) \dfrac{x_j - x_i}{|x_j - x_i|}
+\end{equation}
 
-\begin{proof}
-Dowód został zaprezentowany w \cite{Ktos} oraz \cite{Innyktos}. Czyli w sumie mogę napisać, że w \cite{Ktos, Innyktos}. Albo że łatwo widać.
-\end{proof}
+\begin{equation}
+f_{j}^{D} = f^{D}(x_j, v_j, x_i, v_i) = -f_{i}^{D}
+\end{equation}
 
-\begin{corollary}
-Doszedłem do jakiegoś wniosku i daję temu wyraz.
-\end{corollary}
+Combining two forces we get the final spring force
+
+\begin{equation}
+f(x_i, v_i, x_j, v_j) = f^{S}(x_i, x_j) + f^{D}(x_i, v_i, x_j, v_j)
+\end{equation}
+
+\subsection{Simulation}
+In order to simulate the mass spring system, we use the Newton's second law of motion,
+
+\begin{equation}
+f = m \ddot{x}
+\end{equation}
+
+where $f$ is the force, $m$ is the mass and $\ddot{x}$ is the acceleration or the second derivate of position with respect to time. By transforming the equation to solve for acceleration, we get a second order ordinary differential equation(ODE):
+\begin{equation}
+\ddot{x} = \dfrac{f}{m}
+\end{equation}
+
+In order to solve it, we can split this equation into two first order ODEs
+
+\begin{equation}
+\label{eq:ode_v} 
+\dot{v} = \dfrac{f}{m}
+\end{equation}
+\begin{equation}
+\label{eq:ode_x} 
+\dot{x} = v
+\end{equation}
+
+Analytically, these can be solved by definite integrals:
+
+\begin{equation}
+\label{eq:ode_anal1}
+v(t) = v_0 \int_{t_0}^{t} \dfrac{f(t)}{m} dt
+\end{equation}
+
+\begin{equation}
+\label{eq:ode_anal2}
+x(t) = x_0 \int_{t_0}^{t}v(t) dt
+\end{equation}
+
+where $v_0 = v(t_0)$ and $x_0 = x(t_0)$ are the initial conditions.
+
+\subsection{Numerical Integration}
+
+\subsubsection{Explicit Euler Integration}
+
+One of the most basic numerical integration of ODE is explicit Euler integration scheme. The scheme approximates the derivatives using finite differences:
+
+\begin{equation}
+\dot{v} = \dfrac{v^{t+1} - v^{t}}{\Delta t}
+\end{equation}
+\begin{equation}
+\dot{x} = \dfrac{x^{t+1} - x^{t}}{\Delta t}
+\end{equation}
+
+where $\Delta t$ is a discrete time step and $t$ is the index of the simulation iteration. By substituting these equations into Eq.~\ref{eq:ode_v} and Eq.~\ref{eq:ode_x}, we get get the explicit Euler integration method:
+\begin{equation}
+\label{eq:explicit_euler_ode_v}
+v^{t+1} = v^{t} + \Delta t \dfrac{f(x^{t}, v^{t})}{m}
+\end{equation}
+\begin{equation}
+\label{eq:explicit_euler_ode_x}
+x^{t+1} = x^{t} + \Delta t v^{t+1}
+\end{equation}
+
+The term 'explicit' comes from the fact that information of the next time step can be directly computed using the information at the current time step.
+
+The entire simulation can be summed with the following algorithm:
+
+\begin{algorithm}
+\caption{Mass Spring Simulation}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{Simulation}{}
+\While{true}
+\For {all particles $i$}
+\State $f_i = f^{g} + f_{i}^{coll} + \sum_{j, (i,j) \in S} f(x_i, v_i, x_j, v_j)$
+\EndFor
+
+\For {all particles $i$}
+\State $v_{i} = v_{i} + \Delta t \dfrac{f_i}{m_i} $
+\State $x_{i} = x_{i} + \Delta t v_i $
+\EndFor
+
+\EndWhile
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+$f^{g}$ is the gravity force and $f^{coll}$ collision forces.
+
+A known drawback for explicit Euler integration is the fact that it requires small time steps to remain stable. This problem accurs becouse explicit Euler does not account for the near future and it assumes that the force is constant during the entire time step. Let us assume a system of two particles connected with a spring. Assume the following configuration: the spring is stretched and the two particles start moving towards each other. If we take a large time step to compute the next configuration, the particles might pass the equilibrium configuration, which in theory means that the force should change its sign during that time step. Sadly, since the force is constant throughtout the entire time step, the sign change of the force is not accounted for. This might lead to particles overshooting and gaining energy which in turn leads to a so called simulation explosion.
+Other numerical integration methods exist that are more accurate. Among the most popular are the second and fourth order Runge-Kutta integrators. These schemes compute forces multiple times during a single time step, which might reduce the effect of the problem mentioned above.
+
+\subsubsection{Runge-Kutta Integration}
+The second order Runge-Kutta integrator has a different method of numerically solving ODEs. The approximation of explicit Euler Eq.~\ref{eq:explicit_euler_ode_v} and Eq.~\ref{eq:explicit_euler_ode_x} are instead computed by the formulas:
 
 
+\begin{equation}
+\begin{aligned}
+a_1 = v^t
+\\
+a_2 = \dfrac{f(x^t, v^t)}{m}
+\\
+b_1 = v^t + \dfrac{\Delta t}{2} a_2
+\\
+b_2 = \dfrac{f(x^t + \dfrac{\Delta t}{2} a_1, v^t + \dfrac{\Delta t}{2} a_2)}{m}
+\\
+x^{t+1} = x^{t} + \Delta t b_1
+\\
+v^{t+1} = v^{t} + \Delta t b_2
+\end{aligned}
+\end{equation}
+
+It is easy to see that the forces are computed twice during one time step. This makes the secord order Runge-Kutta integrator more accurate compared to the simple first order explicit Euler method.
+
+One of the most popular methods of integrating ODE is a forth order Runge-Kutta integrator. It extends the the second order Runge-Kutta by computing the force four times during a single time step. Making it even more accurate. The accuracy obviously comes with longer computations.
+
+\subsubsection{Implicit Euler}
+Another way to improve stability is to use implicit integrator. Among the most populars is the implicit Euler method. As opposed to explicit integrators, the implicit is more physically correct.
+\begin{equation}
+\label{eq:implicit_euler_ode_v}
+v^{t+1} = v^{t} + \Delta t \dfrac{f(x^{t+1})}{m}
+\end{equation}
+\begin{equation}
+\label{eq:implicit_euler_ode_x}
+x^{t+1} = x^{t} + \Delta t v^{t+1}
+\end{equation}
+First difference lies in the force function $f$. Now it only depends on the position. In another words, the force does not include friction. It is said that implicit integration introduces enough numerical damping to accomedate for physical damping(TODO citation). However, if needed, the friction force can be added in the explicit step after the implicit solve. The most important change, is the fact that the force $f$ depends now on the position of next step $x^{t+1}$. Thus, it is no longer possible to explicitly compute the two equations. Instead we now deal with a algebraic system, with unknowns being $x^{t+1}$ and $v^{t+1}$.
+
+In order to compute these equation we must first construct the algebraic system. The position, velocites and forces are concatanted into vectors:
+\begin{equation}
+\begin{aligned}
+x = [x_1, x_2, ..., x_n]
+\\
+v = [v_1, v_2, ..., v_n]
+\\
+f(x) = [f_1(x_1,..., x_n), ..., f_n(x_1,..., x_n)]
+\end{aligned}
+\end{equation}
+Further, we construct a mass matrix $M \in \mathbb{R}^{3N \times 3N}$ which is diagonal with values $m_1, m_1, m_1, ..., m_N, m_N, m_N$ on the diagonal.
+
+\begin{equation}
+\label{eq:implicit_mass_ode_v}
+M v^{t+1} = M v^{t} + \Delta t f(x_{t+1})
+\end{equation}
+\begin{equation}
+\label{eq:implicit_mass_ode_x}
+x^{t+1} = x + \Delta t v^{t+1}
+\end{equation}
+
+Substituing Eq.~\ref{eq:implicit_mass_ode_x} into Eq.~\ref{eq:implicit_mass_ode_v}, results in single system of algebraic equations:
+
+\begin{equation}
+M v^{t+1} = M v^{t} + \Delta t f(x + \Delta t v^{t+1})
+\end{equation}
+
+We solve this system for $v^{t+1}$.
+
+\subsubsection{Examples}
+Example implementation of mass spring system can found in open source software created by the author of this thesis in~\cite{JC-MassSpring}. 
+TODO Show screen
+TODO Give profesional example
+
+\subsubsection{Conclusions}
+Mass spring systems are easy to implement and for many applications give good enough results(e.g. computer games). However, relatively expensive ODE integrators have to be used in order to keep the simulation stable. Moreover, modeling physically correct materials can be a complicated task, since the parameters of the system hardly reflect reality.
+
+\section{Position Based Dynamics}
+As the name suggests, Position Based Dynamics(PBD) omits integrating over velocity and works directly on positions. The biggest advantage over mass spring system is avoidance of overshooting problem during integration step.
+\subsection{Formulation}
+The system of PBD includes a set of $N$ particles and a set of $M$ contraints. Each particle $i$ has three attributes: 
+\begin{enumerate}
+\item mass $m_i$
+\item position $x_i$
+\item velocity $v_i$
+\end{enumerate}
+
+Each constraint $j$ has five attributes:
+
+\begin{enumerate}
+\item Cardinality - $n_j$
+\item Scalar constraint function - $C_j : \mathbb{R}^{3n_j} \rightarrow \mathbb{R}$
+\item Set of indices - $\{i_1, ..., i_{n_{j}}\}, i_k \in [1, ..., N]$
+\item Stiffness parametr - $k_j \in [0 ... 1]$
+\item Type - \textit{unilateral} or \textit{bilateral}
+\end{enumerate}
+
+It is said that bilateral contraint $j$ is satisfied if $C_j(x_{i_{1}}, ..., x_{i_{n_{j}}}) = 0$ or if the case of unilateral $C_j(x_{i_{1}}, ..., x_{i_{n_{j}}}) \geq 0$. The strength of the contraint is defined by the stiffness parameter $k_j$.
+
+Given initial conditions for positions and velocities the simulation proceeds as follows:
 
 
-\begin{remark}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-\end{remark}
+\begin{algorithm}
+\caption{Particle Based Dynamics}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{Simulation}{}
 
-\begin{lemma}[Lemacik]
-Ten lemat jest nie na temat.
-\end{lemma}
-\begin{proof} Dowód przez indukcję.
-\end{proof}
+\While{true}
+\label{alg:pbd:main_loop}
 
+\For {all particles $i$}
+\label{alg:pdb:explicit_for}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\State $v_{i} = v_{i} + \Delta t \dfrac{f_i}{m_i}$
+\label{alg:pdb:explicit_v}
 
+\State $p_{i} = x_{i} + \Delta t v_i$
+\label{alg:pdb:explicit_p}
 
+\State $generateCollisionContraints(x_i, p_i)$
+\label{alg:pdb:generate_collision_contraints}
 
-\section{Tabele i rysunki}
+\EndFor
 
- Opcjonalny argument środowisk table i figure\\
-h 	- 	bez przemieszczenia, dokładnie w miejscu użycia (uzyteczne w odniesieniu do niewielkich wstawek); \\
-t 	- 	na górze strony;\\
-b 	- 	na dole strony;\\
-p 	- 	na stronie zawierającej wyłącznie wstawki;\\
-! 	- 	ignorując większość parametrów kontrolujacych umieszczanie wstawek, przekroczenie wartosci, których może nie pozwolić na umieszczanie nastepnych wstawek na stronie.
+\While{iteratively}
+\label{alg:pdb:iter_while}
 
-\begin{figure}[h!]
-\begin{center}
-\setlength{\unitlength}{1mm}
-\begin{picture}(40, 30)
-\put(20,1){\line(0,1){20}} % linia
+\State $projectContraints(C_1, ..., C_{M + M_{ext}}, p_1, ..., p_N)$
+\label{alg:pdb:project_contraints}
 
-% dół
-\put(20,1){\circle*{2}}
-\put(25,1){0}
+\EndWhile
 
-% góra
-\put(20,21){\circle*{2}}
-\put(25,21){1}
-\end{picture}
-\end{center}
-\caption{Obrazek zrobiony w LaTeXu}
-\end{figure}
+\For {all particles $i$}
+\State $v_{i} = \dfrac{(p_i - x_i)}{\Delta t} $
+\label{alg:pdb:implicit_v}
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{rl|c}
-bla & blabla & blablabla\\
-\hline
-bla & blabal & blablabla \\
-ble & bleble & blebleble
-\end{tabular}
-\caption[Opis skrócony]{Pełny opis znajdujący się pod tabelą}
-\end{table}
+\State $x_{i} = p_{i}$
+\label{alg:pdb:implicit_x}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\EndFor
 
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.5]{politechnika}
-\caption[Logo MiNI]{Takie tam logo MiNI}
-\end{figure}
+\EndWhile
 
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
-\chapter{Następny rozdział}
+The lines~\ref{alg:pdb:explicit_v} and~\ref{alg:pdb:explicit_p} compute explicit Euler integration on velocities and positions. However, output positions $p_i$ are only used as predictions. 
+The line ~\ref{alg:pdb:generate_collision_contraints} generates external constrain such as collisions. The original and predicted positions $x_i$, $p_i$ can be used in this step in order to perform continuous collision detection.
+The simulation then computes line~\ref{alg:pdb:project_contraints} which iteratively corrects the predicted positions such that they satisfy the $M_{ext}$ external and $M$ internal constraints.
+Finally, the corrected positions $p_i$ are used to compute velocites and positions.
 
-A oto jakieś przykładowe drzewo wywodu zrobione przy pomocy pakietu forest.
+\section{Finite Element Method}
 
-\section{Jakiś podrozdział}
+% ---------------------------------------------------
 
+\chapter{Computational Mesh}
+Creating Compulational Mesh
 
-\begin{definition}
-Niech $A\neq \emptyset$, $n \in \mathbb{N}$. Każde przekształcenie $f:A^n \rightarrow A$ nazywamy \textit{$n$-arną operacją} lub \textit{działaniem} określonym na $A$.
-0-arne operacje to wyróżnione stałe.
-\end{definition}
+% ---------------------------------------------------
 
+\chapter{Finite Element Method}
+Advanced
 
-\begin{definition}[Algebra]
-Parę uporządkowaną $(A,F)$, gdzie $A\neq \emptyset$ jest zbiorem, a $F$ jest rodziną operacji określonych na $A$, nazywamy \textit{algebrą} (lub \textit{$F$-algebrą}). Zbiór $A$ nazywa się \textit{zbiorem elementów}, \textit{nośnikiem} lub \textit{uniwersum} algebry $(A,F)$, a $F$ \textit{zbiorem operacji elementarnych}.
-\end{definition}
+\section{Formulation}
+Some general math from my Presentation and 
+\subsection{Strong formulation}
+\subsection{Weak formulation}
+\subsection{Discrete formulation}
+\subsection{FEM - Idea}
+\subsection{Final formulation}
 
-\begin{proposition}
-Stwierdzam więc ostatnio, że doszedłszy do granicy, pozostaje mi tylko przy tej granicy biwakować albo zawrócić, możliwie też szukać przejścia czy wyjścia na nowe obszary.
-\end{proposition}
+\section{Finite Element - Tetrahedron}
+One of the most simple finite elements used in FEM models is a linear tetrahedron. Such element consists of four nodes and its shape functions are linear polynomials. This finite element is in particular interested for real time applications since no numerical integration are needed to construct element equations.
+\section{Material}
+
+\section{Load}
+
+\section{Assembly Process}
+\subsection{Sparse Matrix Representation}
+
+\section{Boundary Conditions}
+
+\section{Solver}
+
+% ---------------------------------------------------
+
+\chapter{Implementation}
+
+\section{CUDA}
+\subsection{GPU Architecture}
+\subsubsection{Pascal Architecture}
+
+\section{Matrix Vector Multipliation}
+
+\section{Linear System of Equations}
+\subsection{CG}
+\subsection{CG with precondition}
+\subsection{LU}
+
+\section{RTFEM}
+
+\section{RTFEM Integration into Game Engine}
+\subsection{Rendering}
+\subsection{Collision}
+
+% ---------------------------------------------------
+
+\chapter{Tests}
+
+\section{Benchmarks}
+\subsection{Float vs Double}
+\subsection{Materials}
+\subsection{Structures}
+\subsection{Speed}
+
+\chapter{Conclusions}
 
 
 
@@ -224,10 +417,17 @@ Stwierdzam więc ostatnio, że doszedłszy do granicy, pozostaje mi tylko przy t
 % \bibitem[numerek]{referencja} Autor, \emph{Tytuł}, Wydawnictwo, rok, strony
 % cytowanie: \cite{referencja1, referencja 2,...}
 
-\bibitem[1]{Ktos} A. Aaaaa, \emph{Tytuł}, Wydawnictwo, rok, strona-strona.
-\bibitem[2]{Innyktos} J. Bobkowski, S. Dobkowski, \emph{Blebleble}, Magazyn nr, rok, strony.
-\bibitem[3]{B} C. Brink, \emph{Power structures}, Algebra Universalis 30(2), 1993, 177-216.
-\bibitem[4]{H} F. Burris, H. P. Sankappanavar, \emph{A Course of Universal Algebra}, Springer-Verlag, New York, 1981.
+\bibitem[1]{Ktos} Matthias Muller, Jos Stam, Doug James, Nils Thurey, \emph{Real Time Physics Class Notes}.
+
+\bibitem[2]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
+
+\bibitem[3]{termo} Michał Kleiber, Piotr Kowalczyk, \emph{Wprowadzenie do Nieliniowej Termomechaniki Ciał Odkształcalnych}.
+
+\bibitem[4]{zienkiewicz1} Zienkiewicz \emph{The Finite Element Method. Volume 1: The Basis}.
+
+\bibitem[5]{zienkiewicz2} Zienkiewicz \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
+
+\bibitem[5]{altair} Altair University \emph{Practical Aspects of Finite Element Simulation}.
 
 \end{thebibliography}
 
@@ -265,3 +465,4 @@ $\widetilde{}$ & tylda
 Załącznik 1, załącznik 2 -- mają się znajdować na końcu pracy (to jest notka przypominająca)
 
 \end{document}
+
