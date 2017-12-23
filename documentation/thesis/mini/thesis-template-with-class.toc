@@ -13,44 +13,60 @@
 \contentsline {section}{\numberline {1.2}Position Based Dynamics}{14}{section.1.2}
 \contentsline {subsection}{\numberline {1.2.1}Formulation}{14}{subsection.1.2.1}
 \contentsline {section}{\numberline {1.3}Finite Element Method}{15}{section.1.3}
-\contentsline {chapter}{\numberline {2}Computational Mesh}{16}{chapter.2}
-\contentsline {chapter}{\numberline {3}Finite Element Method}{17}{chapter.3}
-\contentsline {section}{\numberline {3.1}Formulation}{17}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Strong formulation}{17}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}Weak formulation}{17}{subsection.3.1.2}
-\contentsline {subsection}{\numberline {3.1.3}Discrete formulation}{17}{subsection.3.1.3}
-\contentsline {subsection}{\numberline {3.1.4}FEM - Idea}{17}{subsection.3.1.4}
-\contentsline {subsection}{\numberline {3.1.5}Final formulation}{17}{subsection.3.1.5}
-\contentsline {section}{\numberline {3.2}Finite Element - Tetrahedron}{17}{section.3.2}
-\contentsline {section}{\numberline {3.3}Material}{17}{section.3.3}
-\contentsline {section}{\numberline {3.4}Load}{17}{section.3.4}
-\contentsline {section}{\numberline {3.5}Assembly Process}{17}{section.3.5}
-\contentsline {subsection}{\numberline {3.5.1}Sparse Matrix Representation}{17}{subsection.3.5.1}
-\contentsline {section}{\numberline {3.6}Boundary Conditions}{17}{section.3.6}
-\contentsline {section}{\numberline {3.7}Solver}{17}{section.3.7}
-\contentsline {chapter}{\numberline {4}Implementation}{18}{chapter.4}
-\contentsline {section}{\numberline {4.1}CUDA}{18}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}GPU Architecture}{18}{subsection.4.1.1}
-\contentsline {subsubsection}{Pascal Architecture}{18}{subsubsection*.7}
-\contentsline {section}{\numberline {4.2}Matrix Vector Multipliation}{18}{section.4.2}
-\contentsline {section}{\numberline {4.3}Linear System of Equations}{18}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}CG}{18}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}CG with precondition}{18}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}LU}{18}{subsection.4.3.3}
-\contentsline {section}{\numberline {4.4}RTFEM}{18}{section.4.4}
-\contentsline {section}{\numberline {4.5}RTFEM Integration into Game Engine}{18}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}Rendering}{18}{subsection.4.5.1}
-\contentsline {subsection}{\numberline {4.5.2}Collision}{18}{subsection.4.5.2}
-\contentsline {chapter}{\numberline {5}Tests}{19}{chapter.5}
-\contentsline {section}{\numberline {5.1}Benchmarks}{19}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Float vs Double}{19}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Materials}{19}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}Structures}{19}{subsection.5.1.3}
-\contentsline {subsection}{\numberline {5.1.4}Speed}{19}{subsection.5.1.4}
-\contentsline {chapter}{\numberline {6}Conclusions}{20}{chapter.6}
-\contentsline {chapter}{Bibliografia}{21}{section*.8}
-\contentsline {chapter}{Wykaz symboli i skr\IeC {\'o}t\IeC {\'o}w}{22}{section*.9}
-\contentsline {chapter}{Spis rysunk\'ow}{23}{section*.10}
-\contentsline {chapter}{Spis tabel}{24}{section*.11}
-\contentsline {chapter}{Spis za\IeC {\l }\IeC {\k a}cznik\IeC {\'o}w}{25}{section*.12}
+\contentsline {chapter}{\numberline {2}Solid Mechanics}{16}{chapter.2}
+\contentsline {section}{\numberline {2.1}Formulation}{16}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Strong formulation}{16}{subsection.2.1.1}
+\contentsline {subsubsection}{Dynamic System}{16}{subsubsection*.7}
+\contentsline {subsection}{\numberline {2.1.2}Weak formulation}{16}{subsection.2.1.2}
+\contentsline {subsubsection}{Dynamic System}{17}{subsubsection*.8}
+\contentsline {subsection}{\numberline {2.1.3}Discrete formulation}{17}{subsection.2.1.3}
+\contentsline {subsubsection}{Dynamic System}{19}{subsubsection*.9}
+\contentsline {section}{\numberline {2.2}Finite Element Method}{20}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}FEM for Solid Mechanics}{21}{subsection.2.2.1}
+\contentsline {subsubsection}{Dynamic System}{22}{subsubsection*.10}
+\contentsline {section}{\numberline {2.3}Boundary Conditions}{22}{section.2.3}
+\contentsline {section}{\numberline {2.4}Solver}{22}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Sparse Matrix Representation}{22}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}Implicit Euler}{22}{subsection.2.4.2}
+\contentsline {subsection}{\numberline {2.4.3}CG}{22}{subsection.2.4.3}
+\contentsline {subsection}{\numberline {2.4.4}CG with precondition}{22}{subsection.2.4.4}
+\contentsline {subsection}{\numberline {2.4.5}LU}{22}{subsection.2.4.5}
+\contentsline {chapter}{\numberline {3}Computational Mesh}{23}{chapter.3}
+\contentsline {chapter}{\numberline {4}Finite Element - Tetrahedron}{24}{chapter.4}
+\contentsline {section}{\numberline {4.1}Volume}{24}{section.4.1}
+\contentsline {section}{\numberline {4.2}Natural Coordinates}{24}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Transformation}{25}{subsection.4.2.1}
+\contentsline {section}{\numberline {4.3}Derivatives}{26}{section.4.3}
+\contentsline {section}{\numberline {4.4}Analytical Intergration}{26}{section.4.4}
+\contentsline {section}{\numberline {4.5}Stiffness}{27}{section.4.5}
+\contentsline {section}{\numberline {4.6}Forces}{27}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}Body Forces}{27}{subsection.4.6.1}
+\contentsline {subsection}{\numberline {4.6.2}Traction Forces}{28}{subsection.4.6.2}
+\contentsline {chapter}{\numberline {5}Implementation}{29}{chapter.5}
+\contentsline {section}{\numberline {5.1}CUDA}{29}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}GPU Architecture}{29}{subsection.5.1.1}
+\contentsline {subsubsection}{Pascal Architecture}{29}{subsubsection*.11}
+\contentsline {section}{\numberline {5.2}Matrix Vector Multipliation}{29}{section.5.2}
+\contentsline {section}{\numberline {5.3}Linear System of Equations}{29}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}CG}{29}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}CG with precondition}{29}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}LU}{29}{subsection.5.3.3}
+\contentsline {section}{\numberline {5.4}RTFEM}{29}{section.5.4}
+\contentsline {section}{\numberline {5.5}RTFEM Integration into Game Engine}{29}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Rendering}{29}{subsection.5.5.1}
+\contentsline {subsection}{\numberline {5.5.2}Collision}{29}{subsection.5.5.2}
+\contentsline {subsection}{\numberline {5.5.3}User Interface}{29}{subsection.5.5.3}
+\contentsline {subsection}{\numberline {5.5.4}Manual}{29}{subsection.5.5.4}
+\contentsline {chapter}{\numberline {6}Tests}{30}{chapter.6}
+\contentsline {section}{\numberline {6.1}Benchmarks}{30}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Float vs Double}{30}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Materials}{30}{subsection.6.1.2}
+\contentsline {subsection}{\numberline {6.1.3}Structures}{30}{subsection.6.1.3}
+\contentsline {subsection}{\numberline {6.1.4}Speed}{30}{subsection.6.1.4}
+\contentsline {chapter}{\numberline {7}Conclusions}{31}{chapter.7}
+\contentsline {chapter}{Bibliografia}{32}{section*.12}
+\contentsline {chapter}{Wykaz symboli i skr\IeC {\'o}t\IeC {\'o}w}{33}{section*.13}
+\contentsline {chapter}{Spis rysunk\'ow}{34}{section*.14}
+\contentsline {chapter}{Spis tabel}{35}{section*.15}
+\contentsline {chapter}{Spis za\IeC {\l }\IeC {\k a}cznik\IeC {\'o}w}{36}{section*.16}
 \contentsfinish 

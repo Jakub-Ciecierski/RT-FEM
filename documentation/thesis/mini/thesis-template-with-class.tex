@@ -9,6 +9,8 @@
 
 \usepackage[noend]{algpseudocode}
 
+\setcounter{MaxMatrixCols}{20}
+
 % ------------ Ustawienia autora pracy ---------------
 
 \setboolean{lady}{true} % kobiety wpisują true, mężczyźni - false
@@ -345,38 +347,613 @@ Finally, the corrected positions $p_i$ are used to compute velocites and positio
 \section{Finite Element Method}
 
 % ---------------------------------------------------
+\chapter{Solid Mechanics}
+This assumes introduction to linear materials
 
-\chapter{Computational Mesh}
-Creating Compulational Mesh
-
-% ---------------------------------------------------
-
-\chapter{Finite Element Method}
-Advanced
+Stress tensor
+mass density
+external forces
+strain tensor. Chauchy
+displacement
+stiffness tensor
+Stress vector
 
 \section{Formulation}
-Some general math from my Presentation and 
+
 \subsection{Strong formulation}
+For linear static solid deformation.
+\begin{equation}
+\begin{aligned}
+\sigma_{ij,j} + \hat{f_{i}} = 0 \quad x \in \Omega
+\\
+\sigma_{ij} = C_{ijkl} \epsilon_{kl} \quad x \in \Omega
+\\
+\epsilon_{ij} = \dfrac{1}{2}(u_{i,j} + u_{j,i}) \quad x \in \Omega
+\\
+\end{aligned}
+\end{equation}
+where $\hat{f_{i}} = \rho f_i$
+
+\begin{equation}
+\begin{aligned}
+u_i = \hat{u_i} \quad x \in \partial  \Omega_{u}
+\\
+\sigma_{ij} n_{j} = \hat{t_i} \quad x \in \partial \Omega_{\sigma}
+\end{aligned}
+\end{equation}
+
+\subsubsection{Dynamic System}
+In order to accommodate for the dynamic behavior of the system, we must slightly change the equation of motion.
+\begin{equation}
+\label{eq:motion_dynamic}
+\sigma_{ij,j} + \hat{f_{i}} = \rho \ddot{u_i} \quad x \in \Omega
+\end{equation}
+where $\rho$ is a known quantity.
+
 \subsection{Weak formulation}
+
+Set of kinematically acceptable displacement fields or trial functions
+\begin{equation}
+\mathcal{P} = \{ u(x) : u_i = \hat{u_i} \quad for \quad x \in \partial \Omega_{u} \}
+\end{equation}
+
+Set of kinematically acceptable variations of function in $\mathcal{P}$.
+\begin{equation}
+\label{eq:variations}
+\mathcal{W} = \{ \delta u(x) : \delta u_i = 0 \quad for \quad x \in \partial \Omega_{u} \}
+\end{equation}
+
+$\delta u$ is called a virtual displacement. 
+
+For any variation $\delta u \in \mathcal{W}$ it is true that:
+\begin{equation}
+\label{eq:virtual_work1}
+\int_{\Omega}(\sigma_{ij,j} + \hat{f_i}) \delta u_{i} dV - \int_{\partial \Omega_{\sigma}}(\sigma_{ij}n_{j} - \hat{t_{i}}) \delta u_{i}dA = 0
+\end{equation}
+
+Let us transform the second integral from Eq.~\ref{eq:virtual_work1}, having in mind that $\partial \Omega = \partial \Omega_{u} \cup \partial \Omega_{\sigma}$. From definition of Eq.~\ref{eq:variations}, we see that variation $\delta u_{i}$ vanishes on remaining part of the boundary space $\partial \Omega_{u}$. Thus, we can treat this intergral as a integral over entire boundary space $\partial \Omega$. Now we can apply Gauss-Ostrogradsky theorem and transform it to:
+\begin{equation}
+\label{eq:virtual_work2}
+\int_{\partial \Omega_{\sigma}}(\sigma_{ij}n_{j} - \hat{t_{i}}) \delta u_{i}dA = \int_{\Omega}(\sigma_{ij,j} \delta u_{i} + \sigma_{ij} \delta u_{i,j}) dV - \int_{\partial \Omega_{\sigma}} \hat{t} \delta u_i dA
+\end{equation}
+
+Substituting the above equation in Eq.~\ref{eq:virtual_work1} and naming $\delta \epsilon =$ sym $\delta u_{i,j}$ we get:
+\begin{equation}
+\label{eq:virtual_work3}
+\int_{\Omega}(\sigma_{ij} \delta \epsilon_{ij} dV ) = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
+\end{equation}
+
+The Eq.~\ref{eq:virtual_work3} is called the principle of virtual work for linear, static solid deformations. It claims that the work made by external forces on the virtual displacements(right hand side) is equal to the work made by interior forces(stress) on certain virtual displacement.
+
+By including the constitutive equation and the symmetry of stiffness tensor, we can further transform the Eq.~\ref{eq:virtual_work3}:
+
+\begin{equation}
+\label{eq:virtual_work4}
+\int_{\Omega}(C_{ijkl} u_{k,l} \delta u_{i,j} dV ) = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
+\end{equation}
+
+\subsubsection{Dynamic System}
+Once again, we want to add dynamic behavior to the system. We do this by following that same steps but this time using the dynamic equation of motion(E.q~\ref{eq:motion_dynamic}).
+\begin{equation}
+\label{eq:virtual_work_dynamic4}
+\int_{\Omega}(C_{ijkl} u_{k,l} \delta u_{i,j} dV ) + \int_{\Omega}\rho \ddot{u_i} \delta u_i dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
+\end{equation}
+
 \subsection{Discrete formulation}
-\subsection{FEM - Idea}
-\subsection{Final formulation}
 
-\section{Finite Element - Tetrahedron}
-One of the most simple finite elements used in FEM models is a linear tetrahedron. Such element consists of four nodes and its shape functions are linear polynomials. This finite element is in particular interested for real time applications since no numerical integration are needed to construct element equations.
-\section{Material}
 
-\section{Load}
+The displacement fields $u_{i}(x)$ and their variations $\delta u_{i}(x)$ must be properly included in classes $\mathcal{P}$ and $\mathcal{W}$. By the defitions of classes $\mathcal{P}$ and $\mathcal{W}$, the following must stay true:
+\begin{equation}
+\forall_{u_{i} \in \mathcal{P}, \delta u_{i} \in \mathcal{W}} \quad u_i + \delta u_i \in \mathcal{P}
+\end{equation}
 
-\section{Assembly Process}
-\subsection{Sparse Matrix Representation}
+Further, we must include the boundary conditions:
+\begin{equation}
+\begin{aligned}
+u_i = \hat{u_i} \quad x \in \partial  \Omega_{u}
+\\
+\delta u_i = 0 \quad x \in \partial  \Omega_{u}
+\end{aligned}
+\end{equation}
+
+The displacement fields must also be once-differentiable as can be seen on the left hand side of Eq.~\ref{eq:virtual_work4}.
+
+Let us consider the following classes of displacement fields and their variations.
+\begin{equation}
+\begin{aligned}
+\mathcal{P^{N}} = \{\bar{u}(x) = \hat{\Phi_i}(x) + \Phi_{i \alpha}(x)q_{\alpha} \}
+\\
+\mathcal{W^{N}} = \{\bar{\delta u}(x) = \Phi_{i \alpha}(x) \delta q_{\alpha} \}
+\end{aligned}
+\end{equation}
+
+This is a linear combination of three systems of $N$ linearly independent shape functions $\Phi_{i \alpha}(x)$, $i = 1,2,3$, with real coefficients $q_{\alpha}$ and $\delta q_{\alpha}$. These shape functions satisfy the diffrentiable criteria. We choose such functions $\Phi_{i \alpha}(x)$ so that they satisfy the condition $\Phi_{i \alpha} = 0$ on $\partial \Omega_{u}$. Furthermore, $\hat{\Phi_i}(x)$ $i = 1,2,3$ are any functions satisfying the condition $\hat{\Phi_{i}}(x) = \hat{u_i}$ on $\partial \Omega_{u}$.
+
+Let us substitute such displacements fields and their variations into Eq.~\ref{eq:virtual_work4}.
+\begin{equation}
+\label{eq:virtual_work5}
+\delta q_{\alpha}[ q_{\beta} \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV + \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV - \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV - \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA] = 0
+\end{equation}
+
+Introducing new notation:
+\begin{equation}
+\begin{aligned}
+K_{\alpha \beta} = \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV 
+\\
+Q_{\alpha} = - \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV + \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA
+\end{aligned}
+\end{equation}
+
+We can now rewrite Eq.~\ref{eq:virtual_work5}:
+\begin{equation}
+\delta q_{\alpha}(K_{\alpha \beta} q_{\beta} - Q_{\alpha}) = 0
+\end{equation}
+
+The above equation must be true for all variation $\delta \bar{u_i}$, thus they are also true for all coefficients $\delta q_{\alpha}$. Finally, the following system of equations must be true for all $q_{\alpha}$ coefficients:
+\begin{equation}
+K_{\alpha \beta} q_{\beta} = Q_{\alpha}
+\end{equation}
+
+We can write this in matrix form:
+\begin{equation}
+\label{eq:fem_system}
+K_{N \times N} q_{N \times 1} = Q_{N \times 1}
+\end{equation}
+
+In Eq.~\ref{eq:fem_system} we are presented with a linear system of algebraic equations. Matrix $K$ is called a stiffness matrix. Vector $Q$ is called a exterior force vector, associated with displacements $q$. For now it will be only mentioned briefly that matrix $K$ is a symmetric and sparse matrix. Details will follow.
+
+\subsubsection{Dynamic System}
+Let us consider more general case in which we include dynamic behavior. The displacement fields are not functions of time.
+
+\begin{equation}
+\bar{u}(x, t) = \hat{\Phi_i}(x, t) + \Phi_{i \alpha}(x)q_{\alpha}(t)
+\end{equation}
+
+The first and second derivative over time:
+\begin{equation}
+\begin{aligned}
+\dot{\bar{u}}(x, t) = \dot{\hat{\Phi_i}}(x, t) + \Phi_{i \alpha}(x)\dot{q_{\alpha}}(t)
+\\
+\ddot{\bar{u}}(x, t) = \ddot{\hat{\Phi_i}}(x, t) + \Phi_{i \alpha}(x)\ddot{q_{\alpha}}(t)
+\end{aligned}
+\end{equation}
+
+We can now state the discrete formulation for dynamic system using the Eq.~\ref{eq:virtual_work_dynamic4}.
+
+\begin{equation}
+\label{eq:virtual_work_dynamic5}
+\delta q_{\alpha}[ q_{\beta} \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV + \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV + \ddot{q_{\beta}} \int_{\Omega}\rho \Phi_{i \alpha} \Phi_{i \beta} dV + \int_{\Omega} \rho \Phi_{i \alpha} \ddot{\hat{\Phi_{i}}} dV - \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV - \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA] = 0
+\end{equation}
+
+As before, Eq.~\ref{eq:virtual_work_dynamic5} must be satisfied for all coefficients $\delta q_{\alpha}$ which means that everything else must vanish for all indices $\alpha$. Let us denote mass matrix by:
+\begin{equation}
+\label{eq:mass_matrix1}
+M_{\alpha \beta} = \int_{\Omega} \rho \Phi_{i \alpha} \Phi_{j \beta} dV 
+\end{equation}
+
+The stiffness matrix $K$ does not change, however we must change force vector $Q$.
+
+\begin{equation}
+Q_{\alpha} = - \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV + \int_{\Omega} (\hat{f_i} - \rho \ddot{\bar{\Phi_i}} ) \Phi_{i \alpha} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA
+\end{equation}
+
+We can expand our system of linear equations to:
+\begin{equation}
+\label{eq:fem_system}
+M_{N \times N}\ddot{q}_{N \times 1} + K_{N \times N} q_{N \times 1} = Q_{N \times 1}
+\end{equation}
+This is a linear system of differential equations of second order. The unknows being the displacement fields $q_{\alpha}(t)$, which must be satisfied for each time $t$. Details on solving this system will follow.
+
+The final part of dynamic system is the damping matrix $C$. Damping is introduced to simulate friction forces internal to the structure. One model of creating damping matrix $C$ for structural systems is called Rayleigh damping matrix~\cite{damping}:
+\begin{equation}
+C = \alpha M + \beta K
+\end{equation}
+In other words, $C$ is the linear combination of mass and stiffness matrices.
+
+Thus the final form of dynamic system is presented here:
+\begin{equation}
+\label{eq:fem_system_damping}
+M_{N \times N}\ddot{q}_{N \times 1} + C_{N \times N}\dot{q}_{N \times 1} + K_{N \times N} q_{N \times 1} = Q_{N \times 1}
+\end{equation}
+%https://www.researchgate.net/post/What_is_difference_between_implicit_and_explicit_FEM_in_non-linear_quasi-static_problems
+
+\section{Finite Element Method}
+We will divide the space $\Omega$ using $E$ finite elements, each represented by the set $\Omega_{e}$, $e = 1,2,...,E$, where $\Omega_{e} \cap \Omega_{f} = \emptyset$, for $e \neq f$.
+
+Boundary of $e$-th element will be denoted $\partial \Omega_{e}$. Common boundary of neighbours $e$ and $f$ will be denoted $\partial \Omega_{ef} = \partial \Omega_e \cap \partial \Omega_f$. The part of elements boundary that also happens to be boundary of the entire body will be denoted $\partial \Omega_{\bar{e}} = \partial \Omega \cap \partial \Omega_{e}$.
+
+We can use the finite elements to compute the integral over the entire body.
+\begin{equation}
+\int_{\Omega} (.) dV = \sum^{E}_{e=1} \int_{\Omega_{e}}(.) dV
+\end{equation}
+
+Similarly for the integrals over the area:
+\begin{equation}
+\int_{\partial \Omega} (.) dA = \sum_{\bar{e} \in \{ E_{\partial \Omega} \}} \int_{\partial \Omega_{\bar{e}}}(.) dA
+\end{equation}
+where $E_{\partial \Omega}$ is a set of finite elements which have non empty $\partial \Omega_{\bar{e}}$ set.
+
+In FEM models we can apply physical intuition behind the discrete formulation. Recall that the shape functions $\Phi_{\alpha}(x)$ were associated with certain real coefficients $q_{\alpha}$. These coefficients will now be associated with vertices $x_{\alpha}$ of the finite elements. The coefficient $q_{\alpha}$ will now be called parameter of vertex $x_{\alpha}$. In 3D solid mechanics the parameter  $q_{\alpha}$ denotes the component of displacements vector of the associated vertex $x_{\alpha}$. Formally the displacement field will be aproximated by:
+
+\begin{equation}
+\bar{u}(x) = \Phi_{\alpha}(x)q_{\alpha}
+\end{equation}
+for $\alpha = 1,2,...,N$, where $N$ is the number of vertices $x_{\alpha} \in \Omega$.
+
+Moreover, we can require that the coefficients $q_{\alpha}$ will be the value of approximated displacement fields at their associated vertices $x_{\alpha}$:
+\begin{equation}
+\bar{u}(x_{\alpha}) = q_{\alpha}
+\end{equation}
+
+We can easly design a shape function satisfying the above criteria:
+\begin{equation}
+\Phi_{\alpha}(x_{\beta}) = \delta_{\alpha \beta}
+\end{equation}
+for $\alpha , \beta = 1,2,...,N$. In other words, the shape function $\Phi_{\alpha}(x)$ associated with vertex $x_{\alpha}$ should have value $\Phi_{\alpha}(x_{\alpha}) = 1$ and value $0$ in any other vertex. 
+Moreover, we usually require the shape function to sum up to $1$:
+\begin{equation}
+\sum^{N}_{\alpha = 1}\Phi_{\alpha}(x) = 1
+\end{equation}
+
+\subsection{FEM for Solid Mechanics}
+For 3D solid mechanics, the approximated displacement field has a form of:
+\begin{equation}
+\label{eq:displacement_field1}
+\bar{u}_{i}(x) = \Phi_{i \alpha}(x)q_{\alpha}
+\end{equation}
+where $i = 1,2,3$ and $q_{\alpha}$ denotes the values of displacements in associated vertices. However, since in 3D the displacement vector is described by 3 components$(x,y,z)$, we must expand the range of $\alpha$ index. For model with $N$ vertices, $\alpha = 1,2,...3N$. We can now represent the Eq.~\ref{eq:displacement_field1} in matrix form:
+
+\begin{equation}
+\label{eq:displacement_field1}
+\bar{u}_{3 \times 1}(x) = \Phi^{T}_{3 \times 3N}(x)q_{3N \times 1}
+\end{equation}
+
+That makes our system of linear equations:
+\begin{equation}
+K_{3N \times 3N} q_{3N \times 1} = Q_{3N \times 1}
+\end{equation}
+
+where
+\begin{equation}
+\begin{aligned}
+K_{\alpha \beta} = \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV 
+\\
+Q_{\alpha} = \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA
+\end{aligned}
+\end{equation}
+
+We can use the fact that $C_{ijkl}$ is a symmetric tensor to further simplify the equations. We will represent second order tensor with $6 \times 1$ vector and a fourth order tensor with $6 \times 6$ matrix.
+\begin{equation}
+\label{eq:static_fem}
+\begin{aligned}
+K_{3N \times 3N} = \int_{\Omega} B^{T}_{3N \times 6} C_{6 \times 6} B_{6 \times 3N} dV 
+\\
+Q_{3N \times 1} = \int_{\Omega} \Phi_{3N \times 3} \hat{f}_{3 \times 1} dV + \int_{\partial \Omega_{\sigma}} \Phi_{3N \times 3} \hat{t}_{3 \times 1} dA
+\end{aligned}
+\end{equation}
+Where $B_{6 \times 3N}$ is called a geometric matrix and is defined as follows:
+\begin{equation}
+\label{eq:geometric_matrix}
+\begin{aligned}
+[B_{6 \times 3N}] = [B^{(1)}_{6 \times 3} B^{(2)}_{6 \times 3} ... B^{(N)}_{6 \times 3}]
+\\
+[B^{(\bar{\alpha})}_{6 \times 3}] = 
+\begin{bmatrix}
+\Phi^{\bar{\alpha}}_{,1} & & \\
+ & \Phi^{\bar{\alpha}}_{,2} & \\
+& & \Phi^{\bar{\alpha}}_{,3} \\
+\Phi^{\bar{\alpha}}_{,2} & \Phi^{\bar{\alpha}}_{,1} & \\
+& \Phi^{\bar{\alpha}}_{,3} & \Phi^{\bar{\alpha}}_{,2} \\
+\Phi^{\bar{\alpha}}_{,3} & & \Phi^{\bar{\alpha}}_{,1}
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+If in a given finite element $e$ there are $N_e$ vertices then the local count of vertex parameters is equal to $3N_e$. We will now introduce local stiffness matrix $k^{(e)}_{3N_e \times 3N_e}$ and force vector $p^{(3)}_{3N_e \times 1}$. These are computed using the Eq.~\ref{eq:static_fem} but using only the local shape functions of each finite element, namely the nonzero values on $\Omega_{e}$ section.
+However, we must somehow map these local values to our global values, $K$ and $Q$. We introduce partial global stiffness matrix $K^{(e)}_{3N \times 3N}$ and partial global force vector $Q^{(e)}_{3N \times 1}$. They contain the local values($k^{e}$ and $p^{(e)}$) of the finite element $e$, mapped into their global coordinates using boolean matrix $A^{(e)}_{3N_{e} \times 3N}$.
+
+\begin{equation}
+\begin{aligned}
+K^{(e)}_{\alpha \beta} =  A^{(e)}_{a \alpha} k^{(e)}_{a b} A^{(e)}_{b \beta}
+\\
+Q^{(e)}_{\alpha} =  p^{(e)}_{a} A^{(e)}_{a \alpha}
+\end{aligned}
+\end{equation}
+
+These partial global matrices are then summed into global matrices $K$ and $Q$.
+
+\begin{equation}
+\begin{aligned}
+K_{\alpha \beta} =  \sum^{E}_{e=1} K^{(e)}_{\alpha \beta}
+\\
+Q_{\alpha} =  \sum^{E}_{e=1} Q^{(e)}_{\alpha}
+\end{aligned}
+\end{equation}
+
+\subsubsection{Dynamic System}
+For dynamic system we must also include mass matrix $M$ introduced in Eq.~\ref{eq:mass_matrix1}. To complete the matrix form of computing $K$ and $Q$ in Eq.~\ref{eq:static_fem} we now provide the matrix equation for $M$:
+\begin{equation}
+\label{eq:mass_matrix_matrix}
+M_{3N \times 3N} =  \int_{\Omega} \rho \Phi^{T}_{3N \times 3} \Phi_{3N \times 3} dV
+\end{equation}
+We compute the local mass matrix $m_{e}$ using Eq.~\ref{eq:mass_matrix_matrix} over the $\Omega_{e}$ section. Assembly process is exactly the as in the case of stiffness matrix.
 
 \section{Boundary Conditions}
 
+
+
 \section{Solver}
 
-% ---------------------------------------------------
+\subsection{Sparse Matrix Representation}
 
+\subsection{Implicit Euler}
+\subsection{CG}
+\subsection{CG with precondition}
+\subsection{LU}
+
+% ---------------------------------------------------
+\chapter{Computational Mesh}
+Creating Compulational Mesh
+
+
+% ---------------------------------------------------
+\chapter{Finite Element - Tetrahedron}
+
+One of the most simple finite elements used in FEM models is a linear tetrahedron. Such element consists of four nodes and its shape functions are linear polynomials. This finite element is in particular interested for real time applications since no numerical integration are needed to construct element equations.
+
+The tetrahedron is defined by four vertices with components $x_i, y_i, z_i$ coordinates, $i=1,2,3,4$, six edges and four faces. For simplicity we can denote the component differences: $x_{ij} = x_i - x_j$, $y_{ij} = y_i - y_j$, $z_{ij} = z_i - z_j$ for $i,j = 1,2,3,4$. The vertices can not be coplanar.
+
+\section{Volume}
+
+We can use the Jacobian matrix $J$ to compute the volume $V$ of the tetrahedron.
+
+\begin{equation}
+V = \int_{\Omega_{e}} d \Omega_{e} = \dfrac{1}{6} det
+\begin{bmatrix}
+1 & 1 & 1 & 1 \\
+x_1 & x_2 & x_3 & x_4 \\
+y_1 & y_2 & y_3 & y_4 \\
+z_1 & z_2 & z_3 & z_4
+\end{bmatrix}
+= \dfrac{1}{6} det(J)
+\end{equation}
+
+The vertices are coplanar when $V$ is equal to zero. The vertices have indices: $1,2,3,4$. Edges are denoted by pair of indices e.g. $23$ is an edge from vertex $2$ to vertex $3$. Faces are denoted by their opposite vertex or by triple of vertex indices that make up this face e.g. $1$ or $234$.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/tetrahedron.png}
+\caption[Logo MiNI]{Naming conventions for tetrahedron faces (a) and edges (b). Courtesy of~\cite{colorado_fem_lectures}}
+\end{figure}
+
+\section{Natural Coordinates}
+
+So far we have specified the tetrahedron vertices in Cartesian coordinates $x,y,z$. An alternative coordinate system is called tetrahedral natural coordiantes and is composed of four functions: $\Phi^{(1)}(x), \Phi^{(2)}(x), \Phi^{(3)}(x), \Phi^{(4)}(x)$. They value of $\Phi^{(i)}$ is equal to $i$ at vertex $1$ and 0 in all other vertices. We add a contraint:
+\begin{equation}
+\label{eq:tetra_indentity}
+\Phi^{(1)} + \Phi^{(2)} + \Phi^{(3)} + \Phi^{(4)} = 1
+\end{equation}
+
+\subsection{Transformation}
+
+We have defined a different coordinate system. However, all quantities such as displacement fields, strain or stress are expressed in Cartesian coordinate system. Thus we need construct a transformation between this two coordinate systems. We combine the indentity constraint in Eq~\ref{eq:tetra_indentity} with the linear interpolation of natural coordinates i.e. $x = x_i \Phi^{(i)}$, $y = y_i \Phi^{(i)}$, $z = z_i \Phi^{(i)}$ to get the following matrix relation:
+
+\begin{equation}
+\begin{bmatrix}
+1 \\
+x \\
+y \\
+z
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1 & 1 & 1 \\
+x_1 & x_2 & x_3 & x_4 \\
+y_1 & y_2 & y_3 & y_4 \\
+z_1 & z_2 & z_3 & z_4
+\end{bmatrix}
+=
+\begin{bmatrix}
+\Phi^{(1)} \\
+\Phi^{(2)} \\
+\Phi^{(3)} \\
+\Phi^{(4)}
+\end{bmatrix}
+\end{equation}
+
+The inversion of the above system yeilds:
+\begin{equation}
+\begin{bmatrix}
+\Phi^{(1)} \\
+\Phi^{(2)} \\
+\Phi^{(3)} \\
+\Phi^{(4)}
+\end{bmatrix}
+=
+\dfrac{1}{6V}
+\begin{bmatrix}
+6V_{01} & y_{42}z_{32} - y_{32}z_{42} & x_{32}z_{42} - x_{42}z_{32} & x_{42}y_{32} - x_{32}y_{42} \\
+6V_{02} & y_{31}z_{43} - y_{34}z_{13} & x_{43}z_{31} - x_{13}z_{34} & x_{31}y_{43} - x_{34}y_{13} \\
+6V_{03} & y_{24}z_{14} - y_{14}z_{24} & x_{14}z_{24} - x_{24}z_{14} & x_{24}y_{14} - x_{14}y_{24} \\
+6V_{04} & y_{13}z_{21} - y_{12}z_{31} & x_{21}z_{13} - x_{31}z_{12} & x_{13}y_{21} - x_{12}y_{31}
+\end{bmatrix}
+\begin{bmatrix}
+1 \\
+x \\
+y \\
+z
+\end{bmatrix}
+\end{equation}
+
+The first column is abbreviation for:
+
+\begin{equation}
+\begin{aligned}
+6V_{01} = x_2(y_3z_4 - y_4z_3) + x_3(y_4z_2 - y_2z_4) +x_4(y_2z_3 - y_3z_2)
+\\
+6V_{02} = x_1(y_4z_3 - y_3z_4) + x_3(y_1z_4 - y_4z_1) +x_4(y_3z_1 - y_1z_3)
+\\
+6V_{03} = x_1(y_2z_4 - y_4z_2) + x_2(y_4z_1 - y_1z_4) +x_4(y_1z_2 - y_2z_1)
+\\
+6V_{04} = x_1(y_3z_2 - y_2z_3) + x_2(y_1z_3 - y_3z_1) +x_3(y_2z_1 - y_1z_2)
+\end{aligned}
+\end{equation}
+
+It can be shown that $V = V_{01} + V_{02} + V_{03} + V_{04}$.
+
+We can now write the matrix system in more compact way using further abbreviation for the other part of the $4 \times 4$ matrix:
+
+\begin{equation}
+\begin{bmatrix}
+\Phi^{(1)} \\
+\Phi^{(2)} \\
+\Phi^{(3)} \\
+\Phi^{(4)}
+\end{bmatrix}
+=
+\dfrac{1}{6V}
+\begin{bmatrix}
+6V_{01} & a_1 & b_1 & c_1 \\
+6V_{02} & a_2 & b_2 & c_2 \\
+6V_{03} & a_3 & b_3 & c_3 \\
+6V_{04} & a_4 & b_4 & c_4
+\end{bmatrix}
+\begin{bmatrix}
+1 \\
+x \\
+y \\
+z
+\end{bmatrix}
+\end{equation}
+
+The explicit equation for $\Phi^{(i)}$ is given by:
+\begin{equation}
+\Phi^{(i)} = \dfrac{6V_{0i} + a_i x + b_i y + c_i z}{6V}
+\end{equation}
+
+\section{Derivatives}
+
+We can easly compute the following partial derivates
+\begin{equation}
+\label{eq:tetra_partial_derivates}
+\begin{aligned}
+6V \dfrac{\partial \Phi^{(i)}}{\partial x} = 6V \Phi^{(i)}_{,1} = a_i
+\\
+6V \dfrac{\partial \Phi^{(i)}}{\partial y} = 6V \Phi^{(i)}_{,2} = b_i
+\\
+6V \dfrac{\partial \Phi^{(i)}}{\partial z} = 6V \Phi^{(i)}_{,3} = c_i
+\end{aligned}
+\end{equation}
+
+\section{Analytical Intergration}
+
+As mentioned before, intergration over the linear tetrahedron can be done analytically using the general formula:
+
+\begin{equation}
+\int_{\Omega_{e}} \Phi^{i(1)} \Phi^{j(2)} \Phi^{k(3)} \Phi^{l(4)} d \Omega_{e} = \dfrac{i!j!k!l!}{(i+j+k+l+3)!} 6V
+\end{equation}
+
+Here the indices without brackets $i,j,k,l$ represent the power exponent.
+Special cases that will be of intereset for us:
+\begin{equation}
+\label{eq:anal_intergral}
+\begin{aligned}
+\int_{\Omega_{e}} d \Omega_{e} = V
+\\
+\int_{\Omega_{e}} \Phi^{(i)} d \Omega_{e} = \dfrac{1}{4}V
+\\
+\int_{\Omega_{e}} \Phi^{(i)} \Phi^{(j)} d \Omega_{e} = 
+\begin{cases}
+\dfrac{1}{10} V \quad i = j 
+\\
+\dfrac{1}{20} V \quad i \neq j
+\end{cases}
+\end{aligned}
+\end{equation}
+
+We now have all components needed to compute local stiffness matrix $k_{12 \times 12}$ and local force vector $p_{12 \times 1}$. Our natural coordinates $\Phi^{(i)}$ will play a role of shape functions.
+
+\section{Stiffness}
+
+First, we will define geometric matrix $B$ mentioned in Eq.~\ref{eq:geometric_matrix} explicitely in terms of derivatives computed in Eq.~\ref{eq:tetra_partial_derivates}:
+
+\begin{equation}
+\label{eq:geometric_matrix}
+B_{6 \times 12} = \dfrac{1}{6V}
+\begin{bmatrix}
+a_1 & 0 & 0 & a_2 & 0 & 0 & a_3 & 0 & 0 & a_4 & 0 & 0 \\
+0 & b_1 & 0 & 0 & b_2 & 0 & 0 & b_3 & 0 & 0 & b_4 & 0 \\
+0 & 0 & c_1 & 0 & 0 & c_2 & 0 & 0 & c_3 & 0 & 0 & c_4 \\
+b_1 & a_1 & 0 & b_2 & a_2 & 0 & b_3 & a_3 & 0 & b_4 & a_4 & 0 \\
+0 & c_1 & b_1 & 0 & c_2 & b_2 & 0 & c_3 & b_3 & 0 & c_4 & b_4 \\
+c_1 & 0 & a_1 & c_2 & 0 & a_2 & c_3 & 0 & a_3 & c_4 & 0 & a_4
+\end{bmatrix}
+\end{equation}
+
+We are going to use the Eq.~\ref{eq:static_fem} with integrals over $\Omega_{e}$. 
+
+First let us compute $k^{(e)}$
+\begin{equation}
+k^{(e)}_{12 \times 12} = \int_{\Omega_{e}} B^{T}_{12 \times 6} C_{6 \times 6} B_{6 \times 12} dV 
+\end{equation}
+Since both $B$ and $C$ are constant i.e. do not depend on $x$ we simply get:
+\begin{equation}
+k^{(e)} = V B^{T} C B 
+\end{equation}
+
+\section{Forces}
+We split the force into two independent parts: body forces and traction forces.
+
+\begin{equation}
+\begin{aligned}
+p_{12 \times 1} = \int_{\Omega_{e}} \Phi_{12 \times 3} \hat{f}_{3 \times 1} dV + \int_{\partial \Omega_{\sigma_{e}}} \Phi_{12 \times 3} \hat{t}_{3 \times 1} dA
+\end{aligned}
+\end{equation}
+
+\subsection{Body Forces}
+Body forces such as gravity, are defined are a single force vector $\hat{f} = \rho[f_1, f_2, f_3]$. This force is applied to all vertices of body and is weighted by the volume of the tetrahedron that the vertex belongs to.
+The body force is computed using the fist integral:
+\begin{equation}
+\begin{aligned}
+f^{(e)}_{12 \times 1} = \int_{\Omega_{e}} \Phi_{12 \times 3} \hat{f}_{3 \times 1} dV
+\end{aligned}
+\end{equation}
+Even if we assume that the body force $\hat{f}$ is constant, $\Phi$ is not constant. It depends on the shape functions $\Phi^{(i)}$ which in turn depends on $x$. Let us define $\Phi$ explicitely:
+\begin{equation}
+\label{eq:geometric_matrix}
+\Phi_{3 \times 12} =
+\begin{bmatrix}
+\Phi^{(1)} & 0 & 0 & \Phi^{(2)} & 0 & 0 & \Phi^{(3)} & 0 & 0 & \Phi^{(4)} & 0 & 0 \\
+0 & \Phi^{(1)} & 0 & 0 & \Phi^{(2)} & 0 & 0 & \Phi^{(3)} & 0 & 0 & \Phi^{(4)} & 0 \\
+0 & 0 & \Phi^{(1)} & 0 & 0 & \Phi^{(2)} & 0 & 0 & \Phi^{(3)} & 0 & 0 & \Phi^{(4)} 
+\end{bmatrix}
+\end{equation}
+
+We can use the second analatical integral presented in Eq.~\ref{eq:anal_intergral}. Assuming that the force $\hat{f} = \rho[f_1, f_2, f_3]$ is constant we recieve:
+\begin{equation}
+\begin{aligned}
+f^{(e)}_{12 \times 1} = \dfrac{1}{4} \rho V [f_1, f_2, f_3, f_1, f_2, f_3, f_1, f_2, f_3,f_1, f_2, f_3]^{T} 
+\end{aligned}
+\end{equation}
+
+\subsection{Traction Forces}
+Traction forces simulate the effect of pressure load, e.g. load applied after collision. As opposed to body forces, the traction forces are applied to element faces along their unit normal vector. Thus, each tetrahedron element should have an input of four scalar traction force magnitudes $p_i$, $i=1,2,3,4$, for each face. Traction force for entire tetrahedron is result of a sum of four traction forces computed for each face. To compute traction force for face $1$ or $234$ with input magnitute $p$, we use the formula:
+\begin{equation}
+\begin{aligned}
+t^{(e)}_{12 \times 1} = \dfrac{1}{3} p A_1 [0, 0, 0, \bar{a_1}, \bar{b_1}, \bar{c_1}, \bar{a_1}, \bar{b_1}, \bar{c_1},\bar{a_1}, \bar{b_1}, \bar{c_1}]^{T} 
+\end{aligned}
+\end{equation}
+
+First we see that the vertex $1$, opposite of face $234$, has recieved total force equal to $[0,0,0]$. Then, all the other vertices recieve the load equaly spread among them $\dfrac{1}{3}p A_1$, where $A_1$ is the area of face $234$. Further, the entire vector is directed along the dirction cosines $\bar{a_1} = \dfrac{a_1}{S_1}, \bar{b_1} = \dfrac{b_1}{S_1}, \bar{c_1} = \dfrac{c_1}{S_1}$, where $S_1 = \sqrt{a^{2}_{1} + b^{2}_{1} + c^{2}_{1}}$. To compute the area $A_1$ we can use the corss product property. We choose two directed vectors from face $234$ coming from any of its corners e.g. $u_{32} = [x_{32}, y_{32}, z_{32}]$ and $u_{42} = [x_{42}, y_{42}, z_{42}]$. Then:
+\begin{equation}
+\begin{aligned}
+A_1 = \dfrac{1}{2} ||u_{32} \times u_{42}||_{2}
+\end{aligned}
+\end{equation}
+
+The procces is generalized for all face indices $i = 1,2,3,4$.
+
+%-----------------------------------------------------------------
 \chapter{Implementation}
 
 \section{CUDA}
@@ -395,6 +972,9 @@ One of the most simple finite elements used in FEM models is a linear tetrahedro
 \section{RTFEM Integration into Game Engine}
 \subsection{Rendering}
 \subsection{Collision}
+
+\subsection{User Interface}
+\subsection{Manual}
 
 % ---------------------------------------------------
 
@@ -428,6 +1008,10 @@ One of the most simple finite elements used in FEM models is a linear tetrahedro
 \bibitem[5]{zienkiewicz2} Zienkiewicz \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
 
 \bibitem[5]{altair} Altair University \emph{Practical Aspects of Finite Element Simulation}.
+
+\bibitem[5]{damping} Department of Civil and Environmental Engineering Duke University, Henri P. Gavin \emph{Structural Element Stiffness, Mass, and Damping Matrices CEE 541. Structural Dynamics}.
+
+\bibitem[6]{colorado_fem_lectures} Department of Aerospace Engineering Sciences University of Colorado at Boulder \emph{Advanced Finite Element Methods (ASEN 6367) Lectures https://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/}.
 
 \end{thebibliography}
 
