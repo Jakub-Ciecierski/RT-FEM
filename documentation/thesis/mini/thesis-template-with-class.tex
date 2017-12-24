@@ -71,7 +71,7 @@
 \pagestyle{fancy}
 
 \chapter*{Introduction}
-
+What is this thesis about.
 
 % ---------------------------------------------------
 
@@ -348,6 +348,9 @@ Finally, the corrected positions $p_i$ are used to compute velocites and positio
 
 % ---------------------------------------------------
 \chapter{Solid Mechanics}
+
+\section{Introduction}
+
 This assumes introduction to linear materials
 
 Stress tensor
@@ -626,7 +629,7 @@ We can use the fact that $C_{ijkl}$ is a symmetric tensor to further simplify th
 \begin{equation}
 \label{eq:static_fem}
 \begin{aligned}
-K_{3N \times 3N} = \int_{\Omega} B^{T}_{3N \times 6} C_{6 \times 6} B_{6 \times 3N} dV 
+K_{3N \times 3N} = \int_{\Omega} B^{T}_{6 \times 3N} C_{6 \times 6} B_{6 \times 3N} dV 
 \\
 Q_{3N \times 1} = \int_{\Omega} \Phi_{3N \times 3} \hat{f}_{3 \times 1} dV + \int_{\partial \Omega_{\sigma}} \Phi_{3N \times 3} \hat{t}_{3 \times 1} dA
 \end{aligned}
@@ -678,23 +681,124 @@ M_{3N \times 3N} =  \int_{\Omega} \rho \Phi^{T}_{3N \times 3} \Phi_{3N \times 3}
 \end{equation}
 We compute the local mass matrix $m_{e}$ using Eq.~\ref{eq:mass_matrix_matrix} over the $\Omega_{e}$ section. Assembly process is exactly the as in the case of stiffness matrix.
 
-\section{Boundary Conditions}
+\section{Sparse Matrix Representation}
+TODO show that Stiffness Mass and Damping matrices are sparse and symmetric.
 
+There exists many methods for storing sparse matrices in efficient way. One of the most popular methods is called Compressed Sparse Row(CSR). This method is chosen becouse of its common usage in numerical libraries in CUDA API. We will learn about its programming usages later on. For now we provide the definition for CSR storage.
 
+For simplicity we assume that a matrix $M$ is square sparse $n \times n$ matrix. CSR format stores matrix $M$ using three one-dimensional vectors $A_{V}, A_{I}, A_{J}$. Denote the number of nonzero elements in $M$ by $n_{z}$. The vectors are constructed as follows:
+\begin{enumerate}
+\item The vector $A_{V}$ is of length $n_{z}$ and holds all the nonzero elements of $M$ in left-to-right top-to-bottom(row-major) order.
+\item The vector $A_{J}$ is of length $n_{z}$. Contains the column indices in $M$ of each element in $A_{V}$.
+\item The vector $A_{I}$ is of length $n+1$ and is defined as follows:
+\begin{enumerate}
+\item $A_{I}[0] = 0$ 
+\item $A_{I}[i] = A_{I}[i-1] +$ (the number of nonzero elements on the $i-1$th row in $M$)\end{enumerate}
+\end{enumerate}
+
+\begin{example}
+Let $M$ be a matrix:
+\begin{equation}
+M =
+\begin{bmatrix}
+1 & -1 & 0 & -3 & 0 \\
+-2 & 5 & 0 & 0 & 0 \\
+0 & 0 & 4 & 6 & 4 \\
+-4 & 0 & 2 & 7 & 0 \\
+0 & 8 & 0 & 0 & -5
+\end{bmatrix}
+\end{equation}
+
+Matrix $M$ in CSR format looks like the following:
+
+Let $M$ be a matrix:
+\begin{equation}
+\begin{aligned}
+A_{V} =
+\begin{bmatrix}
+1 & -1 & -3 & -2 & 5 & 4 & 6 & 4 & -4 & 2 & 7 & 8 & -5
+\end{bmatrix}
+\\
+A_{J} =
+\begin{bmatrix}
+0 & 1 & 3 & 0 & 1 & 2 & 3 & 4 & 0 & 2 & 3 & 1 & 4
+\end{bmatrix}
+\\
+A_{I} =
+\begin{bmatrix}
+0 & 3 & 5 & 8 & 11 & 13
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+\end{example}
 
 \section{Solver}
-
-\subsection{Sparse Matrix Representation}
 
 \subsection{Implicit Euler}
 \subsection{CG}
 \subsection{CG with precondition}
 \subsection{LU}
 
-% ---------------------------------------------------
-\chapter{Computational Mesh}
-Creating Compulational Mesh
+\section{Boundary Conditions}
+In both static and dynamic systems we end up with the system of linear equations of the form: $Ax=b$. In the case of static system, $x$ is a vector of displacements. However in the implicit dynamic solver $x$ is a vector of the first derivative of displacements, i.e. velicities. In any case, applying the Dirichlet boundary conditions are done exacly the same, however they have a different meaning. In the former case we apply conditions directly on the values of displacements. In the latter, we apply conditions on their velocities. Method of applying the Dirichlet boundary conditions are presented.
 
+\begin{algorithm}
+\caption{Dirichlet BC for $Ax=b$}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{Dirichlet BC}{}
+\For{each bc $\bar{x}_j $}
+\State Subtract from each $i$th member of $b$, the product of $A_{ij}$ and $x_{j}$: $\hat{b_i} = b_i - A_{ij}\bar{x_{j}}$.
+\State Zero the $j$th row and column of $A$: $\hat{A}_{ij} = \hat{A}_{ji} = 0$
+\State Set $\hat{A_{jj}} = 1$
+\State Set $b_{j} = \bar{x}_j$
+\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{example}
+Consider the following system.
+\begin{equation}
+\begin{bmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33} \\
+\end{bmatrix}
+\begin{bmatrix}
+x_{1}\\
+x_{2}\\
+x_{3}
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_{1}\\
+b_{2}\\
+b_{3}
+\end{bmatrix}
+\end{equation}
+
+After applying boundary conditions with a known value $\bar{x_{3}}$, the system becomes:
+\begin{equation}
+\begin{bmatrix}
+A_{11} & A_{12} & 0 \\
+A_{21} & A_{22} & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+x_{1}\\
+x_{2}\\
+x_{3}
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_{1} - A_{13} \bar{x_{3}} \\
+b_{2} - A_{23} \bar{x_{3}}\\
+\bar{x_{3}}
+\end{bmatrix}
+\end{equation}
+
+\end{example}
 
 % ---------------------------------------------------
 \chapter{Finite Element - Tetrahedron}
@@ -873,7 +977,7 @@ Special cases that will be of intereset for us:
 
 We now have all components needed to compute local stiffness matrix $k_{12 \times 12}$ and local force vector $p_{12 \times 1}$. Our natural coordinates $\Phi^{(i)}$ will play a role of shape functions.
 
-\section{Stiffness}
+\section{Stiffness Matrix}
 
 First, we will define geometric matrix $B$ mentioned in Eq.~\ref{eq:geometric_matrix} explicitely in terms of derivatives computed in Eq.~\ref{eq:tetra_partial_derivates}:
 
@@ -894,19 +998,19 @@ We are going to use the Eq.~\ref{eq:static_fem} with integrals over $\Omega_{e}$
 
 First let us compute $k^{(e)}$
 \begin{equation}
-k^{(e)}_{12 \times 12} = \int_{\Omega_{e}} B^{T}_{12 \times 6} C_{6 \times 6} B_{6 \times 12} dV 
+k^{(e)}_{12 \times 12} = \int_{\Omega_{e}} B^{T}_{6 \times 12} C_{6 \times 6} B_{6 \times 12} dV 
 \end{equation}
 Since both $B$ and $C$ are constant i.e. do not depend on $x$ we simply get:
 \begin{equation}
 k^{(e)} = V B^{T} C B 
 \end{equation}
 
-\section{Forces}
+\section{Force Vector}
 We split the force into two independent parts: body forces and traction forces.
 
 \begin{equation}
 \begin{aligned}
-p_{12 \times 1} = \int_{\Omega_{e}} \Phi_{12 \times 3} \hat{f}_{3 \times 1} dV + \int_{\partial \Omega_{\sigma_{e}}} \Phi_{12 \times 3} \hat{t}_{3 \times 1} dA
+p_{12 \times 1} = \int_{\Omega_{e}} \Phi_{3 \times 12}^{T} \hat{f}_{3 \times 1} dV + \int_{\partial \Omega_{\sigma_{e}}} \Phi_{3 \times 12}^{T} \hat{t}_{3 \times 1} dA
 \end{aligned}
 \end{equation}
 
@@ -915,7 +1019,7 @@ Body forces such as gravity, are defined are a single force vector $\hat{f} = \r
 The body force is computed using the fist integral:
 \begin{equation}
 \begin{aligned}
-f^{(e)}_{12 \times 1} = \int_{\Omega_{e}} \Phi_{12 \times 3} \hat{f}_{3 \times 1} dV
+f^{(e)}_{12 \times 1} = \int_{\Omega_{e}} \Phi_{3 \times 12}^{T} \hat{f}_{3 \times 1} dV
 \end{aligned}
 \end{equation}
 Even if we assume that the body force $\hat{f}$ is constant, $\Phi$ is not constant. It depends on the shape functions $\Phi^{(i)}$ which in turn depends on $x$. Let us define $\Phi$ explicitely:
@@ -952,6 +1056,37 @@ A_1 = \dfrac{1}{2} ||u_{32} \times u_{42}||_{2}
 \end{equation}
 
 The procces is generalized for all face indices $i = 1,2,3,4$.
+
+\section{Mass Matrix}
+Recalling the equation~\ref{eq:mass_matrix_matrix} for mass matrix $M$, we can compute the local mass matrix $m^{(e)}$ following the same steps as in the case of stiffness matrix.
+\begin{equation}
+m^{(e)}_{12 \times 12} =  \int_{\Omega_{e}} \rho \Phi^{T}_{3 \times 12} \Phi_{3 \times 12} dV
+\end{equation}
+
+Using the equation~\ref{eq:anal_intergral} we receive:
+\begin{equation}
+m^{(e)}_{12 \times 12} = \dfrac{\rho V}{20}
+\begin{bmatrix}
+2 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+0 & 2 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+0 & 0 & 2 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
+1 & 0 & 0 & 2 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 2 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 & 2 & 0 & 0 & 1 & 0 & 0 & 1 \\
+1 & 0 & 0 & 1 & 0 & 0 & 2 & 0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 1 & 0 & 0 & 2 & 0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 2 & 0 & 0 & 1 \\
+1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 2 & 0 & 0 \\
+0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 2 & 0 \\
+0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 2 \\
+\end{bmatrix}
+\end{equation}
+
+Similarly to stiffness, mass matrix is also symmetric.
+
+% ---------------------------------------------------
+\chapter{Tetrahedralization}
+Creating Compulational Mesh
 
 %-----------------------------------------------------------------
 \chapter{Implementation}

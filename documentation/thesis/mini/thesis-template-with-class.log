@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  23 DEC 2017 18:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  24 DEC 2017 14:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -802,6 +802,9 @@ LaTeX Warning: Label `eq:fem_system' multiply defined.
 LaTeX Warning: Label `eq:displacement_field1' multiply defined.
 
 
+LaTeX Warning: Label `euclid' multiply defined.
+
+
 LaTeX Warning: Label `eq:geometric_matrix' multiply defined.
 
 
@@ -967,7 +970,14 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ]
 (./thesis-template-with-class.toc [7
 
-])
+]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[8])
 \tf@toc=\write4
 \openout4 = `thesis-template-with-class.toc'.
 
@@ -978,36 +988,17 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[8] [9
+[9] [10
 
+] [11
 
 ]
 Rozdzia\l  1.
-[10
+[12
 
 ]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 175.
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[11]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[12]
-Underfull \hbox (badness 2012) in paragraph at lines 244--246
-\T1/cmr/m/n/10.95 Further, we con-struct a mass ma-trix $\OML/plm/m/it/10.95 M 
-\OMS/plsy/m/n/10.95 2 \U/msb/m/n/10.95 R[]$ \T1/cmr/m/n/10.95 which is dia-go-n
-al with va-lues
- []
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1023,6 +1014,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [14]
+Underfull \hbox (badness 2012) in paragraph at lines 244--246
+\T1/cmr/m/n/10.95 Further, we con-struct a mass ma-trix $\OML/plm/m/it/10.95 M 
+\OMS/plsy/m/n/10.95 2 \U/msb/m/n/10.95 R[]$ \T1/cmr/m/n/10.95 which is dia-go-n
+al with va-lues
+ []
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1030,8 +1027,22 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [15]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[16]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[17]
 Rozdzia\l  2.
-[16
+[18
 
 ]
 
@@ -1040,15 +1051,15 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[17]
+[19]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[18]
-Overfull \hbox (89.34892pt too wide) detected at line 526
+[20]
+Overfull \hbox (89.34892pt too wide) detected at line 529
 [][]\OML/plm/m/it/10.95 ^^Nq[]\OT4/cmr/m/n/10.95 [\OML/plm/m/it/10.95 q[] [][] 
 C[]\OT4/cmr/m/n/10.95 ^^H[]^^H[]\OML/plm/m/it/10.95 dV \OT4/cmr/m/n/10.95 + [][
 ] \OML/plm/m/it/10.95 C[]\OT4/cmr/m/n/10.95 ^^H[][]\OML/plm/m/it/10.95 dV \OT4/
@@ -1065,20 +1076,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[19]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[20]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
 [21]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1087,26 +1084,50 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [22]
-Rozdzia\l  3.
-[23
 
-]
-Rozdzia\l  4.
-<pictures/tetrahedron.png, id=624, 1025.8325pt x 343.2825pt>
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[23]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[24]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[25]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[26]
+Rozdzia\l  3.
+<pictures/tetrahedron.png, id=636, 1025.8325pt x 343.2825pt>
 File: pictures/tetrahedron.png Graphic file (type png)
 
 <use pictures/tetrahedron.png>
-Package pdftex.def Info: pictures/tetrahedron.png used on input line 725.
+Package pdftex.def Info: pictures/tetrahedron.png used on input line 829.
 (pdftex.def)             Requested size: 512.91501pt x 171.64082pt.
 
-Overfull \hbox (57.67088pt too wide) in paragraph at lines 725--726
+Overfull \hbox (57.67088pt too wide) in paragraph at lines 829--830
  [][] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[24
+[27
 
 ]
 
@@ -1115,12 +1136,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[25pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1
+[28pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.804 W
+l.908 W
        e can now write the matrix system in more compact way using further a...
  <./pictures/tetrahedron.png>]
 
@@ -1129,195 +1150,122 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[26]
+[29]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[27]
+[30]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[28]
+[31]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[32]
+Rozdzia\l  4.
+[33
+
+]
 Rozdzia\l  5.
-[29
+[34
 
 ]
 Rozdzia\l  6.
-[30
+[35
 
 ]
 Rozdzia\l  7.
-[31
+[36
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 1014--1015
+Underfull \hbox (badness 10000) in paragraph at lines 1149--1150
 []\T1/cmr/m/n/10.95 Department of Ae-ro-space En-gi-ne-ering Scien-ces Uni-ver-
 sity of Co-lo-rado
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1014--1015
+Underfull \hbox (badness 10000) in paragraph at lines 1149--1150
 \T1/cmr/m/n/10.95 at Bo-ul-der \T1/cmr/m/it/10.95 Ad-van-ced Fi-nite Ele-ment M
 e-thods (ASEN 6367) Lec-tu-res
  []
 
-[32
+[37
 
-] [33
+] [38
 
 ] (./thesis-template-with-class.lof)
 \tf@lof=\write5
 \openout5 = `thesis-template-with-class.lof'.
 
- [34
+ [39
 
 ]
 (./thesis-template-with-class.lot)
 \tf@lot=\write6
 \openout6 = `thesis-template-with-class.lot'.
 
- [35
+ [40
 
-] [36
+] [41
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1051.
- [37]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1051.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1186.
+ [42]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1186.
 
 (./thesis-template-with-class.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1051.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1051.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1186.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1186.
 
+Package rerunfilecheck Info: File `thesis-template-with-class.out' has not chan
+ged.
+(rerunfilecheck)             Checksum: B524CEA170D43B618557EB46B05E85B2;8178.
 
-
-Package rerunfilecheck Warning: File `thesis-template-with-class.out' has chang
-ed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `thesis-template-with-class.out':
-(rerunfilecheck)             Before: 5B4B1BCDC4CF82FDF6F50BCB6E1940AD;7889
-(rerunfilecheck)             After:  B0B859499834515ED3E2ECEECBDBCE1C;7889.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1051.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1186.
  ) 
 Here is how much of TeX's memory you used:
- 13208 strings out of 493029
- 181370 string characters out of 6136233
- 277808 words of memory out of 5000000
- 16307 multiletter control sequences out of 15000+600000
+ 13206 strings out of 493029
+ 181235 string characters out of 6136233
+ 283816 words of memory out of 5000000
+ 16310 multiletter control sequences out of 15000+600000
  16125 words of font info for 43 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  36i,15n,45p,948b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{equation.3.2.41} has been referenced but does not
- exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.22} has been referenced but does not e
-xist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.2.37} has been referenced but does not e
-xist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.2.34} has been referenced but does not e
-xist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.21} has been referenced but does not e
-xist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.10} has been referenced but does not e
-xist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.24} has been referenced but does not e
-xist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.14} has been referenced but does not e
-xist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.9} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.3} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.8} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.5} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{equation.3.1.6} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.4.5} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.4.4} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.4.3} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.4.2} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.4.1} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.3.4} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.3.3} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.2.1} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.3.2} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.1.3} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.1.2} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{subsection.3.1.1} has been referenced but does not 
-exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.3.1} has been referenced but does not exist
-, replaced by a fixed one
-
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texlive/
-texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/share/texlive/texmf-dist/fonts/enc
-/dvips/pl/plms.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{
-/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plme.enc}</usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/pl/plex10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/pl/plmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl
-/plmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plmi8.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/pl/plr6.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/pl/plr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/pl
-sy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plsy8.pfb></usr/s
-hare/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/typ
-e1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/s
-fbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/sh
-are/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type
-1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
-rm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on thesis-template-with-class.pdf (37 pages, 342874 bytes).
+{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
+e/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/share/texlive/texmf-dist/fonts/e
+nc/dvips/pl/plms.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc
+}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plme.enc}</usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/pl/plmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+pl/plmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plmi8.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/pl/plr6.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/pl/plr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/
+plsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plsy8.pfb></usr
+/share/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/t
+ype1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super
+/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/
+share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/ty
+pe1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/
+sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb>
+Output written on thesis-template-with-class.pdf (42 pages, 351592 bytes).
 PDF statistics:
- 838 PDF objects out of 1000 (max. 8388607)
- 712 compressed objects within 8 object streams
- 236 named destinations out of 1000 (max. 500000)
- 494 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 859 PDF objects out of 1000 (max. 8388607)
+ 726 compressed objects within 8 object streams
+ 231 named destinations out of 1000 (max. 500000)
+ 510 words of extra memory for PDF output out of 10000 (max. 10000000)
 
