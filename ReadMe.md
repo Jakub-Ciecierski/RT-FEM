@@ -5,7 +5,7 @@ The library computes the entire process of Finite Element Method for solid mecha
     * 3D Finite Element Meshing of given geometry.
  1. FEM Solver:
     * [CPU] Linear elastic, linear deformation, static.
-    * TODO
+    * GPU
  1. Post-Processing:
     * Output all Solid Mechanics FEM artifacts.
 

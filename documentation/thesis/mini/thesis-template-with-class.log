@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  24 DEC 2017 14:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  27 DEC 2017 20:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1059,7 +1059,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [20]
-Overfull \hbox (89.34892pt too wide) detected at line 529
+Overfull \hbox (89.34892pt too wide) detected at line 530
 [][]\OML/plm/m/it/10.95 ^^Nq[]\OT4/cmr/m/n/10.95 [\OML/plm/m/it/10.95 q[] [][] 
 C[]\OT4/cmr/m/n/10.95 ^^H[]^^H[]\OML/plm/m/it/10.95 dV \OT4/cmr/m/n/10.95 + [][
 ] \OML/plm/m/it/10.95 C[]\OT4/cmr/m/n/10.95 ^^H[][]\OML/plm/m/it/10.95 dV \OT4/
@@ -1112,22 +1112,29 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [26]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[27]
 Rozdzia\l  3.
-<pictures/tetrahedron.png, id=636, 1025.8325pt x 343.2825pt>
+<pictures/tetrahedron.png, id=698, 1025.8325pt x 343.2825pt>
 File: pictures/tetrahedron.png Graphic file (type png)
 
 <use pictures/tetrahedron.png>
-Package pdftex.def Info: pictures/tetrahedron.png used on input line 829.
+Package pdftex.def Info: pictures/tetrahedron.png used on input line 897.
 (pdftex.def)             Requested size: 512.91501pt x 171.64082pt.
 
-Overfull \hbox (57.67088pt too wide) in paragraph at lines 829--830
+Overfull \hbox (57.67088pt too wide) in paragraph at lines 897--898
  [][] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[27
+[28
 
 ]
 
@@ -1136,21 +1143,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[28pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1
+[29pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.908 W
+l.976 W
        e can now write the matrix system in more compact way using further a...
  <./pictures/tetrahedron.png>]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[29]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1172,100 +1172,386 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [32]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[33]
 Rozdzia\l  4.
-[33
+
+Underfull \vbox (badness 1259) has occurred while \output is active []
+
+ [34
 
 ]
+<pictures/paraboloid.png, id=766, 636.3775pt x 504.88625pt>
+File: pictures/paraboloid.png Graphic file (type png)
+
+<use pictures/paraboloid.png>
+Package pdftex.def Info: pictures/paraboloid.png used on input line 1217.
+(pdftex.def)             Requested size: 318.18797pt x 252.44249pt.
+
+<pictures/contour.png, id=768, 620.3175pt x 598.235pt>
+File: pictures/contour.png Graphic file (type png)
+
+<use pictures/contour.png>
+Package pdftex.def Info: pictures/contour.png used on input line 1223.
+(pdftex.def)             Requested size: 310.15799pt x 299.11676pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[35pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1229 \begin{equation}
+                        <./pictures/paraboloid.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[36pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1256 \begin{equation}
+                        <./pictures/contour.png>]
+<pictures/alpha1.png, id=796, 331.2375pt x 276.03125pt>
+File: pictures/alpha1.png Graphic file (type png)
+
+<use pictures/alpha1.png>
+Package pdftex.def Info: pictures/alpha1.png used on input line 1282.
+(pdftex.def)             Requested size: 264.99034pt x 220.82529pt.
+
+<pictures/alpha2.png, id=799, 290.08376pt x 273.02pt>
+File: pictures/alpha2.png Graphic file (type png)
+
+<use pictures/alpha2.png>
+Package pdftex.def Info: pictures/alpha2.png used on input line 1289.
+(pdftex.def)             Requested size: 232.0673pt x 218.41629pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[37pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1304 \end{equation}
+                      <./pictures/alpha1.png>]
+<pictures/steepest_descent.png, id=812, 669.50125pt x 588.1975pt>
+File: pictures/steepest_descent.png Graphic file (type png)
+
+<use pictures/steepest_descent.png>
+Package pdftex.def Info: pictures/steepest_descent.png used on input line 1310.
+
+(pdftex.def)             Requested size: 334.7498pt x 294.09802pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[38pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1335 \begin{equation}
+                        <./pictures/alpha2.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[39pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1355 \chapter
+               {Tetrahedralization} <./pictures/steepest_descent.png>]
 Rozdzia\l  5.
-[34
+<pictures/3dmesh_incomplite.png, id=830, 503.8825pt x 428.60126pt>
+File: pictures/3dmesh_incomplite.png Graphic file (type png)
 
-]
+<use pictures/3dmesh_incomplite.png>
+Package pdftex.def Info: pictures/3dmesh_incomplite.png used on input line 1361
+.
+(pdftex.def)             Requested size: 251.94063pt x 214.3001pt.
+
+<pictures/tetrahedra_shapes.png, id=834, 1260.71pt x 310.15875pt>
+File: pictures/tetrahedra_shapes.png Graphic file (type png)
+
+<use pictures/tetrahedra_shapes.png>
+Package pdftex.def Info: pictures/tetrahedra_shapes.png used on input line 1372
+.
+(pdftex.def)             Requested size: 378.21593pt x 93.04834pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/3dmesh.png, id=836, 844.15375pt x 621.32124pt>
+File: pictures/3dmesh.png Graphic file (type png)
+
+<use pictures/3dmesh.png>
+Package pdftex.def Info: pictures/3dmesh.png used on input line 1379.
+(pdftex.def)             Requested size: 422.07584pt x 310.65987pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [40
+
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1392 \chapter
+               {Implementation} <./pictures/3dmesh_incomplite.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[41pdfTeX warning (ext4): destination with the same identifier (name{figure.5.2
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1392 \chapter
+               {Implementation}pdfTeX warning (ext4): destination with the same
+ identifier (name{figure.5.3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1392 \chapter
+               {Implementation} <./pictures/tetrahedra_shapes.png> <./pictures/
+3dmesh.png>]
 Rozdzia\l  6.
-[35
+[42
 
-]
+] <pictures/fem_model.png, id=865, 800.9925pt x 605.26125pt>
+File: pictures/fem_model.png Graphic file (type png)
+
+<use pictures/fem_model.png>
+Package pdftex.def Info: pictures/fem_model.png used on input line 1429.
+(pdftex.def)             Requested size: 480.5992pt x 363.15953pt.
+
+Overfull \hbox (25.35507pt too wide) in paragraph at lines 1429--1430
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/tetrahedralization.png, id=867, 451.6875pt x 308.15125pt>
+File: pictures/tetrahedralization.png Graphic file (type png)
+
+<use pictures/tetrahedralization.png>
+Package pdftex.def Info: pictures/tetrahedralization.png used on input line 143
+8.
+(pdftex.def)             Requested size: 271.01459pt x 184.89217pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/solver.png, id=870, 955.57pt x 544.0325pt>
+File: pictures/solver.png Graphic file (type png)
+ <use pictures/solver.png>
+Package pdftex.def Info: pictures/solver.png used on input line 1447.
+(pdftex.def)             Requested size: 477.78383pt x 272.01558pt.
+
+Overfull \hbox (22.5397pt too wide) in paragraph at lines 1447--1448
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[43]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[44pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1466 \end{algorithm}
+                      pdfTeX warning (ext4): destination with the same identifi
+er (name{figure.6.2}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1466 \end{algorithm}
+                       <./pictures/fem_model.png> <./pictures/tetrahedralizatio
+n.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[45pdfTeX warning (ext4): destination with the same identifier (name{figure.6.3
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1494 
+        <./pictures/solver.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[46]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[47]
 Rozdzia\l  7.
-[36
+[48
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 1149--1150
+Rozdzia\l  8.
+[49
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 1597--1598
 []\T1/cmr/m/n/10.95 Department of Ae-ro-space En-gi-ne-ering Scien-ces Uni-ver-
 sity of Co-lo-rado
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1149--1150
+Underfull \hbox (badness 10000) in paragraph at lines 1597--1598
 \T1/cmr/m/n/10.95 at Bo-ul-der \T1/cmr/m/it/10.95 Ad-van-ced Fi-nite Ele-ment M
 e-thods (ASEN 6367) Lec-tu-res
  []
 
-[37
+[50
 
-] [38
+] [51
 
 ] (./thesis-template-with-class.lof)
 \tf@lof=\write5
 \openout5 = `thesis-template-with-class.lof'.
 
- [39
+ [52
 
 ]
 (./thesis-template-with-class.lot)
 \tf@lot=\write6
 \openout6 = `thesis-template-with-class.lot'.
 
- [40
+ [53
 
-] [41
+] [54
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1186.
- [42]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1186.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1643.
+ [55]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1643.
 
 (./thesis-template-with-class.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1186.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1186.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1643.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1643.
 
-Package rerunfilecheck Info: File `thesis-template-with-class.out' has not chan
-ged.
-(rerunfilecheck)             Checksum: B524CEA170D43B618557EB46B05E85B2;8178.
 
+
+Package rerunfilecheck Warning: File `thesis-template-with-class.out' has chang
+ed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `thesis-template-with-class.out':
+(rerunfilecheck)             Before: FEF5B8844AA9842BB3E4ABFCA5FF1011;9948
+(rerunfilecheck)             After:  611B647A10F97630FBB4EE5EBE19A797;9883.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1186.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1643.
  ) 
 Here is how much of TeX's memory you used:
- 13206 strings out of 493029
- 181235 string characters out of 6136233
- 283816 words of memory out of 5000000
- 16310 multiletter control sequences out of 15000+600000
- 16125 words of font info for 43 fonts, out of 8000000 for 9000
+ 13383 strings out of 493029
+ 184228 string characters out of 6136233
+ 284947 words of memory out of 5000000
+ 16394 multiletter control sequences out of 15000+600000
+ 17655 words of font info for 45 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 36i,15n,45p,948b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
-e/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/share/texlive/texmf-dist/fonts/e
-nc/dvips/pl/plms.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc
-}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plme.enc}</usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/pl/plmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-pl/plmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plmi8.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/pl/plr6.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/pl/plr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/
-plsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plsy8.pfb></usr
-/share/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/t
-ype1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super
-/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/
-share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/ty
-pe1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/
-sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on thesis-template-with-class.pdf (42 pages, 351592 bytes).
+ 36i,15n,45p,1249b,439s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{section.4.2} has been referenced but does not exi
+st, replaced by a fixed one
+
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/share/texmf/fo
+nts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texlive/texmf-dist/fonts/enc
+/dvips/pl/plmi.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{
+/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plme.enc}</usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/pl/plex10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/pl/plmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl
+/plmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plmi8.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/pl/plr6.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/pl/plr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/pl
+sy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plsy6.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/pl/plsy8.pfb></usr/share/texmf/fonts
+/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/public/cm-sup
+er/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></us
+r/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/fonts/
+type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-supe
+r/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr
+/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb>
+Output written on thesis-template-with-class.pdf (55 pages, 982614 bytes).
 PDF statistics:
- 859 PDF objects out of 1000 (max. 8388607)
- 726 compressed objects within 8 object streams
- 231 named destinations out of 1000 (max. 500000)
- 510 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1102 PDF objects out of 1200 (max. 8388607)
+ 932 compressed objects within 10 object streams
+ 311 named destinations out of 1000 (max. 500000)
+ 629 words of extra memory for PDF output out of 10000 (max. 10000000)
 
