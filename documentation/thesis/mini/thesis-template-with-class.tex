@@ -350,19 +350,112 @@ Finally, the corrected positions $p_i$ are used to compute velocites and positio
 \chapter{Solid Mechanics - Part 1}
 \label{chap:solid_mechanics1}
 
-\section{Introduction}
-
-This assumes introduction to linear materials
-
-Stress tensor
-mass density
-external forces
-strain tensor. Chauchy
-displacement
-stiffness tensor
-Stress vector
-
 \section{Formulation}
+
+\subsection{Displacement}
+Displacement field $u(x)$ is a first order tensor, or a three dimensional vector. It defines the translation of body object. For clarity we will often omit the input position vector $x$ and use the simplified tensor notation $u_i$
+
+\subsection{Strain}
+Strain tensor is the measure of elongation of the material. It is defined as second order symmetric tensor $\epsilon$.
+\begin{equation}
+\begin{aligned}
+\epsilon =
+\begin{bmatrix}
+\epsilon_{11} & \epsilon_{12} & \epsilon_{13} \\
+\epsilon_{12} & \epsilon_{22} & \epsilon_{23} \\
+\epsilon_{13} & \epsilon_{23} & \epsilon_{33} \\
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+Strain tensor can be computed in many ways. The linear version $\epsilon_C$ called Cauchy's linear strain tensor is defined by:
+
+\begin{equation}
+\begin{aligned}
+\epsilon_C = \dfrac{1}{2}(\Delta u + (\Delta u)^{T})
+\end{aligned}
+\end{equation}
+
+where the gradient of displacement $u$ is defined:
+\begin{equation}
+\begin{aligned}
+\Delta u =
+\begin{bmatrix}
+u_{1,1} & u_{1,2} & u_{1,3} \\
+u_{2,1} & u_{2,2} & u_{2,3} \\
+u_{3,1} & u_{2,2} & u_{3,3} \\
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+In tensor notation the spatial derivative is denoted by: $u_{1,1} = \dfrac{\partial u_1}{\partial x_1}$.
+
+\subsection{Stress}
+Let us defined traction force vector $t$ as a density of forces $f$ acting on an area $A$ of a certain body point:
+\begin{equation}
+\begin{aligned}
+t = \dfrac{df}{dA}
+\end{aligned}
+\end{equation}
+
+Traction force acts with some magnitude along the normal vector $n$ to the snippet element with area $A$. The magnitude is defined by second order, symmetric stress tensor $\sigma$.
+\begin{equation}
+\begin{aligned}
+t = \sigma n
+\end{aligned}
+\end{equation}
+
+Stress tensor is defined by:
+\begin{equation}
+\begin{aligned}
+\sigma =
+\begin{bmatrix}
+\sigma_{11} & \sigma_{12} & \sigma_{13} \\
+\sigma_{12} & \sigma_{22} & \sigma_{23} \\
+\sigma_{13} & \sigma_{23} & \sigma_{33} \\
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
+\subsection{Constitutive Laws}
+We defined three dimensional Hooke's law which defines a linear relation between stress and strain
+\begin{equation}
+\begin{aligned}
+\sigma_{ij} = C_{ijkl}\epsilon_{kl}
+\end{aligned}
+\end{equation}
+The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does not depend on $x$ and is composed of only constant material parameters. In case of isotropic materials(material that behave the same in all directions of motion) the Hooke's law can be defined by the system:
+\begin{equation}
+\begin{aligned}
+\begin{bmatrix}
+\sigma_{11} \\
+\sigma_{22} \\
+\sigma_{33} \\
+\sigma_{12} \\
+\sigma_{23} \\
+\sigma_{31}
+\end{bmatrix}
+=
+\dfrac{E}{(1+ \nu })((1 - 2 \nu))}
+\begin{bmatrix}
+1 - \mathcal{v} & \mathcal{v} & \mathcal{v} & 0 & 0 & 0 \\
+\mathcal{v} & 1 - \mathcal{v} &  \mathcal{v} & 0 & 0 & 0 \\
+\mathcal{v} & \mathcal{v} & 1 - \mathcal{v} & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 - 2 \mathcal{v} & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 - 2 \mathcal{v} & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 - 2 \mathcal{v} \\
+
+\end{bmatrix}
+\begin{bmatrix}
+\epsilon_{11} \\
+\epsilon_{22} \\
+\epsilon_{33} \\
+\epsilon_{12} \\
+\epsilon_{23} \\
+\epsilon_{31}
+\end{bmatrix}
+\end{aligned}
+\end{equation}
+
 
 \subsection{Strong formulation}
 For linear static solid deformation.
@@ -1353,6 +1446,7 @@ The algorithm ends when maximum number of iteration has been reached or when $r_
 
 % ---------------------------------------------------
 \chapter{Tetrahedralization}
+\label{chap:Tetrahedralization}
 A quality mesh can be defined by a few properties.
 One of the most basic properties is the fact that generated 3d mesh should correctly model the shape of the input domain. Figure~\ref{fig:mesh_incomplete} shows an tetrahedron mesh that does not model the shape of the cube domain correctly.
 
@@ -1552,22 +1646,133 @@ SolveForDisplacements function shown in algorithm~\ref{alg:SolveForDisplacements
 Computing right hand side vector and solving linear system of equations require the most computation power. These two functions are fully accelerated on GPU using CUDA.
 
 \section{RTFEM Integration into Game Engine}
-\subsection{Editor}
-\subsection{Rendering}
-\subsection{Collision}
+For the purposes of this thesis RTFEM has been integrated into open source game engine created by the author of this thesis, see source code~\cite{ifx}. The entire architecture of the engine is out of the scope of this text. However, the following section will describe the components needed to understand the process of intergrating RTFEM. Figure~\ref{fig:ifx_example} shows screenshot from the engines editor.
 
-\subsection{User Interface}
-\subsection{Manual}
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/ifx/ifx.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_example}
+\end{figure}
+
+Figure~\ref{fig:ifx_general} shows the most important modules. Physics module is devoted to run rigid body and soft body simulations. For rigid body simulations it encapsulates lower level rigid body libraries such as PhysX 3.4~\cite{physx} and Bullet~\cite{bullet}. Soft body simulation is implemented using RTFEM.
+Graphics module is built on top of OpenGL~\cite{opengl}. It encapsulates low level OpenGL programming to increase the productivity. It supports rendering with basic texture materials such as difuse, ambient and normal mapping. It also supports lighting and shadow effects. User can easly program and edit shader program in run time.
+InputControls is a module responsible for handling user input from mouse and keyboard.
+Game module combines all individual modules and provides set of rules for how they should interact with each other. All modules are fully decoupled and communicate with each other through Game module.
+Finally, Editor module is responsible for graphical user interface, which allows for creating 3D objects, rigid bodies, editing shaders and soft body objects.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx_general.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_general}
+\end{figure}
+
+Physics module is described in more detail in figure~\ref{fig:ifx_physics}. RigidBody and RigidBodySimulation use the bridge design pattern to inject different implementations such as PhysX, Bullet or other libraries that the user might want to implement. SoftBodySimulation uses FEMDynamicSolver to simulate physics for SoftBodyFEM objects.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx_physics.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_physics}
+\end{figure}
+
+Most important systems of Graphics module is shown in figure~\ref{fig:ifx_graphics}. Renderer contains RenderingEffects which are composed of RenderObjects and ShaderPrograms. RenderObject encapsulates the triangle mesh and materials such textures and other parameters. ShaderProgram interprets these triangles meshes and materials by programable shaders using GLSL language.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx_graphics.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_graphics}
+\end{figure}
+
+Basic GameLoop is presented in figure~\ref{fig:ifx_game1}. The GameContainer contains GameObjects which are composed of GameComponents. GameObject are object that apear in the scene. They can be transformed to any coordinate system by translation, rotation or scaling. We add GameComponents to make the game objects more interesting. Currently the engine supports multiple game components: light source, camera, render object, rigid body or soft body.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx_game.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_game1}
+\end{figure}
+
+The game loop sequence is shown in figure~\ref{fig:ifx_game_loop}. Each system is updated in a sequence. However each system is updated with different frequency, which can be set by the user. For example, we can update physics twice as often as rendering graphics. GameContainer update is used to synchronize transformations of rigid bodies computed in physics simulation with render components.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{pictures/game_loop.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_game_loop}
+\end{figure}
+
+Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into game module. SoftBodyFEMComponent is created by deriving the GameComponent interface and SoftBodyFEM from the physics module. The soft body component also contains a render object which is created by fetching the boundary triangle faces of FEM model. SoftBodyFEM is updated in PhysicsSimulation which computes and stores the displacements. SoftBodyFEMComponent uses the displacements to synchronize renderable vertices by updating the current vertex buffer object(VBO). That happens in the GameContainer update function. Finally the boundary triangle faces are rendered in Renderer update.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx_game2.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_game2}
+\end{figure}
+
+
+\subsection{Editor}
+This section describes the graphical editor of soft body system in the game engine. Soft body editor can be opened by clicking the Soft Body button located in the middle view port, see figure~\ref{fig:ifx_example}. We can select a game object to be opened by right clicking it in the scene list(left panel). Game object that can be opened in the soft body editor must have exacly one render component. It can have other components too. The render component contains the triangle mesh that is used as a input problem domain in the 3D mesh generation. Figures~\ref{fig:ifx_meshing} through~\ref{fig:ifx_solver2} present the soft body editor panels. In the first step we want to create 3D mesh. Meshing panel is devoted to that procedure. Figure~\ref{fig:ifx_meshing} shows control parameters explained in chapter~\ref{chap:Tetrahedralization}. The cube has been already meshes with example parameter values.
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx/ifx_meshing.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_meshing}
+\end{figure}
+
+Next, figure~\ref{fig:ifx_material}, we are presented with materials described in chapter~\ref{chap:solid_mechanics1}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx/ifx_material.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_material}
+\end{figure}
+
+Boundary conditions panel is shown in figure~\ref{fig:ifx_bc}. The user can select multiple vertices by holding down the left mouse button. Then the user inputs the value for new boundary conditions. In this example, the velocity of selected vertices will be equal to zero. Thus, the vertices will stay put.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx/ifx_bc.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_bc}
+\end{figure}
+
+In the load panel(see figure~\ref{fig:ifx_load} user can select body force that acts on the entire body, simulating gravity. Traction forces are selected by left clicking on a triangle face and draging the mouse to choose the magnitude of traction force. Remember that the direction of the traction force lies along the normal of that face.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx/ifx_load.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_load}
+\end{figure}
+
+Finally, the solver panel is shown in figure~\ref{fig:ifx_solver1}. Build button assembles the model using the geometry and parameters chosen in previous panels. Play button starts the simulation. Step button steps the simulation by a single iteration. We can choose the frequency of physics simulation and the synchronization of output displacements with vertex buffer object. Time rescrictions can be selected to stop the simulation after input amount of seconds. We can select if the solver should be computed on GPU or CPU. Linear solver can be chosen between Conjugate Gradient and LU decomposition. Figure~\ref{fig:ifx_solver2} shows the same model after about 20 seconds of simulation. The cube has been deformed under the gravity force. The timers are uses to profile the solver algorithms. It shows the time of computations for the last iteration.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx/ifx_solver1.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_solver1}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/ifx/ifx_solver2.png}
+\caption[Logo MiNI]{}
+\label{fig:ifx_solver2}
+\end{figure}
+
 
 % ---------------------------------------------------
 
 \chapter{Tests}
 
-\section{Benchmarks}
-\subsection{Float vs Double}
-\subsection{Materials}
-\subsection{Structures}
-\subsection{Speed}
 
 \chapter{Conclusions}
 
@@ -1604,6 +1809,15 @@ Computing right hand side vector and solving linear system of equations require 
 Delaunay Mesh Generation}.
 
 \bibitem[10]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
+
+\bibitem[11]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
+
+\bibitem[12]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
+
+\bibitem[13]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
+
+\bibitem[14]{opengl} OpenGl \emph{https://www.opengl.org/}.
+
 
 \end{thebibliography}
 
