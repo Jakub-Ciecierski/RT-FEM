@@ -80,7 +80,7 @@ What is this thesis about.
 \section{Mass Spring}
 \subsection{Formulation}
 The simplest method to simulate soft body deformation is Mass Spring System.
-Such a system includes a set of $N$ particles with masses $m_i$, positions $x_i$ and velocites $v_i$, where $i \in 1...N$. The particles are connected by a set of springs $S$. A single spring $s \in S$ consists of $s = (i, j, l_0, k_s, k_d)$, where $i$ and $j$ are the indices of connected particles, $l_0$ is the rest length, $k_s$ is the spring stiffness and $k_d$ is the damping coefficient. To calcuate the forces acting on particles $i$ and $j$, we use the following formula:
+Such a system includes a set of $N$ particles with masses $m_i$, positions $x_i$ and velocities $v_i$, where $i \in 1...N$. The particles are connected by a set of springs $S$. A single spring $s \in S$ consists of $s = (i, j, l_0, k_s, k_d)$, where $i$ and $j$ are the indices of connected particles, $l_0$ is the rest length, $k_s$ is the spring stiffness and $k_d$ is the damping coefficient. To calculate the forces acting on particles $i$ and $j$, we use the following formula:
 
 \begin{equation}
 f_{i}^{S} = f^{S}(x_i, x_j) = k_s \dfrac{x_j - x_i}{|x_j - x_i|}(|x_j - x_i| - l_0)
@@ -114,7 +114,7 @@ In order to simulate the mass spring system, we use the Newton's second law of m
 f = m \ddot{x}
 \end{equation}
 
-where $f$ is the force, $m$ is the mass and $\ddot{x}$ is the acceleration or the second derivate of position with respect to time. By transforming the equation to solve for acceleration, we get a second order ordinary differential equation(ODE):
+where $f$ is the force, $m$ is the mass and $\ddot{x}$ is the acceleration or the second derivative of position with respect to time. By transforming the equation to solve for acceleration, we get a second order ordinary differential equation(ODE):
 \begin{equation}
 \ddot{x} = \dfrac{f}{m}
 \end{equation}
@@ -193,7 +193,7 @@ The entire simulation can be summed with the following algorithm:
 
 $f^{g}$ is the gravity force and $f^{coll}$ collision forces.
 
-A known drawback for explicit Euler integration is the fact that it requires small time steps to remain stable. This problem accurs becouse explicit Euler does not account for the near future and it assumes that the force is constant during the entire time step. Let us assume a system of two particles connected with a spring. Assume the following configuration: the spring is stretched and the two particles start moving towards each other. If we take a large time step to compute the next configuration, the particles might pass the equilibrium configuration, which in theory means that the force should change its sign during that time step. Sadly, since the force is constant throughtout the entire time step, the sign change of the force is not accounted for. This might lead to particles overshooting and gaining energy which in turn leads to a so called simulation explosion.
+A known drawback for explicit Euler integration is the fact that it requires small time steps to remain stable. This problem occurs because explicit Euler does not account for the near future and it assumes that the force is constant during the entire time step. Let us assume a system of two particles connected with a spring. Assume the following configuration: the spring is stretched and the two particles start moving towards each other. If we take a large time step to compute the next configuration, the particles might pass the equilibrium configuration, which in theory means that the force should change its sign during that time step. Sadly, since the force is constant throughout the entire time step, the sign change of the force is not accounted for. This might lead to particles overshooting and gaining energy which in turn leads to a so called simulation explosion.
 Other numerical integration methods exist that are more accurate. Among the most popular are the second and fourth order Runge-Kutta integrators. These schemes compute forces multiple times during a single time step, which might reduce the effect of the problem mentioned above.
 
 \subsubsection{Runge-Kutta Integration}
@@ -216,12 +216,12 @@ v^{t+1} = v^{t} + \Delta t b_2
 \end{aligned}
 \end{equation}
 
-It is easy to see that the forces are computed twice during one time step. This makes the secord order Runge-Kutta integrator more accurate compared to the simple first order explicit Euler method.
+It is easy to see that the forces are computed twice during one time step. This makes the second order Runge-Kutta integrator more accurate compared to the simple first order explicit Euler method.
 
 One of the most popular methods of integrating ODE is a forth order Runge-Kutta integrator. It extends the the second order Runge-Kutta by computing the force four times during a single time step. Making it even more accurate. The accuracy obviously comes with longer computations.
 
 \subsubsection{Implicit Euler}
-Another way to improve stability is to use implicit integrator. Among the most populars is the implicit Euler method. As opposed to explicit integrators, the implicit is more physically correct.
+Another way to improve stability is to use implicit integrator. Among the most popular is the implicit Euler method. As opposed to explicit integrators, the implicit is more physically correct.
 \begin{equation}
 \label{eq:implicit_euler_ode_v}
 \begin{aligned}
@@ -230,9 +230,9 @@ v^{t+1} = v^{t} + \Delta t \dfrac{f(x^{t+1})}{m}
 x^{t+1} = x^{t} + \Delta t v^{t+1}
 \end{aligned}
 \end{equation}
-First difference lies in the force function $f$. Now it only depends on the position. In another words, the force does not include friction. It is said that implicit integration introduces enough numerical damping to accomedate for physical damping(TODO citation). However, if needed, the friction force can be added in the explicit step after the implicit solve. The most important change, is the fact that the force $f$ depends now on the position of next step $x^{t+1}$. Thus, it is no longer possible to explicitly compute the two equations. Instead we now deal with a algebraic system, with unknowns being $x^{t+1}$ and $v^{t+1}$.
+First difference lies in the force function $f$. Now it only depends on the position. In another words, the force does not include friction. It is said that implicit integration introduces enough numerical damping to accommodate for physical damping. However, if needed, the friction force can be added in the explicit step after the implicit solve. The most important change, is the fact that the force $f$ depends now on the position of next step $x^{t+1}$. Thus, it is no longer possible to explicitly compute the two equations. Instead we now deal with a algebraic system, with unknowns being $x^{t+1}$ and $v^{t+1}$.
 
-In order to compute these equation we must first construct the algebraic system. The position, velocites and forces are concatanted into vectors:
+In order to compute these equation we must first construct the algebraic system. The position, velocities and forces are concatenated into vectors:
 \begin{equation}
 \begin{aligned}
 x = [x_1, x_2, ..., x_n]
@@ -253,7 +253,7 @@ M v^{t+1} = M v^{t} + \Delta t f(x_{t+1})
 x^{t+1} = x + \Delta t v^{t+1}
 \end{equation}
 
-Substituing Eq.~\ref{eq:implicit_mass_ode_x} into Eq.~\ref{eq:implicit_mass_ode_v}, results in single system of algebraic equations:
+Substituting Eq.~\ref{eq:implicit_mass_ode_x} into Eq.~\ref{eq:implicit_mass_ode_v}, results in single system of algebraic equations:
 
 \begin{equation}
 M v^{t+1} = M v^{t} + \Delta t f(x + \Delta t v^{t+1})
@@ -261,18 +261,15 @@ M v^{t+1} = M v^{t} + \Delta t f(x + \Delta t v^{t+1})
 
 We solve this system for $v^{t+1}$.
 
-\subsubsection{Examples}
 Example implementation of mass spring system can found in open source software created by the author of this thesis in~\cite{JC-MassSpring}. 
-TODO Show screen
-TODO Give profesional example
 
 \subsubsection{Conclusions}
-Mass spring systems are easy to implement and for many applications give good enough results(e.g. computer games). However, relatively expensive ODE integrators have to be used in order to keep the simulation stable. Moreover, modeling physically correct materials can be a complicated task, since the parameters of the system hardly reflect reality.
+Mass spring systems are easy to implement and for many applications give good enough results(e.g. computer games). However, relatively expensive ODE integrators have to be used in order to keep the simulation stable. Moreover, modelling physically correct materials can be a complicated task, since the parameters of the system hardly reflect reality.
 
 \section{Position Based Dynamics}
 As the name suggests, Position Based Dynamics(PBD) omits integrating over velocity and works directly on positions. The biggest advantage over mass spring system is avoidance of overshooting problem during integration step.
 \subsection{Formulation}
-The system of PBD includes a set of $N$ particles and a set of $M$ contraints. Each particle $i$ has three attributes: 
+The system of PBD includes a set of $N$ particles and a set of $M$ constraints. Each particle $i$ has three attributes: 
 \begin{enumerate}
 \item mass $m_i$
 \item position $x_i$
@@ -285,11 +282,11 @@ Each constraint $j$ has five attributes:
 \item Cardinality - $n_j$
 \item Scalar constraint function - $C_j : \mathbb{R}^{3n_j} \rightarrow \mathbb{R}$
 \item Set of indices - $\{i_1, ..., i_{n_{j}}\}, i_k \in [1, ..., N]$
-\item Stiffness parametr - $k_j \in [0 ... 1]$
+\item Stiffness parameter - $k_j \in [0 ... 1]$
 \item Type - \textit{unilateral} or \textit{bilateral}
 \end{enumerate}
 
-It is said that bilateral contraint $j$ is satisfied if $C_j(x_{i_{1}}, ..., x_{i_{n_{j}}}) = 0$ or if the case of unilateral $C_j(x_{i_{1}}, ..., x_{i_{n_{j}}}) \geq 0$. The strength of the contraint is defined by the stiffness parameter $k_j$.
+It is said that bilateral constraint $j$ is satisfied if $C_j(x_{i_{1}}, ..., x_{i_{n_{j}}}) = 0$ or if the case of unilateral $C_j(x_{i_{1}}, ..., x_{i_{n_{j}}}) \geq 0$. The strength of the constraint is defined by the stiffness parameter $k_j$.
 
 Given initial conditions for positions and velocities the simulation proceeds as follows:
 
@@ -342,16 +339,17 @@ Given initial conditions for positions and velocities the simulation proceeds as
 The lines~\ref{alg:pdb:explicit_v} and~\ref{alg:pdb:explicit_p} compute explicit Euler integration on velocities and positions. However, output positions $p_i$ are only used as predictions. 
 The line ~\ref{alg:pdb:generate_collision_contraints} generates external constrain such as collisions. The original and predicted positions $x_i$, $p_i$ can be used in this step in order to perform continuous collision detection.
 The simulation then computes line~\ref{alg:pdb:project_contraints} which iteratively corrects the predicted positions such that they satisfy the $M_{ext}$ external and $M$ internal constraints.
-Finally, the corrected positions $p_i$ are used to compute velocites and positions.
+Finally, the corrected positions $p_i$ are used to compute velocities and positions.
+PDB has found its usage in nvidia's Flex library~\cite{flex}.
 
 \section{Finite Element Method}
+Mass spring systems can not simulate physically correct volumetric effects. Moreover, it highly depends on the structure of the spring mesh. Finally, the parameters in previous soft body dynamics systems have no physical intuition. Thus it is hard to create different physical materials. All these limitations can be suppressed by the Finite Element Method. Soft body dynamics based on FEM are not yet common in the real time environment. One of the most successful usages of FEM in real time simulation were done by~\cite{parker}. The authors were able to integrate their FEM solver in the game called Star Wars: The Force Unleashed. The details on FEM formulation will follow in next chapters.
 
 % ---------------------------------------------------
 \chapter{Solid Mechanics - Part 1}
 \label{chap:solid_mechanics1}
 
 \section{Formulation}
-
 \subsection{Displacement}
 Displacement field $u(x)$ is a first order tensor, or a three dimensional vector. It defines the translation of body object. For clarity we will often omit the input position vector $x$ and use the simplified tensor notation $u_i$
 
@@ -368,13 +366,11 @@ Strain tensor is the measure of elongation of the material. It is defined as sec
 \end{aligned}
 \end{equation}
 Strain tensor can be computed in many ways. The linear version $\epsilon_C$ called Cauchy's linear strain tensor is defined by:
-
 \begin{equation}
 \begin{aligned}
 \epsilon_C = \dfrac{1}{2}(\Delta u + (\Delta u)^{T})
 \end{aligned}
 \end{equation}
-
 where the gradient of displacement $u$ is defined:
 \begin{equation}
 \begin{aligned}
@@ -396,7 +392,6 @@ Let us defined traction force vector $t$ as a density of forces $f$ acting on an
 t = \dfrac{df}{dA}
 \end{aligned}
 \end{equation}
-
 Traction force acts with some magnitude along the normal vector $n$ to the snippet element with area $A$. The magnitude is defined by second order, symmetric stress tensor $\sigma$.
 \begin{equation}
 \begin{aligned}
@@ -423,6 +418,7 @@ We defined three dimensional Hooke's law which defines a linear relation between
 \sigma_{ij} = C_{ijkl}\epsilon_{kl}
 \end{aligned}
 \end{equation}
+
 The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does not depend on $x$ and is composed of only constant material parameters. In case of isotropic materials(material that behave the same in all directions of motion) the Hooke's law can be defined by the system:
 \begin{equation}
 \begin{aligned}
@@ -435,15 +431,14 @@ The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does
 \sigma_{31}
 \end{bmatrix}
 =
-\dfrac{E}{(1+ \nu })((1 - 2 \nu))}
+\dfrac{E}{(1+ nu)(1 - 2 nu)}
 \begin{bmatrix}
-1 - \mathcal{v} & \mathcal{v} & \mathcal{v} & 0 & 0 & 0 \\
-\mathcal{v} & 1 - \mathcal{v} &  \mathcal{v} & 0 & 0 & 0 \\
-\mathcal{v} & \mathcal{v} & 1 - \mathcal{v} & 0 & 0 & 0 \\
-0 & 0 & 0 & 1 - 2 \mathcal{v} & 0 & 0 \\
-0 & 0 & 0 & 0 & 1 - 2 \mathcal{v} & 0 \\
-0 & 0 & 0 & 0 & 0 & 1 - 2 \mathcal{v} \\
-
+1 - \nu & \nu & \nu & 0 & 0 & 0 \\
+\nu & 1 - \nu &  \nu & 0 & 0 & 0 \\
+\nu & \nu & 1 - \nu & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 - 2 \nu & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 - 2 \nu & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 - 2 \nu
 \end{bmatrix}
 \begin{bmatrix}
 \epsilon_{11} \\
@@ -455,10 +450,10 @@ The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does
 \end{bmatrix}
 \end{aligned}
 \end{equation}
-
+where $E$ is Young's modulus that describes the elastic stiffness, $\nu$ is the Poisson's coefficient that describes the conversation of volume within the material.
 
 \subsection{Strong formulation}
-For linear static solid deformation.
+A strong formulation can be described by the following set of partial  equations(PDE):
 \begin{equation}
 \begin{aligned}
 \sigma_{ij,j} + \hat{f_{i}} = 0 \quad x \in \Omega
@@ -469,7 +464,7 @@ For linear static solid deformation.
 \\
 \end{aligned}
 \end{equation}
-where $\hat{f_{i}} = \rho f_i$
+where $\hat{f_{i}} = \rho f_i$. $\rho$ describes the density of entire object. $f$ is called a body force vector and defines forces that act on the entire body e.g. gravity. The first equation is called equation of motion. Second is called constitutive equation. Third is called a geometric equation. All of them are linear  PDE, which is very convenient. Linear PDE's are much easier to discretize using FEM. At the end of discretizing linear PDE we will obtain linear system of algebraic equations. However, the simplified linear formulation comes with a price. Large deformations cause visual deformation and should be usually be modelled using non linear equations.
 
 \begin{equation}
 \begin{aligned}
@@ -480,7 +475,7 @@ u_i = \hat{u_i} \quad x \in \partial  \Omega_{u}
 \end{equation}
 
 \subsubsection{Dynamic System}
-In order to accommodate for the dynamic behavior of the system, we must slightly change the equation of motion.
+In order to accommodate for the dynamic behaviour of the system, we must slightly change the equation of motion.
 \begin{equation}
 \label{eq:motion_dynamic}
 \sigma_{ij,j} + \hat{f_{i}} = \rho \ddot{u_i} \quad x \in \Omega
@@ -508,7 +503,7 @@ For any variation $\delta u \in \mathcal{W}$ it is true that:
 \int_{\Omega}(\sigma_{ij,j} + \hat{f_i}) \delta u_{i} dV - \int_{\partial \Omega_{\sigma}}(\sigma_{ij}n_{j} - \hat{t_{i}}) \delta u_{i}dA = 0
 \end{equation}
 
-Let us transform the second integral from Eq.~\ref{eq:virtual_work1}, having in mind that $\partial \Omega = \partial \Omega_{u} \cup \partial \Omega_{\sigma}$. From definition of Eq.~\ref{eq:variations}, we see that variation $\delta u_{i}$ vanishes on remaining part of the boundary space $\partial \Omega_{u}$. Thus, we can treat this intergral as a integral over entire boundary space $\partial \Omega$. Now we can apply Gauss-Ostrogradsky theorem and transform it to:
+Let us transform the second integral from Eq.~\ref{eq:virtual_work1}, having in mind that $\partial \Omega = \partial \Omega_{u} \cup \partial \Omega_{\sigma}$. From definition of Eq.~\ref{eq:variations}, we see that variation $\delta u_{i}$ vanishes on remaining part of the boundary space $\partial \Omega_{u}$. Thus, we can treat this integral as a integral over entire boundary space $\partial \Omega$. Now we can apply Gauss-Ostrogradsky theorem and transform it to:
 \begin{equation}
 \label{eq:virtual_work2}
 \int_{\partial \Omega_{\sigma}}(\sigma_{ij}n_{j} - \hat{t_{i}}) \delta u_{i}dA = \int_{\Omega}(\sigma_{ij,j} \delta u_{i} + \sigma_{ij} \delta u_{i,j}) dV - \int_{\partial \Omega_{\sigma}} \hat{t} \delta u_i dA
@@ -530,7 +525,7 @@ By including the constitutive equation and the symmetry of stiffness tensor, we 
 \end{equation}
 
 \subsubsection{Dynamic System}
-Once again, we want to add dynamic behavior to the system. We do this by following that same steps but this time using the dynamic equation of motion(E.q~\ref{eq:motion_dynamic}).
+Once again, we want to add dynamic behaviour to the system. We do this by following that same steps but this time using the dynamic equation of motion(E.q~\ref{eq:motion_dynamic}).
 \begin{equation}
 \label{eq:virtual_work_dynamic4}
 \int_{\Omega}(C_{ijkl} u_{k,l} \delta u_{i,j} dV ) + \int_{\Omega}\rho \ddot{u_i} \delta u_i dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
@@ -538,8 +533,7 @@ Once again, we want to add dynamic behavior to the system. We do this by followi
 
 \subsection{Discrete formulation}
 
-
-The displacement fields $u_{i}(x)$ and their variations $\delta u_{i}(x)$ must be properly included in classes $\mathcal{P}$ and $\mathcal{W}$. By the defitions of classes $\mathcal{P}$ and $\mathcal{W}$, the following must stay true:
+The displacement fields $u_{i}(x)$ and their variations $\delta u_{i}(x)$ must be properly included in classes $\mathcal{P}$ and $\mathcal{W}$. By the definitions of classes $\mathcal{P}$ and $\mathcal{W}$, the following must be true:
 \begin{equation}
 \forall_{u_{i} \in \mathcal{P}, \delta u_{i} \in \mathcal{W}} \quad u_i + \delta u_i \in \mathcal{P}
 \end{equation}
@@ -564,7 +558,7 @@ Let us consider the following classes of displacement fields and their variation
 \end{aligned}
 \end{equation}
 
-This is a linear combination of three systems of $N$ linearly independent shape functions $\Phi_{i \alpha}(x)$, $i = 1,2,3$, with real coefficients $q_{\alpha}$ and $\delta q_{\alpha}$. These shape functions satisfy the diffrentiable criteria. We choose such functions $\Phi_{i \alpha}(x)$ so that they satisfy the condition $\Phi_{i \alpha} = 0$ on $\partial \Omega_{u}$. Furthermore, $\hat{\Phi_i}(x)$ $i = 1,2,3$ are any functions satisfying the condition $\hat{\Phi_{i}}(x) = \hat{u_i}$ on $\partial \Omega_{u}$.
+This is a linear combination of three systems of $N$ linearly independent shape functions $\Phi_{i \alpha}(x)$, $i = 1,2,3$, with real coefficients $q_{\alpha}$ and $\delta q_{\alpha}$. These shape functions satisfy the differentiable criteria. We choose such functions $\Phi_{i \alpha}(x)$ so that they satisfy the condition $\Phi_{i \alpha} = 0$ on $\partial \Omega_{u}$. Furthermore, $\hat{\Phi_i}(x)$ $i = 1,2,3$ are any functions satisfying the condition $\hat{\Phi_{i}}(x) = \hat{u_i}$ on $\partial \Omega_{u}$.
 
 Let us substitute such displacements fields and their variations into Eq.~\ref{eq:virtual_work4}.
 \begin{equation}
@@ -600,7 +594,7 @@ K_{N \times N} q_{N \times 1} = Q_{N \times 1}
 In Eq.~\ref{eq:fem_system} we are presented with a linear system of algebraic equations. Matrix $K$ is called a stiffness matrix. Vector $Q$ is called a exterior force vector, associated with displacements $q$. For now it will be only mentioned briefly that matrix $K$ is a symmetric and sparse matrix. Details will follow.
 
 \subsubsection{Dynamic System}
-Let us consider more general case in which we include dynamic behavior. The displacement fields are not functions of time.
+Let us consider more general case in which we include dynamic behaviour. The displacement fields are not functions of time.
 
 \begin{equation}
 \bar{u}(x, t) = \hat{\Phi_i}(x, t) + \Phi_{i \alpha}(x)q_{\alpha}(t)
@@ -639,7 +633,7 @@ We can expand our system of linear equations to:
 \label{eq:fem_system}
 M_{N \times N}\ddot{q}_{N \times 1} + K_{N \times N} q_{N \times 1} = Q_{N \times 1}
 \end{equation}
-This is a linear system of differential equations of second order. The unknows being the displacement fields $q_{\alpha}(t)$, which must be satisfied for each time $t$. Details on solving this system will follow.
+This is a linear system of differential equations of second order. The unknowns being the displacement fields $q_{\alpha}(t)$, which must be satisfied for each time $t$. Details on solving this system will follow.
 
 The final part of dynamic system is the damping matrix $C$. Damping is introduced to simulate friction forces internal to the structure. One model of creating damping matrix $C$ for structural systems is called Rayleigh damping matrix~\cite{damping}:
 \begin{equation}
@@ -653,7 +647,6 @@ Thus the final form of dynamic system is presented here:
 \label{eq:fem_system_damping}
 M_{N \times N}\ddot{q}_{N \times 1} + C_{N \times N}\dot{q}_{N \times 1} + K_{N \times N} q_{N \times 1} = Q_{N \times 1}
 \end{equation}
-%https://www.researchgate.net/post/What_is_difference_between_implicit_and_explicit_FEM_in_non-linear_quasi-static_problems
 
 \section{Finite Element Method}
 We will divide the space $\Omega$ using $E$ finite elements, each represented by the set $\Omega_{e}$, $e = 1,2,...,E$, where $\Omega_{e} \cap \Omega_{f} = \emptyset$, for $e \neq f$.
@@ -671,7 +664,7 @@ Similarly for the integrals over the area:
 \end{equation}
 where $E_{\partial \Omega}$ is a set of finite elements which have non empty $\partial \Omega_{\bar{e}}$ set.
 
-In FEM models we can apply physical intuition behind the discrete formulation. Recall that the shape functions $\Phi_{\alpha}(x)$ were associated with certain real coefficients $q_{\alpha}$. These coefficients will now be associated with vertices $x_{\alpha}$ of the finite elements. The coefficient $q_{\alpha}$ will now be called parameter of vertex $x_{\alpha}$. In 3D solid mechanics the parameter  $q_{\alpha}$ denotes the component of displacements vector of the associated vertex $x_{\alpha}$. Formally the displacement field will be aproximated by:
+In FEM models we can apply physical intuition behind the discrete formulation. Recall that the shape functions $\Phi_{\alpha}(x)$ were associated with certain real coefficients $q_{\alpha}$. These coefficients will now be associated with vertices $x_{\alpha}$ of the finite elements. The coefficient $q_{\alpha}$ will now be called parameter of vertex $x_{\alpha}$. In 3D solid mechanics the parameter  $q_{\alpha}$ denotes the component of displacements vector of the associated vertex $x_{\alpha}$. Formally the displacement field will be approximated by:
 
 \begin{equation}
 \bar{u}(x) = \Phi_{\alpha}(x)q_{\alpha}
@@ -683,7 +676,7 @@ Moreover, we can require that the coefficients $q_{\alpha}$ will be the value of
 \bar{u}(x_{\alpha}) = q_{\alpha}
 \end{equation}
 
-We can easly design a shape function satisfying the above criteria:
+We can easily design a shape function satisfying the above criteria:
 \begin{equation}
 \Phi_{\alpha}(x_{\beta}) = \delta_{\alpha \beta}
 \end{equation}
@@ -747,7 +740,7 @@ Where $B_{6 \times 3N}$ is called a geometric matrix and is defined as follows:
 \end{aligned}
 \end{equation}
 
-If in a given finite element $e$ there are $N_e$ vertices then the local count of vertex parameters is equal to $3N_e$. We will now introduce local stiffness matrix $k^{(e)}_{3N_e \times 3N_e}$ and force vector $p^{(3)}_{3N_e \times 1}$. These are computed using the Eq.~\ref{eq:static_fem} but using only the local shape functions of each finite element, namely the nonzero values on $\Omega_{e}$ section.
+If in a given finite element $e$ there are $N_e$ vertices then the local count of vertex parameters is equal to $3N_e$. We will now introduce local stiffness matrix $k^{(e)}_{3N_e \times 3N_e}$ and force vector $p^{(3)}_{3N_e \times 1}$. These are computed using the Eq.~\ref{eq:static_fem} but using only the local shape functions of each finite element, namely the non-zero values on $\Omega_{e}$ section.
 However, we must somehow map these local values to our global values, $K$ and $Q$. We introduce partial global stiffness matrix $K^{(e)}_{3N \times 3N}$ and partial global force vector $Q^{(e)}_{3N \times 1}$. They contain the local values($k^{e}$ and $p^{(e)}$) of the finite element $e$, mapped into their global coordinates using boolean matrix $A^{(e)}_{3N_{e} \times 3N}$.
 
 \begin{equation}
@@ -780,18 +773,16 @@ We compute the local mass matrix $m_{e}$ using Eq.~\ref{eq:mass_matrix_matrix} o
 TODO
 
 \section{Sparse Matrix Representation}
-TODO show that Stiffness Mass and Damping matrices are sparse and symmetric.
+There exists many methods for storing sparse matrices in efficient way. One of the most popular methods is called Compressed Sparse Row(CSR). This method is chosen because of its common usage in numerical libraries in CUDA API. We will learn about its programming usages later on. For now we provide the definition for CSR storage.
 
-There exists many methods for storing sparse matrices in efficient way. One of the most popular methods is called Compressed Sparse Row(CSR). This method is chosen becouse of its common usage in numerical libraries in CUDA API. We will learn about its programming usages later on. For now we provide the definition for CSR storage.
-
-For simplicity we assume that a matrix $M$ is square sparse $n \times n$ matrix. CSR format stores matrix $M$ using three one-dimensional vectors $A_{V}, A_{I}, A_{J}$. Denote the number of nonzero elements in $M$ by $n_{z}$. The vectors are constructed as follows:
+For simplicity we assume that a matrix $M$ is square sparse $n \times n$ matrix. CSR format stores matrix $M$ using three one-dimensional vectors $A_{V}, A_{I}, A_{J}$. Denote the number of non-zero elements in $M$ by $n_{z}$. The vectors are constructed as follows:
 \begin{enumerate}
-\item The vector $A_{V}$ is of length $n_{z}$ and holds all the nonzero elements of $M$ in left-to-right top-to-bottom(row-major) order.
+\item The vector $A_{V}$ is of length $n_{z}$ and holds all the non-zero elements of $M$ in left-to-right top-to-bottom(row-major) order.
 \item The vector $A_{J}$ is of length $n_{z}$. Contains the column indices in $M$ of each element in $A_{V}$.
 \item The vector $A_{I}$ is of length $n+1$ and is defined as follows:
 \begin{enumerate}
 \item $A_{I}[0] = 0$ 
-\item $A_{I}[i] = A_{I}[i-1] +$ (the number of nonzero elements on the $i-1$th row in $M$)\end{enumerate}
+\item $A_{I}[i] = A_{I}[i-1] +$ (the number of non-zero elements on the $i-1$th row in $M$)\end{enumerate}
 \end{enumerate}
 
 \begin{example}
@@ -831,7 +822,7 @@ A_{I} =
 
 \end{example}
 
-We can further improve the effieciency if we know that matrix $M$ is also symmetric. In such a case we only store the upper or the lower triangle of matrix $M$. One important restrictions rises, namely the fact that all diagonal values must be stored in CSR format, including zero elements.
+We can further improve the efficiency if we know that matrix $M$ is also symmetric. In such a case we only store the upper or the lower triangle of matrix $M$. One important restrictions rises, namely the fact that all diagonal values must be stored in CSR format, including zero elements.
 
 \begin{example}
 Let $M$ be a sparse and symmetric matrix:
@@ -879,7 +870,7 @@ Let us rewrite the Eq.~\ref{eq:fem_system_damping}:
 \label{eq:fem_dynamic2}
 M a + C v + K(x-\bar{x}) = Q
 \end{equation}
-where $a$ is the acceleration, $v$ is the velocity, $x$ is the current positions and $\bar{x}$ is the initial position. Notice that the displacement $q$ is definied as $x-\bar{x}$. We will use the implicit Euler scheme presented in Eq.~\ref{eq:implicit_euler_ode_v} to intergrate this system. Formally we want to compute:
+where $a$ is the acceleration, $v$ is the velocity, $x$ is the current positions and $\bar{x}$ is the initial position. Notice that the displacement $q$ is defined as $x-\bar{x}$. We will use the implicit Euler scheme presented in Eq.~\ref{eq:implicit_euler_ode_v} to integrate this system. Formally we want to compute:
 \begin{equation}
 \begin{aligned}
 v^{+} = v + \Delta t a^{+}
@@ -887,22 +878,22 @@ v^{+} = v + \Delta t a^{+}
 x^{+} = x + \Delta t v^{+}
 \end{aligned}
 \end{equation}
-where $x^{+}, v^{+}, a^{+}$ denote respectevily new positions, new velocities and new accelerations. Substituing into Eq.~\ref{eq:fem_dynamic2} and rearranging yeilds:
+where $x^{+}, v^{+}, a^{+}$ denote respectively new positions, new velocities and new accelerations. Substituting into Eq.~\ref{eq:fem_dynamic2} and rearranging yields:
 \begin{equation}
 \label{eq:fem_dynamic3}
 (M + \Delta t C + \Delta t^{2} K)v^{+} = \Delta t Q + Mv - \Delta t K(x-\bar{x})
 \end{equation} 
-Which can wrote shorter:
+Which we can write shorter:
 \begin{equation}
 \label{eq:fem_dynamic4}
 Av^{+} = b
 \end{equation} 
 The above equation is solved for $v^{+}$ and is used to compute $x^{+}$.
 Recall that matrices $M$, $C$ and $K$ are constant over all time steps. Thus, the left hand side $A$ can be precomputed and used between all time steps. It is also important to state that left hand side $A$ remains its structure. Namely it is still symmetric and sparse matrix. 
-To compute right hand side $b$ we have to do 3 operations every time step. First, trivial scalar vector multiplication $\Delta t Q$. Second, a diagonal matrix and vector multiplication $Mv$. Finally, the most computation intesive out of the three, symmetric sparse matrix and vector multiplication $\Delta t K(x-\bar{x})$.
+To compute right hand side $b$ we have to do 3 operations every time step. First, trivial scalar vector multiplication $\Delta t Q$. Second, a diagonal matrix and vector multiplication $Mv$. Finally, the most computation intensive out of the three, symmetric sparse matrix and vector multiplication $\Delta t K(x-\bar{x})$.
 
 \section{Boundary Conditions}
-In both static and dynamic systems we end up with the system of linear equations of the form: $Ax=b$. In the case of static system, $x$ is a vector of displacements. However in the implicit dynamic solver $x$ is a vector of the first derivative of displacements, i.e. velicities. In any case, applying the Dirichlet boundary conditions are done exacly the same, however they have a different meaning. In the former case we apply conditions directly on the values of displacements. In the latter, we apply conditions on their velocities. Method of applying the Dirichlet boundary conditions are presented.
+In both static and dynamic systems we end up with the system of linear equations of the form: $Ax=b$. In the case of static system, $x$ is a vector of displacements. However in the implicit dynamic solver $x$ is a vector of the first derivative of displacements, i.e. velocities. In any case, applying the Dirichlet boundary conditions are done exactly the same, however they have a different meaning. In the former case we apply conditions directly on the values of displacements. In the latter, we apply conditions on their velocities. Method of applying the Dirichlet boundary conditions are presented.
 
 \begin{algorithm}
 \caption{Dirichlet BC for $Ax=b$}\label{euclid}
@@ -993,7 +984,7 @@ The vertices are coplanar when $V$ is equal to zero. The vertices have indices: 
 
 \section{Natural Coordinates}
 
-So far we have specified the tetrahedron vertices in Cartesian coordinates $x,y,z$. An alternative coordinate system is called tetrahedral natural coordiantes and is composed of four functions: $\Phi^{(1)}(x), \Phi^{(2)}(x), \Phi^{(3)}(x), \Phi^{(4)}(x)$. They value of $\Phi^{(i)}$ is equal to $i$ at vertex $1$ and 0 in all other vertices. We add a contraint:
+So far we have specified the tetrahedron vertices in Cartesian coordinates $x,y,z$. An alternative coordinate system is called tetrahedral natural coordinates and is composed of four functions: $\Phi^{(1)}(x), \Phi^{(2)}(x), \Phi^{(3)}(x), \Phi^{(4)}(x)$. They value of $\Phi^{(i)}$ is equal to $i$ at vertex $1$ and 0 in all other vertices. We add a constraint:
 \begin{equation}
 \label{eq:tetra_indentity}
 \Phi^{(1)} + \Phi^{(2)} + \Phi^{(3)} + \Phi^{(4)} = 1
@@ -1001,7 +992,7 @@ So far we have specified the tetrahedron vertices in Cartesian coordinates $x,y,
 
 \subsection{Transformation}
 
-We have defined a different coordinate system. However, all quantities such as displacement fields, strain or stress are expressed in Cartesian coordinate system. Thus we need construct a transformation between this two coordinate systems. We combine the indentity constraint in Eq~\ref{eq:tetra_indentity} with the linear interpolation of natural coordinates i.e. $x = x_i \Phi^{(i)}$, $y = y_i \Phi^{(i)}$, $z = z_i \Phi^{(i)}$ to get the following matrix relation:
+We have defined a different coordinate system. However, all quantities such as displacement fields, strain or stress are expressed in Cartesian coordinate system. Thus we need construct a transformation between this two coordinate systems. We combine the identity constraint in Eq~\ref{eq:tetra_indentity} with the linear interpolation of natural coordinates i.e. $x = x_i \Phi^{(i)}$, $y = y_i \Phi^{(i)}$, $z = z_i \Phi^{(i)}$ to get the following matrix relation:
 
 \begin{equation}
 \begin{bmatrix}
@@ -1026,7 +1017,7 @@ z_1 & z_2 & z_3 & z_4
 \end{bmatrix}
 \end{equation}
 
-The inversion of the above system yeilds:
+The inversion of the above system yields:
 \begin{equation}
 \begin{bmatrix}
 \Phi^{(1)} \\
@@ -1098,7 +1089,7 @@ The explicit equation for $\Phi^{(i)}$ is given by:
 
 \section{Derivatives}
 
-We can easly compute the following partial derivates
+We can easily compute the following partial derivatives
 \begin{equation}
 \label{eq:tetra_partial_derivates}
 \begin{aligned}
@@ -1110,16 +1101,16 @@ We can easly compute the following partial derivates
 \end{aligned}
 \end{equation}
 
-\section{Analytical Intergration}
+\section{Analytical Integration}
 
-As mentioned before, intergration over the linear tetrahedron can be done analytically using the general formula:
+As mentioned before, integration over the linear tetrahedron can be done analytically using the general formula:
 
 \begin{equation}
 \int_{\Omega_{e}} \Phi^{i(1)} \Phi^{j(2)} \Phi^{k(3)} \Phi^{l(4)} d \Omega_{e} = \dfrac{i!j!k!l!}{(i+j+k+l+3)!} 6V
 \end{equation}
 
 Here the indices without brackets $i,j,k,l$ represent the power exponent.
-Special cases that will be of intereset for us:
+Special cases that will be of interest for us:
 \begin{equation}
 \label{eq:anal_intergral}
 \begin{aligned}
@@ -1183,7 +1174,7 @@ The body force is computed using the fist integral:
 f^{(e)}_{12 \times 1} = \int_{\Omega_{e}} \Phi_{3 \times 12}^{T} \hat{f}_{3 \times 1} dV
 \end{aligned}
 \end{equation}
-Even if we assume that the body force $\hat{f}$ is constant, $\Phi$ is not constant. It depends on the shape functions $\Phi^{(i)}$ which in turn depends on $x$. Let us define $\Phi$ explicitely:
+Even if we assume that the body force $\hat{f}$ is constant, $\Phi$ is not constant. It depends on the shape functions $\Phi^{(i)}$ which in turn depends on $x$. Let us define $\Phi$ explicitly:
 \begin{equation}
 \label{eq:geometric_matrix}
 \Phi_{3 \times 12} =
@@ -1194,7 +1185,7 @@ Even if we assume that the body force $\hat{f}$ is constant, $\Phi$ is not const
 \end{bmatrix}
 \end{equation}
 
-We can use the second analatical integral presented in Eq.~\ref{eq:anal_intergral}. Assuming that the force $\hat{f} = \rho[f_1, f_2, f_3]$ is constant we recieve:
+We can use the second analytical integral presented in Eq.~\ref{eq:anal_intergral}. Assuming that the force $\hat{f} = \rho[f_1, f_2, f_3]$ is constant we receive:
 \begin{equation}
 \begin{aligned}
 f^{(e)}_{12 \times 1} = \dfrac{1}{4} \rho V [f_1, f_2, f_3, f_1, f_2, f_3, f_1, f_2, f_3,f_1, f_2, f_3]^{T} 
@@ -1202,21 +1193,21 @@ f^{(e)}_{12 \times 1} = \dfrac{1}{4} \rho V [f_1, f_2, f_3, f_1, f_2, f_3, f_1, 
 \end{equation}
 
 \subsection{Traction Forces}
-Traction forces simulate the effect of pressure load, e.g. load applied after collision. As opposed to body forces, the traction forces are applied to element faces along their unit normal vector. Thus, each tetrahedron element should have an input of four scalar traction force magnitudes $p_i$, $i=1,2,3,4$, for each face. Traction force for entire tetrahedron is result of a sum of four traction forces computed for each face. To compute traction force for face $1$ or $234$ with input magnitute $p$, we use the formula:
+Traction forces simulate the effect of pressure load, e.g. load applied after collision. As opposed to body forces, the traction forces are applied to element faces along their unit normal vector. Thus, each tetrahedron element should have an input of four scalar traction force magnitudes $p_i$, $i=1,2,3,4$, for each face. Traction force for entire tetrahedron is result of a sum of four traction forces computed for each face. To compute traction force for face $1$ or $234$ with input magnitude $p$, we use the formula:
 \begin{equation}
 \begin{aligned}
 t^{(e)}_{12 \times 1} = \dfrac{1}{3} p A_1 [0, 0, 0, \bar{a_1}, \bar{b_1}, \bar{c_1}, \bar{a_1}, \bar{b_1}, \bar{c_1},\bar{a_1}, \bar{b_1}, \bar{c_1}]^{T} 
 \end{aligned}
 \end{equation}
 
-First we see that the vertex $1$, opposite of face $234$, has recieved total force equal to $[0,0,0]$. Then, all the other vertices recieve the load equaly spread among them $\dfrac{1}{3}p A_1$, where $A_1$ is the area of face $234$. Further, the entire vector is directed along the dirction cosines $\bar{a_1} = \dfrac{a_1}{S_1}, \bar{b_1} = \dfrac{b_1}{S_1}, \bar{c_1} = \dfrac{c_1}{S_1}$, where $S_1 = \sqrt{a^{2}_{1} + b^{2}_{1} + c^{2}_{1}}$. To compute the area $A_1$ we can use the corss product property. We choose two directed vectors from face $234$ coming from any of its corners e.g. $u_{32} = [x_{32}, y_{32}, z_{32}]$ and $u_{42} = [x_{42}, y_{42}, z_{42}]$. Then:
+First we see that the vertex $1$, opposite of face $234$, has received total force equal to $[0,0,0]$. Then, all the other vertices receive the load equally spread among them $\dfrac{1}{3}p A_1$, where $A_1$ is the area of face $234$. Further, the entire vector is directed along the direction cosines $\bar{a_1} = \dfrac{a_1}{S_1}, \bar{b_1} = \dfrac{b_1}{S_1}, \bar{c_1} = \dfrac{c_1}{S_1}$, where $S_1 = \sqrt{a^{2}_{1} + b^{2}_{1} + c^{2}_{1}}$. To compute the area $A_1$ we can use the cross product property. We choose two directed vectors from face $234$ coming from any of its corners e.g. $u_{32} = [x_{32}, y_{32}, z_{32}]$ and $u_{42} = [x_{42}, y_{42}, z_{42}]$. Then:
 \begin{equation}
 \begin{aligned}
 A_1 = \dfrac{1}{2} ||u_{32} \times u_{42}||_{2}
 \end{aligned}
 \end{equation}
 
-The procces is generalized for all face indices $i = 1,2,3,4$.
+The process is generalized for all face indices $i = 1,2,3,4$.
 
 \section{Mass Matrix}
 Recalling the equation~\ref{eq:mass_matrix_matrix} for mass matrix $M$, we can compute the local mass matrix $m^{(e)}$ following the same steps as in the case of stiffness matrix.
@@ -1252,7 +1243,7 @@ TODO
 \chapter{Solving System of Linear Equations}
 
 \section{Conjugate Gradient}
-This section explains all the tools required to define the Conjugate Gradient algorith.
+This section explains all the tools required to define the Conjugate Gradient algorithm.
 \subsection{Introduction}
 Conjugate Gradient(CG) is one of the most popular iterative methods of solving system of linear equations:
 \begin{equation}
@@ -1295,7 +1286,7 @@ f^{'}(x) =
 \end{bmatrix}
 \end{equation}
 
-Taking a gradient of Eq.~\ref{eq:quadratic_form} yeilds:
+Taking a gradient of Eq.~\ref{eq:quadratic_form} yields:
 \begin{equation}
 f^{'}(x) = \dfrac{1}{2}A^{T}x + \dfrac{1}{2}Ax - b
 \end{equation}
@@ -1318,7 +1309,7 @@ If we set the gradient to zero then we get the solution for $Ax=b$ which is also
 \end{figure}
 
 \subsection{Steepest Descent}
-In the method of Steepest Descent we look for the solution $x$ by going down the paraboloid. We start at some point $x_0$ and iterate the steps taking new points $x_1, x_2 ,...$ untill we hit the minimum. Obviously we want to take the steps in the direction for which values of $f$ decreases the most. That direction is the opposite of $f^{'}(x)$, namely:
+In the method of Steepest Descent we look for the solution $x$ by going down the paraboloid. We start at some point $x_0$ and iterate the steps taking new points $x_1, x_2 ,...$ until we hit the minimum. Obviously we want to take the steps in the direction for which values of $f$ decreases the most. That direction is the opposite of $f^{'}(x)$, namely:
 \begin{equation}
 \label{eq:gradient_minus}
 -f^{'}(x) = b - Ax
@@ -1351,7 +1342,7 @@ We use a line search that will choose $\alpha$ that minimizes $f$ along a line. 
 \end{equation}
 
 Setting the expression $f^{'}(x_{1i+1})^{T} r_i$ to zero means that $f^{'}(x_{i+1})^{T}$ and  $r_i$ have to orthogonal.
-Formaly, computing $\alpha$ goes as follows:
+Formally, computing $\alpha$ goes as follows:
 \begin{equation}
 \begin{aligned}
 r^{T}_{i+1}r_{i} = 0
@@ -1406,14 +1397,14 @@ Example solution of Steepest Descent is shown in figure~\ref{fig:steepest_descen
 \end{figure}
 
 \subsection{Conjugate Directions}
-Iterations in Steepest Descent method usualy end up taking the same directions as one of the previous iterations, see figure~\ref{fig:steepest_descent}. Conjugate Direction method chooses a set of orthogonal search directions $d_0, d_1,...,d_{n-1}$. Taking next step looks now as follows:
+Iterations in Steepest Descent method usually end up taking the same directions as one of the previous iterations, see figure~\ref{fig:steepest_descent}. Conjugate Direction method chooses a set of orthogonal search directions $d_0, d_1,...,d_{n-1}$. Taking next step looks now as follows:
 \begin{equation}
 \begin{aligned}
 x_{i+1} = x_{i} + \alpha_{i}d_{i}
 \end{aligned}
 \end{equation}
 
-Generating the set of directions $\{ d_i \}$ is done using the process called conjugate Gram-Schmidt. Assume we have $n$ linearly indepenented vectors $u_0, u_1, ..., u_{n-1}$. We construct $d_i$ using the formula:
+Generating the set of directions $\{ d_i \}$ is done using the process called conjugate Gram-Schmidt. Assume we have $n$ linearly independent vectors $u_0, u_1, ..., u_{n-1}$. We construct $d_i$ using the formula:
 \begin{equation}
 d_{i} = u_{i} + \sum^{i-1}_{k=0} \beta_{ik} d_{k}
 \end{equation}
@@ -1423,7 +1414,7 @@ where $\beta_{ij}$ is defined by:
 \end{equation}
 
 \subsection{Conjugate Gradient}
-Finaly we can define the Conjugate Gradient method. CG is a special case of Conjugate Directions method using $u_i = r_i$. The equations required to compute CG are presented:
+Finally we can define the Conjugate Gradient method. CG is a special case of Conjugate Directions method using $u_i = r_i$. The equations required to compute CG are presented:
 
 \begin{equation}
 \begin{aligned}
@@ -1440,7 +1431,7 @@ r_{i+1} = r_{i} - \alpha_{i}Ad_{i}
 d_{i+1} = r_{i+1} + \beta_{i+1,i} d_{i}
 \end{aligned}
 \end{equation}
-The most expensive operation in CG is the matrix-vector multiplication which in general has time complexity of $\mathcal{O}(m)$, where $m$ is the number of nonzero elements in $A$. This means that each iterations of CG method has time complexity $\mathcal{O}(m)$.
+The most expensive operation in CG is the matrix-vector multiplication which in general has time complexity of $\mathcal{O}(m)$, where $m$ is the number of non-zero elements in $A$. This means that each iterations of CG method has time complexity $\mathcal{O}(m)$.
 
 The algorithm ends when maximum number of iteration has been reached or when $r_i$ is small enough.
 
@@ -1448,7 +1439,7 @@ The algorithm ends when maximum number of iteration has been reached or when $r_
 \chapter{Tetrahedralization}
 \label{chap:Tetrahedralization}
 A quality mesh can be defined by a few properties.
-One of the most basic properties is the fact that generated 3d mesh should correctly model the shape of the input domain. Figure~\ref{fig:mesh_incomplete} shows an tetrahedron mesh that does not model the shape of the cube domain correctly.
+One of the most basic properties is the fact that generated 3D mesh should correctly model the shape of the input domain. Figure~\ref{fig:mesh_incomplete} shows an tetrahedron mesh that does not model the shape of the cube domain correctly.
 
 \begin{figure}[h!]
 \centering
@@ -1459,7 +1450,7 @@ One of the most basic properties is the fact that generated 3d mesh should corre
 
 Second important property is the control of individual elements size. Controlling the volume of elements enables the user to control the accuracy of computations. Bigger number of smaller elements can lead to more accurate but slower computations.
 
-Another problem that has to be solved is the control of elements shape. We often want our tetrahedra to have regular shapes. Meaning that extreme angle values should be avoided. We can ensure the regular shape by controling the lower bound of the smallest angle in a tetrahedron which also controls the largest angle. Some examples of tetrahedron shapes are shown in figure~\ref{fig:tetrahedra_shapes}.
+Another problem that has to be solved is the control of elements shape. We often want our tetrahedra to have regular shapes. Meaning that extreme angle values should be avoided. We can ensure the regular shape by controlling the lower bound of the smallest angle in a tetrahedron which also controls the largest angle. Some examples of tetrahedron shapes are shown in figure~\ref{fig:tetrahedra_shapes}.
 
 \begin{figure}[h!]
 \centering
@@ -1484,7 +1475,7 @@ Another problem that has to be solved is the control of elements shape. We often
 
 %-----------------------------------------------------------------
 \chapter{Implementation}
-The implemenetion of this thesis has two parts: numerical library and 3D graphic engine. The numerical library contains all the tools to compute real time finite element method solver. The library is then integrated into a demo 3D engine.
+The implementation of this thesis has two parts: numerical library and 3D graphic engine. The numerical library contains all the tools to compute real time finite element method solver. The library is then integrated into a demo 3D engine.
 
 \section{RTFEM}
 RTFEM stands for Real-Time Finite Element Method. The library computes the entire process of FEM for solid mechanics:
@@ -1494,7 +1485,7 @@ RTFEM stands for Real-Time Finite Element Method. The library computes the entir
 \item Post-Processing: Output the displacements.
 \end{enumerate}
 
-RTFEM was written in c++11 and uses general template programming. Template programming is used to alow the user to easly change the precision between float and double. RTFEM can be built on any platform supporting cmake. All the tests were made on 64bit Arch Linux.
+RTFEM was written in c++11 and uses general template programming. Template programming is used to allow the user to easily change the precision between float and double. RTFEM can be built on any platform supporting cmake. All the tests were made on 64bit Arch Linux.
 
 \subsection{Folder Structure}
 RTFEM folder structure looks as follows:
@@ -1516,7 +1507,7 @@ RTFEM uses the following external libraries:
 \end{enumerate}
 
 \subsection{Architecture}
-Let us start by describing the architecture of the library. First, the data structures used to represented the FEM model are shown in figure~\ref{fig:uml_fem_model}. FEMModel class is the main container of all sub-components. It also enabled the user to set up body force which acts on all vertices in the model. FEMGeometry holds all the information about geometry of 3D tetrahedron mesh. Vertex is defined by and id and coordinates. TriangleFace is defined by three pointers to vertices. Moreover it contains information about its area, whether it is boundary face and current traction force applied to it. User can apply traction forces directly to the triangle faces. FiniteElement contains pointers to vertices and faces. It also stores information about its volume. Material class is used to store the information of physical material used in the simulation. The variables $damping\_mass$ and $damping\_stiffness$ are used to compute damping matrix $C$ and correspond to $\alpha$ and $\beta$ from Eq.~\ref{eq:damping_matrix}. Finaly the BoundaryCondition is used to store information about a single boundary condition. User defines the vertex id and the value which this vertex should take.
+Let us start by describing the architecture of the library. First, the data structures used to represented the FEM model are shown in figure~\ref{fig:uml_fem_model}. FEMModel class is the main container of all sub-components. It also enabled the user to set up body force which acts on all vertices in the model. FEMGeometry holds all the information about geometry of 3D tetrahedron mesh. Vertex is defined by and id and coordinates. TriangleFace is defined by three pointers to vertices. Moreover it contains information about its area, whether it is boundary face and current traction force applied to it. User can apply traction forces directly to the triangle faces. FiniteElement contains pointers to vertices and faces. It also stores information about its volume. Material class is used to store the information of physical material used in the simulation. The variables $damping\_mass$ and $damping\_stiffness$ are used to compute damping matrix $C$ and correspond to $\alpha$ and $\beta$ from Eq.~\ref{eq:damping_matrix}. Finally the BoundaryCondition is used to store information about a single boundary condition. User defines the vertex id and the value which this vertex should take.
 
 \begin{figure}[h!]
 \centering
@@ -1534,7 +1525,7 @@ The post processing part, namely the 3D mesh generation, is mostly done by TeTGe
 \label{fig:uml_tetrahedralization}
 \end{figure}
 
-The solver part of the system is presented in figure~\ref{fig:uml_solver}. First, the FEMGlobalDynamicAssembler and TetrahedronLocalAssembler are used to assemble all the required components and store them in FEMGlobalAssemblerData. GPUMVSparseMultiplication is used for the sparse matrix-vector multiplication. GPUSparseCGLinearSolver is the sparse conjugate gradient solver. FEMDynamicSolver class is in the center of the entire solver system. It pre-computes and stores all required data and runs computations for each iteration. The solver uses implicit euler intergration method as described in section~\ref{sec:ImplicitEuler}. The output displacements are stored in FEMSolverOutput class.
+The solver part of the system is presented in figure~\ref{fig:uml_solver}. First, the FEMGlobalDynamicAssembler and TetrahedronLocalAssembler are used to assemble all the required components and store them in FEMGlobalAssemblerData. GPUMVSparseMultiplication is used for the sparse matrix-vector multiplication. GPUSparseCGLinearSolver is the sparse conjugate gradient solver. FEMDynamicSolver class is in the center of the entire solver system. It pre-computes and stores all required data and runs computations for each iteration. The solver uses implicit euler integration method as described in section~\ref{sec:ImplicitEuler}. The output displacements are stored in FEMSolverOutput class.
 
 \begin{figure}[h!]
 \centering
@@ -1544,7 +1535,7 @@ The solver part of the system is presented in figure~\ref{fig:uml_solver}. First
 \end{figure}
 
 \subsection{Solver Algorithms}
-The FEMDynamicSolver has to public functions: PreSolve and RunIteration. PreSolve is used to compute and store all the constant data that are used throughout all iterations. Algorithm~\ref{alg:presolver} shows the nessecery steps.
+The FEMDynamicSolver has to public functions: PreSolve and RunIteration. PreSolve is used to compute and store all the constant data that are used throughout all iterations. Algorithm~\ref{alg:presolver} shows the necessary steps.
 
 \begin{algorithm}
 \caption{FEM Dynamic Solver: PreSolver}
@@ -1599,7 +1590,7 @@ InitPreSolveLHS presented in algorithm~\ref{alg:InitPreSolveLHS} computes left h
 \end{algorithmic}
 \end{algorithm}
 
-InitPreSolveRHS in algorithm~\ref{alg:InitPreSolveRHS} pre-computes the right hand side vector. It trasforms global mass and global stiffness matrices to sparse CSR formats and stores them on the GPU using GPUMVSparseMultiplication class.
+InitPreSolveRHS in algorithm~\ref{alg:InitPreSolveRHS} pre-computes the right hand side vector. It transforms global mass and global stiffness matrices to sparse CSR formats and stores them on the GPU using GPUMVSparseMultiplication class.
 
 \begin{algorithm}
 \caption{FEM Dynamic Solver: InitPreSolveRHS}
@@ -1628,7 +1619,7 @@ Computations for each iteration are shown in algorithm~\ref{alg:RunIteration}. R
 \end{algorithmic}
 \end{algorithm}
 
-SolveForDisplacements function shown in algorithm~\ref{alg:SolveForDisplacements} computes the implicit euler intergation method. First we compute the right hand side vector using the two GPUMVSparseMultiplication classes initiated in the pre solver. We apply the boundary conditions to the RHS. Then we are ready to run the conjugate gradient solver on the GPU to solve our system for velocities. New velocites are used in integration to compute new displacement vector.
+SolveForDisplacements function shown in algorithm~\ref{alg:SolveForDisplacements} computes the implicit euler integration method. First we compute the right hand side vector using the two GPUMVSparseMultiplication classes initiated in the pre solver. We apply the boundary conditions to the RHS. Then we are ready to run the conjugate gradient solver on the GPU to solve our system for velocities. New velocities are used in integration to compute new displacement vector.
 
 \begin{algorithm}
 \caption{FEM Dynamic Solver: SolveForDisplacements}
@@ -1646,17 +1637,17 @@ SolveForDisplacements function shown in algorithm~\ref{alg:SolveForDisplacements
 Computing right hand side vector and solving linear system of equations require the most computation power. These two functions are fully accelerated on GPU using CUDA.
 
 \section{RTFEM Integration into Game Engine}
-For the purposes of this thesis RTFEM has been integrated into open source game engine created by the author of this thesis, see source code~\cite{ifx}. The entire architecture of the engine is out of the scope of this text. However, the following section will describe the components needed to understand the process of intergrating RTFEM. Figure~\ref{fig:ifx_example} shows screenshot from the engines editor.
+For the purposes of this thesis RTFEM has been integrated into open source game engine created by the author of this thesis, see source code~\cite{ifx}. The entire architecture of the engine is out of the scope of this text. However, the following section will describe the components needed to understand the process of integrating RTFEM. Figure~\ref{fig:ifx_example} shows screenshot from the engines editor.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.3]{pictures/ifx/ifx.png}
+\includegraphics[scale=0.2]{pictures/ifx/ifx.png}
 \caption[Logo MiNI]{}
 \label{fig:ifx_example}
 \end{figure}
 
 Figure~\ref{fig:ifx_general} shows the most important modules. Physics module is devoted to run rigid body and soft body simulations. For rigid body simulations it encapsulates lower level rigid body libraries such as PhysX 3.4~\cite{physx} and Bullet~\cite{bullet}. Soft body simulation is implemented using RTFEM.
-Graphics module is built on top of OpenGL~\cite{opengl}. It encapsulates low level OpenGL programming to increase the productivity. It supports rendering with basic texture materials such as difuse, ambient and normal mapping. It also supports lighting and shadow effects. User can easly program and edit shader program in run time.
+Graphics module is built on top of OpenGL~\cite{opengl}. It encapsulates low level OpenGL programming to increase the productivity. It supports rendering with basic texture materials such as diffuse, ambient and normal mapping. It also supports lighting and shadow effects. User can easily program and edit shader program in run time.
 InputControls is a module responsible for handling user input from mouse and keyboard.
 Game module combines all individual modules and provides set of rules for how they should interact with each other. All modules are fully decoupled and communicate with each other through Game module.
 Finally, Editor module is responsible for graphical user interface, which allows for creating 3D objects, rigid bodies, editing shaders and soft body objects.
@@ -1677,7 +1668,7 @@ Physics module is described in more detail in figure~\ref{fig:ifx_physics}. Rigi
 \label{fig:ifx_physics}
 \end{figure}
 
-Most important systems of Graphics module is shown in figure~\ref{fig:ifx_graphics}. Renderer contains RenderingEffects which are composed of RenderObjects and ShaderPrograms. RenderObject encapsulates the triangle mesh and materials such textures and other parameters. ShaderProgram interprets these triangles meshes and materials by programable shaders using GLSL language.
+Most important systems of Graphics module is shown in figure~\ref{fig:ifx_graphics}. Renderer contains RenderingEffects which are composed of RenderObjects and ShaderPrograms. RenderObject encapsulates the triangle mesh and materials such textures and other parameters. ShaderProgram interprets these triangles meshes and materials by programmable shaders using GLSL language.
 
 \begin{figure}[h!]
 \centering
@@ -1686,7 +1677,7 @@ Most important systems of Graphics module is shown in figure~\ref{fig:ifx_graphi
 \label{fig:ifx_graphics}
 \end{figure}
 
-Basic GameLoop is presented in figure~\ref{fig:ifx_game1}. The GameContainer contains GameObjects which are composed of GameComponents. GameObject are object that apear in the scene. They can be transformed to any coordinate system by translation, rotation or scaling. We add GameComponents to make the game objects more interesting. Currently the engine supports multiple game components: light source, camera, render object, rigid body or soft body.
+Basic GameLoop is presented in figure~\ref{fig:ifx_game1}. The GameContainer contains GameObjects which are composed of GameComponents. GameObject are object that appear in the scene. They can be transformed to any coordinate system by translation, rotation or scaling. We add GameComponents to make the game objects more interesting. Currently the engine supports multiple game components: light source, camera, render object, rigid body or soft body.
 
 \begin{figure}[h!]
 \centering
@@ -1704,7 +1695,7 @@ The game loop sequence is shown in figure~\ref{fig:ifx_game_loop}. Each system i
 \label{fig:ifx_game_loop}
 \end{figure}
 
-Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into game module. SoftBodyFEMComponent is created by deriving the GameComponent interface and SoftBodyFEM from the physics module. The soft body component also contains a render object which is created by fetching the boundary triangle faces of FEM model. SoftBodyFEM is updated in PhysicsSimulation which computes and stores the displacements. SoftBodyFEMComponent uses the displacements to synchronize renderable vertices by updating the current vertex buffer object(VBO). That happens in the GameContainer update function. Finally the boundary triangle faces are rendered in Renderer update.
+Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into game module. SoftBodyFEMComponent is created by deriving the GameComponent interface and SoftBodyFEM from the physics module. The soft body component also contains a render object which is created by fetching the boundary triangle faces of FEM model. SoftBodyFEM is updated in PhysicsSimulation which computes and stores the displacements. SoftBodyFEMComponent uses the displacements to synchronize render-able vertices by updating the current vertex buffer object(VBO). That happens in the GameContainer update function. Finally the boundary triangle faces are rendered in Renderer update.
 
 \begin{figure}[h!]
 \centering
@@ -1715,12 +1706,12 @@ Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into 
 
 
 \subsection{Editor}
-This section describes the graphical editor of soft body system in the game engine. Soft body editor can be opened by clicking the Soft Body button located in the middle view port, see figure~\ref{fig:ifx_example}. We can select a game object to be opened by right clicking it in the scene list(left panel). Game object that can be opened in the soft body editor must have exacly one render component. It can have other components too. The render component contains the triangle mesh that is used as a input problem domain in the 3D mesh generation. Figures~\ref{fig:ifx_meshing} through~\ref{fig:ifx_solver2} present the soft body editor panels. In the first step we want to create 3D mesh. Meshing panel is devoted to that procedure. Figure~\ref{fig:ifx_meshing} shows control parameters explained in chapter~\ref{chap:Tetrahedralization}. The cube has been already meshes with example parameter values.
+This section describes the graphical editor of soft body system in the game engine. Soft body editor can be opened by clicking the Soft Body button located in the middle view port, see figure~\ref{fig:ifx_example}. We can select a game object to be opened by right clicking it in the scene list(left panel). Game object that can be opened in the soft body editor must have exactly one render component. It can have other components too. The render component contains the triangle mesh that is used as a input problem domain in the 3D mesh generation. Figures~\ref{fig:ifx_meshing} through~\ref{fig:ifx_solver2} present the soft body editor panels. In the first step we want to create 3D mesh. Meshing panel is devoted to that procedure. Figure~\ref{fig:ifx_meshing} shows control parameters explained in chapter~\ref{chap:Tetrahedralization}. The cube has been already meshes with example parameter values.
 
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{pictures/ifx/ifx_meshing.png}
+\includegraphics[scale=0.3]{pictures/ifx/ifx_meshing.png}
 \caption[Logo MiNI]{}
 \label{fig:ifx_meshing}
 \end{figure}
@@ -1729,7 +1720,7 @@ Next, figure~\ref{fig:ifx_material}, we are presented with materials described i
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{pictures/ifx/ifx_material.png}
+\includegraphics[scale=0.3]{pictures/ifx/ifx_material.png}
 \caption[Logo MiNI]{}
 \label{fig:ifx_material}
 \end{figure}
@@ -1738,32 +1729,32 @@ Boundary conditions panel is shown in figure~\ref{fig:ifx_bc}. The user can sele
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{pictures/ifx/ifx_bc.png}
+\includegraphics[scale=0.3]{pictures/ifx/ifx_bc.png}
 \caption[Logo MiNI]{}
 \label{fig:ifx_bc}
 \end{figure}
 
-In the load panel(see figure~\ref{fig:ifx_load} user can select body force that acts on the entire body, simulating gravity. Traction forces are selected by left clicking on a triangle face and draging the mouse to choose the magnitude of traction force. Remember that the direction of the traction force lies along the normal of that face.
+In the load panel(see figure~\ref{fig:ifx_load} user can select body force that acts on the entire body, simulating gravity. Traction forces are selected by left clicking on a triangle face and dragging the mouse to choose the magnitude of traction force. Remember that the direction of the traction force lies along the normal of that face.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{pictures/ifx/ifx_load.png}
+\includegraphics[scale=0.3]{pictures/ifx/ifx_load.png}
 \caption[Logo MiNI]{}
 \label{fig:ifx_load}
 \end{figure}
 
-Finally, the solver panel is shown in figure~\ref{fig:ifx_solver1}. Build button assembles the model using the geometry and parameters chosen in previous panels. Play button starts the simulation. Step button steps the simulation by a single iteration. We can choose the frequency of physics simulation and the synchronization of output displacements with vertex buffer object. Time rescrictions can be selected to stop the simulation after input amount of seconds. We can select if the solver should be computed on GPU or CPU. Linear solver can be chosen between Conjugate Gradient and LU decomposition. Figure~\ref{fig:ifx_solver2} shows the same model after about 20 seconds of simulation. The cube has been deformed under the gravity force. The timers are uses to profile the solver algorithms. It shows the time of computations for the last iteration.
+Finally, the solver panel is shown in figure~\ref{fig:ifx_solver1}. Build button assembles the model using the geometry and parameters chosen in previous panels. Play button starts the simulation. Step button steps the simulation by a single iteration. We can choose the frequency of physics simulation and the synchronization of output displacements with vertex buffer object. Time restrictions can be selected to stop the simulation after input amount of seconds. We can select if the solver should be computed on GPU or CPU. Linear solver can be chosen between Conjugate Gradient and LU decomposition. Figure~\ref{fig:ifx_solver2} shows the same model after about 20 seconds of simulation. The cube has been deformed under the gravity force. The timers are uses to profile the solver algorithms. It shows the time of computations for the last iteration.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{pictures/ifx/ifx_solver1.png}
+\includegraphics[scale=0.3]{pictures/ifx/ifx_solver1.png}
 \caption[Logo MiNI]{}
 \label{fig:ifx_solver1}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{pictures/ifx/ifx_solver2.png}
+\includegraphics[scale=0.3]{pictures/ifx/ifx_solver2.png}
 \caption[Logo MiNI]{}
 \label{fig:ifx_solver2}
 \end{figure}
@@ -1817,6 +1808,8 @@ Delaunay Mesh Generation}.
 \bibitem[13]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
 
 \bibitem[14]{opengl} OpenGl \emph{https://www.opengl.org/}.
+
+\bibitem[15]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
 
 
 \end{thebibliography}
