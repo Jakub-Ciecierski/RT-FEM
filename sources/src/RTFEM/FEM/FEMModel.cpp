@@ -16,6 +16,7 @@ FEMModel<T>::FEMModel(const FEMGeometry<T>& fem_geometry) :
 template<class T>
 void FEMModel<T>::SetStaticBodyForce(const Eigen::Vector3<T> &body_force){
     static_body_force_ = body_force;
+    dynamic_body_force_ = static_body_force_;
 }
 
 template<class T>

@@ -33,7 +33,8 @@ class FEMDynamicSolver : public FEMSolver<T>{
 public:
 
     FEMDynamicSolver(FEMModel<T>* fem_model,
-                     LinearSystemSolverType type);
+                     LinearSystemSolverType type,
+                     T time_delta);
     ~FEMDynamicSolver() = default;
 
     const FEMSolverOutput<T>* solver_output(){return &solver_output_;}
@@ -44,7 +45,7 @@ public:
 
     virtual FEMSolverOutput<T> Solve() override;
 
-    void RunIteration(T delta_time);
+    void RunIteration();
 
 private:
     void InitAssembly();
@@ -59,7 +60,7 @@ private:
     void SolveForDisplacements(T delta_time);
     void ResetForces();
 
-    void ImplicitNewtonGPU(T delta_time);
+    void ImplicitEulerGPU(T delta_time);
     void SolveRHSGPU(T delta_time,
                      Eigen::Vector<T, Eigen::Dynamic>& global_force);
     void SolveBoundaryConditions(Eigen::Vector<T, Eigen::Dynamic>& rhs);
@@ -69,7 +70,7 @@ private:
         T delta_time,
         const Eigen::Vector<T, Eigen::Dynamic>& new_velocity);
 
-    void ImplicitNewtonCPU(T delta_time);
+    void ImplicitEulerCPU(T delta_time);
 
     LinearSystemSolvers<T> solvers_;
 
@@ -89,6 +90,9 @@ private:
     T total_time_;
 
     FEMSolverTimer timer_;
+
+    T time_delta_;
+    T time_delta_sqr_;
 };
 }
 

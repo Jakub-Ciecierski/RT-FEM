@@ -15,18 +15,18 @@
 
 \setboolean{lady}{false} % kobiety wpisują true, mężczyźni - false
 
-\title{English title} % nazwa pracy
-\titleaux{Tytuł polski Tytuł polski Tytuł polski}
+\title{Deformation of Soft Bodies on GPU} % nazwa pracy
+\titleaux{Deformacje Ciał Odkształcalnych na GPU}
 \type{magisters} % licencjat = licencjac, inżynier = inżyniers
-\discipline{Matematyka} % kierunek
-\specjal{specjalność}
-\author{Bolesław Prus}
-\album{100000}
-\supervisor{dr~inż. Promotor Promotorski}
+\discipline{Informatyka} % kierunek
+\specjal{Projektowanie Systemów CAD/CAM}
+\author{Jakub Ciecierski}
+\album{243260}
+\supervisor{dr~inż. Joanna Porter-Sobieraj}
 \konsultacje{prof. Dumbledore} % jeśli nie ma, trzeba zakomentować też w minipw.cls
 \date{2018}
-\klucze{slowo1, slowo2}
-\keywords{k1, k2}
+\klucze{Deformacje Ciał Odkształcalnych, Metoda Elementów Skończonych, Mechanika Ciał Stałych ,GPU, CUDA}
+\keywords{Soft Body, Finite Element Method, Solid Mechanics, Real-Time, GPU, CUDA, Physics engine, Game physics, Simulation, Deformation}
 % ----------------------------------------------------
 
 \begin{document}
@@ -45,8 +45,7 @@
 \setcounter{page}{1}
 
 \begin{abstract}
-
-
+This thesis provides an overview of real-time soft body deformation methods. The goal of this study is to design and implement numerical library solving the problem of physically correct soft body deformations. GPU accelerated Finite Element Method is used which solves the problem of solid mechanics for linear geometry and linear material properties. The library is integrated into existing open source game engine.
 
 \end{abstract}
 
@@ -71,11 +70,23 @@
 \pagestyle{fancy}
 
 \chapter*{Introduction}
-What is this thesis about.
+With the growth of popularity in virtual reality hardware comes great responsibility for software engineers to provide realistic and detailed experiences. User wearing virtual reality headset such as Oculus Rift is closer to the virtual environment than ever before. She will expect full interaction with the environment around her. The object she will pick up can be seen from very close distance. This requirement pushes software and hardware engineers alike to the frontier of computer graphics to provide detailed and authentic experiences. However, the user will also expect the virtual object to behave in a physically correct way. Virtual reality controllers gives us a chance to grab and interact with objects using our own hands. We should expect a virtual object to deform when enough pressure is applied to it. Thus, it is our responsibility as engineers to develop physics engines suitable for such tasks.
 
+Real-time soft body deformation simulations have many practical applications. It provides more realistic and thus more fun gaming experiences. Soft body simulation is extremely useful in educational applications such as real time virtual surgery tutorial. Real time virtual car crash testing can provide fast and extremely cheap way to analyse car deformation in case of accident.
+
+Topic of this thesis is motivated by the ever increasing requirements of virtual environment users and by the rapid growth of hardware capabilities in a form of GPU computational power. This thesis provides an overview of current methods used in real-time soft body deformations. The goal is to design and implement numerical library that would solve the problem of soft body deformation in real-time. Moreover, the library should provide friendly interface which support easy integration into existing virtual reality engines(e.g. game engines). The author proposes an integration into open source engine of his own creation~\cite{ifx}.
+
+The author chooses Finite Element Method(FEM) based simulation of soft bodies. It is the most physically correct method studied in this thesis. However, it comes with a price of expensive computations. FEM is used to solve the problem of solid mechanics with linear geometry and linear material properties. The linearity of the system enables us to work only with linear system of equations which can be computed much faster than the non-linear systems. However, the linear formulation is visibly pleasing only for small deformations. Linear tetrahedron finite element is chosen which is quite suitable for real time simulations. Implicit euler method is used for integrating the differential equations of the dynamic system.
+
+In chapter~\ref{chap:background} the thesis starts with a background study of current methods of solving the problem of soft body deformations. It familiarises reader with numerical integration of differentiable equations and provides an overview of currently commercially available physics engines.
+Further in chapters~\ref{chap:solid_mechanics1} and~\ref{chap:solid_mechanics2} detailed explanation of solid mechanics and finite element method is provided. Here, the reader is set on a journey to transform linear partial differential equations(PDE) to linear system of algebraic equations. Then in chapter~\ref{chap:system_linear} method of solving the system of linear equations is described in a form of  Conjugate Gradient.
+One of the greatest difficulties in FEM solver is creating an 3D computation mesh satisfying our problem domain. This thesis is out of scope of detailed explanations of tetrahedralization process, however a short overview is provided in chapter~\ref{chap:Tetrahedralization}.
+Chapter~\ref{chap:Implementation} shows the implementation of the library and its integration into open source game engine.
+The thesis ends with chapters~\ref{chap:tests} and~\ref{chap:Conclusions} where the author tests and provides conclusions of created algorithm.
 % ---------------------------------------------------
 
-\chapter{Soft Body Dynamics - Overview}
+\chapter{Background}
+\label{chap:background}
 
 \section{Mass Spring}
 \subsection{Formulation}
@@ -613,7 +624,11 @@ We can now state the discrete formulation for dynamic system using the Eq.~\ref{
 
 \begin{equation}
 \label{eq:virtual_work_dynamic5}
-\delta q_{\alpha}[ q_{\beta} \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV + \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV + \ddot{q_{\beta}} \int_{\Omega}\rho \Phi_{i \alpha} \Phi_{i \beta} dV + \int_{\Omega} \rho \Phi_{i \alpha} \ddot{\hat{\Phi_{i}}} dV - \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV - \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA] = 0
+\begin{aligned}
+\delta q_{\alpha}[ q_{\beta} \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV 
+\\
++ \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV + \ddot{q_{\beta}} \int_{\Omega}\rho \Phi_{i \alpha} \Phi_{i \beta} dV + \int_{\Omega} \rho \Phi_{i \alpha} \ddot{\hat{\Phi_{i}}} dV - \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV - \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA] = 0
+\end{aligned}
 \end{equation}
 
 As before, Eq.~\ref{eq:virtual_work_dynamic5} must be satisfied for all coefficients $\delta q_{\alpha}$ which means that everything else must vanish for all indices $\alpha$. Let us denote mass matrix by:
@@ -954,6 +969,7 @@ b_{2} - A_{23} \bar{x_{3}}\\
 
 % ---------------------------------------------------
 \chapter{Solid Mechanics - Part 2 - Tetrahedron}
+\label{chap:solid_mechanics2}
 
 One of the most simple finite elements used in FEM models is a linear tetrahedron. Such element consists of four nodes and its shape functions are linear polynomials. This finite element is in particular interested for real time applications since no numerical integration are needed to construct element equations.
 
@@ -979,7 +995,7 @@ The vertices are coplanar when $V$ is equal to zero. The vertices have indices: 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/tetrahedron.png}
-\caption[Logo MiNI]{Naming conventions for tetrahedron faces (a) and edges (b). Courtesy of~\cite{colorado_fem_lectures}}
+\caption[Tetrahedron Conventions]{Naming conventions for tetrahedron faces (a) and edges (b). Courtesy of~\cite{colorado_fem_lectures}}
 \end{figure}
 
 \section{Natural Coordinates}
@@ -1241,6 +1257,7 @@ TODO
 
 % ---------------------------------------------------
 \chapter{Solving System of Linear Equations}
+\label{chap:system_linear}
 
 \section{Conjugate Gradient}
 This section explains all the tools required to define the Conjugate Gradient algorithm.
@@ -1299,13 +1316,13 @@ If we set the gradient to zero then we get the solution for $Ax=b$ which is also
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/paraboloid.png}
-\caption[Logo MiNI]{Paraboloid of example quadratic form f(x). Courtesy of~\cite{cg}}
+\caption[Paraboloid of quadratic form]{Paraboloid of example quadratic form f(x). Courtesy of~\cite{cg}}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/contour.png}
-\caption[Logo MiNI]{Contour plot of example quadratic form f(x). Courtesy of~\cite{cg}}
+\caption[Contour plot of quadratic form]{Contour plot of example quadratic form f(x). Courtesy of~\cite{cg}}
 \end{figure}
 
 \subsection{Steepest Descent}
@@ -1364,14 +1381,14 @@ r_{i}^{T}r_{i} = \alpha r_{i}^{T} (Ar_{i})
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.8]{pictures/alpha1.png}
-\caption[Logo MiNI]{Paraboloid and a surface defined by residual direction at some step. Courtesy of~\cite{cg}}
+\caption[Paraboloid and surface]{Paraboloid and a surface defined by residual direction at some step. Courtesy of~\cite{cg}}
 \label{fig:cg_alpha1}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.8]{pictures/alpha2.png}
-\caption[Logo MiNI]{The intersection parabola of two surfaces shown in~\ref{fig:cg_alpha1}. Courtesy of~\cite{cg}}
+\caption[Intersection of paraboloid and surface]{The intersection parabola of two surfaces shown in~\ref{fig:cg_alpha1}. Courtesy of~\cite{cg}}
 \label{fig:cg_alpha2}
 \end{figure}
 
@@ -1392,7 +1409,7 @@ Example solution of Steepest Descent is shown in figure~\ref{fig:steepest_descen
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/steepest_descent.png}
-\caption[Logo MiNI]{Example of Steepest Descent solution. Courtesy of~\cite{cg}}
+\caption[Steepest Descent steps]{Example of Steepest Descent solution. Courtesy of~\cite{cg}}
 \label{fig:steepest_descent}
 \end{figure}
 
@@ -1438,13 +1455,14 @@ The algorithm ends when maximum number of iteration has been reached or when $r_
 % ---------------------------------------------------
 \chapter{Tetrahedralization}
 \label{chap:Tetrahedralization}
+
 A quality mesh can be defined by a few properties.
 One of the most basic properties is the fact that generated 3D mesh should correctly model the shape of the input domain. Figure~\ref{fig:mesh_incomplete} shows an tetrahedron mesh that does not model the shape of the cube domain correctly.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/3dmesh_incomplite.png}
-\caption[Logo MiNI]{Example 3D tetrahedron mesh that does not correctly model the domain of the cube. Courtesy of~\cite{delaunay_mesh}}
+\caption[Poor 3D mesh]{Example 3D tetrahedron mesh that does not correctly model the domain of the cube. Courtesy of~\cite{delaunay_mesh}}
 \label{fig:mesh_incomplete}
 \end{figure}
 
@@ -1455,14 +1473,14 @@ Another problem that has to be solved is the control of elements shape. We often
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/tetrahedra_shapes.png}
-\caption[Logo MiNI]{Example of some common tetrahedron shapes. Courtesy of~\cite{tetgen}}
+\caption[Tetrahedron shapes]{Example of some common tetrahedron shapes. Courtesy of~\cite{tetgen}}
 \label{fig:tetrahedra_shapes}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/3dmesh.png}
-\caption[Logo MiNI]{Example 3D tetrahedron mesh. Courtesy of~\cite{delaunay_mesh}}
+\caption[Fine tetrahedron mesh]{Example 3D tetrahedron mesh. Courtesy of~\cite{delaunay_mesh}}
 \end{figure}
 
 \section{Piecewise Linear Complexes}
@@ -1475,6 +1493,8 @@ Another problem that has to be solved is the control of elements shape. We often
 
 %-----------------------------------------------------------------
 \chapter{Implementation}
+\label{chap:Implementation}
+
 The implementation of this thesis has two parts: numerical library and 3D graphic engine. The numerical library contains all the tools to compute real time finite element method solver. The library is then integrated into a demo 3D engine.
 
 \section{RTFEM}
@@ -1512,7 +1532,7 @@ Let us start by describing the architecture of the library. First, the data stru
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.6]{pictures/fem_model.png}
-\caption[Logo MiNI]{}
+\caption[Class diagram of RTFEM data structures]{Class diagram of RTFEM data structures}
 \label{fig:uml_fem_model}
 \end{figure}
 
@@ -1521,7 +1541,7 @@ The post processing part, namely the 3D mesh generation, is mostly done by TeTGe
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.6]{pictures/tetrahedralization.png}
-\caption[Logo MiNI]{}
+\caption[Class diagram of RTFEM tetrahedralization process]{Class diagram of RTFEM tetrahedralization process}
 \label{fig:uml_tetrahedralization}
 \end{figure}
 
@@ -1530,7 +1550,7 @@ The solver part of the system is presented in figure~\ref{fig:uml_solver}. First
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/solver.png}
-\caption[Logo MiNI]{}
+\caption[Class diagram of solver]{Class diagram of solver}
 \label{fig:uml_solver}
 \end{figure}
 
@@ -1642,7 +1662,7 @@ For the purposes of this thesis RTFEM has been integrated into open source game 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.2]{pictures/ifx/ifx.png}
-\caption[Logo MiNI]{}
+\caption[Game engine]{Game engine~\cite{ifx}}
 \label{fig:ifx_example}
 \end{figure}
 
@@ -1655,7 +1675,7 @@ Finally, Editor module is responsible for graphical user interface, which allows
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/ifx_general.png}
-\caption[Logo MiNI]{}
+\caption[Game engine modules overview]{Game engine modules overview}
 \label{fig:ifx_general}
 \end{figure}
 
@@ -1664,7 +1684,7 @@ Physics module is described in more detail in figure~\ref{fig:ifx_physics}. Rigi
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/ifx_physics.png}
-\caption[Logo MiNI]{}
+\caption[Game engine physics module]{Game engine physics module}
 \label{fig:ifx_physics}
 \end{figure}
 
@@ -1673,7 +1693,7 @@ Most important systems of Graphics module is shown in figure~\ref{fig:ifx_graphi
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/ifx_graphics.png}
-\caption[Logo MiNI]{}
+\caption[Game engine graphics module]{Game engine graphics module}
 \label{fig:ifx_graphics}
 \end{figure}
 
@@ -1682,7 +1702,7 @@ Basic GameLoop is presented in figure~\ref{fig:ifx_game1}. The GameContainer con
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/ifx_game.png}
-\caption[Logo MiNI]{}
+\caption[Game engine game module]{Game engine game module}
 \label{fig:ifx_game1}
 \end{figure}
 
@@ -1691,7 +1711,7 @@ The game loop sequence is shown in figure~\ref{fig:ifx_game_loop}. Each system i
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.4]{pictures/game_loop.png}
-\caption[Logo MiNI]{}
+\caption[Game engine game loop sequence]{Game engine game loop sequence}
 \label{fig:ifx_game_loop}
 \end{figure}
 
@@ -1700,7 +1720,7 @@ Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{pictures/ifx_game2.png}
-\caption[Logo MiNI]{}
+\caption[Game engine game module. Soft body integration]{Game engine game module. Soft body integration}
 \label{fig:ifx_game2}
 \end{figure}
 
@@ -1712,7 +1732,7 @@ This section describes the graphical editor of soft body system in the game engi
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/ifx/ifx_meshing.png}
-\caption[Logo MiNI]{}
+\caption[Soft body editor. Meshing panel]{Soft body editor. Meshing panel}
 \label{fig:ifx_meshing}
 \end{figure}
 
@@ -1721,7 +1741,7 @@ Next, figure~\ref{fig:ifx_material}, we are presented with materials described i
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/ifx/ifx_material.png}
-\caption[Logo MiNI]{}
+\caption[Soft body editor. Material panel]{Soft body editor. Meshing panel}
 \label{fig:ifx_material}
 \end{figure}
 
@@ -1730,7 +1750,7 @@ Boundary conditions panel is shown in figure~\ref{fig:ifx_bc}. The user can sele
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/ifx/ifx_bc.png}
-\caption[Logo MiNI]{}
+\caption[Soft body editor. Boundary conditions panel]{Soft body editor. Boundary conditions panel}
 \label{fig:ifx_bc}
 \end{figure}
 
@@ -1739,7 +1759,7 @@ In the load panel(see figure~\ref{fig:ifx_load} user can select body force that 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/ifx/ifx_load.png}
-\caption[Logo MiNI]{}
+\caption[Soft body editor. Load panel]{Soft body editor. Load panel}
 \label{fig:ifx_load}
 \end{figure}
 
@@ -1748,25 +1768,39 @@ Finally, the solver panel is shown in figure~\ref{fig:ifx_solver1}. Build button
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/ifx/ifx_solver1.png}
-\caption[Logo MiNI]{}
+\caption[Soft body editor. Solver panel]{Soft body editor. Solver panel}
 \label{fig:ifx_solver1}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/ifx/ifx_solver2.png}
-\caption[Logo MiNI]{}
+\caption[Soft body editor. Solver panel during computations]{Soft body editor. Solver panel during computations}
 \label{fig:ifx_solver2}
 \end{figure}
-
 
 % ---------------------------------------------------
 
 \chapter{Tests}
+\label{chap:tests}
 
 
 \chapter{Conclusions}
+\label{chap:Conclusions}
 
+The proposed real-time FEM solver library has been integrated into existing game engine. The library runs in parallel with existing physics and graphical modules. The two modules are fully decoupled and communicate only through a common game modules. Such architecture supports cheaper maintenance of entire system and makes it easy to inject other  soft body libraries.
+The high level abstraction of the library reflects process of designing a FEM model. Thus, it was trivial to create a visual editor in which the user can design and solve FEM models.
+GPU solver has obviously been proven to run much faster than a CPU for a large enough vertex count.
+
+\section{Further work}
+
+The two most expensive procedures of solver iteration include computing the right hand side vector and solving linear system of equations. Those procedures have been fully accelerated on the GPU. Other procedures such as applying boundary conditions or computing the force vector are now causing bottleneck due to their CPU implementation. Further work should look into accelerating these procedures on the GPU side as well.
+
+Soft body deformation based on FEM formulation can support fracture mechanism. Stress magnitude can be calculated at each vertex. After overcoming a certain yield threshold the material would start breaking.
+
+The proposed algorithm used a linear formulation of solid mechanics. This can only model small deformations. Next step of research should include study of GPU accelerated non-linear solvers. Such solvers could implement more accurate formulation for solid mechanics. Moreover, the solver could also include solutions for heat transfer problems and the coupling between the thermal and solid mechanics. Such solution would improve accuracy and provide even more realism to virtual environments.
+
+It would be interesting to see how the proposed soft body solution checks out with virtual reality hardware. The user would be able to deform a body by applying pressure using their hand controller. Moreover, soft body could be grabbed by any of the boundary vertices. Such a user interface could be a great realism test.
 
 
 % 6. Bibliografia
@@ -1811,18 +1845,17 @@ Delaunay Mesh Generation}.
 
 \bibitem[15]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
 
-
 \end{thebibliography}
-
-
 
 % 7. Wykaz symboli i skrótów - jeśli nie ma, zakomentować
 \chapter*{Wykaz symboli i skrótów}
 
 \begin{tabular}{cl}
-nzw. & nadzwyczajny \\
-* & operator gwiazdka \\
-$\widetilde{}$ & tylda
+FEM & Finite Element Method \\
+GPU & Graphics Processing Unit \\
+CPU & Central Processing Unit \\
+PDE & Partial Differential Equation \\
+ODE & Ordinary Differential Equation \\
 \end{tabular}
 
 
@@ -1836,16 +1869,17 @@ $\widetilde{}$ & tylda
 
 
 % 10. Spis załączników - jak nie ma załączników, to zakomentować lub usunąć
-\chapter*{Spis załączników}
-\begin{enumerate}
-\item[1.] Załącznik 1
-\item[2.] Załącznik 2
-\end{enumerate}
+
+%\chapter*{Spis załączników}
+%\begin{enumerate}
+%\item[1.] Załącznik 1
+%\item[2.] Załącznik 2
+%\end{enumerate}
 
 % 11. Załączniki
-\newpage
-\pagestyle{empty}
-Załącznik 1, załącznik 2 -- mają się znajdować na końcu pracy (to jest notka przypominająca)
+%\newpage
+%\pagestyle{empty}
+%Załącznik 1, załącznik 2 -- mają się znajdować na końcu pracy (to jest notka przypominająca)
 
 \end{document}
 

@@ -12,10 +12,13 @@ namespace rtfem {
 
 template<class T>
 FEMDynamicSolver<T>::FEMDynamicSolver(FEMModel<T>* fem_model,
-                                      LinearSystemSolverType type) :
+                                      LinearSystemSolverType type,
+                                      T time_delta) :
     FEMSolver<T>(fem_model),
     fem_assembler_data_(FEMGlobalAssemblerData<T>{0}),
-    total_time_(0){
+    total_time_(0),
+    time_delta_(time_delta),
+    time_delta_sqr_(time_delta*time_delta){
     solvers_ = LinearSystemSolvers<T>{
             type,
             rtfem::make_unique<GPUSparseCGLinearSolver<T>>(),
@@ -55,13 +58,10 @@ void FEMDynamicSolver<T>::InitDisplacementData(){
 template<class T>
 void FEMDynamicSolver<T>::InitPreSolveLHS(
         const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& global_mass){
-    T delta_time = 1.0 / 60.0;
-    T delta_time_sqr = delta_time * delta_time;
-
     left_hand_side_bc_ =
             global_mass
-            + delta_time * fem_assembler_data_.global_damping
-            + delta_time_sqr * fem_assembler_data_.global_stiffness;
+            + time_delta_ * fem_assembler_data_.global_damping
+            + time_delta_sqr_ * fem_assembler_data_.global_stiffness;
     left_hand_side_no_bc_ = left_hand_side_bc_;
 
     FEMGlobalDynamicAssembler<T> fem_assembler;
@@ -107,11 +107,11 @@ void FEMDynamicSolver<T>::InitPreSolveRHS(
 }
 
 template<class T>
-void FEMDynamicSolver<T>::RunIteration(T delta_time){
+void FEMDynamicSolver<T>::RunIteration(){
     timer_ = FEMSolverTimer{};
 
     ReassembleForces();
-    SolveForDisplacements(delta_time);
+    SolveForDisplacements(time_delta_);
     ResetForces();
 
     solver_output_.timer = timer_;
@@ -132,11 +132,11 @@ template<class T>
 void FEMDynamicSolver<T>::SolveForDisplacements(T delta_time){
     switch(this->type_){
         case FEMSolverType::GPU:{
-            ImplicitNewtonGPU(delta_time);
+            ImplicitEulerGPU(delta_time);
             break;
         }
         case FEMSolverType::CPU:{
-            ImplicitNewtonCPU(delta_time);
+            ImplicitEulerCPU(delta_time);
             break;
         }
     }
@@ -155,7 +155,7 @@ void FEMDynamicSolver<T>::ResetForces(){
 }
 
 template<class T>
-void FEMDynamicSolver<T>::ImplicitNewtonGPU(T delta_time){
+void FEMDynamicSolver<T>::ImplicitEulerGPU(T delta_time){
     SolveRHSGPU(delta_time, fem_assembler_data_.global_force);
     auto& rhs = fem_assembler_data_.global_force;
     SolveBoundaryConditions(rhs);
@@ -226,12 +226,17 @@ void FEMDynamicSolver<T>::SolveIntegration(
     auto current_positions = solver_output_.displacement + initial_positions;
     auto new_positions = current_positions
         + (delta_time * displacement_velocity_current_);
+
     solver_output_.displacement = new_positions - initial_positions;
+/*
+    T damping = 0.1;
+    displacement_velocity_current_ += -damping * displacement_velocity_current_;
+*/
     timer_.integration_solve_time = timer_.Stop();
 }
 
 template<class T>
-void FEMDynamicSolver<T>::ImplicitNewtonCPU(T delta_time){
+void FEMDynamicSolver<T>::ImplicitEulerCPU(T delta_time){
     auto global_mass = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>(
         fem_assembler_data_.global_mass_diagonal);
     Eigen::Vector<T, Eigen::Dynamic> rhs =
