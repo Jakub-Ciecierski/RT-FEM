@@ -208,8 +208,8 @@
 \def\supervisor#1{\gdef\@supervisor{#1}}
 \def\@supervisor{\@latex@error{No supervisor given}\@ehc}
 
-\def\konsultacje#1{\gdef\@konsultacje{#1}}
-\def\@konsultacje{\@latex@error{Nie ma podanych konsultacji}\@ehc}
+%\def\konsultacje#1{\gdef\@konsultacje{#1}}
+%\def\@konsultacje{\@latex@error{Nie ma podanych konsultacji}\@ehc}
 
 \def\type#1{\gdef\@type{#1}}
 \def\@type{\@latex@error{No type given}\@ehc}

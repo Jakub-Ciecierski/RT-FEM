@@ -68,7 +68,7 @@
 \contentsline {chapter}{\numberline {8}Conclusions}{60}{chapter.8}
 \contentsline {section}{\numberline {8.1}Further work}{60}{section.8.1}
 \contentsline {chapter}{Bibliografia}{62}{section*.11}
-\contentsline {chapter}{Wykaz symboli i skr\IeC {\'o}t\IeC {\'o}w}{64}{section*.12}
+\contentsline {chapter}{List of symbols and abbreviations}{64}{section*.12}
 \contentsline {chapter}{Spis rysunk\'ow}{65}{section*.13}
-\contentsline {chapter}{Spis tabel}{66}{section*.14}
+\contentsline {chapter}{List of tables}{66}{section*.14}
 \contentsfinish 

@@ -23,7 +23,7 @@
 \author{Jakub Ciecierski}
 \album{243260}
 \supervisor{dr~inż. Joanna Porter-Sobieraj}
-\konsultacje{prof. Dumbledore} % jeśli nie ma, trzeba zakomentować też w minipw.cls
+%\konsultacje{prof. Dumbledore} % jeśli nie ma, trzeba zakomentować też w minipw.cls
 \date{2018}
 \klucze{Deformacje Ciał Odkształcalnych, Metoda Elementów Skończonych, Mechanika Ciał Stałych ,GPU, CUDA}
 \keywords{Soft Body, Finite Element Method, Solid Mechanics, Real-Time, GPU, CUDA, Physics engine, Game physics, Simulation, Deformation}
@@ -151,12 +151,12 @@ Analytically, these can be solved by definite integrals:
 
 \begin{equation}
 \label{eq:ode_anal1}
-v(t) = v_0 \int_{t_0}^{t} \dfrac{f(t)}{m} dt
+v(t) = v_0 + \int_{t_0}^{t} \dfrac{f(t)}{m} dt
 \end{equation}
 
 \begin{equation}
 \label{eq:ode_anal2}
-x(t) = x_0 \int_{t_0}^{t}v(t) dt
+x(t) = x_0 + \int_{t_0}^{t}v(t) dt
 \end{equation}
 
 where $v_0 = v(t_0)$ and $x_0 = x(t_0)$ are the initial conditions.
@@ -181,7 +181,7 @@ v^{t+1} = v^{t} + \Delta t \dfrac{f(x^{t}, v^{t})}{m}
 \end{equation}
 \begin{equation}
 \label{eq:explicit_euler_ode_x}
-x^{t+1} = x^{t} + \Delta t v^{t+1}
+x^{t+1} = x^{t} + \Delta t v^{t}
 \end{equation}
 
 The term 'explicit' comes from the fact that information of the next time step can be directly computed using the information at the current time step.
@@ -198,8 +198,8 @@ The entire simulation can be summed with the following algorithm:
 \EndFor
 
 \For {all particles $i$}
-\State $v_{i} = v_{i} + \Delta t \dfrac{f_i}{m_i} $
 \State $x_{i} = x_{i} + \Delta t v_i $
+\State $v_{i} = v_{i} + \Delta t \dfrac{f_i}{m_i} $
 \EndFor
 
 \EndWhile
@@ -235,7 +235,7 @@ v^{t+1} = v^{t} + \Delta t b_2
 
 It is easy to see that the forces are computed twice during one time step. This makes the second order Runge-Kutta integrator more accurate compared to the simple first order explicit Euler method.
 
-One of the most popular methods of integrating ODE is a forth order Runge-Kutta integrator. It extends the the second order Runge-Kutta by computing the force four times during a single time step. Making it even more accurate. The accuracy obviously comes with longer computations.
+One of the most popular methods of integrating ODE is a forth order Runge-Kutta integrator. It extends the the second order Runge-Kutta by computing the force four times during a single time step. Improved accuracy obviously comes with longer computations.
 
 \subsubsection{Implicit Euler}
 Another way to improve stability is to use implicit integrator. Among the most popular is the implicit Euler method. As opposed to explicit integrators, the implicit is more physically correct.
@@ -267,13 +267,13 @@ M v^{t+1} = M v^{t} + \Delta t f(x_{t+1})
 \end{equation}
 \begin{equation}
 \label{eq:implicit_mass_ode_x}
-x^{t+1} = x + \Delta t v^{t+1}
+x^{t+1} = x_{t} + \Delta t v^{t+1}
 \end{equation}
 
 Substituting Eq.~\ref{eq:implicit_mass_ode_x} into Eq.~\ref{eq:implicit_mass_ode_v}, results in single system of algebraic equations:
 
 \begin{equation}
-M v^{t+1} = M v^{t} + \Delta t f(x + \Delta t v^{t+1})
+M v^{t+1} = M v^{t} + \Delta t f(x_{t} + \Delta t v^{t+1})
 \end{equation}
 
 We solve this system for $v^{t+1}$.
@@ -395,12 +395,12 @@ where the gradient of displacement $u$ is defined:
 \begin{bmatrix}
 u_{1,1} & u_{1,2} & u_{1,3} \\
 u_{2,1} & u_{2,2} & u_{2,3} \\
-u_{3,1} & u_{2,2} & u_{3,3} \\
+u_{3,1} & u_{3,2} & u_{3,3} \\
 \end{bmatrix}
 \end{aligned}
 \end{equation}
 
-In tensor notation the spatial derivative is denoted by: $u_{1,1} = \dfrac{\partial u_1}{\partial x_1}$.
+In tensor notation the spatial derivative is denoted by: $u_{i,j} = \dfrac{\partial u_i}{\partial x_j}$.
 
 \subsection{Stress}
 Let us defined traction force vector $t$ as a density of forces $f$ acting on an area $A$ of a certain body point:
@@ -470,7 +470,7 @@ The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does
 where $E$ is Young's modulus that describes the elastic stiffness, $\nu$ is the Poisson's coefficient that describes the conversation of volume within the material.
 
 \subsection{Strong formulation}
-A strong formulation can be described by the following set of partial  equations(PDE):
+A strong formulation can be described by the following set of partial differential equations(PDE):
 \begin{equation}
 \begin{aligned}
 \sigma_{ij,j} + \hat{f_{i}} = 0 \quad x \in \Omega
@@ -529,7 +529,7 @@ Let us transform the second integral from Eq.~\ref{eq:virtual_work1}, having in 
 Substituting the above equation in Eq.~\ref{eq:virtual_work1} and naming $\delta \epsilon =$ sym $\delta u_{i,j}$ we get:
 \begin{equation}
 \label{eq:virtual_work3}
-\int_{\Omega}(\sigma_{ij} \delta \epsilon_{ij} dV ) = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
+\int_{\Omega}\sigma_{ij} \delta \epsilon_{ij} dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
 \end{equation}
 
 The Eq.~\ref{eq:virtual_work3} is called the principle of virtual work for linear, static solid deformations. It claims that the work made by external forces on the virtual displacements(right hand side) is equal to the work made by interior forces(stress) on certain virtual displacement.
@@ -538,14 +538,14 @@ By including the constitutive equation and the symmetry of stiffness tensor, we 
 
 \begin{equation}
 \label{eq:virtual_work4}
-\int_{\Omega}(C_{ijkl} u_{k,l} \delta u_{i,j} dV ) = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
+\int_{\Omega}C_{ijkl} u_{k,l} \delta u_{i,j} dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
 \end{equation}
 
 \subsubsection{Dynamic System}
 Once again, we want to add dynamic behaviour to the system. We do this by following that same steps but this time using the dynamic equation of motion(E.q~\ref{eq:motion_dynamic}).
 \begin{equation}
 \label{eq:virtual_work_dynamic4}
-\int_{\Omega}(C_{ijkl} u_{k,l} \delta u_{i,j} dV ) + \int_{\Omega}\rho \ddot{u_i} \delta u_i dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
+\int_{\Omega}C_{ijkl} u_{k,l} \delta u_{i,j} dV + \int_{\Omega}\rho \ddot{u_i} \delta u_i dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
 \end{equation}
 
 \subsection{Discrete formulation}
@@ -1156,7 +1156,6 @@ We now have all components needed to compute local stiffness matrix $k_{12 \time
 First, we will define geometric matrix $B$ mentioned in Eq.~\ref{eq:geometric_matrix} explicitely in terms of derivatives computed in Eq.~\ref{eq:tetra_partial_derivates}:
 
 \begin{equation}
-\label{eq:geometric_matrix}
 B_{6 \times 12} = \dfrac{1}{6V}
 \begin{bmatrix}
 a_1 & 0 & 0 & a_2 & 0 & 0 & a_3 & 0 & 0 & a_4 & 0 & 0 \\
@@ -1198,7 +1197,6 @@ f^{(e)}_{12 \times 1} = \int_{\Omega_{e}} \Phi_{3 \times 12}^{T} \hat{f}_{3 \tim
 \end{equation}
 Even if we assume that the body force $\hat{f}$ is constant, $\Phi$ is not constant. It depends on the shape functions $\Phi^{(i)}$ which in turn depends on $x$. Let us define $\Phi$ explicitly:
 \begin{equation}
-\label{eq:geometric_matrix}
 \Phi_{3 \times 12} =
 \begin{bmatrix}
 \Phi^{(1)} & 0 & 0 & \Phi^{(2)} & 0 & 0 & \Phi^{(3)} & 0 & 0 & \Phi^{(4)} & 0 & 0 \\
@@ -1272,7 +1270,7 @@ Conjugate Gradient(CG) is one of the most popular iterative methods of solving s
 \begin{equation}
 Ax=b
 \end{equation}
-where $A$ is a square $n \times n$, symmetric, positive-definite(or positive-indefinite) matrix, $x$ and $b$ are vectors e.i. $n \times 1$ matrices
+where $A$ is a square $n \times n$, symmetric, positive-definite(or positive-indefinite) matrix, $x$ and $b$ are vectors i.e. $n \times 1$ matrices
 We define inner product(also known as dot product) of vector by 
 \begin{equation}
 x^{T}y = \sum^{n}_{i=1} x_i y_i
@@ -1359,7 +1357,7 @@ That means that the residual is the direction of steepest descent. Thus the next
 x_{i+1} = x_{i} + \alpha r_{i}
 \end{equation}
 New issue arises, namely computing the length of direction vector $r_{i}$: $\alpha$.
-We use a line search that will choose $\alpha$ that minimizes $f$ along a line. Figures~\ref{fig:cg_alpha1} and~\ref{fig:cg_alpha1} show an example case of finding alpha. First in figure~\ref{fig:cg_alpha1} we see the intersection of a paraboloid and a surface defined by some initial point $x_0$ and the direction of steepest descent. Figure~\ref{fig:cg_alpha2} shows the parabola of this intersection, which helps us to see what is the value of $\alpha$ at the base of the parabola. This is obviously the case when the derivative $\dfrac{d}{d\alpha}f(x_{i+1})$ is equal to zero. We can use the chain rule to further compute:
+We use a line search that will choose $\alpha$ that minimizes $f$ along a line. Figures~\ref{fig:cg_alpha1} and~\ref{fig:cg_alpha2} show an example case of finding alpha. First in figure~\ref{fig:cg_alpha1} we see the intersection of a paraboloid and a surface defined by some initial point $x_0$ and the direction of steepest descent. Figure~\ref{fig:cg_alpha2} shows the parabola of this intersection, which helps us to see what is the value of $\alpha$ at the base of the parabola. This is obviously the case when the derivative $\dfrac{d}{d\alpha}f(x_{i+1})$ is equal to zero. We can use the chain rule to further compute:
 \begin{equation}
 \dfrac{d}{d \alpha}f(x_{i+1}) = f^{'}(x_{i+1})^{T} \dfrac{d}{d \alpha} x_{i+1} = f^{'}(x_{i+1})^{T} r_i
 \end{equation}
@@ -1562,7 +1560,7 @@ The solver part of the system is presented in figure~\ref{fig:uml_solver}. First
 \end{figure}
 
 \subsection{Solver Algorithms}
-The FEMDynamicSolver has to public functions: PreSolve and RunIteration. PreSolve is used to compute and store all the constant data that are used throughout all iterations. Algorithm~\ref{alg:presolver} shows the necessary steps.
+The FEMDynamicSolver has two public functions: PreSolve and RunIteration. PreSolve is used to compute and store all the constant data that are used throughout all iterations. Algorithm~\ref{alg:presolver} shows the necessary steps.
 
 \begin{algorithm}
 \caption{FEM Dynamic Solver: PreSolver}
@@ -1813,7 +1811,7 @@ It would be interesting to see how the proposed soft body solution checks out wi
 % 6. Bibliografia
 % Bibliografia leksykograficznie wg nazwisk autorów
 
-\begin{thebibliography}{20}%jak ktoś ma więcej książek, to niech wpisze większą liczbę
+\begin{thebibliography}{25}%jak ktoś ma więcej książek, to niech wpisze większą liczbę
 % \bibitem[numerek]{referencja} Autor, \emph{Tytuł}, Wydawnictwo, rok, strony
 % cytowanie: \cite{referencja1, referencja 2,...}
 
@@ -1879,7 +1877,7 @@ It would be interesting to see how the proposed soft body solution checks out wi
 \end{thebibliography}
 
 % 7. Wykaz symboli i skrótów - jeśli nie ma, zakomentować
-\chapter*{Wykaz symboli i skrótów}
+\chapter*{List of symbols and abbreviations}
 
 \begin{tabular}{cl}
 FEM & Finite Element Method \\
@@ -1895,7 +1893,7 @@ ODE & Ordinary Differential Equation \\
 
 
 % 9. Spis tabel - jak wyżej
-\renewcommand{\listtablename}{Spis tabel}
+\renewcommand{\listtablename}{List of tables}
 \listoftables
 
 
