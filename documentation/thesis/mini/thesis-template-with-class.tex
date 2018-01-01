@@ -78,6 +78,12 @@ Topic of this thesis is motivated by the ever increasing requirements of virtual
 
 The author chooses Finite Element Method(FEM) based simulation of soft bodies. It is the most physically correct method studied in this thesis. However, it comes with a price of expensive computations. FEM is used to solve the problem of solid mechanics with linear geometry and linear material properties. The linearity of the system enables us to work only with linear system of equations which can be computed much faster than the non-linear systems. However, the linear formulation is visibly pleasing only for small deformations. Linear tetrahedron finite element is chosen which is quite suitable for real time simulations. Implicit euler method is used for integrating the differential equations of the dynamic system.
 
+Understanding FEM from theoretical point of view might seem daunting at first. However, the study of applied mechanics have been extremely active for over three decades. Zienkiewicz in~\cite{zienkiewicz1} and~\cite{zienkiewicz2} provides thorough explanation of FEM and its applications in solid mechanics. Kleiber and Kowalczyk~\cite{termo} familiarise the reader with the basics of tensor algebra, stress analysis and material properties. Lectures at University of Colorado~\cite{colorado_fem_lectures} guide the reader through linear FEM. Moreover, they provide example functions written in Mathematica that can be used to test implementation of custom FEM solver. Altair University~\cite{altair} shows practical applications of FEM aimed at material engineers.
+
+Parker~\cite{parker} implements linear FEM solver that focuses on game environments settings. He designed an algorithm based on implicit time integration on the CPU side. Moreover, the solution contains a fracture mechanics which enables objects to be broken under certain stress threshold.
+Faure et al. in~\cite{tensor-mass} provide alternative to classical FEM called Tensor-Mass approach. This approach computes the forces applied directly on the vertices. Faure et al. implements a GPU accelerated solver using the SOFA framework~\cite{sofa}.
+Zhuang et al. were interested in non-linear FEM solver~\cite{global_deformation}. Experiments of their CPU implementation gave reasonable results thanks to the diagonalization of mass and damping matrices.
+
 In chapter~\ref{chap:background} the thesis starts with a background study of current methods of solving the problem of soft body deformations. It familiarises reader with numerical integration of differentiable equations and provides an overview of currently commercially available physics engines.
 Further in chapters~\ref{chap:solid_mechanics1} and~\ref{chap:solid_mechanics2} detailed explanation of solid mechanics and finite element method is provided. Here, the reader is set on a journey to transform linear partial differential equations(PDE) to linear system of algebraic equations. Then in chapter~\ref{chap:system_linear} method of solving the system of linear equations is described in a form of  Conjugate Gradient.
 One of the greatest difficulties in FEM solver is creating an 3D computation mesh satisfying our problem domain. This thesis is out of scope of detailed explanations of tetrahedralization process, however a short overview is provided in chapter~\ref{chap:Tetrahedralization}.
@@ -350,7 +356,7 @@ Given initial conditions for positions and velocities the simulation proceeds as
 The lines~\ref{alg:pdb:explicit_v} and~\ref{alg:pdb:explicit_p} compute explicit Euler integration on velocities and positions. However, output positions $p_i$ are only used as predictions. 
 The line ~\ref{alg:pdb:generate_collision_contraints} generates external constrain such as collisions. The original and predicted positions $x_i$, $p_i$ can be used in this step in order to perform continuous collision detection.
 The simulation then computes line~\ref{alg:pdb:project_contraints} which iteratively corrects the predicted positions such that they satisfy the $M_{ext}$ external and $M$ internal constraints.
-Finally, the corrected positions $p_i$ are used to compute velocities and positions.
+Finally, the corrected positions $p_i$ are used to compute velocities and positions. For more information about PDB the reader is encouraged to read~\cite{physics_notes}.
 PDB has found its usage in nvidia's Flex library~\cite{flex}.
 
 \section{Finite Element Method}
@@ -1484,6 +1490,7 @@ Another problem that has to be solved is the control of elements shape. We often
 \end{figure}
 
 \section{Piecewise Linear Complexes}
+\label{sec:plc}
 
 \section{The Delaunay Triangulation}
 
@@ -1505,7 +1512,7 @@ RTFEM stands for Real-Time Finite Element Method. The library computes the entir
 \item Post-Processing: Output the displacements.
 \end{enumerate}
 
-RTFEM was written in c++11 and uses general template programming. Template programming is used to allow the user to easily change the precision between float and double. RTFEM can be built on any platform supporting cmake. All the tests were made on 64bit Arch Linux.
+RTFEM was written in c++11 and uses general template programming. Template programming is used to allow the user to easily change the precision between float and double. RTFEM can be built on any platform supporting cmake. All the tests were made on 64bit Arch Linux. The source code is available in~\cite{rtfem}.
 
 \subsection{Folder Structure}
 RTFEM folder structure looks as follows:
@@ -1520,10 +1527,10 @@ For more information about building the library see ReadMe.md in root directory.
 \subsection{External Libraries}
 RTFEM uses the following external libraries:
 \begin{enumerate}
-\item TeTGen: 3D Tetrahedron meshing algorithm.
-\item Eigen: CPU Matrix operations and System of Linear Equation Solver
-\item CUBLAS, CUSPARSE: GPU Matrix operations and System of Linear Equation Solver
-\item googletest: Unit test framework.
+\item TeTGen~\cite{tetgen}: 3D Tetrahedron meshing algorithm.
+\item Eigen~\cite{eigen}: CPU Matrix operations and System of Linear Equation Solver
+\item CUBLAS~\cite{cublas}, CUSPARSE~\cite{cusparse}: GPU Matrix operations and System of Linear Equation Solver
+\item googletest~\cite{googletest}: Unit test framework.
 \end{enumerate}
 
 \subsection{Architecture}
@@ -1536,7 +1543,7 @@ Let us start by describing the architecture of the library. First, the data stru
 \label{fig:uml_fem_model}
 \end{figure}
 
-The post processing part, namely the 3D mesh generation, is mostly done by TeTGen library. The figure~\ref{fig:uml_tetrahedralization} shows the simply process. TriangleMesh is composed by a set of vertices and faces. Such a triangle mesh can be easly converted from any triangle mesh used in 3D graphics libraries such as OpenGL. The Tetrahedralization class computes and outputs FEMGeometry.
+The post processing part, namely the 3D mesh generation, is mostly done by TeTGen library. The figure~\ref{fig:uml_tetrahedralization} shows the simply process. TriangleMesh is composed by a set of vertices and faces. Such a triangle mesh can be easily converted from any triangle mesh used in 3D graphics libraries such as OpenGL. Moreover, this triangle mesh is assumed to be a closed mesh. Such a triangle mesh can be easily described as PLC explained in section~\ref{sec:plc}. The Tetrahedralization class computes and outputs FEMGeometry.
 
 \begin{figure}[h!]
 \centering
@@ -1810,40 +1817,64 @@ It would be interesting to see how the proposed soft body solution checks out wi
 % \bibitem[numerek]{referencja} Autor, \emph{Tytuł}, Wydawnictwo, rok, strony
 % cytowanie: \cite{referencja1, referencja 2,...}
 
-\bibitem[1]{Ktos} Matthias Muller, Jos Stam, Doug James, Nils Thurey, \emph{Real Time Physics Class Notes}.
+% FEM Books
 
-\bibitem[2]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
+\bibitem[1]{termo} Michał Kleiber, Piotr Kowalczyk, \emph{Wprowadzenie do Nieliniowej Termomechaniki Ciał Odkształcalnych}.
 
-\bibitem[3]{termo} Michał Kleiber, Piotr Kowalczyk, \emph{Wprowadzenie do Nieliniowej Termomechaniki Ciał Odkształcalnych}.
+\bibitem[2]{zienkiewicz1} Zienkiewicz \emph{The Finite Element Method. Volume 1: The Basis}.
 
-\bibitem[4]{zienkiewicz1} Zienkiewicz \emph{The Finite Element Method. Volume 1: The Basis}.
+\bibitem[3]{zienkiewicz2} Zienkiewicz \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
 
-\bibitem[5]{zienkiewicz2} Zienkiewicz \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
+\bibitem[4]{altair} Altair University \emph{Practical Aspects of Finite Element Simulation}.
 
-\bibitem[5]{altair} Altair University \emph{Practical Aspects of Finite Element Simulation}.
+\bibitem[5]{colorado_fem_lectures} Department of Aerospace Engineering Sciences University of Colorado at Boulder \emph{Advanced Finite Element Methods (ASEN 6367) Lectures https://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/}.
 
-\bibitem[5]{damping} Department of Civil and Environmental Engineering Duke University, Henri P. Gavin \emph{Structural Element Stiffness, Mass, and Damping Matrices CEE 541. Structural Dynamics}.
+% Notes
 
-\bibitem[6]{colorado_fem_lectures} Department of Aerospace Engineering Sciences University of Colorado at Boulder \emph{Advanced Finite Element Methods (ASEN 6367) Lectures https://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/}.
+\bibitem[6]{physics_notes} Matthias Muller, Jos Stam, Doug James, Nils Thurey, \emph{Real Time Physics Class Notes}.
 
-\bibitem[7]{parker} Eric G. Parker, James F. O'Brien \emph{Real-Time Deformation and Fracture in a Game Environment}.
+\bibitem[7]{cg} Jonathan Richard Shewchuk \emph{An Introduction to the Conjugate Gradient Method Without the Agonizing Pain}.
 
-\bibitem[8]{cg} Jonathan Richard Shewchuk \emph{An Introduction to the Conjugate Gradient Method Without the Agonizing Pain}.
+\bibitem[8]{delaunay_mesh} Jonathan Richard Shewchuk \emph{Lecture Notes on Delaunay Mesh Generation}.
 
-\bibitem[9]{delaunay_mesh} Jonathan Richard Shewchuk \emph{Lecture Notes on
-Delaunay Mesh Generation}.
+\bibitem[9]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
 
-\bibitem[10]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
+% FEM Papers
 
-\bibitem[11]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
+\bibitem[10]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
 
-\bibitem[12]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
+\bibitem[11]{parker} Eric G. Parker, James F. O'Brien \emph{Real-Time Deformation and Fracture in a Game Environment}.
 
-\bibitem[13]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
+\bibitem[12]{tensor-mass} X. Faure, F. Zara, F. Jaillet, J-M. Moreau  \emph{An implicit Tensor-Mass solver on the GPU for soft bodies simulation}.
 
-\bibitem[14]{opengl} OpenGl \emph{https://www.opengl.org/}.
+\bibitem[13]{global_deformation} Yan Zhuang, John Canny \emph{Real-time Simulation of Physically Realistic Global Deformation}.
 
-\bibitem[15]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
+% Third party software
+
+\bibitem[14]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
+
+\bibitem[15]{opengl} OpenGl \emph{https://www.opengl.org/}.
+
+\bibitem[16]{sofa} SOFA Framework \emph{https://www.sofa-framework.org}.
+
+\bibitem[17]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
+
+\bibitem[18]{cublas} NVIDIA cuBLAS \emph{http://docs.nvidia.com/cuda/cublas/index.html}.
+
+\bibitem[19]{cusparse} NVIDIA cuSPARSE \emph{http://docs.nvidia.com/cuda/cusparse/index.html}.
+
+\bibitem[20]{eigen} Eigen \emph{http://eigen.tuxfamily.org/index.php?title=Main\_Page}.
+
+\bibitem[21]{googletest} Google \emph{https://github.com/google/googletest}.
+
+% Source codes
+
+\bibitem[22]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
+
+\bibitem[23]{rtfem} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/RT-FEM}.
+
+\bibitem[24]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
+
 
 \end{thebibliography}
 
