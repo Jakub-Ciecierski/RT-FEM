@@ -25,7 +25,7 @@
 \supervisor{dr~inż. Joanna Porter-Sobieraj}
 %\konsultacje{prof. Dumbledore} % jeśli nie ma, trzeba zakomentować też w minipw.cls
 \date{2018}
-\klucze{Deformacje Ciał Odkształcalnych, Metoda Elementów Skończonych, Mechanika Ciał Stałych ,GPU, CUDA}
+\klucze{Deformacje Ciał Odkształcalnych, Metoda Elementów Skończonych, Mechanika Ciał Stałych, GPU, CUDA, Symulacje fizyczne}
 \keywords{Soft Body, Finite Element Method, Solid Mechanics, Real-Time, GPU, CUDA, Physics engine, Game physics, Simulation, Deformation}
 % ----------------------------------------------------
 
@@ -50,8 +50,7 @@ This thesis provides an overview of real-time soft body deformation methods. The
 \end{abstract}
 
 \begin{streszczenie}
-
-
+Niniejsza praca przedstawia przegląd metod deformacji ciał odkształcalnych w czasie rzeczywistym. Celem tego opracowania jest zaprojektowanie i implementacja biblioteki numerycznej rozwiązującej problem fizycznie poprawnych deformacji. Zagadnienie liniowej mechaniki ciał stałych zostało rozwiązane za pomocą Metody Elementów Skończonych, którą zaprogramowano na GPU. Biblioteka zostoła zintegrowana z istniejącym silnikiem do gier.
 
 \end{streszczenie}
 
@@ -490,7 +489,15 @@ u_i = \hat{u_i} \quad x \in \partial  \Omega_{u}
 \end{aligned}
 \end{equation}
 The entire boundary domain is defined as $\partial \Omega = \partial \Omega_{u} \cup \partial \Omega_{\sigma}$
-First equation defines kinematic(Dirichlet) boundary conditions. Second equation defines dynamic(Neumann) boundary conditions. The displacement field applied to the boundary $\partial \Omega_{u}$ is denoted by $\hat{u_i}$. Traction force applied to the boundary $\partial \Omega_{\sigma}$ is denoted by $\hat{t_i}$.
+First equation defines kinematic(Dirichlet) boundary conditions. Second equation defines dynamic(Neumann) boundary conditions. The displacement field applied to the boundary $\partial \Omega_{u}$ is denoted by $\hat{u_i}$. Traction force applied to the boundary $\partial \Omega_{\sigma}$ is denoted by $\hat{t_i}$. See figure~\ref{fig:omega} for example body.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/omega.png}
+\caption[Example domain]{Example domain space defined by $\Omega$. The boundary of the body $\partial \Omega$ is divided into two parts: $\partial \Omega_{u}$ and $\partial \Omega_{\sigma}$. The Dirichlet boundary conditions $\partial \Omega_{u}$ are applied to the left face making it stationary. The Neumann boundary conditions $\partial \Omega_{\sigma}$ apply pressure load to the rest of the boundary space.}
+\label{fig:omega}
+\end{figure}
+
 
 \subsubsection{Dynamic System}
 In order to accommodate for the dynamic behaviour of the system, we must slightly change the equation of motion.
@@ -631,9 +638,9 @@ We can now state the discrete formulation for dynamic system using the Eq.~\ref{
 \begin{equation}
 \label{eq:virtual_work_dynamic5}
 \begin{aligned}
-\delta q_{\alpha}[ q_{\beta} \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV 
-\\
-+ \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV + \ddot{q_{\beta}} \int_{\Omega}\rho \Phi_{i \alpha} \Phi_{i \beta} dV + \int_{\Omega} \rho \Phi_{i \alpha} \ddot{\hat{\Phi_{i}}} dV - \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV - \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA] = 0
+\delta q_{\alpha}[ q_{\beta} \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \Phi_{k \beta,l} dV + \int_{\Omega} C_{ijkl} \Phi_{i \alpha,j} \hat{\Phi}_{k,l} dV + \ddot{q_{\beta}} \int_{\Omega}\rho \Phi_{i \alpha} \Phi_{i \beta} dV +
+\\ 
+\int_{\Omega} \rho \Phi_{i \alpha} \ddot{\hat{\Phi_{i}}} dV - \int_{\Omega} \hat{f_i} \Phi_{i \alpha} dV - \int_{\partial \Omega_{\sigma}} \hat{t_i}\Phi_{i \alpha} dA] = 0
 \end{aligned}
 \end{equation}
 
@@ -1538,7 +1545,7 @@ RTFEM uses the following external libraries:
 \end{enumerate}
 
 \subsection{Architecture}
-Let us start by describing the architecture of the library. First, the data structures used to represented the FEM model are shown in figure~\ref{fig:uml_fem_model}. FEMModel class is the main container of all sub-components. It also enabled the user to set up body force which acts on all vertices in the model. FEMGeometry holds all the information about geometry of 3D tetrahedron mesh. Vertex is defined by and id and coordinates. TriangleFace is defined by three pointers to vertices. Moreover it contains information about its area, whether it is boundary face and current traction force applied to it. User can apply traction forces directly to the triangle faces. FiniteElement contains pointers to vertices and faces. It also stores information about its volume. Material class is used to store the information of physical material used in the simulation. The variables $damping\_mass$ and $damping\_stiffness$ are used to compute damping matrix $C$ and correspond to $\alpha$ and $\beta$ from Eq.~\ref{eq:damping_matrix}. Finally the BoundaryCondition is used to store information about a single boundary condition. User defines the vertex id and the value which this vertex should take.
+Let us start by describing the architecture of the library. First, the data structures used to represented the FEM model are shown in figure~\ref{fig:uml_fem_model}. FEMModel class is the main container of all sub-components. It also enabled the user to set up body force which acts on all vertices in the model. FEMGeometry holds all the information about geometry of 3D tetrahedron mesh. Vertex is defined by global id and coordinates. TriangleFace is defined by three pointers to vertices. Moreover it contains information about its area, whether it is boundary face and current traction force applied to it. User can apply traction forces directly to the triangle faces. FiniteElement contains pointers to vertices and faces. It also stores information about its volume. Material class is used to store the information of physical material used in the simulation. The variables $damping\_mass$ and $damping\_stiffness$ are used to compute damping matrix $C$ and correspond to $\alpha$ and $\beta$ from Eq.~\ref{eq:damping_matrix}. Finally the BoundaryCondition is used to store information about a single boundary condition. User defines the vertex id and the value which this vertex should take.
 
 \begin{figure}[h!]
 \centering
