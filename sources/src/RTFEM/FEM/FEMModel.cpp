@@ -32,7 +32,7 @@ void FEMModel<T>::ResetBodyForce(){
 template<class T>
 void FEMModel<T>::ResetTractionForces(){
     for(auto& triangle_face : fem_geometry_.triangle_faces){
-        triangle_face.traction_force = 0;
+        triangle_face.traction_force = triangle_face.constant_traction_force;
     }
 }
 

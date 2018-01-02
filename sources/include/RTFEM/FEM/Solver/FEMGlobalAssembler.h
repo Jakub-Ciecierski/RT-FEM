@@ -150,8 +150,10 @@ public:
     void ApplyBoundaryConditionsMatrix(
             Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
             const BoundaryConditionContainer<T> &boundary_conditions);
+    void ApplyBoundaryConditionsMatrix(
+            Eigen::DiagonalMatrix<T, Eigen::Dynamic>& matrix,
+            const BoundaryConditionContainer<T> &boundary_conditions);
     void ApplyBoundaryConditionsVector(
-            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
             Eigen::Vector<T, Eigen::Dynamic>& vector,
             const BoundaryConditionContainer<T> &boundary_conditions);
 protected:

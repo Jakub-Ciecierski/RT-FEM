@@ -321,8 +321,21 @@ void FEMGlobalAssembler<T>::ApplyBoundaryConditionsMatrix(
 }
 
 template<class T>
+void FEMGlobalAssembler<T>::ApplyBoundaryConditionsMatrix(
+        Eigen::DiagonalMatrix<T, Eigen::Dynamic>& matrix,
+        const BoundaryConditionContainer<T> &boundary_conditions) {
+    for(const auto& boundary_condition : boundary_conditions){
+        auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;
+        for(unsigned int d = 0; d < DIMENSION_COUNT; d++){
+            auto bc_index = start_index + d;
+
+            matrix.diagonal()(bc_index) = 1;
+        }
+    }
+}
+
+template<class T>
 void FEMGlobalAssembler<T>::ApplyBoundaryConditionsVector(
-        const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& matrix,
         Eigen::Vector<T, Eigen::Dynamic>& vector,
         const BoundaryConditionContainer<T> &boundary_conditions) {
     // https://www.phy.ornl.gov/csep/bf/node10.html
@@ -330,14 +343,7 @@ void FEMGlobalAssembler<T>::ApplyBoundaryConditionsVector(
         auto start_index = boundary_condition.vertex_id * DIMENSION_COUNT;
         for(unsigned int d = 0; d < DIMENSION_COUNT; d++){
             auto bc_index = start_index + d;
-            // 1)
-            for (unsigned int i = 0; i < vector.size(); i++) {
-                vector(i) = vector(i) -
-                            (matrix(i, bc_index) * boundary_condition.value(d));
-            }
-
-            // 4)
-            vector(bc_index) = boundary_condition.value(d);
+            vector(bc_index) = 0;
         }
     }
 }

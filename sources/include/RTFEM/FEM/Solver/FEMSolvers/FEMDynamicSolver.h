@@ -81,7 +81,6 @@ private:
 
     // Saved for CPU solver only
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> left_hand_side_bc_;
-    Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> left_hand_side_no_bc_;
 
     Eigen::Vector<T, Eigen::Dynamic> displacement_velocity_current_;
     Eigen::Vector<T, Eigen::Dynamic> displacement_acceleration_current_;
