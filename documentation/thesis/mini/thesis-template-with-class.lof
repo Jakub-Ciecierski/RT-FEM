@@ -2,34 +2,33 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Tetrahedron Conventions}}{33}{figure.3.1}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Tetrahedron Conventions}}{30}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Poor 3D mesh}}{35}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Fine tetrahedron mesh}}{35}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Tetrahedron shapes}}{36}{figure.3.4}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Paraboloid of quadratic form}}{39}{figure.4.1}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Contour plot of quadratic form}}{40}{figure.4.2}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Paraboloid and surface}}{41}{figure.4.3}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Intersection of paraboloid and surface}}{42}{figure.4.4}
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Steepest Descent steps}}{43}{figure.4.5}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Paraboloid of quadratic form}}{38}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Contour plot of quadratic form}}{39}{figure.4.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Paraboloid and surface}}{40}{figure.4.3}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Intersection of paraboloid and surface}}{41}{figure.4.4}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Steepest Descent steps}}{42}{figure.4.5}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Poor 3D mesh}}{44}{figure.5.1}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Tetrahedron shapes}}{45}{figure.5.2}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Fine tetrahedron mesh}}{45}{figure.5.3}
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Class diagram of RTFEM data structures}}{48}{figure.6.1}
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Class diagram of RTFEM tetrahedralization process}}{48}{figure.6.2}
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Class diagram of solver}}{49}{figure.6.3}
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Game engine}}{51}{figure.6.4}
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Game engine modules overview}}{52}{figure.6.5}
-\contentsline {figure}{\numberline {6.6}{\ignorespaces Game engine physics module}}{53}{figure.6.6}
-\contentsline {figure}{\numberline {6.7}{\ignorespaces Game engine graphics module}}{53}{figure.6.7}
-\contentsline {figure}{\numberline {6.8}{\ignorespaces Game engine game module}}{54}{figure.6.8}
-\contentsline {figure}{\numberline {6.9}{\ignorespaces Game engine game loop sequence}}{54}{figure.6.9}
-\contentsline {figure}{\numberline {6.10}{\ignorespaces Game engine game module. Soft body integration}}{55}{figure.6.10}
-\contentsline {figure}{\numberline {6.11}{\ignorespaces Soft body editor. Meshing panel}}{55}{figure.6.11}
-\contentsline {figure}{\numberline {6.12}{\ignorespaces Soft body editor. Material panel}}{56}{figure.6.12}
-\contentsline {figure}{\numberline {6.13}{\ignorespaces Soft body editor. Boundary conditions panel}}{56}{figure.6.13}
-\contentsline {figure}{\numberline {6.14}{\ignorespaces Soft body editor. Load panel}}{57}{figure.6.14}
-\contentsline {figure}{\numberline {6.15}{\ignorespaces Soft body editor. Solver panel}}{57}{figure.6.15}
-\contentsline {figure}{\numberline {6.16}{\ignorespaces Soft body editor. Solver panel during computations}}{58}{figure.6.16}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Class diagram of RTFEM data structures}}{45}{figure.5.1}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Class diagram of RTFEM tetrahedralization process}}{45}{figure.5.2}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Class diagram of solver}}{46}{figure.5.3}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Game engine}}{48}{figure.5.4}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Game engine modules overview}}{49}{figure.5.5}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Game engine physics module}}{50}{figure.5.6}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Game engine graphics module}}{50}{figure.5.7}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Game engine game module}}{51}{figure.5.8}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Game engine game loop sequence}}{51}{figure.5.9}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Game engine game module. Soft body integration}}{52}{figure.5.10}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Soft body editor. Meshing panel}}{52}{figure.5.11}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Soft body editor. Material panel}}{53}{figure.5.12}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Soft body editor. Boundary conditions panel}}{53}{figure.5.13}
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Soft body editor. Load panel}}{54}{figure.5.14}
+\contentsline {figure}{\numberline {5.15}{\ignorespaces Soft body editor. Solver panel}}{54}{figure.5.15}
+\contentsline {figure}{\numberline {5.16}{\ignorespaces Soft body editor. Solver panel during computations}}{55}{figure.5.16}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsfinish 

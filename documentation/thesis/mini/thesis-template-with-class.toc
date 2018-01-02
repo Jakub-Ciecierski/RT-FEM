@@ -1,74 +1,68 @@
 \select@language {polish}
-\contentsline {chapter}{Introduction}{11}{section*.1}
-\contentsline {chapter}{\numberline {1}Background}{13}{chapter.1}
-\contentsline {section}{\numberline {1.1}Mass Spring}{13}{section.1.1}
-\contentsline {subsection}{\numberline {1.1.1}Formulation}{13}{subsection.1.1.1}
-\contentsline {subsection}{\numberline {1.1.2}Simulation}{13}{subsection.1.1.2}
-\contentsline {subsection}{\numberline {1.1.3}Numerical Integration}{14}{subsection.1.1.3}
-\contentsline {subsubsection}{Explicit Euler Integration}{14}{subsubsection*.2}
-\contentsline {subsubsection}{Runge-Kutta Integration}{15}{subsubsection*.3}
-\contentsline {subsubsection}{Implicit Euler}{16}{subsubsection*.4}
-\contentsline {subsubsection}{Conclusions}{17}{subsubsection*.5}
-\contentsline {section}{\numberline {1.2}Position Based Dynamics}{17}{section.1.2}
-\contentsline {subsection}{\numberline {1.2.1}Formulation}{17}{subsection.1.2.1}
-\contentsline {section}{\numberline {1.3}Finite Element Method}{18}{section.1.3}
-\contentsline {chapter}{\numberline {2}Solid Mechanics - Part 1}{20}{chapter.2}
-\contentsline {section}{\numberline {2.1}Formulation}{20}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Displacement}{20}{subsection.2.1.1}
-\contentsline {subsection}{\numberline {2.1.2}Strain}{20}{subsection.2.1.2}
-\contentsline {subsection}{\numberline {2.1.3}Stress}{20}{subsection.2.1.3}
-\contentsline {subsection}{\numberline {2.1.4}Constitutive Laws}{21}{subsection.2.1.4}
-\contentsline {subsection}{\numberline {2.1.5}Strong formulation}{21}{subsection.2.1.5}
-\contentsline {subsubsection}{Dynamic System}{22}{subsubsection*.6}
-\contentsline {subsection}{\numberline {2.1.6}Weak formulation}{22}{subsection.2.1.6}
-\contentsline {subsubsection}{Dynamic System}{23}{subsubsection*.7}
-\contentsline {subsection}{\numberline {2.1.7}Discrete formulation}{23}{subsection.2.1.7}
-\contentsline {subsubsection}{Dynamic System}{24}{subsubsection*.8}
-\contentsline {section}{\numberline {2.2}Finite Element Method}{25}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}FEM for Solid Mechanics}{26}{subsection.2.2.1}
-\contentsline {subsubsection}{Dynamic System}{28}{subsubsection*.9}
-\contentsline {subsubsection}{Mass Matrix Diagonalization}{28}{subsubsection*.10}
-\contentsline {section}{\numberline {2.3}Sparse Matrix Representation}{28}{section.2.3}
-\contentsline {section}{\numberline {2.4}Solver}{29}{section.2.4}
-\contentsline {subsection}{\numberline {2.4.1}Implicit Euler}{29}{subsection.2.4.1}
-\contentsline {section}{\numberline {2.5}Boundary Conditions}{30}{section.2.5}
-\contentsline {chapter}{\numberline {3}Solid Mechanics - Part 2 - Tetrahedron}{32}{chapter.3}
-\contentsline {section}{\numberline {3.1}Volume}{32}{section.3.1}
-\contentsline {section}{\numberline {3.2}Natural Coordinates}{32}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Transformation}{33}{subsection.3.2.1}
-\contentsline {section}{\numberline {3.3}Derivatives}{34}{section.3.3}
-\contentsline {section}{\numberline {3.4}Analytical Integration}{34}{section.3.4}
-\contentsline {section}{\numberline {3.5}Stiffness Matrix}{35}{section.3.5}
-\contentsline {section}{\numberline {3.6}Force Vector}{35}{section.3.6}
-\contentsline {subsection}{\numberline {3.6.1}Body Forces}{35}{subsection.3.6.1}
-\contentsline {subsection}{\numberline {3.6.2}Traction Forces}{36}{subsection.3.6.2}
-\contentsline {section}{\numberline {3.7}Mass Matrix}{36}{section.3.7}
-\contentsline {subsection}{\numberline {3.7.1}Mass Matrix Diagonalization}{37}{subsection.3.7.1}
-\contentsline {chapter}{\numberline {4}Solving System of Linear Equations}{38}{chapter.4}
-\contentsline {section}{\numberline {4.1}Conjugate Gradient}{38}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Introduction}{38}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Quadratic Form}{38}{subsection.4.1.2}
-\contentsline {subsection}{\numberline {4.1.3}Steepest Descent}{39}{subsection.4.1.3}
-\contentsline {subsection}{\numberline {4.1.4}Conjugate Directions}{42}{subsection.4.1.4}
-\contentsline {subsection}{\numberline {4.1.5}Conjugate Gradient}{43}{subsection.4.1.5}
-\contentsline {chapter}{\numberline {5}Tetrahedralization}{44}{chapter.5}
-\contentsline {section}{\numberline {5.1}Piecewise Linear Complexes}{45}{section.5.1}
-\contentsline {section}{\numberline {5.2}The Delaunay Triangulation}{45}{section.5.2}
-\contentsline {section}{\numberline {5.3}Two-Dimensional Delaunay Refinement}{45}{section.5.3}
-\contentsline {section}{\numberline {5.4}Three-Dimensional Delaunay Refinement}{45}{section.5.4}
-\contentsline {chapter}{\numberline {6}Implementation}{46}{chapter.6}
-\contentsline {section}{\numberline {6.1}RTFEM}{46}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}Folder Structure}{46}{subsection.6.1.1}
-\contentsline {subsection}{\numberline {6.1.2}External Libraries}{47}{subsection.6.1.2}
-\contentsline {subsection}{\numberline {6.1.3}Architecture}{47}{subsection.6.1.3}
-\contentsline {subsection}{\numberline {6.1.4}Solver Algorithms}{49}{subsection.6.1.4}
-\contentsline {section}{\numberline {6.2}RTFEM Integration into Game Engine}{51}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}Editor}{54}{subsection.6.2.1}
-\contentsline {chapter}{\numberline {7}Tests}{59}{chapter.7}
-\contentsline {chapter}{\numberline {8}Conclusions}{60}{chapter.8}
-\contentsline {section}{\numberline {8.1}Further work}{60}{section.8.1}
-\contentsline {chapter}{Bibliografia}{62}{section*.11}
-\contentsline {chapter}{List of symbols and abbreviations}{64}{section*.12}
-\contentsline {chapter}{Spis rysunk\'ow}{65}{section*.13}
-\contentsline {chapter}{List of tables}{66}{section*.14}
+\contentsline {chapter}{Introduction}{9}{section*.1}
+\contentsline {chapter}{\numberline {1}Particle-Based Methods}{11}{chapter.1}
+\contentsline {section}{\numberline {1.1}Mass Spring}{11}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Formulation}{11}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Simulation}{11}{subsection.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}Numerical Integration}{12}{subsection.1.1.3}
+\contentsline {subsubsection}{Explicit Euler Integration}{12}{subsubsection*.2}
+\contentsline {subsubsection}{Runge-Kutta Integration}{13}{subsubsection*.3}
+\contentsline {subsubsection}{Implicit Euler}{14}{subsubsection*.4}
+\contentsline {subsubsection}{Conclusions}{15}{subsubsection*.5}
+\contentsline {section}{\numberline {1.2}Position Based Dynamics}{15}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Formulation}{15}{subsection.1.2.1}
+\contentsline {chapter}{\numberline {2}Solid-Based Methods}{17}{chapter.2}
+\contentsline {section}{\numberline {2.1}Formulation}{17}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Displacement}{17}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Strain}{17}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}Stress}{18}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.4}Constitutive Laws}{18}{subsection.2.1.4}
+\contentsline {subsection}{\numberline {2.1.5}Strong formulation}{19}{subsection.2.1.5}
+\contentsline {subsubsection}{Dynamic System}{20}{subsubsection*.6}
+\contentsline {subsection}{\numberline {2.1.6}Weak formulation}{20}{subsection.2.1.6}
+\contentsline {subsubsection}{Dynamic System}{21}{subsubsection*.7}
+\contentsline {subsection}{\numberline {2.1.7}Discrete formulation}{21}{subsection.2.1.7}
+\contentsline {subsubsection}{Dynamic System}{22}{subsubsection*.8}
+\contentsline {section}{\numberline {2.2}Finite Element Method}{23}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}FEM for Solid Mechanics}{24}{subsection.2.2.1}
+\contentsline {subsubsection}{Dynamic System}{25}{subsubsection*.9}
+\contentsline {section}{\numberline {2.3}Sparse Matrix Representation}{26}{section.2.3}
+\contentsline {section}{\numberline {2.4}Solver}{27}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Implicit Euler}{27}{subsection.2.4.1}
+\contentsline {section}{\numberline {2.5}Boundary Conditions}{28}{section.2.5}
+\contentsline {chapter}{\numberline {3}Tetrahedron Finite Element}{29}{chapter.3}
+\contentsline {section}{\numberline {3.1}Volume}{29}{section.3.1}
+\contentsline {section}{\numberline {3.2}Natural Coordinates}{29}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Transformation}{30}{subsection.3.2.1}
+\contentsline {section}{\numberline {3.3}Derivatives}{31}{section.3.3}
+\contentsline {section}{\numberline {3.4}Analytical Integration}{31}{section.3.4}
+\contentsline {section}{\numberline {3.5}Stiffness Matrix}{32}{section.3.5}
+\contentsline {section}{\numberline {3.6}Force Vector}{32}{section.3.6}
+\contentsline {subsection}{\numberline {3.6.1}Body Forces}{32}{subsection.3.6.1}
+\contentsline {subsection}{\numberline {3.6.2}Traction Forces}{33}{subsection.3.6.2}
+\contentsline {section}{\numberline {3.7}Mass Matrix}{33}{section.3.7}
+\contentsline {subsection}{\numberline {3.7.1}Mass Matrix Diagonalization}{34}{subsection.3.7.1}
+\contentsline {section}{\numberline {3.8}Tetrahedralization}{34}{section.3.8}
+\contentsline {chapter}{\numberline {4}Solving System of Linear Equations}{37}{chapter.4}
+\contentsline {section}{\numberline {4.1}Conjugate Gradient}{37}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Introduction}{37}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Quadratic Form}{37}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Steepest Descent}{38}{subsection.4.1.3}
+\contentsline {subsection}{\numberline {4.1.4}Conjugate Directions}{41}{subsection.4.1.4}
+\contentsline {subsection}{\numberline {4.1.5}Conjugate Gradient}{42}{subsection.4.1.5}
+\contentsline {chapter}{\numberline {5}Implementation}{43}{chapter.5}
+\contentsline {section}{\numberline {5.1}RTFEM}{43}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Folder Structure}{43}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}External Libraries}{44}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Architecture}{44}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Solver Algorithms}{46}{subsection.5.1.4}
+\contentsline {section}{\numberline {5.2}RTFEM Integration into Game Engine}{48}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Editor}{51}{subsection.5.2.1}
+\contentsline {chapter}{\numberline {6}Tests}{56}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusions}{57}{chapter.7}
+\contentsline {section}{\numberline {7.1}Further work}{57}{section.7.1}
+\contentsline {chapter}{Bibliografia}{59}{section*.10}
+\contentsline {chapter}{List of symbols and abbreviations}{61}{section*.11}
+\contentsline {chapter}{Spis rysunk\'ow}{62}{section*.12}
+\contentsline {chapter}{List of tables}{63}{section*.13}
 \contentsfinish 

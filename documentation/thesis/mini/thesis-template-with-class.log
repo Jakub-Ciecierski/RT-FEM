@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  2 JAN 2018 00:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  2 JAN 2018 14:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -804,6 +804,9 @@ LaTeX Warning: Label `eq:displacement_field1' multiply defined.
 
 LaTeX Warning: Label `euclid' multiply defined.
 
+
+LaTeX Warning: Label `eq:mass_matrix_e' multiply defined.
+
 )
 \openout1 = `thesis-template-with-class.aux'.
 
@@ -964,14 +967,7 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ]
 (./thesis-template-with-class.toc [7
 
-]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[8])
+])
 \tf@toc=\write4
 \openout4 = `thesis-template-with-class.toc'.
 
@@ -982,12 +978,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[9] [10
-
-]
+[8]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11
+ [9
+
 
 ]
 
@@ -996,13 +991,33 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[12]
+[10]
 Rozdzia\l  1.
-[13
+[11
 
 ]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 192.
+put line 191.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[12]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[13]
+Underfull \hbox (badness 2012) in paragraph at lines 260--262
+\T1/cmr/m/n/10.95 Further, we con-struct a mass ma-trix $\OML/plm/m/it/10.95 M 
+\OMS/plsy/m/n/10.95 2 \U/msb/m/n/10.95 R[]$ \T1/cmr/m/n/10.95 which is dia-go-n
+al with va-lues
+ []
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1018,12 +1033,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [15]
-Underfull \hbox (badness 2012) in paragraph at lines 261--263
-\T1/cmr/m/n/10.95 Further, we con-struct a mass ma-trix $\OML/plm/m/it/10.95 M 
-\OMS/plsy/m/n/10.95 2 \U/msb/m/n/10.95 R[]$ \T1/cmr/m/n/10.95 which is dia-go-n
-al with va-lues
- []
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1031,16 +1040,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [16]
+Rozdzia\l  2.
 
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
+Underfull \vbox (badness 2600) has occurred while \output is active []
 
-[17]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+ [17
 
-
+]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1055,10 +1061,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [19]
-Rozdzia\l  2.
-[20
 
-]
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[20]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1074,6 +1083,9 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [22]
 
+LaTeX Warning: Citation `damping' on page 23 undefined on input line 659.
+
+
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
@@ -1087,9 +1099,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [24]
-
-LaTeX Warning: Citation `damping' on page 25 undefined on input line 659.
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1118,46 +1127,22 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [28]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[29]
-Underfull \vbox (badness 5036) has occurred while \output is active []
-
-
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[30]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[31]
 Rozdzia\l  3.
-<pictures/tetrahedron.png, id=711, 1025.8325pt x 343.2825pt>
+<pictures/tetrahedron.png, id=667, 1025.8325pt x 343.2825pt>
 File: pictures/tetrahedron.png Graphic file (type png)
 
 <use pictures/tetrahedron.png>
-Package pdftex.def Info: pictures/tetrahedron.png used on input line 1003.
+Package pdftex.def Info: pictures/tetrahedron.png used on input line 1000.
 (pdftex.def)             Requested size: 512.91501pt x 171.64082pt.
 
-Overfull \hbox (57.67088pt too wide) in paragraph at lines 1003--1004
+Overfull \hbox (57.67088pt too wide) in paragraph at lines 1000--1001
  [][] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[32
+[29
 
 ]
 
@@ -1166,12 +1151,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[33pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1
+[30pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1082 W
+l.1079 W
         e can now write the matrix system in more compact way using further ...
  <./pictures/tetrahedron.png>]
 
@@ -1180,47 +1165,108 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[34]
+[31]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[35]
+[32]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[36]
+[33] <pictures/3dmesh_incomplite.png, id=722, 503.8825pt x 428.60126pt>
+File: pictures/3dmesh_incomplite.png Graphic file (type png)
+
+<use pictures/3dmesh_incomplite.png>
+Package pdftex.def Info: pictures/3dmesh_incomplite.png used on input line 1281
+.
+(pdftex.def)             Requested size: 251.94063pt x 214.3001pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/3dmesh.png, id=725, 844.15375pt x 621.32124pt>
+File: pictures/3dmesh.png Graphic file (type png)
+
+<use pictures/3dmesh.png>
+Package pdftex.def Info: pictures/3dmesh.png used on input line 1288.
+(pdftex.def)             Requested size: 253.24808pt x 186.39781pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[37]
+[34] <pictures/tetrahedra_shapes.png, id=738, 1260.71pt x 310.15875pt>
+File: pictures/tetrahedra_shapes.png Graphic file (type png)
+
+<use pictures/tetrahedra_shapes.png>
+Package pdftex.def Info: pictures/tetrahedra_shapes.png used on input line 1299
+.
+(pdftex.def)             Requested size: 378.21593pt x 93.04834pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[35pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1308 \chapter
+               {Solving System of Linear Equations}pdfTeX warning (ext4): desti
+nation with the same identifier (name{figure.3.3}) has been already used, dupli
+cate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1308 \chapter
+               {Solving System of Linear Equations} <./pictures/3dmesh_incompli
+te.png> <./pictures/3dmesh.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[36pdfTeX warning (ext4): destination with the same identifier (name{figure.3.4
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1308 \chapter
+               {Solving System of Linear Equations} <./pictures/tetrahedra_shap
+es.png>]
 Rozdzia\l  4.
+[37
 
-Underfull \vbox (badness 1259) has occurred while \output is active []
-
- [38
-
-]
-<pictures/paraboloid.png, id=778, 636.3775pt x 504.88625pt>
+] <pictures/paraboloid.png, id=768, 636.3775pt x 504.88625pt>
 File: pictures/paraboloid.png Graphic file (type png)
 
 <use pictures/paraboloid.png>
-Package pdftex.def Info: pictures/paraboloid.png used on input line 1322.
+Package pdftex.def Info: pictures/paraboloid.png used on input line 1368.
 (pdftex.def)             Requested size: 318.18797pt x 252.44249pt.
 
-<pictures/contour.png, id=780, 620.3175pt x 598.235pt>
+<pictures/contour.png, id=770, 620.3175pt x 598.235pt>
 File: pictures/contour.png Graphic file (type png)
 
 <use pictures/contour.png>
-Package pdftex.def Info: pictures/contour.png used on input line 1328.
+Package pdftex.def Info: pictures/contour.png used on input line 1374.
 (pdftex.def)             Requested size: 310.15799pt x 299.11676pt.
 
 
@@ -1232,12 +1278,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[39pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1
+[38pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1334 \begin{equation}
+l.1380 \begin{equation}
                         <./pictures/paraboloid.png>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1245,25 +1291,25 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[40pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2
+[39pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1361 \begin{equation}
+l.1407 \begin{equation}
                         <./pictures/contour.png>]
-<pictures/alpha1.png, id=808, 331.2375pt x 276.03125pt>
+<pictures/alpha1.png, id=797, 331.2375pt x 276.03125pt>
 File: pictures/alpha1.png Graphic file (type png)
 
 <use pictures/alpha1.png>
-Package pdftex.def Info: pictures/alpha1.png used on input line 1387.
+Package pdftex.def Info: pictures/alpha1.png used on input line 1433.
 (pdftex.def)             Requested size: 264.99034pt x 220.82529pt.
 
-<pictures/alpha2.png, id=811, 290.08376pt x 273.02pt>
+<pictures/alpha2.png, id=800, 290.08376pt x 273.02pt>
 File: pictures/alpha2.png Graphic file (type png)
 
 <use pictures/alpha2.png>
-Package pdftex.def Info: pictures/alpha2.png used on input line 1394.
+Package pdftex.def Info: pictures/alpha2.png used on input line 1440.
 (pdftex.def)             Requested size: 232.0673pt x 218.41629pt.
 
 
@@ -1275,18 +1321,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[41pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3
+[40pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1409 \end{equation}
+l.1455 \end{equation}
                       <./pictures/alpha1.png>]
-<pictures/steepest_descent.png, id=823, 669.50125pt x 588.1975pt>
+<pictures/steepest_descent.png, id=812, 669.50125pt x 588.1975pt>
 File: pictures/steepest_descent.png Graphic file (type png)
 
 <use pictures/steepest_descent.png>
-Package pdftex.def Info: pictures/steepest_descent.png used on input line 1415.
+Package pdftex.def Info: pictures/steepest_descent.png used on input line 1461.
 
 (pdftex.def)             Requested size: 334.7498pt x 294.09802pt.
 
@@ -1299,12 +1345,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[42pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4
+[41pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1440 \begin{equation}
+l.1486 \begin{equation}
                         <./pictures/alpha2.png>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1312,110 +1358,48 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[43pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5
+[42pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1460 \chapter
-               {Tetrahedralization} <./pictures/steepest_descent.png>]
+l.1506 \chapter
+               {Implementation} <./pictures/steepest_descent.png>]
 Rozdzia\l  5.
-<pictures/3dmesh_incomplite.png, id=842, 503.8825pt x 428.60126pt>
-File: pictures/3dmesh_incomplite.png Graphic file (type png)
+[43
 
-<use pictures/3dmesh_incomplite.png>
-Package pdftex.def Info: pictures/3dmesh_incomplite.png used on input line 1468
-.
-(pdftex.def)             Requested size: 251.94063pt x 214.3001pt.
-
-<pictures/tetrahedra_shapes.png, id=846, 1260.71pt x 310.15875pt>
-File: pictures/tetrahedra_shapes.png Graphic file (type png)
-
-<use pictures/tetrahedra_shapes.png>
-Package pdftex.def Info: pictures/tetrahedra_shapes.png used on input line 1479
-.
-(pdftex.def)             Requested size: 378.21593pt x 93.04834pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<pictures/3dmesh.png, id=848, 844.15375pt x 621.32124pt>
-File: pictures/3dmesh.png Graphic file (type png)
-
-<use pictures/3dmesh.png>
-Package pdftex.def Info: pictures/3dmesh.png used on input line 1486.
-(pdftex.def)             Requested size: 422.07584pt x 310.65987pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [44
-
-pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1}) 
-has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.1500 \chapter
-               {Implementation} <./pictures/3dmesh_incomplite.png>]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[45pdfTeX warning (ext4): destination with the same identifier (name{figure.5.2
-}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.1500 \chapter
-               {Implementation}pdfTeX warning (ext4): destination with the same
- identifier (name{figure.5.3}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.1500 \chapter
-               {Implementation} <./pictures/tetrahedra_shapes.png> <./pictures/
-3dmesh.png>]
-Rozdzia\l  6.
-[46
-
-] <pictures/fem_model.png, id=884, 800.9925pt x 605.26125pt>
+] <pictures/fem_model.png, id=851, 800.9925pt x 605.26125pt>
 File: pictures/fem_model.png Graphic file (type png)
 
 <use pictures/fem_model.png>
-Package pdftex.def Info: pictures/fem_model.png used on input line 1539.
+Package pdftex.def Info: pictures/fem_model.png used on input line 1545.
 (pdftex.def)             Requested size: 480.5992pt x 363.15953pt.
 
-Overfull \hbox (25.35507pt too wide) in paragraph at lines 1539--1540
+Overfull \hbox (25.35507pt too wide) in paragraph at lines 1545--1546
  [][] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/tetrahedralization.png, id=887, 451.6875pt x 308.15125pt>
+<pictures/tetrahedralization.png, id=853, 451.6875pt x 308.15125pt>
 File: pictures/tetrahedralization.png Graphic file (type png)
 
 <use pictures/tetrahedralization.png>
-Package pdftex.def Info: pictures/tetrahedralization.png used on input line 154
-8.
+Package pdftex.def Info: pictures/tetrahedralization.png used on input line 155
+4.
 (pdftex.def)             Requested size: 271.01459pt x 184.89217pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/solver.png, id=890, 955.57pt x 544.0325pt>
+<pictures/solver.png, id=856, 955.57pt x 544.0325pt>
 File: pictures/solver.png Graphic file (type png)
  <use pictures/solver.png>
-Package pdftex.def Info: pictures/solver.png used on input line 1557.
+Package pdftex.def Info: pictures/solver.png used on input line 1563.
 (pdftex.def)             Requested size: 477.78383pt x 272.01558pt.
 
-Overfull \hbox (22.5397pt too wide) in paragraph at lines 1557--1558
+Overfull \hbox (22.5397pt too wide) in paragraph at lines 1563--1564
  [][] 
  []
 
@@ -1425,7 +1409,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[47]
+[44]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1439,18 +1423,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[48pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1
+[45pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1560 \end{figure}
+l.1566 \end{figure}
                    pdfTeX warning (ext4): destination with the same identifier 
-(name{figure.6.2}) has been already used, duplicate ignored
+(name{figure.5.2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1560 \end{figure}
+l.1566 \end{figure}
                     <./pictures/fem_model.png> <./pictures/tetrahedralization.p
 ng>]
 
@@ -1459,12 +1443,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[49pdfTeX warning (ext4): destination with the same identifier (name{figure.6.3
+[46pdfTeX warning (ext4): destination with the same identifier (name{figure.5.3
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1604 
+l.1610 
         <./pictures/solver.png>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1472,11 +1456,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[50] <pictures/ifx/ifx.png, id=936, 1926.19624pt x 1054.94125pt>
+[47] <pictures/ifx/ifx.png, id=901, 1926.19624pt x 1054.94125pt>
 File: pictures/ifx/ifx.png Graphic file (type png)
 
 <use pictures/ifx/ifx.png>
-Package pdftex.def Info: pictures/ifx/ifx.png used on input line 1669.
+Package pdftex.def Info: pictures/ifx/ifx.png used on input line 1675.
 (pdftex.def)             Requested size: 385.23242pt x 210.98451pt.
 
 
@@ -1485,45 +1469,45 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[51pdfTeX warning (ext4): destination with the same identifier (name{figure.6.4
+[48pdfTeX warning (ext4): destination with the same identifier (name{figure.5.4
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1679 
+l.1685 
         <./pictures/ifx/ifx.png>]
-<pictures/ifx_general.png, id=950, 378.41376pt x 353.32pt>
+<pictures/ifx_general.png, id=915, 378.41376pt x 353.32pt>
 File: pictures/ifx_general.png Graphic file (type png)
 
 <use pictures/ifx_general.png>
-Package pdftex.def Info: pictures/ifx_general.png used on input line 1682.
+Package pdftex.def Info: pictures/ifx_general.png used on input line 1688.
 (pdftex.def)             Requested size: 189.2064pt x 176.65956pt.
 
-<pictures/ifx_physics.png, id=952, 670.505pt x 397.485pt>
+<pictures/ifx_physics.png, id=917, 670.505pt x 397.485pt>
 File: pictures/ifx_physics.png Graphic file (type png)
 
 <use pictures/ifx_physics.png>
-Package pdftex.def Info: pictures/ifx_physics.png used on input line 1691.
+Package pdftex.def Info: pictures/ifx_physics.png used on input line 1697.
 (pdftex.def)             Requested size: 335.25168pt x 198.742pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_graphics.png, id=954, 461.725pt x 421.575pt>
+<pictures/ifx_graphics.png, id=919, 461.725pt x 421.575pt>
 File: pictures/ifx_graphics.png Graphic file (type png)
 
 <use pictures/ifx_graphics.png>
-Package pdftex.def Info: pictures/ifx_graphics.png used on input line 1700.
+Package pdftex.def Info: pictures/ifx_graphics.png used on input line 1706.
 (pdftex.def)             Requested size: 230.86194pt x 210.78697pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_game.png, id=956, 512.91624pt x 504.88625pt>
+<pictures/ifx_game.png, id=921, 512.91624pt x 504.88625pt>
 File: pictures/ifx_game.png Graphic file (type png)
 
 <use pictures/ifx_game.png>
-Package pdftex.def Info: pictures/ifx_game.png used on input line 1709.
+Package pdftex.def Info: pictures/ifx_game.png used on input line 1715.
 (pdftex.def)             Requested size: 256.45749pt x 252.44249pt.
 
 
@@ -1539,28 +1523,28 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[52pdfTeX warning (ext4): destination with the same identifier (name{figure.6.5
+[49pdfTeX warning (ext4): destination with the same identifier (name{figure.5.5
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1715 
+l.1721 
         <./pictures/ifx_general.png>]
-<pictures/game_loop.png, id=966, 1128.215pt x 309.155pt>
+<pictures/game_loop.png, id=932, 1128.215pt x 309.155pt>
 File: pictures/game_loop.png Graphic file (type png)
 
 <use pictures/game_loop.png>
-Package pdftex.def Info: pictures/game_loop.png used on input line 1718.
+Package pdftex.def Info: pictures/game_loop.png used on input line 1724.
 (pdftex.def)             Requested size: 451.278pt x 123.6598pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_game2.png, id=968, 703.62875pt x 415.5525pt>
+<pictures/ifx_game2.png, id=934, 703.62875pt x 415.5525pt>
 File: pictures/ifx_game2.png Graphic file (type png)
 
 <use pictures/ifx_game2.png>
-Package pdftex.def Info: pictures/ifx_game2.png used on input line 1727.
+Package pdftex.def Info: pictures/ifx_game2.png used on input line 1733.
 (pdftex.def)             Requested size: 351.8135pt x 207.77574pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1572,18 +1556,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[53pdfTeX warning (ext4): destination with the same identifier (name{figure.6.6
+[50pdfTeX warning (ext4): destination with the same identifier (name{figure.5.6
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1730 \end{figure}
+l.1736 \end{figure}
                    pdfTeX warning (ext4): destination with the same identifier 
-(name{figure.6.7}) has been already used, duplicate ignored
+(name{figure.5.7}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1730 \end{figure}
+l.1736 \end{figure}
                     <./pictures/ifx_physics.png> <./pictures/ifx_graphics.png>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1594,42 +1578,42 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[54pdfTeX warning (ext4): destination with the same identifier (name{figure.6.8
+[51pdfTeX warning (ext4): destination with the same identifier (name{figure.5.8
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1735 
+l.1741 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
-.6.9}) has been already used, duplicate ignored
+.5.9}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1735 
+l.1741 
         <./pictures/ifx_game.png> <./pictures/game_loop.png>]
-<pictures/ifx/ifx_meshing.png, id=987, 1160.335pt x 710.655pt>
+<pictures/ifx/ifx_meshing.png, id=951, 1160.335pt x 710.655pt>
 File: pictures/ifx/ifx_meshing.png Graphic file (type png)
 
 <use pictures/ifx/ifx_meshing.png>
-Package pdftex.def Info: pictures/ifx/ifx_meshing.png used on input line 1739.
+Package pdftex.def Info: pictures/ifx/ifx_meshing.png used on input line 1744.
 (pdftex.def)             Requested size: 348.10318pt x 213.19814pt.
 
-<pictures/ifx/ifx_material.png, id=990, 1158.3275pt x 704.6325pt>
+<pictures/ifx/ifx_material.png, id=954, 1158.3275pt x 704.6325pt>
 File: pictures/ifx/ifx_material.png Graphic file (type png)
 
 <use pictures/ifx/ifx_material.png>
-Package pdftex.def Info: pictures/ifx/ifx_material.png used on input line 1748.
+Package pdftex.def Info: pictures/ifx/ifx_material.png used on input line 1753.
 
 (pdftex.def)             Requested size: 347.50093pt x 211.39139pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx/ifx_bc.png, id=992, 1163.34625pt x 706.64pt>
+<pictures/ifx/ifx_bc.png, id=956, 1163.34625pt x 706.64pt>
 File: pictures/ifx/ifx_bc.png Graphic file (type png)
 
 <use pictures/ifx/ifx_bc.png>
-Package pdftex.def Info: pictures/ifx/ifx_bc.png used on input line 1757.
+Package pdftex.def Info: pictures/ifx/ifx_bc.png used on input line 1762.
 (pdftex.def)             Requested size: 349.00658pt x 211.99364pt.
 
 
@@ -1645,24 +1629,24 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[55pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1
+[52pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1
 0}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1763 
+l.1768 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
-.6.11}) has been already used, duplicate ignored
+.5.11}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1763 
+l.1768 
         <./pictures/ifx_game2.png> <./pictures/ifx/ifx_meshing.png>]
-<pictures/ifx/ifx_load.png, id=1001, 1160.335pt x 708.6475pt>
+<pictures/ifx/ifx_load.png, id=964, 1160.335pt x 708.6475pt>
 File: pictures/ifx/ifx_load.png Graphic file (type png)
 
 <use pictures/ifx/ifx_load.png>
-Package pdftex.def Info: pictures/ifx/ifx_load.png used on input line 1766.
+Package pdftex.def Info: pictures/ifx/ifx_load.png used on input line 1771.
 (pdftex.def)             Requested size: 348.10318pt x 212.59589pt.
 
 
@@ -1674,31 +1658,31 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[56pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1
+[53pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1
 2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1772 
+l.1777 
        pdfTeX warning (ext4): destination with the same identifier (name{figure
-.6.13}) has been already used, duplicate ignored
+.5.13}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1772 
+l.1777 
         <./pictures/ifx/ifx_material.png> <./pictures/ifx/ifx_bc.png>]
-<pictures/ifx/ifx_solver1.png, id=1010, 1159.33125pt x 705.63625pt>
+<pictures/ifx/ifx_solver1.png, id=974, 1159.33125pt x 705.63625pt>
 File: pictures/ifx/ifx_solver1.png Graphic file (type png)
 
 <use pictures/ifx/ifx_solver1.png>
-Package pdftex.def Info: pictures/ifx/ifx_solver1.png used on input line 1775.
+Package pdftex.def Info: pictures/ifx/ifx_solver1.png used on input line 1780.
 (pdftex.def)             Requested size: 347.80206pt x 211.6925pt.
 
-<pictures/ifx/ifx_solver2.png, id=1011, 1162.3425pt x 709.65125pt>
+<pictures/ifx/ifx_solver2.png, id=975, 1162.3425pt x 709.65125pt>
 File: pictures/ifx/ifx_solver2.png Graphic file (type png)
 
 <use pictures/ifx/ifx_solver2.png>
-Package pdftex.def Info: pictures/ifx/ifx_solver2.png used on input line 1782.
+Package pdftex.def Info: pictures/ifx/ifx_solver2.png used on input line 1787.
 (pdftex.def)             Requested size: 348.70544pt x 212.897pt.
 
 
@@ -1710,18 +1694,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[57pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1
+[54pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1
 4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1789 \chapter
+l.1794 \chapter
                {Tests}pdfTeX warning (ext4): destination with the same identifi
-er (name{figure.6.15}) has been already used, duplicate ignored
+er (name{figure.5.15}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1789 \chapter
+l.1794 \chapter
                {Tests} <./pictures/ifx/ifx_load.png> <./pictures/ifx/ifx_solver
 1.png>]
 
@@ -1730,22 +1714,22 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[58pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1
+[55pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1
 6}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1789 \chapter
+l.1794 \chapter
                {Tests} <./pictures/ifx/ifx_solver2.png>]
-Rozdzia\l  7.
-[59
+Rozdzia\l  6.
+[56
 
 ]
-Rozdzia\l  8.
+Rozdzia\l  7.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [60
+ [57
 
 ]
 
@@ -1754,58 +1738,57 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[61]
-Underfull \hbox (badness 10000) in paragraph at lines 1828--1829
+[58]
+Underfull \hbox (badness 10000) in paragraph at lines 1833--1834
 []\T1/cmr/m/n/10.95 Department of Ae-ro-space En-gi-ne-ering Scien-ces Uni-ver-
 sity of Co-lo-rado
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1828--1829
+Underfull \hbox (badness 10000) in paragraph at lines 1833--1834
 \T1/cmr/m/n/10.95 at Bo-ul-der \T1/cmr/m/it/10.95 Ad-van-ced Fi-nite Ele-ment M
 e-thods (ASEN 6367) Lec-tu-res
  []
 
+[59
 
-Overfull \hbox (62.81331pt too wide) in paragraph at lines 1858--1859
+]
+Overfull \hbox (62.81331pt too wide) in paragraph at lines 1865--1866
 []\T1/cmr/m/n/10.95 NVIDIA \T1/cmr/m/it/10.95 http://docs.nvidia.com/gameworks/
 content/gameworkslibrary/physx/guide/Manual/Index.html\T1/cmr/m/n/10.95 . 
  []
 
-[62
-
-]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[63] [64
+[60] [61
 
 ] (./thesis-template-with-class.lof)
 \tf@lof=\write5
 \openout5 = `thesis-template-with-class.lof'.
 
- [65
+ [62
 
 ]
 (./thesis-template-with-class.lot)
 \tf@lot=\write6
 \openout6 = `thesis-template-with-class.lot'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1913.
- [66
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1922.
+ [63
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1913.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1922.
  (./thesis-template-with-class.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1913.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1913.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1922.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1922.
 
 Package rerunfilecheck Info: File `thesis-template-with-class.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: 0A77912619D09F914ACC36FB03666464;9168.
+(rerunfilecheck)             Checksum: CF3BD816FDB74070C3743C5D2A842C4F;8107.
 
 
 LaTeX Warning: There were undefined references.
@@ -1813,13 +1796,13 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1913.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1922.
  ) 
 Here is how much of TeX's memory you used:
- 13509 strings out of 493029
- 186658 string characters out of 6136233
- 286961 words of memory out of 5000000
- 16471 multiletter control sequences out of 15000+600000
+ 13499 strings out of 493029
+ 186550 string characters out of 6136233
+ 286994 words of memory out of 5000000
+ 16467 multiletter control sequences out of 15000+600000
  17655 words of font info for 45 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  36i,15n,45p,1250b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1842,10 +1825,10 @@ usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/font
 s/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-su
 per/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></u
 sr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on thesis-template-with-class.pdf (66 pages, 2197457 bytes).
+Output written on thesis-template-with-class.pdf (63 pages, 2196373 bytes).
 PDF statistics:
- 1221 PDF objects out of 1440 (max. 8388607)
- 1033 compressed objects within 11 object streams
- 347 named destinations out of 1000 (max. 500000)
- 638 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1185 PDF objects out of 1200 (max. 8388607)
+ 1005 compressed objects within 11 object streams
+ 341 named destinations out of 1000 (max. 500000)
+ 598 words of extra memory for PDF output out of 10000 (max. 10000000)
 

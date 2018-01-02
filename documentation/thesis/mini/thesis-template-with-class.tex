@@ -84,14 +84,13 @@ Parker~\cite{parker} implements linear FEM solver that focuses on game environme
 Faure et al. in~\cite{tensor-mass} provide alternative to classical FEM called Tensor-Mass approach. This approach computes the forces applied directly on the vertices. Faure et al. implements a GPU accelerated solver using the SOFA framework~\cite{sofa}.
 Zhuang et al. were interested in non-linear FEM solver~\cite{global_deformation}. Experiments of their CPU implementation gave reasonable results thanks to the diagonalization of mass and damping matrices.
 
-In chapter~\ref{chap:background} the thesis starts with a background study of current methods of solving the problem of soft body deformations. It familiarises reader with numerical integration of differentiable equations and provides an overview of currently commercially available physics engines.
+In chapter~\ref{chap:background} the thesis starts with a background study of particle-based methods. It familiarises reader with numerical integration of differentiable equations and provides an overview of currently commercially available physics engines.
 Further in chapters~\ref{chap:solid_mechanics1} and~\ref{chap:solid_mechanics2} detailed explanation of solid mechanics and finite element method is provided. Here, the reader is set on a journey to transform linear partial differential equations(PDE) to linear system of algebraic equations. Then in chapter~\ref{chap:system_linear} method of solving the system of linear equations is described in a form of  Conjugate Gradient.
-One of the greatest difficulties in FEM solver is creating an 3D computation mesh satisfying our problem domain. This thesis is out of scope of detailed explanations of tetrahedralization process, however a short overview is provided in chapter~\ref{chap:Tetrahedralization}.
 Chapter~\ref{chap:Implementation} shows the implementation of the library and its integration into open source game engine.
 The thesis ends with chapters~\ref{chap:tests} and~\ref{chap:Conclusions} where the author tests and provides conclusions of created algorithm.
 % ---------------------------------------------------
 
-\chapter{Background}
+\chapter{Particle-Based Methods}
 \label{chap:background}
 
 \section{Mass Spring}
@@ -359,12 +358,11 @@ The simulation then computes line~\ref{alg:pdb:project_contraints} which iterati
 Finally, the corrected positions $p_i$ are used to compute velocities and positions. For more information about PDB the reader is encouraged to read~\cite{physics_notes}.
 PDB has found its usage in nvidia's Flex library~\cite{flex}.
 
-\section{Finite Element Method}
-Mass spring systems can not simulate physically correct volumetric effects. Moreover, it highly depends on the structure of the spring mesh. Finally, the parameters in previous soft body dynamics systems have no physical intuition. Thus it is hard to create different physical materials. All these limitations can be suppressed by the Finite Element Method. Soft body dynamics based on FEM are not yet common in the real time environment. One of the most successful usages of FEM in real time simulation were done by~\cite{parker}. The authors were able to integrate their FEM solver in the game called Star Wars: The Force Unleashed. The details on FEM formulation will follow in next chapters.
-
 % ---------------------------------------------------
-\chapter{Solid Mechanics - Part 1}
+\chapter{Solid-Based Methods}
 \label{chap:solid_mechanics1}
+
+Mass spring systems can not simulate physically correct volumetric effects. Moreover, it highly depends on the structure of the spring mesh. Finally, the parameters in previous soft body dynamics systems have no physical intuition. Thus it is hard to create different physical materials. All these limitations can be suppressed by the Finite Element Method. Soft body dynamics based on FEM are not yet common in the real time environment. One of the most successful usages of FEM in real time simulation were done by~\cite{parker}. The authors were able to integrate their FEM solver in the game called Star Wars: The Force Unleashed. The chapter begins with basic formulations used in solid mechanics. Further, a strong formulation of solid mechanics is defined in a form of system of PDEs. It is then approximated by a single integral equation known as weak formulation. Finally discrete formulation is transform the integral into system of linear algebraic equations. 
 
 \section{Formulation}
 \subsection{Displacement}
@@ -483,6 +481,7 @@ A strong formulation can be described by the following set of partial differenti
 \end{equation}
 where $\hat{f_{i}} = \rho f_i$. $\rho$ describes the density of entire object. $f$ is called a body force vector and defines forces that act on the entire body e.g. gravity. The first equation is called equation of motion. Second is called constitutive equation. Third is called a geometric equation. All of them are linear  PDE, which is very convenient. Linear PDE's are much easier to discretize using FEM. At the end of discretizing linear PDE we will obtain linear system of algebraic equations. However, the simplified linear formulation comes with a price. Large deformations cause visual deformation and should be usually be modelled using non linear equations.
 
+We also have to define boundary conditions:
 \begin{equation}
 \begin{aligned}
 u_i = \hat{u_i} \quad x \in \partial  \Omega_{u}
@@ -490,6 +489,8 @@ u_i = \hat{u_i} \quad x \in \partial  \Omega_{u}
 \sigma_{ij} n_{j} = \hat{t_i} \quad x \in \partial \Omega_{\sigma}
 \end{aligned}
 \end{equation}
+The entire boundary domain is defined as $\partial \Omega = \partial \Omega_{u} \cup \partial \Omega_{\sigma}$
+First equation defines kinematic(Dirichlet) boundary conditions. Second equation defines dynamic(Neumann) boundary conditions. The displacement field applied to the boundary $\partial \Omega_{u}$ is denoted by $\hat{u_i}$. Traction force applied to the boundary $\partial \Omega_{\sigma}$ is denoted by $\hat{t_i}$.
 
 \subsubsection{Dynamic System}
 In order to accommodate for the dynamic behaviour of the system, we must slightly change the equation of motion.
@@ -500,13 +501,12 @@ In order to accommodate for the dynamic behaviour of the system, we must slightl
 where $\rho$ is a known quantity.
 
 \subsection{Weak formulation}
-
-Set of kinematically acceptable displacement fields or trial functions
+Let us define a set of kinematically acceptable displacement fields or trial functions
 \begin{equation}
 \mathcal{P} = \{ u(x) : u_i = \hat{u_i} \quad for \quad x \in \partial \Omega_{u} \}
 \end{equation}
 
-Set of kinematically acceptable variations of function in $\mathcal{P}$.
+and a set of kinematically acceptable variations of function in $\mathcal{P}$.
 \begin{equation}
 \label{eq:variations}
 \mathcal{W} = \{ \delta u(x) : \delta u_i = 0 \quad for \quad x \in \partial \Omega_{u} \}
@@ -670,7 +670,7 @@ M_{N \times N}\ddot{q}_{N \times 1} + C_{N \times N}\dot{q}_{N \times 1} + K_{N 
 \end{equation}
 
 \section{Finite Element Method}
-We will divide the space $\Omega$ using $E$ finite elements, each represented by the set $\Omega_{e}$, $e = 1,2,...,E$, where $\Omega_{e} \cap \Omega_{f} = \emptyset$, for $e \neq f$.
+We will divide the space $\Omega$ using $E$ finite elements, each represented by the set $\Omega_{e}$, $e = 1,2,...,E$, where $\Omega_{e} \cap \Omega_{f} = \emptyset$, for $e \neq f$. Finite element used in this thesis is a linear tetrahedron which is explored in chapter~\ref{chap:solid_mechanics2}.
 
 Boundary of $e$-th element will be denoted $\partial \Omega_{e}$. Common boundary of neighbours $e$ and $f$ will be denoted $\partial \Omega_{ef} = \partial \Omega_e \cap \partial \Omega_f$. The part of elements boundary that also happens to be boundary of the entire body will be denoted $\partial \Omega_{\bar{e}} = \partial \Omega \cap \partial \Omega_{e}$.
 
@@ -789,9 +789,6 @@ For dynamic system we must also include mass matrix $M$ introduced in Eq.~\ref{e
 M_{3N \times 3N} =  \int_{\Omega} \rho \Phi^{T}_{3N \times 3} \Phi_{3N \times 3} dV
 \end{equation}
 We compute the local mass matrix $m_{e}$ using Eq.~\ref{eq:mass_matrix_matrix} over the $\Omega_{e}$ section. Assembly process is exactly the as in the case of stiffness matrix.
-
-\subsubsection{Mass Matrix Diagonalization}
-TODO
 
 \section{Sparse Matrix Representation}
 There exists many methods for storing sparse matrices in efficient way. One of the most popular methods is called Compressed Sparse Row(CSR). This method is chosen because of its common usage in numerical libraries in CUDA API. We will learn about its programming usages later on. For now we provide the definition for CSR storage.
@@ -974,7 +971,7 @@ b_{2} - A_{23} \bar{x_{3}}\\
 \end{example}
 
 % ---------------------------------------------------
-\chapter{Solid Mechanics - Part 2 - Tetrahedron}
+\chapter{Tetrahedron Finite Element}
 \label{chap:solid_mechanics2}
 
 One of the most simple finite elements used in FEM models is a linear tetrahedron. Such element consists of four nodes and its shape functions are linear polynomials. This finite element is in particular interested for real time applications since no numerical integration are needed to construct element equations.
@@ -1237,6 +1234,7 @@ m^{(e)}_{12 \times 12} =  \int_{\Omega_{e}} \rho \Phi^{T}_{3 \times 12} \Phi_{3 
 
 Using the equation~\ref{eq:anal_intergral} we receive:
 \begin{equation}
+\label{eq:mass_matrix_e}
 m^{(e)}_{12 \times 12} = \dfrac{\rho V}{20}
 \begin{bmatrix}
 2 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
@@ -1257,14 +1255,62 @@ m^{(e)}_{12 \times 12} = \dfrac{\rho V}{20}
 Similarly to stiffness, mass matrix is also symmetric.
 
 \subsection{Mass Matrix Diagonalization}
-TODO
+Zienkiewicz presents~\cite{zienkiewicz2} a simple method of mass matrix diagonalization called the row sum method. Diagonal elements in the resulting matrix contain the sum of all elements on a given row in the original matrix:
+
+\begin{equation}
+m^{D(e)}_{ii} = \sum_{j} m^{(e)}_{ij}
+\end{equation}
+
+The mass matrix in Eq.~\ref{eq:mass_matrix_e} becomes a diagonal matrix:
+\begin{equation}
+\label{eq:mass_matrix_e}
+m^{(e)}_{12 \times 12} = \dfrac{\rho V}{20}
+Diag
+\begin{bmatrix}
+5 & 5 & 5 & 5 & 5 & 5 & 5 & 5 & 5 & 5 & 5 & 5
+\end{bmatrix}
+\end{equation}
+
+\section{Tetrahedralization}
+
+One of the greatest difficulties in FEM solver is creating an 3D computation mesh satisfying our problem domain. A quality mesh can be defined by a few properties.
+One of the most basic properties is the fact that generated 3D mesh should correctly model the shape of the input domain. Figure~\ref{fig:mesh_incomplete} shows an tetrahedron mesh that does not model the shape of the cube domain correctly. Figure~\ref{fig:mesh_complete} shows well defined tetrahedron mesh.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{pictures/3dmesh_incomplite.png}
+\caption[Poor 3D mesh]{Example 3D tetrahedron mesh that does not correctly model the domain of the cube. Courtesy of~\cite{delaunay_mesh}}
+\label{fig:mesh_incomplete}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/3dmesh.png}
+\caption[Fine tetrahedron mesh]{Example 3D tetrahedron mesh. Courtesy of~\cite{delaunay_mesh}}
+\label{fig:mesh_complete}
+\end{figure}
+
+Second important property is the control of individual elements size. Controlling the volume of elements enables the user to control the accuracy of computations. Bigger number of smaller elements can lead to more accurate but slower computations.
+
+Another problem that has to be solved is the control of elements shape. We often want our tetrahedra to have regular shapes. Meaning that extreme angle values should be avoided. We can ensure the regular shape by controlling the lower bound of the smallest angle in a tetrahedron which also controls the largest angle. Some examples of tetrahedron shapes are shown in figure~\ref{fig:tetrahedra_shapes}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/tetrahedra_shapes.png}
+\caption[Tetrahedron shapes]{Example of some common tetrahedron shapes. Courtesy of~\cite{tetgen}}
+\label{fig:tetrahedra_shapes}
+\end{figure}
+
+Solutions to this problem is explored by Shewchuk in~\cite{delaunay_mesh, cdt}. He provides an insight to Constrained Delaunay Tetrahedralization(CDT) process. CDT is often used in numerical libraries solving the problem of 3D mesh generation. Such is the case with TeTGen~\cite{tetgen} library used in the implementation of this thesis.
+
 
 % ---------------------------------------------------
 \chapter{Solving System of Linear Equations}
 \label{chap:system_linear}
 
 \section{Conjugate Gradient}
-This section explains all the tools required to define the Conjugate Gradient algorithm.
+This section explains all the tools required to define the Conjugate Gradient algorithm. Shewchuk described this method in great detail~\cite{cg}. The following section provides the most essential information about CG method.
+
 \subsection{Introduction}
 Conjugate Gradient(CG) is one of the most popular iterative methods of solving system of linear equations:
 \begin{equation}
@@ -1456,46 +1502,6 @@ The most expensive operation in CG is the matrix-vector multiplication which in 
 
 The algorithm ends when maximum number of iteration has been reached or when $r_i$ is small enough.
 
-% ---------------------------------------------------
-\chapter{Tetrahedralization}
-\label{chap:Tetrahedralization}
-
-A quality mesh can be defined by a few properties.
-One of the most basic properties is the fact that generated 3D mesh should correctly model the shape of the input domain. Figure~\ref{fig:mesh_incomplete} shows an tetrahedron mesh that does not model the shape of the cube domain correctly.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.5]{pictures/3dmesh_incomplite.png}
-\caption[Poor 3D mesh]{Example 3D tetrahedron mesh that does not correctly model the domain of the cube. Courtesy of~\cite{delaunay_mesh}}
-\label{fig:mesh_incomplete}
-\end{figure}
-
-Second important property is the control of individual elements size. Controlling the volume of elements enables the user to control the accuracy of computations. Bigger number of smaller elements can lead to more accurate but slower computations.
-
-Another problem that has to be solved is the control of elements shape. We often want our tetrahedra to have regular shapes. Meaning that extreme angle values should be avoided. We can ensure the regular shape by controlling the lower bound of the smallest angle in a tetrahedron which also controls the largest angle. Some examples of tetrahedron shapes are shown in figure~\ref{fig:tetrahedra_shapes}.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.3]{pictures/tetrahedra_shapes.png}
-\caption[Tetrahedron shapes]{Example of some common tetrahedron shapes. Courtesy of~\cite{tetgen}}
-\label{fig:tetrahedra_shapes}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.5]{pictures/3dmesh.png}
-\caption[Fine tetrahedron mesh]{Example 3D tetrahedron mesh. Courtesy of~\cite{delaunay_mesh}}
-\end{figure}
-
-\section{Piecewise Linear Complexes}
-\label{sec:plc}
-
-\section{The Delaunay Triangulation}
-
-\section{Two-Dimensional Delaunay Refinement}
-
-\section{Three-Dimensional Delaunay Refinement}
-
 %-----------------------------------------------------------------
 \chapter{Implementation}
 \label{chap:Implementation}
@@ -1541,7 +1547,7 @@ Let us start by describing the architecture of the library. First, the data stru
 \label{fig:uml_fem_model}
 \end{figure}
 
-The post processing part, namely the 3D mesh generation, is mostly done by TeTGen library. The figure~\ref{fig:uml_tetrahedralization} shows the simply process. TriangleMesh is composed by a set of vertices and faces. Such a triangle mesh can be easily converted from any triangle mesh used in 3D graphics libraries such as OpenGL. Moreover, this triangle mesh is assumed to be a closed mesh. Such a triangle mesh can be easily described as PLC explained in section~\ref{sec:plc}. The Tetrahedralization class computes and outputs FEMGeometry.
+The post processing part, namely the 3D mesh generation, is mostly done by TeTGen library. The figure~\ref{fig:uml_tetrahedralization} shows the simply process. TriangleMesh is composed by a set of vertices and faces. Such a triangle mesh can be easily converted from any triangle mesh used in 3D graphics libraries such as OpenGL. Moreover, this triangle mesh is assumed to be a closed mesh. The Tetrahedralization class computes and outputs FEMGeometry.
 
 \begin{figure}[h!]
 \centering
@@ -1731,8 +1737,7 @@ Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into 
 
 
 \subsection{Editor}
-This section describes the graphical editor of soft body system in the game engine. Soft body editor can be opened by clicking the Soft Body button located in the middle view port, see figure~\ref{fig:ifx_example}. We can select a game object to be opened by right clicking it in the scene list(left panel). Game object that can be opened in the soft body editor must have exactly one render component. It can have other components too. The render component contains the triangle mesh that is used as a input problem domain in the 3D mesh generation. Figures~\ref{fig:ifx_meshing} through~\ref{fig:ifx_solver2} present the soft body editor panels. In the first step we want to create 3D mesh. Meshing panel is devoted to that procedure. Figure~\ref{fig:ifx_meshing} shows control parameters explained in chapter~\ref{chap:Tetrahedralization}. The cube has been already meshes with example parameter values.
-
+This section describes the graphical editor of soft body system in the game engine. Soft body editor can be opened by clicking the Soft Body button located in the middle view port, see figure~\ref{fig:ifx_example}. We can select a game object to be opened by right clicking it in the scene list(left panel). Game object that can be opened in the soft body editor must have exactly one render component. It can have other components too. The render component contains the triangle mesh that is used as a input problem domain in the 3D mesh generation. Figures~\ref{fig:ifx_meshing} through~\ref{fig:ifx_solver2} present the soft body editor panels. In the first step we want to create 3D mesh. Meshing panel is devoted to that procedure shown in figure~\ref{fig:ifx_meshing}. The cube has been already meshed with example parameter values.
 
 \begin{figure}[h!]
 \centering
@@ -1835,43 +1840,45 @@ It would be interesting to see how the proposed soft body solution checks out wi
 
 \bibitem[8]{delaunay_mesh} Jonathan Richard Shewchuk \emph{Lecture Notes on Delaunay Mesh Generation}.
 
-\bibitem[9]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
+\bibitem[9]{cdt} Jonathan Richard Shewchuk \emph{Constrained Delaunay Tetrahedralizations and Provably Good Boundary Recovery}.
+
+\bibitem[10]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
 
 % FEM Papers
 
-\bibitem[10]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
+\bibitem[11]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
 
-\bibitem[11]{parker} Eric G. Parker, James F. O'Brien \emph{Real-Time Deformation and Fracture in a Game Environment}.
+\bibitem[12]{parker} Eric G. Parker, James F. O'Brien \emph{Real-Time Deformation and Fracture in a Game Environment}.
 
-\bibitem[12]{tensor-mass} X. Faure, F. Zara, F. Jaillet, J-M. Moreau  \emph{An implicit Tensor-Mass solver on the GPU for soft bodies simulation}.
+\bibitem[13]{tensor-mass} X. Faure, F. Zara, F. Jaillet, J-M. Moreau  \emph{An implicit Tensor-Mass solver on the GPU for soft bodies simulation}.
 
-\bibitem[13]{global_deformation} Yan Zhuang, John Canny \emph{Real-time Simulation of Physically Realistic Global Deformation}.
+\bibitem[14]{global_deformation} Yan Zhuang, John Canny \emph{Real-time Simulation of Physically Realistic Global Deformation}.
 
 % Third party software
 
-\bibitem[14]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
+\bibitem[15]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
 
-\bibitem[15]{opengl} OpenGl \emph{https://www.opengl.org/}.
+\bibitem[16]{opengl} OpenGl \emph{https://www.opengl.org/}.
 
-\bibitem[16]{sofa} SOFA Framework \emph{https://www.sofa-framework.org}.
+\bibitem[17]{sofa} SOFA Framework \emph{https://www.sofa-framework.org}.
 
-\bibitem[17]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
+\bibitem[18]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
 
-\bibitem[18]{cublas} NVIDIA cuBLAS \emph{http://docs.nvidia.com/cuda/cublas/index.html}.
+\bibitem[19]{cublas} NVIDIA cuBLAS \emph{http://docs.nvidia.com/cuda/cublas/index.html}.
 
-\bibitem[19]{cusparse} NVIDIA cuSPARSE \emph{http://docs.nvidia.com/cuda/cusparse/index.html}.
+\bibitem[20]{cusparse} NVIDIA cuSPARSE \emph{http://docs.nvidia.com/cuda/cusparse/index.html}.
 
-\bibitem[20]{eigen} Eigen \emph{http://eigen.tuxfamily.org/index.php?title=Main\_Page}.
+\bibitem[21]{eigen} Eigen \emph{http://eigen.tuxfamily.org/index.php?title=Main\_Page}.
 
-\bibitem[21]{googletest} Google \emph{https://github.com/google/googletest}.
+\bibitem[22]{googletest} Google \emph{https://github.com/google/googletest}.
 
 % Source codes
 
-\bibitem[22]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
+\bibitem[23]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
 
-\bibitem[23]{rtfem} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/RT-FEM}.
+\bibitem[24]{rtfem} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/RT-FEM}.
 
-\bibitem[24]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
+\bibitem[25]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
 
 
 \end{thebibliography}
@@ -1885,6 +1892,8 @@ GPU & Graphics Processing Unit \\
 CPU & Central Processing Unit \\
 PDE & Partial Differential Equation \\
 ODE & Ordinary Differential Equation \\
+CG & Conjugate Gradient \\
+PBD & Position Based Dynamics \\
 \end{tabular}
 
 
