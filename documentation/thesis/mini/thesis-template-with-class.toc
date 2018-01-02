@@ -61,8 +61,8 @@
 \contentsline {chapter}{\numberline {6}Tests}{57}{chapter.6}
 \contentsline {chapter}{\numberline {7}Conclusions}{58}{chapter.7}
 \contentsline {section}{\numberline {7.1}Further work}{58}{section.7.1}
-\contentsline {chapter}{Bibliografia}{60}{section*.10}
+\contentsline {chapter}{References}{60}{section*.10}
 \contentsline {chapter}{List of symbols and abbreviations}{62}{section*.11}
-\contentsline {chapter}{Spis rysunk\'ow}{63}{section*.12}
+\contentsline {chapter}{List of figures}{63}{section*.12}
 \contentsline {chapter}{List of tables}{64}{section*.13}
 \contentsfinish 
