@@ -106,8 +106,8 @@
 
 \setboolean{lady}{false} % kobiety wpisują true, mężczyźni - false
 
-\title{Deformation of Soft Bodies on GPU} % nazwa pracy
-\titleaux{Deformacje Ciał Odkształcalnych na GPU}
+\title{Deformation of soft bodies on GPU} % nazwa pracy
+\titleaux{Deformacja ciał odkształcalnych na GPU}
 \type{magisters} % licencjat = licencjac, inżynier = inżyniers
 \discipline{Informatyka} % kierunek
 \specjal{Projektowanie Systemów CAD/CAM}
@@ -116,7 +116,7 @@
 \supervisor{dr~inż. Joanna Porter-Sobieraj}
 %\konsultacje{prof. Dumbledore} % jeśli nie ma, trzeba zakomentować też w minipw.cls
 \date{2018}
-\klucze{Deformacje Ciał Odkształcalnych, Metoda Elementów Skończonych, Mechanika Ciał Stałych, GPU, CUDA, Symulacje fizyczne}
+\klucze{Deformacje Ciał Odkształcalnych, Metoda Elementów Skończonych, Mechanika Ciał Stałych, GPU, CUDA, Symulacje Fizyczne}
 \keywords{Soft Body, Finite Element Method, Solid Mechanics, Real-Time, GPU, CUDA, Physics engine, Game physics, Simulation, Deformation}
 % ----------------------------------------------------
 
@@ -138,12 +138,24 @@
 \setcounter{page}{1}
 
 \begin{abstract}
-This thesis provides an overview of real-time soft body deformation methods. The goal of this study is to design and implement numerical library solving the problem of physically correct soft body deformations. The library is also integrated into existing open source game engine. The author chooses Finite Element Method (FEM) based simulation of soft bodies. It is the most physically correct method studied in this thesis. However, it comes with a price of expensive computations. FEM is used to solve the problem of solid mechanics with linear geometry and linear material properties. The linear FEM formulation guarantees a linear system of algebraic equations which can be computed much faster than the non-linear systems. The linear system of equations is solved using conjugate gradient method accelerated on GPU. Linear tetrahedron finite element is chosen which is quite suitable for real time simulations. Implicit euler method is used for integrating the differential equations of the dynamic system.
+This thesis provides an overview of real-time soft body deformation methods. The goal of this study is to design and implement numerical library solving the problem of physically correct soft body deformations. The library is also integrated into existing open source game engine. 
+
+The author chooses Finite Element Method (FEM) based simulation of soft bodies. It is the most physically correct method studied in this thesis. However, it comes with a price of expensive computations. FEM is used to solve the problem of solid mechanics with linear geometry and linear material properties. The linear FEM formulation guarantees a linear system of algebraic equations which can be computed much faster than the non-linear systems.
+
+The linear system of equations is solved using conjugate gradient method accelerated on GPU. Linear tetrahedron finite element is chosen which is quite suitable for real time simulations. Implicit Euler method is used for integrating the differential equations of the dynamic system.
+
+Graphical user interface is created in a form of a soft body editor. This visual editor is used to design benchmarks examples showing the correctness and efficiency of implemented algorithm.
 
 \end{abstract}
 
 \begin{streszczenie}
-Niniejsza praca przedstawia przegląd metod deformacji ciał odkształcalnych w czasie rzeczywistym. Celem tego opracowania jest zaprojektowanie i implementacja biblioteki numerycznej rozwiązującej problem fizycznie poprawnych deformacji. Biblioteka została także zintegrowana z istniejącym silnikiem do gier. Autor wybiera symulację ciał odkształcalnych w oparciu o Metodę Elementów Skończonych (MES). Metoda ta wyróżnia się wysoką jakością rozwiązania, jednak wiąże się to z kosztownymi obliczeniami. MES służy do rozwiązania problemu liniowej mechaniki ciał stałych. Liniowe zagadnienie MES gwarantuje liniowy układ równań algebraicznych, który można obliczyć znacznie szybciej niż układ nieliniowy. Liniowy układ równań rozwiązano za pomocą metody gradientu sprzężonego przyspieszonej na GPU. Do aproksymacji przestrzeni ciała stałego wybrano liniowy czworościan. Niejawna metoda Eulera służy do integracji równań różniczkowych układu dynamicznego.
+Niniejsza praca przedstawia przegląd metod deformacji ciał odkształcalnych w czasie rzeczywistym. Celem tego opracowania jest zaprojektowanie i implementacja biblioteki numerycznej rozwiązującej problem fizycznie poprawnych deformacji. Biblioteka została także zintegrowana z istniejącym silnikiem do gier. 
+
+Autor wybiera symulację ciał odkształcalnych w oparciu o Metodę Elementów Skończonych (MES). Metoda ta wyróżnia się wysoką jakością rozwiązania, jednak wiąże się to z kosztownymi obliczeniami. MES służy do rozwiązania problemu liniowej mechaniki ciał stałych. Liniowe zagadnienie MES gwarantuje liniowy układ równań algebraicznych, który można obliczyć znacznie szybciej niż układ nieliniowy. 
+
+Liniowy układ równań rozwiązano za pomocą metody gradientu sprzężonego przyspieszonej na GPU. Do aproksymacji przestrzeni ciała stałego wybrano liniowy czworościan. Niejawna metoda Eulera służy do integracji równań różniczkowych układu dynamicznego.
+
+Stworzony został graficzny interfejs użytkownika w postaci edytora ciał odkształcalnych. Posłużył on do zaprojektowania testów sprawnościowych pokazujących poprawność i efektywność zaimplementowanego algorytmu.
 
 \end{streszczenie}
 
@@ -1891,7 +1903,9 @@ Finally, the solver panel is shown in figure~\ref{fig:ifx_solver1}. Build button
 
 \chapter{Tests}
 \label{chap:tests}
-This chapter tests the time of computations of the RTFEM library. Three dimensional torus has been used as domain space. It has been meshed 5 times with a different number of finite elements: 660, 1110, 2000, 3250 and 5400. Each time, two triangle faces have been applied with a traction force pointing towards the body, effectively squashing it. Figures~\ref{fig:torus660} through~\ref{fig:torus5400} show initial and final configuration after 15 seconds of computations. Time step of 0.016 seconds (60Hz) was used. The material parameters and traction force used were the following:
+This chapter tests the time of computations of the RTFEM library. Three dimensional torus has been used as domain space. It has been meshed 5 times with a different number of finite elements: 660, 1110, 2000, 3250 and 5400. Each time, two triangle faces have been applied with a traction force pointing towards the body, effectively squashing it. Figures~\ref{fig:torus660} through~\ref{fig:torus5400} show initial and final configuration after 15 seconds of computations. The final configuration of torus with the smallest amount of elements contains unpleasant visual artifacts (see figure~\ref{fig:torus660}). The squashed boundary on the left and right does not appear as smooth as it does in the case of more accurate meshes. Intermediate configurations of more detailed meshes, provide smooth and realistic animations. Moreover, with higher number of elements, we can apply boundary conditions and traction forces more accurately.
+
+During the computations time step of 0.016 seconds (60Hz) was used. The material parameters and traction force used were the following:
 \begin{enumerate}
 \item Young Modulus: 7000
 \item Poisson Coefficient: 0.2
@@ -1909,12 +1923,9 @@ The hardware used was the following:
 
 \section{CPU}
 
-Eigen's LU solver of linear system of equations was used for CPU benchmarking. Figure~\ref{fig:cpu_gpu} shows the comparison between single threaded CPU and GPU solvers. It shows computation time of a single iteration. It is clear that even for small finite element count, CPU can not be used in a real-time setting.
+Eigen's LU solver of linear system of equations was used for CPU benchmarking. Moreover, the CPU tests were done on a smaller number of finite elements. Figure~\ref{fig:cpu_gpu} shows the comparison between single threaded CPU and GPU solvers. It shows computation time of a single iteration. Even for relatively small finite element count of 500, CPU implementation takes over 2 seconds to compute. It is unacceptable in real-time scenario. Thus, it is clear that pure CPU solution can not be used.
 
     \begin{figure}[H]
-        \caption{Time in milliseconds required to compute a single iteration for a given number of finite elements. Comparison between CPU and GPU solver}
-        \label{fig:cpu_gpu}
-        
 		\pgfplotsset{xticklabel style={text width=2em, align=center}}
         \begin{tikzpicture}
         
@@ -1953,16 +1964,14 @@ Eigen's LU solver of linear system of equations was used for CPU benchmarking. F
         \end{groupplot}
         
         \end{tikzpicture}
-        
+\caption{Time in milliseconds required to compute a single iteration for a given number of finite elements. Comparison between CPU and GPU solver}
+        \label{fig:cpu_gpu}
     \end{figure}
 
 \section{GPU}
 Figure~\ref{fig:gpu} shows the computation time of a single iteration of the GPU solver for various finite element count. The optimal amount of fine elements is about 3500, because the time required to compute a single iteration is about 20 milliseconds.
 
-\begin{figure}[H]
-        \caption{Time in milliseconds required to compute a single iteration for a given number of finite elements. GPU solver}
-        \label{fig:gpu}
-        
+\begin{figure}[H]   
 		\pgfplotsset{xticklabel style={text width=2em, align=center}}
         \begin{tikzpicture}
         
@@ -1995,15 +2004,13 @@ Figure~\ref{fig:gpu} shows the computation time of a single iteration of the GPU
         \end{groupplot}
         
         \end{tikzpicture}
-        
+		\caption{Time in milliseconds required to compute a single iteration for a given number of finite elements. GPU solver}
+        \label{fig:gpu}
     \end{figure}
 
-Figure~\ref{fig:gpu_breakdown} shows the time break down of a single GPU iteration. Time required to compute the right hand side (RHS) vector of the system~\ref{eq:fem_dynamic3} is negligible. However, for large amount of finite elements, the force assembly process takes majority of time to compute.
+Figure~\ref{fig:gpu_breakdown} shows the time break down of a single GPU iteration. Time required to compute the right hand side (RHS) vector of the system defined in Eq.~\ref{eq:fem_dynamic3} is negligible. However, for large amount of finite elements, the force assembly process takes majority of time to compute.
 
-    \begin{figure}[H]
-        \caption{Time Break down of a single GPU iteration for different finite element count $E$. Force assembly, computing the right hand side (RHS) and solving the linear system of equations.}
-        \label{fig:gpu_breakdown}
-        
+    \begin{figure}[H]       
 		\pgfplotsset{xticklabel style={text width=2em, align=center}}
         \begin{tikzpicture}
         
@@ -2017,7 +2024,7 @@ Figure~\ref{fig:gpu_breakdown} shows the time break down of a single GPU iterati
         ybar=4*\pgflinewidth, 
         ymin=0, 
         ymax=26,
-        width  = 0.50*\textwidth, 
+        width  = 0.75*\textwidth, 
         enlarge x limits={abs=0.85cm}, 
         major x tick style = transparent, 
         ymajorgrids = true, 
@@ -2056,9 +2063,12 @@ Figure~\ref{fig:gpu_breakdown} shows the time break down of a single GPU iterati
         % LEGEND
         %%%%%%%%%%%%%%%%%%%%
 	    \legend{Force assembly, RHS, Linear System}
-        
+
         \end{groupplot}
         \end{tikzpicture}
+        
+		\caption{Time break down of a single GPU iteration for different finite element count $E$. Force assembly, computing the right hand side (RHS) vector of the system defined in Eq.~\ref{eq:fem_dynamic3} and solving the linear system of equations.}
+        \label{fig:gpu_breakdown}
     \end{figure}
 
 \begin{figure}[h!]
@@ -2129,57 +2139,56 @@ It would be interesting to see how the proposed soft body solution checks out wi
 
 % FEM Books
 
-\bibitem[1]{altair} Altair University \emph{Practical Aspects of Finite Element Simulation}.
+\bibitem[1]{altair} Altair University, \emph{Practical Aspects of Finite Element Simulation}.
 
-\bibitem[2]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
+\bibitem[2]{bullet} Bullet, \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
 
-\bibitem[3]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
+\bibitem[3]{ifx} Ciecierski J., \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
 
-\bibitem[4]{rtfem} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/RT-FEM}.
+\bibitem[4]{rtfem} Ciecierski J., \emph{https://github.com/Jakub-Ciecierski/RT-FEM}.
 
-\bibitem[5]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
+\bibitem[5]{JC-MassSpring}  Ciecierski J., \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
 
-\bibitem[6]{colorado_fem_lectures} Department of Aerospace Engineering Sciences University of Colorado at Boulder \emph{Advanced Finite Element Methods (ASEN 6367) Lectures https://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/}.
+\bibitem[6]{colorado_fem_lectures} Department of Aerospace Engineering Sciences University of Colorado at Boulder, \emph{Advanced Finite Element Methods (ASEN 6367) Lectures https://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/}.
 
-\bibitem[7]{eigen} Eigen \emph{http://eigen.tuxfamily.org/index.php?title=Main\_Page}.
+\bibitem[7]{eigen} Eigen, \emph{http://eigen.tuxfamily.org/index.php?title=Main\_Page}.
 
-\bibitem[8]{tensor-mass} X. Faure, F. Zara, F. Jaillet, J-M. Moreau  \emph{An implicit Tensor-Mass solver on the GPU for soft bodies simulation}.
+\bibitem[8]{tensor-mass} Faure X., Zara F., Jaillet F., Moreau J-M.,  \emph{An implicit Tensor-Mass solver on the GPU for soft bodies simulation}.
 
-\bibitem[9]{googletest} Google \emph{https://github.com/google/googletest}.
+\bibitem[9]{googletest} Google, \emph{https://github.com/google/googletest}.
 
-\bibitem[10]{termo} Michał Kleiber, Piotr Kowalczyk, \emph{Wprowadzenie do Nieliniowej Termomechaniki Ciał Odkształcalnych}.
-
-
-\bibitem[11]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
-
-\bibitem[12]{physics_notes} Matthias Muller, Jos Stam, Doug James, Nils Thurey, \emph{Real Time Physics Class Notes}.
+\bibitem[10]{termo} Kleiber M., Kowalczyk P., \emph{Wprowadzenie do Nieliniowej Termomechaniki Ciał Odkształcalnych}.
 
 
-\bibitem[13]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
+\bibitem[11]{flex} Macklin M., Muller M., Chentanez N., Kim T-Y., \emph{Unified Particle Physics for Real-Time Applications}.
 
-\bibitem[14]{cublas} NVIDIA cuBLAS \emph{http://docs.nvidia.com/cuda/cublas/index.html}.
+\bibitem[12]{physics_notes} Muller M., Stam J., James D., Thurey N., \emph{Real Time Physics Class Notes}.
 
-\bibitem[15]{cusparse} NVIDIA cuSPARSE \emph{http://docs.nvidia.com/cuda/cusparse/index.html}.
+\bibitem[13]{physx} NVIDIA, \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
 
-\bibitem[16]{opengl} OpenGl \emph{https://www.opengl.org/}.
+\bibitem[14]{cublas} NVIDIA cuBLAS, \emph{http://docs.nvidia.com/cuda/cublas/index.html}.
 
-\bibitem[17]{parker} Eric G. Parker, James F. O'Brien \emph{Real-Time Deformation and Fracture in a Game Environment}.
+\bibitem[15]{cusparse} NVIDIA cuSPARSE, \emph{http://docs.nvidia.com/cuda/cusparse/index.html}.
 
-\bibitem[18]{cg} Jonathan Richard Shewchuk \emph{An Introduction to the Conjugate Gradient Method Without the Agonizing Pain}.
+\bibitem[16]{opengl} OpenGl, \emph{https://www.opengl.org/}.
 
-\bibitem[19]{delaunay_mesh} Jonathan Richard Shewchuk \emph{Lecture Notes on Delaunay Mesh Generation}.
+\bibitem[17]{parker} Parker E. G., O'Brien J. F., \emph{Real-Time Deformation and Fracture in a Game Environment}.
 
-\bibitem[20]{cdt} Jonathan Richard Shewchuk \emph{Constrained Delaunay Tetrahedralizations and Provably Good Boundary Recovery}.
+\bibitem[18]{cg} Shewchuk J. R., \emph{An Introduction to the Conjugate Gradient Method Without the Agonizing Pain}.
 
-\bibitem[21]{sofa} SOFA Framework \emph{https://www.sofa-framework.org}.
+\bibitem[19]{delaunay_mesh} Shewchuk J. R., \emph{Lecture Notes on Delaunay Mesh Generation}.
 
-\bibitem[22]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
+\bibitem[20]{cdt} Shewchuk J. R., \emph{Constrained Delaunay Tetrahedralizations and Provably Good Boundary Recovery}.
 
-\bibitem[23]{global_deformation} Yan Zhuang, John Canny \emph{Real-time Simulation of Physically Realistic Global Deformation}.
+\bibitem[21]{sofa} SOFA Framework, \emph{https://www.sofa-framework.org}.
 
-\bibitem[24]{zienkiewicz1} Zienkiewicz \emph{The Finite Element Method. Volume 1: The Basis}.
+\bibitem[22]{tetgen} Si H., \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
 
-\bibitem[25]{zienkiewicz2} Zienkiewicz \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
+\bibitem[23]{global_deformation} Zhuang Y., Canny J., \emph{Real-time Simulation of Physically Realistic Global Deformation}.
+
+\bibitem[24]{zienkiewicz1} Zienkiewicz O. C., \emph{The Finite Element Method. Volume 1: The Basis}.
+
+\bibitem[25]{zienkiewicz2} Zienkiewicz O. C., \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
 
 
 
