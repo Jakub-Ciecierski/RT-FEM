@@ -4,16 +4,13 @@ The library computes the entire process of Finite Element Method for solid mecha
  1. Pre-Processing:
     * 3D Finite Element Meshing of given geometry.
  1. FEM Solver:
-    * [CPU] Linear elastic, linear deformation, static.
-    * GPU
- 1. Post-Processing:
-    * Output all Solid Mechanics FEM artifacts.
+    * CPU and GPU Linear elastic, linear deformation, dynamic.
 
 # Supported Platforms
 Library is written in c++11.
-TODO
-* Linux 32/64bit (Tested)
-* Windows 32/64bit (Not Tested TODO)
+
+* Linux 32/64bit
+* Windows 32/64bit
 
 # Build
 RTFEM can be built on any platform supporting cmake. <br/>
@@ -40,12 +37,6 @@ These are installed automatically when using cmake installation.
 ### Unittests
 Building Unittests can be disabled/enabled in CMakeLists.txt. <br/>
 Unittests are written using googletest
-
-### Benchmarks
-TODO
-
-# Demo application
-TODO
 
 # Other Info
 Code formatted using CLion built-in Google settings with modifications:

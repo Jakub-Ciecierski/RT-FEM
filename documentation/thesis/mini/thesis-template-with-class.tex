@@ -153,7 +153,7 @@ Niniejsza praca przedstawia przegląd metod deformacji ciał odkształcalnych w 
 
 Autor wybiera symulację ciał odkształcalnych w oparciu o Metodę Elementów Skończonych (MES). Metoda ta wyróżnia się wysoką jakością rozwiązania, jednak wiąże się to z kosztownymi obliczeniami. MES służy do rozwiązania problemu liniowej mechaniki ciał stałych. Liniowe zagadnienie MES gwarantuje liniowy układ równań algebraicznych, który można obliczyć znacznie szybciej niż układ nieliniowy. 
 
-Liniowy układ równań rozwiązano za pomocą metody gradientu sprzężonego przyspieszonej na GPU. Do aproksymacji przestrzeni ciała stałego wybrano liniowy czworościan. Niejawna metoda Eulera służy do integracji równań różniczkowych układu dynamicznego.
+Liniowy układ równań rozwiązano za pomocą metody gradientu sprzężonego przyspieszonej na GPU. Do aproksymacji przestrzeni ciała stałego wybrano liniowy czworościan. Niejawna metoda Eulera służy do całkowania równań różniczkowych układu dynamicznego.
 
 Stworzony został graficzny interfejs użytkownika w postaci edytora ciał odkształcalnych. Posłużył on do zaprojektowania testów sprawnościowych pokazujących poprawność i efektywność zaimplementowanego algorytmu.
 
@@ -1903,9 +1903,7 @@ Finally, the solver panel is shown in figure~\ref{fig:ifx_solver1}. Build button
 
 \chapter{Tests}
 \label{chap:tests}
-This chapter tests the time of computations of the RTFEM library. Three dimensional torus has been used as domain space. It has been meshed 5 times with a different number of finite elements: 660, 1110, 2000, 3250 and 5400. Each time, two triangle faces have been applied with a traction force pointing towards the body, effectively squashing it. Figures~\ref{fig:torus660} through~\ref{fig:torus5400} show initial and final configuration after 15 seconds of computations. The final configuration of torus with the smallest amount of elements contains unpleasant visual artifacts (see figure~\ref{fig:torus660}). The squashed boundary on the left and right does not appear as smooth as it does in the case of more accurate meshes. Intermediate configurations of more detailed meshes, provide smooth and realistic animations. Moreover, with higher number of elements, we can apply boundary conditions and traction forces more accurately.
-
-During the computations time step of 0.016 seconds (60Hz) was used. The material parameters and traction force used were the following:
+This chapter tests the time of computations of the RTFEM library. Three dimensional torus has been used as domain space. It has been meshed 5 times with a different number of finite elements: 660, 1110, 2000, 3250 and 5400. Each time, two triangle faces have been applied with a traction force pointing towards the body, effectively squashing it. Simulation of each body lasted 15 seconds. During the computations time step of 0.016 seconds (60Hz) was used. The material parameters and traction force used were the following:
 \begin{enumerate}
 \item Young Modulus: 7000
 \item Poisson Coefficient: 0.2
@@ -2070,6 +2068,8 @@ Figure~\ref{fig:gpu_breakdown} shows the time break down of a single GPU iterati
 		\caption{Time break down of a single GPU iteration for different finite element count $E$. Force assembly, computing the right hand side (RHS) vector of the system defined in Eq.~\ref{eq:fem_dynamic3} and solving the linear system of equations.}
         \label{fig:gpu_breakdown}
     \end{figure}
+
+Figures~\ref{fig:torus660} through~\ref{fig:torus5400} show initial and final configuration of the bodies used in the tests. The final configuration of torus with the smallest amount of elements contains unpleasant visual artifacts (see figure~\ref{fig:torus660}). The squashed boundary on the left and right does not appear as smooth as it does in the case of more accurate meshes. Intermediate configurations of more detailed meshes, provide smooth and realistic animations. Moreover, with higher number of elements, we can apply boundary conditions and traction forces more accurately.
 
 \begin{figure}[h!]
 \centering
