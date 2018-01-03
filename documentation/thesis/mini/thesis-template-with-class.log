@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  2 JAN 2018 16:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  3 JAN 2018 07:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -724,35 +724,428 @@ Package: titletoc 2011/12/15 v1.6 TOC entries
 (/usr/share/texlive/texmf-dist/tex/latex/tools/indentfirst.sty
 Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgfplots/pgfplots.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.revision.tex)
+Package: pgfplots 2016/01/06 v1.13 Data Visualization (1.13)
+
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks30
+\pgfutil@tempdima=\dimen137
+\pgfutil@tempdimb=\dimen138
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box29
+(/usr/share/texlive/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2015/08/07 v3.0.1a (rcs-revision 1.31)
+))
+Package: pgf 2015/08/07 v3.0.1a (rcs-revision 1.15)
+
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2014/07/09 v3.0.1a (rcs-revision 1.48)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks31
+\pgfkeys@temptoks=\toks32
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex
+\pgfkeys@tmptoks=\toks33
+))
+\pgf@x=\dimen139
+\pgf@y=\dimen140
+\pgf@xa=\dimen141
+\pgf@ya=\dimen142
+\pgf@xb=\dimen143
+\pgf@yb=\dimen144
+\pgf@xc=\dimen145
+\pgf@yc=\dimen146
+\w@pgf@writea=\write3
+\r@pgf@reada=\read1
+\c@pgf@counta=\count117
+\c@pgf@countb=\count118
+\c@pgf@countc=\count119
+\c@pgf@countd=\count120
+\t@pgf@toka=\toks34
+\t@pgf@tokb=\toks35
+\t@pgf@tokc=\toks36
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2014/10/11  (rcs-revision 1.35)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f
+File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex
+File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
+\pgfsyssoftpath@smallbuffer@items=\count121
+\pgfsyssoftpath@bigbuffer@items=\count122
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen147
+\pgfmath@count=\count123
+\pgfmath@box=\box30
+\pgfmath@toks=\toks37
+\pgfmath@stack@operand=\toks38
+\pgfmath@stack@operation=\toks39
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count124
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x
+File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
+\pgf@picminx=\dimen148
+\pgf@picmaxx=\dimen149
+\pgf@picminy=\dimen150
+\pgf@picmaxy=\dimen151
+\pgf@pathminx=\dimen152
+\pgf@pathmaxx=\dimen153
+\pgf@pathminy=\dimen154
+\pgf@pathmaxy=\dimen155
+\pgf@xx=\dimen156
+\pgf@xy=\dimen157
+\pgf@yx=\dimen158
+\pgf@yy=\dimen159
+\pgf@zx=\dimen160
+\pgf@zy=\dimen161
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex
+File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
+\pgf@path@lastx=\dimen162
+\pgf@path@lasty=\dimen163
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex
+File: pgfcorepathusage.code.tex 2014/11/02  (rcs-revision 1.24)
+\pgf@shorten@end@additional=\dimen164
+\pgf@shorten@start@additional=\dimen165
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x
+File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
+\pgfpic=\box31
+\pgf@hbox=\box32
+\pgf@layerbox@main=\box33
+\pgf@picture@serial@count=\count125
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex
+File: pgfcoregraphicstate.code.tex 2014/11/02  (rcs-revision 1.12)
+\pgflinewidth=\dimen166
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex
+File: pgfcoretransformations.code.tex 2015/08/07  (rcs-revision 1.20)
+\pgf@pt@x=\dimen167
+\pgf@pt@y=\dimen168
+\pgf@pt@temp=\dimen169
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex
+File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x
+File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
+\pgfarrowsep=\dimen170
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
+\pgf@max=\dimen171
+\pgf@sys@shading@range@num=\count126
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex
+File: pgfcoreexternal.code.tex 2014/07/09  (rcs-revision 1.21)
+\pgfexternal@startupbox=\box34
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x
+File: pgfcorelayers.code.tex 2013/07/18  (rcs-revision 1.7)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex
+File: pgfcoretransparency.code.tex 2013/09/30  (rcs-revision 1.5)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex
+File: pgfcorepatterns.code.tex 2013/11/07  (rcs-revision 1.5)
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2014/03/21  (rcs-revision 1.35)
+\pgfnodeparttextbox=\box35
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty
+Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen172
+\pgf@nodesepend=\dimen173
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty
+Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
+)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+\pgffor@iter=\dimen174
+\pgffor@skip=\dimen175
+\pgffor@stack=\toks40
+\pgffor@toks=\toks41
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex
+File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
+\pgf@plot@mark@count=\count127
+\pgfplotmarksize=\dimen176
+)
+\tikz@lastx=\dimen177
+\tikz@lasty=\dimen178
+\tikz@lastxsaved=\dimen179
+\tikz@lastysaved=\dimen180
+\tikzleveldistance=\dimen181
+\tikzsiblingdistance=\dimen182
+\tikz@figbox=\box36
+\tikz@figbox@bg=\box37
+\tikz@tempbox=\box38
+\tikz@tempbox@bg=\box39
+\tikztreelevel=\count128
+\tikznumberofchildren=\count129
+\tikznumberofcurrentchild=\count130
+\tikz@fig@count=\count131
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
+\pgfmatrixcurrentrow=\count132
+\pgfmatrixcurrentcolumn=\count133
+\pgf@matrix@numberofcolumns=\count134
+)
+\tikz@expandcount=\count135
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotscore.code.tex
+\t@pgfplots@toka=\toks42
+\t@pgfplots@tokb=\toks43
+\t@pgfplots@tokc=\toks44
+\pgfplots@tmpa=\dimen183
+\c@pgfplots@coordindex=\count136
+\c@pgfplots@scanlineindex=\count137
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgfplotssysgeneric.code
+.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgfplotslibrary.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_loader.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryfpu.code.tex
+)
+Package pgfplots: loading complementary arithmetics for your pgf version...
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_pgflibraryfpu.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count138
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotslists
+tructure.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotslists
+tructureext.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsarray
+.code.tex
+\c@pgfplotsarray@tmp=\count139
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatri
+x.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshare
+d.code.tex
+\c@pgfplotstable@counta=\count140
+\t@pgfplotstable@a=\toks45
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsdeque
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.code.te
+x
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.data.co
+de.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.verb.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.sur
+fshading.code.tex
+\c@pgfplotslibrarysurf@no=\count141
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surf
+shading.pgfsys-pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotscolormap.code.
+tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotscolor.code.tex
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsstackedplots.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsplothandlers.code.t
+ex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsmeshplothandler.cod
+e.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsmeshplotimage.code.
+tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.scaling.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotscoordprocessing.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.errorbars.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.markers.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsticks.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.paths.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
+e.tex
+\pgfdecoratedcompleteddistance=\dimen184
+\pgfdecoratedremainingdistance=\dimen185
+\pgfdecoratedinputsegmentcompleteddistance=\dimen186
+\pgfdecoratedinputsegmentremainingdistance=\dimen187
+\pgf@decorate@distancetomove=\dimen188
+\pgf@decorate@repeatstate=\count142
+\pgfdecorationsegmentamplitude=\dimen189
+\pgfdecorationsegmentlength=\dimen190
+)
+\tikz@lib@dec@box=\box40
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathmorphing.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
+decorations.pathmorphing.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathreplacing.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
+decorations.pathreplacing.code.tex))
+\pgfplots@numplots=\count143
+\pgfplots@xmin@reg=\dimen191
+\pgfplots@xmax@reg=\dimen192
+\pgfplots@ymin@reg=\dimen193
+\pgfplots@ymax@reg=\dimen194
+\pgfplots@zmin@reg=\dimen195
+\pgfplots@zmax@reg=\dimen196
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryplotmarks.code.tex
+File: tikzlibraryplotmarks.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplotmarks.co
+de.tex
+File: pgflibraryplotmarks.code.tex 2015/08/03 v3.0.1a (rcs-revision 1.14)
+))) (/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
 nment
 
 (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count117
-\float@exts=\toks30
-\float@box=\box29
-\@float@everytoks=\toks31
-\@floatcapt=\box30
+\c@float@type=\count144
+\float@exts=\toks46
+\float@box=\box41
+\@float@everytoks=\toks47
+\@floatcapt=\box42
 )
-\@float@every@algorithm=\toks32
-\c@algorithm=\count118
+\@float@every@algorithm=\toks48
+\c@algorithm=\count145
 )
 (/usr/share/texlive/texmf-dist/tex/latex/mathtools/mathtools.sty
 Package: mathtools 2015/11/12 v1.18 mathematical typesetting tools
 
 (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count119
-\calc@Bcount=\count120
-\calc@Adimen=\dimen137
-\calc@Bdimen=\dimen138
+\calc@Acount=\count146
+\calc@Bcount=\count147
+\calc@Adimen=\dimen197
+\calc@Bdimen=\dimen198
 \calc@Askip=\skip61
 \calc@Bskip=\skip62
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count121
+\calc@Ccount=\count148
 \calc@Cskip=\skip63
 )
 (/usr/share/texlive/texmf-dist/tex/latex/mathtools/mhsetup.sty
@@ -762,15 +1155,15 @@ LaTeX Info: Thecontrolsequence`\('isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\)'isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\['isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 129.
-\g_MT_multlinerow_int=\count122
-\l_MT_multwidth_dim=\dimen139
+\g_MT_multlinerow_int=\count149
+\l_MT_multwidth_dim=\dimen199
 \origjot=\skip64
-\l_MT_shortvdotswithinadjustabove_dim=\dimen140
-\l_MT_shortvdotswithinadjustbelow_dim=\dimen141
-\l_MT_above_intertext_sep=\dimen142
-\l_MT_below_intertext_sep=\dimen143
-\l_MT_above_shortintertext_sep=\dimen144
-\l_MT_below_shortintertext_sep=\dimen145
+\l_MT_shortvdotswithinadjustabove_dim=\dimen256
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen257
+\l_MT_above_intertext_sep=\dimen258
+\l_MT_below_intertext_sep=\dimen259
+\l_MT_above_shortintertext_sep=\dimen260
+\l_MT_below_shortintertext_sep=\dimen261
 )
 (/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
 Package: algpseudocode 
@@ -779,19 +1172,29 @@ Package: algpseudocode
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count123
-\c@ALG@rem=\count124
-\c@ALG@nested=\count125
+\c@ALG@line=\count150
+\c@ALG@rem=\count151
+\c@ALG@nested=\count152
 \ALG@tlm=\skip65
 \ALG@thistlm=\skip66
-\c@ALG@Lnr=\count126
-\c@ALG@blocknr=\count127
-\c@ALG@storecount=\count128
-\c@ALG@tmpcounter=\count129
+\c@ALG@Lnr=\count153
+\c@ALG@blocknr=\count154
+\c@ALG@storecount=\count155
+\c@ALG@tmpcounter=\count156
 \ALG@tmplength=\skip67
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (./thesis-template-with-class.aux
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.gr
+oupplots.code.tex
+\pgfplots@group@current@plot=\count157
+\pgfplots@group@current@row=\count158
+\pgfplots@group@current@column=\count159
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex
+File: tikzlibrarycalc.code.tex 2013/07/15 v3.0.1a (rcs-revision 1.9)
+)) (./thesis-template-with-class.aux
 
 LaTeX Warning: Label `euclid' multiply defined.
 
@@ -810,37 +1213,37 @@ LaTeX Warning: Label `eq:mass_matrix_e' multiply defined.
 )
 \openout1 = `thesis-template-with-class.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 123.
+LaTeX Font Info:    ... okay on input line 123.
  (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count130
-\scratchdimen=\dimen146
-\scratchbox=\box31
-\nofMPsegments=\count131
-\nofMParguments=\count132
-\everyMPshowfont=\toks33
-\MPscratchCnt=\count133
-\MPscratchDim=\dimen147
-\MPnumerator=\count134
-\makeMPintoPDFobject=\count135
-\everyMPtoPDFconversion=\toks34
+\scratchcounter=\count160
+\scratchdimen=\dimen262
+\scratchbox=\box43
+\nofMPsegments=\count161
+\nofMParguments=\count162
+\everyMPshowfont=\toks49
+\MPscratchCnt=\count163
+\MPscratchDim=\dimen263
+\MPnumerator=\count164
+\makeMPintoPDFobject=\count165
+\everyMPtoPDFconversion=\toks50
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -891,24 +1294,28 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box32
-Package hyperref Info: Link coloring OFF on input line 32.
+\AtBeginShipoutBox=\box44
+Package hyperref Info: Link coloring OFF on input line 123.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count136
+\c@section@level=\count166
 )
-LaTeX Info: Redefining \ref on input line 32.
-LaTeX Info: Redefining \pageref on input line 32.
-LaTeX Info: Redefining \nameref on input line 32.
+LaTeX Info: Redefining \ref on input line 123.
+LaTeX Info: Redefining \pageref on input line 123.
+LaTeX Info: Redefining \nameref on input line 123.
 
 (./thesis-template-with-class.out) (./thesis-template-with-class.out)
-\@outlinefile=\write3
-\openout3 = `thesis-template-with-class.out'.
+\@outlinefile=\write4
+\openout4 = `thesis-template-with-class.out'.
 
+
+ABD: EveryShipout initializing macros
+Package pgfplots notification 'compat/show suggested version=true': document ha
+s been generated with the most recent feature set (\pgfplotsset{compat=1.13}).
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/bk12.clo
 File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
@@ -925,40 +1332,41 @@ File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 
 
 ]
-LaTeX Font Info:    Try loading font information for OML+plm on input line 61.
+LaTeX Font Info:    Try loading font information for OML+plm on input line 152.
+
 
 (/usr/share/texlive/texmf-dist/tex/latex/polski/omlplm.fd
 File: omlplm.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMS+plsy on input line 61.
-
+LaTeX Font Info:    Try loading font information for OMS+plsy on input line 152
+.
 
 (/usr/share/texlive/texmf-dist/tex/latex/polski/omsplsy.fd
 File: omsplsy.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMX+plex on input line 61.
-
+LaTeX Font Info:    Try loading font information for OMX+plex on input line 152
+.
 
 (/usr/share/texlive/texmf-dist/tex/latex/polski/omxplex.fd
 File: omxplex.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <10.95> on input line 61.
+(Font)              <10.95> on input line 152.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <8> on input line 61.
+(Font)              <8> on input line 152.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <6> on input line 61.
-LaTeX Font Info:    Try loading font information for U+msa on input line 61.
+(Font)              <6> on input line 152.
+LaTeX Font Info:    Try loading font information for U+msa on input line 152.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 61.
+LaTeX Font Info:    Try loading font information for U+msb on input line 152.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 61.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 152.
 
 (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
@@ -968,8 +1376,8 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 (./thesis-template-with-class.toc [7
 
 ])
-\tf@toc=\write4
-\openout4 = `thesis-template-with-class.toc'.
+\tf@toc=\write5
+\openout5 = `thesis-template-with-class.toc'.
 
 
 
@@ -978,10 +1386,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[8]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [9
+[8] [9
 
 
 ]
@@ -997,7 +1402,7 @@ Rozdzia\l  1.
 
 ]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 192.
+put line 281.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1013,7 +1418,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [13]
-Underfull \hbox (badness 2012) in paragraph at lines 261--263
+Underfull \hbox (badness 2012) in paragraph at lines 350--352
 \T1/cmr/m/n/10.95 Further, we con-struct a mass ma-trix $\OML/plm/m/it/10.95 M 
 \OMS/plsy/m/n/10.95 2 \U/msb/m/n/10.95 R[]$ \T1/cmr/m/n/10.95 which is dia-go-n
 al with va-lues
@@ -1053,11 +1458,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[18] <pictures/omega.png, id=539, 448.67625pt x 200.75pt>
+[18] <pictures/omega.png, id=554, 448.67625pt x 200.75pt>
 File: pictures/omega.png Graphic file (type png)
 
 <use pictures/omega.png>
-Package pdftex.def Info: pictures/omega.png used on input line 498.
+Package pdftex.def Info: pictures/omega.png used on input line 587.
 (pdftex.def)             Requested size: 224.33757pt x 100.37474pt.
 
 
@@ -1081,7 +1486,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.546 B
+l.635 B
        y including the constitutive equation and the symmetry of stiffness t...
  <./pictures/omega.png>]
 
@@ -1099,7 +1504,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [22]
 
-LaTeX Warning: Citation `damping' on page 23 undefined on input line 668.
+LaTeX Warning: Citation `damping' on page 23 undefined on input line 757.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1154,14 +1559,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [29]
 Rozdzia\l  3.
-<pictures/tetrahedron.png, id=676, 1025.8325pt x 343.2825pt>
+<pictures/tetrahedron.png, id=691, 1025.8325pt x 343.2825pt>
 File: pictures/tetrahedron.png Graphic file (type png)
 
 <use pictures/tetrahedron.png>
-Package pdftex.def Info: pictures/tetrahedron.png used on input line 1009.
+Package pdftex.def Info: pictures/tetrahedron.png used on input line 1098.
 (pdftex.def)             Requested size: 512.91501pt x 171.64082pt.
 
-Overfull \hbox (57.67088pt too wide) in paragraph at lines 1009--1010
+Overfull \hbox (57.67088pt too wide) in paragraph at lines 1098--1099
  [][] 
  []
 
@@ -1182,7 +1587,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1088 W
+l.1177 W
         e can now write the matrix system in more compact way using further ...
  <./pictures/tetrahedron.png>]
 
@@ -1205,22 +1610,22 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[34] <pictures/3dmesh_incomplite.png, id=732, 503.8825pt x 428.60126pt>
+[34] <pictures/3dmesh_incomplite.png, id=747, 503.8825pt x 428.60126pt>
 File: pictures/3dmesh_incomplite.png Graphic file (type png)
 
 <use pictures/3dmesh_incomplite.png>
-Package pdftex.def Info: pictures/3dmesh_incomplite.png used on input line 1290
+Package pdftex.def Info: pictures/3dmesh_incomplite.png used on input line 1379
 .
 (pdftex.def)             Requested size: 251.94063pt x 214.3001pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/3dmesh.png, id=735, 844.15375pt x 621.32124pt>
+<pictures/3dmesh.png, id=750, 844.15375pt x 621.32124pt>
 File: pictures/3dmesh.png Graphic file (type png)
 
 <use pictures/3dmesh.png>
-Package pdftex.def Info: pictures/3dmesh.png used on input line 1297.
+Package pdftex.def Info: pictures/3dmesh.png used on input line 1386.
 (pdftex.def)             Requested size: 253.24808pt x 186.39781pt.
 
 
@@ -1232,11 +1637,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[35] <pictures/tetrahedra_shapes.png, id=747, 1260.71pt x 310.15875pt>
+[35] <pictures/tetrahedra_shapes.png, id=762, 1260.71pt x 310.15875pt>
 File: pictures/tetrahedra_shapes.png Graphic file (type png)
 
 <use pictures/tetrahedra_shapes.png>
-Package pdftex.def Info: pictures/tetrahedra_shapes.png used on input line 1308
+Package pdftex.def Info: pictures/tetrahedra_shapes.png used on input line 1397
 .
 (pdftex.def)             Requested size: 378.21593pt x 93.04834pt.
 
@@ -1254,14 +1659,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1317 \chapter
+l.1406 \chapter
                {Solving System of Linear Equations}pdfTeX warning (ext4): desti
 nation with the same identifier (name{figure.3.3}) has been already used, dupli
 cate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1317 \chapter
+l.1406 \chapter
                {Solving System of Linear Equations} <./pictures/3dmesh_incompli
 te.png> <./pictures/3dmesh.png>]
 
@@ -1275,24 +1680,24 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1317 \chapter
+l.1406 \chapter
                {Solving System of Linear Equations} <./pictures/tetrahedra_shap
 es.png>]
 Rozdzia\l  4.
 [38
 
-] <pictures/paraboloid.png, id=777, 636.3775pt x 504.88625pt>
+] <pictures/paraboloid.png, id=792, 636.3775pt x 504.88625pt>
 File: pictures/paraboloid.png Graphic file (type png)
 
 <use pictures/paraboloid.png>
-Package pdftex.def Info: pictures/paraboloid.png used on input line 1377.
+Package pdftex.def Info: pictures/paraboloid.png used on input line 1466.
 (pdftex.def)             Requested size: 318.18797pt x 252.44249pt.
 
-<pictures/contour.png, id=779, 620.3175pt x 598.235pt>
+<pictures/contour.png, id=794, 620.3175pt x 598.235pt>
 File: pictures/contour.png Graphic file (type png)
 
 <use pictures/contour.png>
-Package pdftex.def Info: pictures/contour.png used on input line 1383.
+Package pdftex.def Info: pictures/contour.png used on input line 1472.
 (pdftex.def)             Requested size: 310.15799pt x 299.11676pt.
 
 
@@ -1309,7 +1714,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1389 \begin{equation}
+l.1478 \begin{equation}
                         <./pictures/paraboloid.png>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1322,20 +1727,20 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1416 \begin{equation}
+l.1505 \begin{equation}
                         <./pictures/contour.png>]
-<pictures/alpha1.png, id=806, 331.2375pt x 276.03125pt>
+<pictures/alpha1.png, id=821, 331.2375pt x 276.03125pt>
 File: pictures/alpha1.png Graphic file (type png)
 
 <use pictures/alpha1.png>
-Package pdftex.def Info: pictures/alpha1.png used on input line 1442.
+Package pdftex.def Info: pictures/alpha1.png used on input line 1531.
 (pdftex.def)             Requested size: 264.99034pt x 220.82529pt.
 
-<pictures/alpha2.png, id=808, 290.08376pt x 273.02pt>
+<pictures/alpha2.png, id=824, 290.08376pt x 273.02pt>
 File: pictures/alpha2.png Graphic file (type png)
 
 <use pictures/alpha2.png>
-Package pdftex.def Info: pictures/alpha2.png used on input line 1449.
+Package pdftex.def Info: pictures/alpha2.png used on input line 1538.
 (pdftex.def)             Requested size: 232.0673pt x 218.41629pt.
 
 
@@ -1352,13 +1757,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1464 \end{equation}
+l.1553 \end{equation}
                       <./pictures/alpha1.png>]
-<pictures/steepest_descent.png, id=820, 669.50125pt x 588.1975pt>
+<pictures/steepest_descent.png, id=836, 669.50125pt x 588.1975pt>
 File: pictures/steepest_descent.png Graphic file (type png)
 
 <use pictures/steepest_descent.png>
-Package pdftex.def Info: pictures/steepest_descent.png used on input line 1470.
+Package pdftex.def Info: pictures/steepest_descent.png used on input line 1559.
 
 (pdftex.def)             Requested size: 334.7498pt x 294.09802pt.
 
@@ -1376,7 +1781,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1495 \begin{equation}
+l.1584 \begin{equation}
                         <./pictures/alpha2.png>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1389,43 +1794,43 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1515 \chapter
+l.1604 \chapter
                {Implementation} <./pictures/steepest_descent.png>]
 Rozdzia\l  5.
 [44
 
-] <pictures/fem_model.png, id=859, 800.9925pt x 605.26125pt>
+] <pictures/fem_model.png, id=875, 800.9925pt x 605.26125pt>
 File: pictures/fem_model.png Graphic file (type png)
 
 <use pictures/fem_model.png>
-Package pdftex.def Info: pictures/fem_model.png used on input line 1554.
+Package pdftex.def Info: pictures/fem_model.png used on input line 1643.
 (pdftex.def)             Requested size: 480.5992pt x 363.15953pt.
 
-Overfull \hbox (25.35507pt too wide) in paragraph at lines 1554--1555
+Overfull \hbox (25.35507pt too wide) in paragraph at lines 1643--1644
  [][] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/tetrahedralization.png, id=861, 451.6875pt x 308.15125pt>
+<pictures/tetrahedralization.png, id=877, 451.6875pt x 308.15125pt>
 File: pictures/tetrahedralization.png Graphic file (type png)
 
 <use pictures/tetrahedralization.png>
-Package pdftex.def Info: pictures/tetrahedralization.png used on input line 156
-3.
+Package pdftex.def Info: pictures/tetrahedralization.png used on input line 165
+2.
 (pdftex.def)             Requested size: 271.01459pt x 184.89217pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/solver.png, id=864, 955.57pt x 544.0325pt>
+<pictures/solver.png, id=880, 955.57pt x 544.0325pt>
 File: pictures/solver.png Graphic file (type png)
  <use pictures/solver.png>
-Package pdftex.def Info: pictures/solver.png used on input line 1572.
+Package pdftex.def Info: pictures/solver.png used on input line 1661.
 (pdftex.def)             Requested size: 477.78383pt x 272.01558pt.
 
-Overfull \hbox (22.5397pt too wide) in paragraph at lines 1572--1573
+Overfull \hbox (22.5397pt too wide) in paragraph at lines 1661--1662
  [][] 
  []
 
@@ -1454,13 +1859,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1575 \end{figure}
+l.1664 \end{figure}
                    pdfTeX warning (ext4): destination with the same identifier 
 (name{figure.5.2}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1575 \end{figure}
+l.1664 \end{figure}
                     <./pictures/fem_model.png> <./pictures/tetrahedralization.p
 ng>]
 
@@ -1474,7 +1879,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1619 
+l.1708 
         <./pictures/solver.png>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1482,11 +1887,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[48] <pictures/ifx/ifx.png, id=909, 1926.19624pt x 1054.94125pt>
+[48] <pictures/ifx/ifx.png, id=925, 1926.19624pt x 1054.94125pt>
 File: pictures/ifx/ifx.png Graphic file (type png)
 
 <use pictures/ifx/ifx.png>
-Package pdftex.def Info: pictures/ifx/ifx.png used on input line 1684.
+Package pdftex.def Info: pictures/ifx/ifx.png used on input line 1773.
 (pdftex.def)             Requested size: 385.23242pt x 210.98451pt.
 
 
@@ -1500,40 +1905,40 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1694 
+l.1783 
         <./pictures/ifx/ifx.png>]
-<pictures/ifx_general.png, id=924, 378.41376pt x 353.32pt>
+<pictures/ifx_general.png, id=940, 378.41376pt x 353.32pt>
 File: pictures/ifx_general.png Graphic file (type png)
 
 <use pictures/ifx_general.png>
-Package pdftex.def Info: pictures/ifx_general.png used on input line 1697.
+Package pdftex.def Info: pictures/ifx_general.png used on input line 1786.
 (pdftex.def)             Requested size: 189.2064pt x 176.65956pt.
 
-<pictures/ifx_physics.png, id=926, 670.505pt x 397.485pt>
+<pictures/ifx_physics.png, id=942, 670.505pt x 397.485pt>
 File: pictures/ifx_physics.png Graphic file (type png)
 
 <use pictures/ifx_physics.png>
-Package pdftex.def Info: pictures/ifx_physics.png used on input line 1706.
+Package pdftex.def Info: pictures/ifx_physics.png used on input line 1795.
 (pdftex.def)             Requested size: 335.25168pt x 198.742pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_graphics.png, id=928, 461.725pt x 421.575pt>
+<pictures/ifx_graphics.png, id=944, 461.725pt x 421.575pt>
 File: pictures/ifx_graphics.png Graphic file (type png)
 
 <use pictures/ifx_graphics.png>
-Package pdftex.def Info: pictures/ifx_graphics.png used on input line 1715.
+Package pdftex.def Info: pictures/ifx_graphics.png used on input line 1804.
 (pdftex.def)             Requested size: 230.86194pt x 210.78697pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_game.png, id=930, 512.91624pt x 504.88625pt>
+<pictures/ifx_game.png, id=946, 512.91624pt x 504.88625pt>
 File: pictures/ifx_game.png Graphic file (type png)
 
 <use pictures/ifx_game.png>
-Package pdftex.def Info: pictures/ifx_game.png used on input line 1724.
+Package pdftex.def Info: pictures/ifx_game.png used on input line 1813.
 (pdftex.def)             Requested size: 256.45749pt x 252.44249pt.
 
 
@@ -1554,27 +1959,24 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1730 
+l.1819 
         <./pictures/ifx_general.png>]
-<pictures/game_loop.png, id=940, 1128.215pt x 309.155pt>
+<pictures/game_loop.png, id=956, 1128.215pt x 309.155pt>
 File: pictures/game_loop.png Graphic file (type png)
 
 <use pictures/game_loop.png>
-Package pdftex.def Info: pictures/game_loop.png used on input line 1733.
+Package pdftex.def Info: pictures/game_loop.png used on input line 1822.
 (pdftex.def)             Requested size: 451.278pt x 123.6598pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_game2.png, id=942, 703.62875pt x 415.5525pt>
+<pictures/ifx_game2.png, id=958, 703.62875pt x 415.5525pt>
 File: pictures/ifx_game2.png Graphic file (type png)
 
 <use pictures/ifx_game2.png>
-Package pdftex.def Info: pictures/ifx_game2.png used on input line 1742.
+Package pdftex.def Info: pictures/ifx_game2.png used on input line 1831.
 (pdftex.def)             Requested size: 351.8135pt x 207.77574pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1587,16 +1989,23 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1745 \end{figure}
+l.1834 \end{figure}
                    pdfTeX warning (ext4): destination with the same identifier 
 (name{figure.5.7}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1745 \end{figure}
+l.1834 \end{figure}
                     <./pictures/ifx_physics.png> <./pictures/ifx_graphics.png>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/ifx/ifx_meshing.png, id=969, 1160.335pt x 710.655pt>
+File: pictures/ifx/ifx_meshing.png Graphic file (type png)
+
+<use pictures/ifx/ifx_meshing.png>
+Package pdftex.def Info: pictures/ifx/ifx_meshing.png used on input line 1842.
+(pdftex.def)             Requested size: 348.10318pt x 213.19814pt.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1609,45 +2018,41 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1750 
-       pdfTeX warning (ext4): destination with the same identifier (name{figure
-.5.9}) has been already used, duplicate ignored
+l.1845 \end{figure}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{figure.5.9}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1750 
-        <./pictures/ifx_game.png> <./pictures/game_loop.png>]
-<pictures/ifx/ifx_meshing.png, id=959, 1160.335pt x 710.655pt>
-File: pictures/ifx/ifx_meshing.png Graphic file (type png)
-
-<use pictures/ifx/ifx_meshing.png>
-Package pdftex.def Info: pictures/ifx/ifx_meshing.png used on input line 1753.
-(pdftex.def)             Requested size: 348.10318pt x 213.19814pt.
-
-<pictures/ifx/ifx_material.png, id=962, 1158.3275pt x 704.6325pt>
+l.1845 \end{figure}
+                    <./pictures/ifx_game.png> <./pictures/game_loop.png>]
+<pictures/ifx/ifx_material.png, id=979, 1158.3275pt x 704.6325pt>
 File: pictures/ifx/ifx_material.png Graphic file (type png)
 
 <use pictures/ifx/ifx_material.png>
-Package pdftex.def Info: pictures/ifx/ifx_material.png used on input line 1762.
+Package pdftex.def Info: pictures/ifx/ifx_material.png used on input line 1851.
 
 (pdftex.def)             Requested size: 347.50093pt x 211.39139pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx/ifx_bc.png, id=964, 1163.34625pt x 706.64pt>
+<pictures/ifx/ifx_bc.png, id=981, 1163.34625pt x 706.64pt>
 File: pictures/ifx/ifx_bc.png Graphic file (type png)
 
 <use pictures/ifx/ifx_bc.png>
-Package pdftex.def Info: pictures/ifx/ifx_bc.png used on input line 1771.
+Package pdftex.def Info: pictures/ifx/ifx_bc.png used on input line 1860.
 (pdftex.def)             Requested size: 349.00658pt x 211.99364pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
+<pictures/ifx/ifx_load.png, id=983, 1160.335pt x 708.6475pt>
+File: pictures/ifx/ifx_load.png Graphic file (type png)
 
-Underfull \vbox (badness 1983) has occurred while \output is active []
-
+<use pictures/ifx/ifx_load.png>
+Package pdftex.def Info: pictures/ifx/ifx_load.png used on input line 1869.
+(pdftex.def)             Requested size: 348.10318pt x 212.59589pt.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1660,23 +2065,24 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1777 
-       pdfTeX warning (ext4): destination with the same identifier (name{figure
-.5.11}) has been already used, duplicate ignored
+l.1872 \end{figure}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{figure.5.11}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1777 
-        <./pictures/ifx_game2.png> <./pictures/ifx/ifx_meshing.png>]
-<pictures/ifx/ifx_load.png, id=973, 1160.335pt x 708.6475pt>
-File: pictures/ifx/ifx_load.png Graphic file (type png)
-
-<use pictures/ifx/ifx_load.png>
-Package pdftex.def Info: pictures/ifx/ifx_load.png used on input line 1780.
-(pdftex.def)             Requested size: 348.10318pt x 212.59589pt.
-
+l.1872 \end{figure}
+                    <./pictures/ifx_game2.png> <./pictures/ifx/ifx_meshing.png>
+]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/ifx/ifx_solver1.png, id=993, 1159.33125pt x 705.63625pt>
+File: pictures/ifx/ifx_solver1.png Graphic file (type png)
+
+<use pictures/ifx/ifx_solver1.png>
+Package pdftex.def Info: pictures/ifx/ifx_solver1.png used on input line 1878.
+(pdftex.def)             Requested size: 347.80206pt x 211.6925pt.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1689,26 +2095,19 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1786 
-       pdfTeX warning (ext4): destination with the same identifier (name{figure
-.5.13}) has been already used, duplicate ignored
+l.1881 \end{figure}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{figure.5.13}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1786 
-        <./pictures/ifx/ifx_material.png> <./pictures/ifx/ifx_bc.png>]
-<pictures/ifx/ifx_solver1.png, id=982, 1159.33125pt x 705.63625pt>
-File: pictures/ifx/ifx_solver1.png Graphic file (type png)
-
-<use pictures/ifx/ifx_solver1.png>
-Package pdftex.def Info: pictures/ifx/ifx_solver1.png used on input line 1789.
-(pdftex.def)             Requested size: 347.80206pt x 211.6925pt.
-
-<pictures/ifx/ifx_solver2.png, id=983, 1162.3425pt x 709.65125pt>
+l.1881 \end{figure}
+                    <./pictures/ifx/ifx_material.png> <./pictures/ifx/ifx_bc.pn
+g>] <pictures/ifx/ifx_solver2.png, id=999, 1162.3425pt x 709.65125pt>
 File: pictures/ifx/ifx_solver2.png Graphic file (type png)
 
 <use pictures/ifx/ifx_solver2.png>
-Package pdftex.def Info: pictures/ifx/ifx_solver2.png used on input line 1796.
+Package pdftex.def Info: pictures/ifx/ifx_solver2.png used on input line 1885.
 (pdftex.def)             Requested size: 348.70544pt x 212.897pt.
 
 
@@ -1725,13 +2124,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1803 \chapter
+l.1892 \chapter
                {Tests}pdfTeX warning (ext4): destination with the same identifi
 er (name{figure.5.15}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1803 \chapter
+l.1892 \chapter
                {Tests} <./pictures/ifx/ifx_load.png> <./pictures/ifx/ifx_solver
 1.png>]
 
@@ -1745,17 +2144,254 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1803 \chapter
+l.1892 \chapter
                {Tests} <./pictures/ifx/ifx_solver2.png>]
 Rozdzia\l  6.
+
+Overfull \hbox (17.91629pt too wide) in paragraph at lines 1955--1956
+[][] 
+ []
+
 [57
 
 ]
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 1[]000$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 1[]500$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 2[]000$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 2[]500$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 3[]000$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 3[]500$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 4[]000$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 4[]500$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 5[]000$ 
+ []
+
+
+Overfull \hbox (3.16594pt too wide) in paragraph at lines 1995--1995
+ [][][][]$\OT4/cmr/m/n/10.95 5[]500$ 
+ []
+
+Package pgfplots info on input line 2049: Using 'lua backend=false' for axis: x
+ coord trafo unsupported.
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+
+Overfull \hbox (15.87318pt too wide) in paragraph at lines 2060--2060
+ [][][][]\T1/cmr/m/n/10.95 E=1110 
+ []
+
+
+Overfull \hbox (15.87318pt too wide) in paragraph at lines 2060--2060
+ [][][][]\T1/cmr/m/n/10.95 E=2000 
+ []
+
+
+Overfull \hbox (15.87318pt too wide) in paragraph at lines 2060--2060
+ [][][][]\T1/cmr/m/n/10.95 E=5400 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[58pdfTeX warning (ext4): destination with the same identifier (name{figure.6.1
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2063 
+       pdfTeX warning (ext4): destination with the same identifier (name{figure
+.6.2}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2063 
+       ] <pictures/tests/660.png, id=1036, 684.5575pt x 413.545pt>
+File: pictures/tests/660.png Graphic file (type png)
+
+<use pictures/tests/660.png>
+Package pdftex.def Info: pictures/tests/660.png used on input line 2066.
+(pdftex.def)             Requested size: 205.36882pt x 124.06445pt.
+
+<pictures/tests/660_end.png, id=1037, 678.535pt x 416.55624pt>
+File: pictures/tests/660_end.png Graphic file (type png)
+
+<use pictures/tests/660_end.png>
+Package pdftex.def Info: pictures/tests/660_end.png used on input line 2067.
+(pdftex.def)             Requested size: 203.56207pt x 124.96783pt.
+
+<pictures/tests/1119.png, id=1038, 673.51625pt x 415.5525pt>
+File: pictures/tests/1119.png Graphic file (type png)
+
+<use pictures/tests/1119.png>
+Package pdftex.def Info: pictures/tests/1119.png used on input line 2074.
+(pdftex.def)             Requested size: 202.05643pt x 124.6667pt.
+
+<pictures/tests/1119_end.png, id=1039, 675.52374pt x 416.55624pt>
+File: pictures/tests/1119_end.png Graphic file (type png)
+
+<use pictures/tests/1119_end.png>
+Package pdftex.def Info: pictures/tests/1119_end.png used on input line 2075.
+(pdftex.def)             Requested size: 202.65868pt x 124.96783pt.
+
+<pictures/tests/2000tet.png, id=1040, 682.55pt x 418.56375pt>
+File: pictures/tests/2000tet.png Graphic file (type png)
+
+<use pictures/tests/2000tet.png>
+Package pdftex.def Info: pictures/tests/2000tet.png used on input line 2082.
+(pdftex.def)             Requested size: 204.76657pt x 125.57008pt.
+
+<pictures/tests/2000end.png, id=1041, 678.535pt x 419.5675pt>
+File: pictures/tests/2000end.png Graphic file (type png)
+
+<use pictures/tests/2000end.png>
+Package pdftex.def Info: pictures/tests/2000end.png used on input line 2083.
+(pdftex.def)             Requested size: 203.56207pt x 125.87122pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/tests/3252.png, id=1042, 678.535pt x 418.56375pt>
+File: pictures/tests/3252.png Graphic file (type png)
+
+<use pictures/tests/3252.png>
+Package pdftex.def Info: pictures/tests/3252.png used on input line 2090.
+(pdftex.def)             Requested size: 203.56207pt x 125.57008pt.
+
+<pictures/tests/3252end.png, id=1043, 682.55pt x 412.54124pt>
+File: pictures/tests/3252end.png Graphic file (type png)
+
+<use pictures/tests/3252end.png>
+Package pdftex.def Info: pictures/tests/3252end.png used on input line 2091.
+(pdftex.def)             Requested size: 204.76657pt x 123.76332pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pictures/tests/5392.png, id=1044, 673.51625pt x 407.5225pt>
+File: pictures/tests/5392.png Graphic file (type png)
+
+<use pictures/tests/5392.png>
+Package pdftex.def Info: pictures/tests/5392.png used on input line 2098.
+(pdftex.def)             Requested size: 202.05643pt x 122.25769pt.
+
+<pictures/tests/5392_end.png, id=1045, 671.50874pt x 415.5525pt>
+File: pictures/tests/5392_end.png Graphic file (type png)
+
+<use pictures/tests/5392_end.png>
+Package pdftex.def Info: pictures/tests/5392_end.png used on input line 2099.
+(pdftex.def)             Requested size: 201.45418pt x 124.6667pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[59pdfTeX warning (ext4): destination with the same identifier (name{figure.6.3
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2105 \chapter
+               {Conclusions}pdfTeX warning (ext4): destination with the same id
+entifier (name{figure.6.4}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2105 \chapter
+               {Conclusions}pdfTeX warning (ext4): destination with the same id
+entifier (name{figure.6.5}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2105 \chapter
+               {Conclusions} <./pictures/tests/660.png> <./pictures/tests/660_e
+nd.png> <./pictures/tests/1119.png> <./pictures/tests/1119_end.png>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[60pdfTeX warning (ext4): destination with the same identifier (name{figure.6.6
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2105 \chapter
+               {Conclusions}pdfTeX warning (ext4): destination with the same id
+entifier (name{figure.6.7}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2105 \chapter
+               {Conclusions}pdfTeX warning (ext4): destination with the same id
+entifier (name{figure.6.8}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.2105 \chapter
+               {Conclusions} <./pictures/tests/2000tet.png> <./pictures/tests/2
+000end.png> <./pictures/tests/3252.png> <./pictures/tests/3252end.png> <./pictu
+res/tests/5392.png> <./pictures/tests/5392_end.png>]
 Rozdzia\l  7.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [58
+ [61
 
 ]
 
@@ -1764,25 +2400,41 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[59]
-Underfull \hbox (badness 10000) in paragraph at lines 1842--1843
+[62]
+Underfull \hbox (badness 10000) in paragraph at lines 2142--2143
 []\T1/cmr/m/n/10.95 Department of Ae-ro-space En-gi-ne-ering Scien-ces Uni-ver-
 sity of Co-lo-rado
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1842--1843
+Underfull \hbox (badness 10000) in paragraph at lines 2142--2143
 \T1/cmr/m/n/10.95 at Bo-ul-der \T1/cmr/m/it/10.95 Ad-van-ced Fi-nite Ele-ment M
 e-thods (ASEN 6367) Lec-tu-res
  []
 
-[60
 
-]
-Overfull \hbox (62.81331pt too wide) in paragraph at lines 1874--1875
+Overfull \hbox (62.81331pt too wide) in paragraph at lines 2158--2159
 []\T1/cmr/m/n/10.95 NVIDIA \T1/cmr/m/it/10.95 http://docs.nvidia.com/gameworks/
 content/gameworkslibrary/physx/guide/Manual/Index.html\T1/cmr/m/n/10.95 . 
  []
+
+[63
+
+]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[64] [65
+
+] (./thesis-template-with-class.lof [66
+
+])
+\tf@lof=\write6
+\openout6 = `thesis-template-with-class.lof'.
+
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1790,54 +2442,38 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[61] [62
+[67] (./thesis-template-with-class.lot)
+\tf@lot=\write7
+\openout7 = `thesis-template-with-class.lot'.
 
-] (./thesis-template-with-class.lof)
-\tf@lof=\write5
-\openout5 = `thesis-template-with-class.lof'.
-
- [63
+ [68
 
 ]
-(./thesis-template-with-class.lot)
-\tf@lot=\write6
-\openout6 = `thesis-template-with-class.lot'.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1932.
- [64
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1932.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2258.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2258.
  (./thesis-template-with-class.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1932.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1932.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2258.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2258.
 
-
-
-Package rerunfilecheck Warning: File `thesis-template-with-class.out' has chang
-ed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `thesis-template-with-class.out':
-(rerunfilecheck)             Before: 81CC1A61B2B7BCB7454869D11AE027B2;8147
-(rerunfilecheck)             After:  FE4E8A30CD305BCF9850DD3B1DD61B08;8137.
+Package rerunfilecheck Info: File `thesis-template-with-class.out' has not chan
+ged.
+(rerunfilecheck)             Checksum: 7D0CEF516B848ACBB5C9027F26A15730;8277.
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1932.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2258.
  ) 
 Here is how much of TeX's memory you used:
- 13506 strings out of 493029
- 186673 string characters out of 6136233
- 287055 words of memory out of 5000000
- 16472 multiletter control sequences out of 15000+600000
+ 33536 strings out of 493029
+ 736378 string characters out of 6136233
+ 908161 words of memory out of 5000000
+ 36119 multiletter control sequences out of 15000+600000
  17655 words of font info for 45 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 36i,15n,45p,1253b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,19n,108p,1253b,2648s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/share/texmf/
 fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texlive/texmf-dist/fonts/e
 nc/dvips/pl/plmi.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc
@@ -1857,10 +2493,10 @@ usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/font
 s/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-su
 per/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></u
 sr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on thesis-template-with-class.pdf (64 pages, 2200092 bytes).
+Output written on thesis-template-with-class.pdf (68 pages, 3200999 bytes).
 PDF statistics:
- 1195 PDF objects out of 1200 (max. 8388607)
- 1013 compressed objects within 11 object streams
- 343 named destinations out of 1000 (max. 500000)
- 603 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1277 PDF objects out of 1440 (max. 8388607)
+ 1078 compressed objects within 11 object streams
+ 365 named destinations out of 1000 (max. 500000)
+ 681 words of extra memory for PDF output out of 10000 (max. 10000000)
 

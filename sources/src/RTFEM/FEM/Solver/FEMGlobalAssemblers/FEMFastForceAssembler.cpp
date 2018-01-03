@@ -64,7 +64,7 @@ void FEMFastForceAssembler<T>::AddTractionForce(
     Eigen::Vector<T, Eigen::Dynamic> &global_force){
     auto magnitude = (1.0 / 3.0) * triangle_face.traction_force *
         triangle_face.area;
-
+    // Should be cashed!
     auto S = std::sqrt((triangle_face.B * triangle_face.B) +
         (triangle_face.C * triangle_face.C) +
         (triangle_face.D * triangle_face.D));

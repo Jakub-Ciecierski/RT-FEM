@@ -17,7 +17,8 @@ GPUSparseCGLinearSolver<T>::GPUSparseCGLinearSolver() :
         d_x(nullptr),
         d_r(nullptr),
         d_p(nullptr),
-        d_Ax(nullptr){}
+        d_Ax(nullptr),
+        tolerance_(1e-5f){}
 
 template<class T>
 GPUSparseCGLinearSolver<T>::~GPUSparseCGLinearSolver(){
@@ -78,7 +79,6 @@ void GPUSparseCGLinearSolver<float>::PreSolve(const SparseMatrixCSR<float>& A){
 template<class T>
 void GPUSparseCGLinearSolver<T>::Solve(
         const T* B, T* x){
-    const T tol = 1e-5f;
     const int max_iter = 1000;
     T a, b, na, r0, r1;
     T dot;
@@ -105,7 +105,7 @@ void GPUSparseCGLinearSolver<T>::Solve(
 
     k = 1;
 
-    while (r1 > tol*tol && k <= max_iter)
+    while (r1 > tolerance_*tolerance_ && k <= max_iter)
     {
         if (k > 1)
         {
@@ -171,6 +171,11 @@ void GPUSparseCGLinearSolver<T>::Terminate(){
         if(d_Ax)
             cudaFree(d_Ax);
     }
+}
+
+template<class T>
+void GPUSparseCGLinearSolver<T>::SetTolerance(T tolerance){
+    tolerance_ = tolerance;
 }
 
 template

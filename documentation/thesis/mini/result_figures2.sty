@@ -1,0 +1,814 @@
+%-------------------------------------------
+% Group Plots
+%-------------------------------------------
+\usepackage{xcolor} % Colors
+
+\usepackage{tikz}
+\usepackage{keyval}
+\usepackage{pgfplots} % Bar charts
+
+\usepgfplotslibrary{groupplots}
+
+%\usepackage{groupplots}
+%\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+
+
+%
+% Define bar chart colors
+%
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+\definecolor{ggreen}{HTML}{9BBB59}
+\definecolor{ppurple}{HTML}{9F4C7C}
+
+%----------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           START OF PLOT COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Save results to be later used in addBarPlotResults
+% #1: Train Small
+% #2: Train Big
+% #3: Train All
+% #4: Test
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\saveResultsFirst}[4]{
+    \def\AccuracyFirst{#1}%
+    \def\SensitivityFirst{#2}%
+    \def\PrecisionFirst{#3}%
+    \def\FmeasureFirst{#4}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Save results to be later used in addBarPlotResults
+% #1: Train Small
+% #2: Train Big
+% #3: Train All
+% #4: Test
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\saveResultsSecond}[4]{
+    \def\AccuracySecond{#1}%
+    \def\SensitivitySecond{#2}%
+    \def\PrecisionSecond{#3}%
+    \def\FmeasureSecond{#4}%
+}
+
+\newcommand{\saveResultsThird}[4]{
+    \def\AccuracyThird{#1}%
+    \def\SensitivityThird{#2}%
+    \def\PrecisionThird{#3}%
+    \def\FmeasureThird{#4}%
+}
+
+\newcommand{\saveResultsFourth}[4]{
+    \def\AccuracyFourth{#1}%
+    \def\SensitivityFourth{#2}%
+    \def\PrecisionFourth{#3}%
+    \def\FmeasureFourth{#4}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adds Results to Bars labeled by #1, #2
+%
+% Label #1 is used for saveResultsFirst
+% Label #2 is used for saveResultsSecond
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\addBarPlotResults}[3]{
+    % ACCURACY
+    \addplot[style={bblue, fill=bblue, mark=none}]
+    coordinates 
+    {
+        (#1,  \AccuracyFirst)
+        (#2,  \AccuracySecond)
+        (#3,  \AccuracyThird)
+    };
+    
+    % SENSITIVITY
+    \addplot[style={rred, fill=rred, mark=none}]
+    coordinates 
+    {
+        (#1,  \SensitivityFirst)
+        (#2,  \SensitivitySecond)
+        (#3,  \SensitivityThird)
+    };
+    
+    % PRECISION
+    \addplot[style={ggreen, fill=ggreen, mark=none}]
+    coordinates 
+    {
+        (#1,  \PrecisionFirst)
+        (#2,  \PrecisionSecond)
+        (#3,  \PrecisionThird)
+    };
+    
+    % FMEASURE
+    \addplot[style={ppurple, fill=ppurple, mark=none}]
+    coordinates 
+    {
+        (#1,  \FmeasureFirst)
+        (#2,  \FmeasureSecond)
+        (#3,  \FmeasureThird)
+    };
+}
+
+\newcommand{\addBarPlotFourResults}[4]{
+    % ACCURACY
+    \addplot[style={bblue, fill=bblue, mark=none}]
+    coordinates 
+    {
+        (#1,  \AccuracyFirst)
+        (#2,  \AccuracySecond)
+        (#3,  \AccuracyThird)
+        (#4,  \AccuracyFourth)
+    };
+    
+    % SENSITIVITY
+    \addplot[style={rred, fill=rred, mark=none}]
+    coordinates 
+    {
+        (#1,  \SensitivityFirst)
+        (#2,  \SensitivitySecond)
+        (#3,  \SensitivityThird)
+        (#4,  \SensitivityFourth)
+    };
+    
+    % PRECISION
+    \addplot[style={ggreen, fill=ggreen, mark=none}]
+    coordinates 
+    {
+        (#1,  \PrecisionFirst)
+        (#2,  \PrecisionSecond)
+        (#3,  \PrecisionThird)
+        (#4,  \PrecisionFourth)
+    };
+    
+    % FMEASURE
+    \addplot[style={ppurple, fill=ppurple, mark=none}]
+    coordinates 
+    {
+        (#1,  \FmeasureFirst)
+        (#2,  \FmeasureSecond)
+        (#3,  \FmeasureThird)
+        (#4,  \FmeasureFourth)
+    };
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adds needed style to pgfplot
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\setPlotStyle}[0]{
+    \pgfplotsset{xticklabel style={text width=2em, align=center}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Starts groupplot with given style
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\beginGroupPlot}[0]{
+    \begin{groupplot}[
+        group style={group size= 2 by 2,  vertical sep=50pt},
+        height = 5.5cm, 
+        ybar=4*\pgflinewidth, 
+        ymin=0, 
+        ymax=1,
+        width  = 0.50*\textwidth, 
+        enlarge x limits={abs=0.85cm}, 
+        major x tick style = transparent, 
+        ymajorgrids = true, 
+        symbolic x coords={
+            r=10,
+            r=30,
+            r=40,
+            A=10,
+            A=30,
+            A=40,
+            N=20 F=10,
+            N=20 F=20,
+            N=20 F=40,
+            N=20 F=80
+        },
+        xtick = data, 
+        scaled y ticks = false, 
+        legend cell align=center, 
+        legend columns=1,
+        legend style={
+            at={(1.25, 0.45)}, 
+            anchor=north,
+        }
+        ]
+    }%beginGroupPlot
+    
+    \newcommand{\beginGroupPlotFour}[0]{
+        \begin{groupplot}[
+            group style={group size= 2 by 2,  vertical sep=50pt},
+            height = 5.5cm, 
+            ybar=4*\pgflinewidth, 
+            ymin=0, 
+            ymax=1,
+            width  = 0.65*\textwidth, 
+            enlarge x limits={abs=0.85cm}, 
+            major x tick style = transparent, 
+            ymajorgrids = true, 
+            symbolic x coords={
+                r=10,
+                r=30,
+                r=40,
+                A=10,
+                A=30,
+                A=40,
+                N=20 F=10,
+                N=20 F=20,
+                N=20 F=40,
+                N=20 F=80
+            },
+            xtick = data, 
+            scaled y ticks = false, 
+            legend cell align=center, 
+            legend columns=1,
+            legend style={
+                at={(1.25, 0.45)}, 
+                anchor=north,
+            }
+            ]
+        }%beginGroupPlot
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sets legends for Bar plot
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\setPlotLegend}[0]{
+    \legend{Accuracy, Sensitivity, Precision, F-Measure}
+}
+    
+    
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           END OF PLOT COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           START OF FUNCTION COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%
+% FUNCTION:
+% classificationLanguage
+%%%%%%%%%%%
+\newcommand{\classificationLanguage}{
+    L_{C}
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% transformationPrecision
+% ARGS:
+% #1 - The alphabet
+% #2 - The arguments of the transformation precision function
+%%%%%%%%%%%
+\newcommand{\transformationPrecision}[2]{
+    P_{T_{#1}}(#2)
+}
+
+\newcommand{\umlPath}[1]{
+    ../uml/#1
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureTransformationSymbol
+% ARGS:
+% #1 = The alphabet
+% OUTPUT:
+% Syntax of the feature transformation of a single symbol
+%%%%%%%%%%%
+\newcommand{\featureTransformationSymbol}[1]{
+    \rightarrow^{#1}
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureTransformationWord
+% ARGS:
+% #1 = The alphabet
+% OUTPUT:
+% Syntax of the feature transformation of a word
+%%%%%%%%%%%
+\newcommand{\featureTransformationWord}[1]{
+    \rightarrow^{#1}
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureTransformationLanguage
+% ARGS:
+% #1 = The alphabet
+% OUTPUT:
+% Syntax of the feature transformation of a language
+%%%%%%%%%%%
+\newcommand{\featureTransformationLanguage}[1]{
+    \rightarrow^{#1}
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureNorm.
+% ARGS:
+% #1 = The feature vector
+% OUTPUT:
+% Syntax of feature vector normalization
+% NOTE:
+% Must be surranded by dollars: $\featureNorm{f}$
+% Unless of course it is used in an equation
+%%%%%%%%%%%
+\newcommand{\featureNorm}[1]{
+    #1
+}
+
+\newcommand{\wordSim}[2]{
+    S_{w}(#1,#2)
+}
+\newcommand{\lanSim}[2]{
+    S_{L}(#1,#2)
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           END OF FUNCTION COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           FIGURES, PLOTS, TABLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%
+%
+% Mutual Similarities. Alphabet 30
+%
+%%%
+\newcommand{\makeTableMutualSimilarites}{
+    \begin{figure}[H]
+        \CenterFloatBoxes
+        \begin{floatrow}
+            
+            \ttabbox
+            {
+                \centering
+                \setlength{\tabcolsep}{10pt}
+                \renewcommand{\arraystretch}{1.5}
+                \begin{tabular}{|P{1.0cm} || P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm}|}
+                    \hline
+                    $S_{L}$ & $L_{0}$ & $L_{1}$ & $L_{2}$ & $L_{3}$ & $L_{4}$ & $L_{5}$ & $L_{6}$ & $L_{7}$ & $L_{8}$ & $L_{9}$ \\
+                    \hline
+                    \hline
+                    $L_{0}$ &1&0.34&0.33&0.31&0.29&0.3&0.41&0.3&0.4&0.34\\ 
+                    \hline 
+                    $L_{1}$ &0.34&1&0.3&0.3&0.3&0.32&0.35&0.34&0.35&0.31\\ 
+                    \hline 
+                    $L_{2}$ &0.3&0.28&1&0.33&0.3&0.3&0.31&0.32&0.3&0.3\\ 
+                    \hline 
+                    $L_{3}$ &0.29&0.29&0.34&1&0.32&0.36&0.3&0.33&0.31&0.31\\ 
+                    \hline 
+                    $L_{4}$ &0.28&0.3&0.3&0.31&1&0.31&0.32&0.34&0.29&0.34\\ 
+                    \hline 
+                    $L_{5}$ &0.28&0.31&0.31&0.36&0.31&1&0.3&0.32&0.31&0.31\\ 
+                    \hline 
+                    $L_{6}$ &0.41&0.33&0.32&0.3&0.34&0.3&1&0.31&0.37&0.35\\ 
+                    \hline 
+                    $L_{7}$ &0.29&0.33&0.34&0.34&0.34&0.31&0.31&1&0.32&0.36\\ 
+                    \hline 
+                    $L_{8}$ &0.39&0.34&0.32&0.32&0.3&0.31&0.37&0.33&1&0.36\\ 
+                    \hline 
+                    $L_{9}$ &0.33&0.3&0.32&0.32&0.35&0.3&0.34&0.37&0.35&1\\ 
+                    \hline 
+                \end{tabular}
+            }
+            {\caption{Similarity of Native Languages. Alphabet size: 30}
+                \label{fig:tab_similarity}}
+            %\ffigbox
+            %  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
+            %  {\caption{Example of Automaton %A}\label{fig:automaton_ex}}
+            %\killfloatstyle
+            
+        \end{floatrow}
+    \end{figure}
+}
+
+%%%%%%%%%
+%
+% Average Similarity
+%
+%%%%%%%%%
+\newcommand{\makeFigureAvgSimlarity}{
+\begin{figure}[H]
+    \caption{Average Similarity of Transformed Languages. multi class: the similarities between native languages. two class: similarities between combined native and foreign.}
+    \label{fig:lang_sim}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    \begin{groupplot}[group style={group size= 1 by 1,
+        vertical sep=50pt, horizontal sep=40pt}, 
+    height=6cm,
+    width=13cm,
+    ylabel=Similarity,
+    xlabel=Alphabet Size,
+    legend cell align=left, 
+    legend columns=1,
+    legend style={
+        at={(1.3, 0.7)}, 
+        anchor=south east, 
+        column sep=2ex
+    }
+    ]
+    
+    \nextgroupplot[]
+    
+    % NATIVE VS NATIVE
+    \addplot[color=rred, very thick] coordinates {
+        (1, 1.0)
+        (2, 0.885624)
+        (3, 0.820992)
+        (4, 0.730032)
+        (5, 0.683266)
+        (6, 0.630893)
+        (7, 0.597193)
+        (8, 0.556699)
+        (9, 0.530009)
+        (10, 0.501454)
+        (11, 0.483245)
+        (12, 0.468839)
+        (13, 0.449223)
+        (14, 0.439578)
+        (15, 0.424618)
+        (16, 0.414595)
+        (17, 0.40647)
+        (18, 0.40111)
+        (19, 0.395343)
+        (20, 0.387143)
+        (21, 0.379669)
+        (22, 0.373499)
+        (23, 0.367048)
+        (24, 0.360526)
+        (25, 0.352155)
+        (26, 0.344844)
+        (27, 0.341559)
+        (28, 0.3371)
+        (29, 0.334055)
+        (30, 0.323485)
+        (31, 0.320073)
+        (32, 0.316891)
+        (33, 0.314173)
+        (34, 0.312831)
+        (35, 0.31173)
+        (36, 0.310632)
+        (37, 0.308987)
+        (38, 0.308271)
+        (39, 0.307231)
+        (40, 0.306493)
+    };
+    
+    % NATIVE VS FOREIGN
+    \addplot[color=bblue, very thick] coordinates {
+        (1, 1)
+        (2, 0.921519)
+        (3, 0.845819)
+        (4, 0.770206)
+        (5, 0.707979)
+        (6, 0.674419)
+        (7, 0.627442)
+        (8, 0.593737)
+        (9, 0.567073)
+        (10, 0.540638)
+        (11, 0.51516)
+        (12, 0.500617)
+        (13, 0.473994)
+        (14, 0.466706)
+        (15, 0.448025)
+        (16, 0.432535)
+        (17, 0.425823)
+        (18, 0.422446)
+        (19, 0.425875)
+        (20, 0.415787)
+        (21, 0.406265)
+        (22, 0.398181)
+        (23, 0.391427)
+        (24, 0.384067)
+        (25, 0.376077)
+        (26, 0.364594)
+        (27, 0.360883)
+        (28, 0.356398)
+        (29, 0.352073)
+        (30, 0.344083)
+        (31, 0.34219)
+        (32, 0.335838)
+        (33, 0.335206)
+        (34, 0.333765)
+        (35, 0.332225)
+        (36, 0.331335)
+        (37, 0.33046)
+        (38, 0.330175)
+        (39, 0.329163)
+        (40, 0.328463)
+    };
+    
+    \addlegendentry{Multi Class}
+    \addlegendentry{Two Class}
+    
+    \end{groupplot}
+    
+    \end{tikzpicture}
+    
+\end{figure}
+}
+
+
+
+
+
+
+%%%
+%
+% PSO For different classes
+%
+%%%
+\newcommand{\makeFigurePSOClasses}{
+\begin{figure}[H]
+    \caption{Multi class optimization for different number of classes: 1, 2, .., 10. Alphabet Size: 30.}
+    \label{fig:pso_classes}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    \begin{groupplot}[group style={group size= 1 by 3,
+        vertical sep=70pt, horizontal sep=60pt}, 
+    height=6cm,
+    width=13cm,
+    ylabel=Measure,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    xlabel=Number of classes,
+    legend cell align=left, 
+    legend columns=1,
+    legend style={
+        at={(1.3, 0.0)}, 
+        anchor=south east, 
+        column sep=2ex
+    }
+    ]
+    
+    \nextgroupplot[title=Accuracy Distinct Optimization.]
+    
+    % ACCURACY
+    \addplot[color=rred, very thick] coordinates {
+        (1, 0.94) % DONE
+        (2, 0.74) % DONE
+        (3, 0.61) % DONE
+        (4, 0.60) % DONE
+        (5, 0.54) % DONE
+        (6, 0.55) % DONE
+        (7, 0.54) % DONE
+        (8, 0.54) % DONE
+        (9, 0.52) % DONE
+        (10, 0.51) % DONE
+    };
+    
+    % SENSITIVITY
+    \addplot[color=bblue, very thick] coordinates {
+        (1, 0.98) % DONE
+        (2, 0.70) % DONE
+        (3, 0.25) % DONE
+        (4, 0.23) % DONE
+        (5, 0.09) % DONE
+        (6, 0.10) % DONE
+        (7, 0.09) % DONE
+        (8, 0.09) % DONE
+        (9, 0.04) % DONE
+        (10, 0.04) % DONE
+    };
+    % PRECISION
+    \addplot[color=ggreen, mark=X, very thick] coordinates {
+        (1, 0.91) % DONE
+        (2, 0.75) % DONE
+        (3, 0.85) % DONE
+        (4, 0.88) % DONE
+        (5, 0.88) % DONE
+        (6, 0.80) % DONE
+        (7, 0.83) % DONE
+        (8, 0.84) % DONE
+        (9, 0.72) % DONE
+        (10, 0.70) % DONE
+    };
+    % F-MEASURE
+    \addplot[color=ppurple, mark=X, very thick] coordinates {
+        (1, 0.94) % DONE
+        (2, 0.73) % DONE
+        (3, 0.38) % DONE
+        (4, 0.36) % DONE
+        (5, 0.16) % DONE
+        (6, 0.20) % DONE
+        (7, 0.17) % DONE
+        (8, 0.18) % DONE
+        (9, 0.09) % DONE
+        (10, 0.08) % DONE
+    };
+    
+    \addlegendentry{Accuracy}
+    \addlegendentry{Sensitivity}
+    \addlegendentry{Precision}
+    \addlegendentry{F-Measure}
+    
+    \end{groupplot}
+    
+    \end{tikzpicture}
+    
+\end{figure}
+}
+
+
+
+
+
+
+
+%%%%%%%%%
+%
+% FITNESS FUNCTIONS DISTINCT
+%
+%%%%%%%%
+\newcommand{\makeFigureFitnessMulti}{
+\begin{figure}[H]
+    \caption{Multi class optimization. $r$ stands for alphabet size. Native states: 20 (2 per class). Foreign states: 20. Optimization Based on four different fitness functions. }
+    \label{fig:fitness_multi}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlot
+    
+    \nextgroupplot[title=Accuracy Distinct Optimization,  ylabel=Measure]
+    \saveResultsFirst   {0.51}{0.06}{0.62}{0.08} % DONE 
+    \saveResultsSecond  {0.51}{0.05}{0.80}{0.08} % DONE
+    \saveResultsThird   {0.51}{0.04}{0.72}{0.08} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    \nextgroupplot[title=Precision Distinct Optimization.]
+    \saveResultsFirst   {0.51}{0.04}{0.76}{0.07} % DONE
+    \saveResultsSecond  {0.51}{0.02}{0.78}{0.04} % DONE
+    \saveResultsThird   {0.50}{0.04}{0.46}{0.07} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    \nextgroupplot[title=Sensitivity Distinct Optimization.,  ylabel=Measure]
+    \saveResultsFirst   {0.25}{0.21}{0.23}{0.23} % DONE
+    \saveResultsSecond  {0.17}{0.15}{0.15}{0.15} % DONE
+    \saveResultsThird   {0.33}{0.16}{0.24}{0.19} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    \nextgroupplot[title=F-Measure Distinct Optimization.]
+    \saveResultsFirst   {0.36}{0.21}{0.30}{0.25} % DONE
+    \saveResultsSecond  {0.35}{0.15}{0.24}{0.18} % DONE
+    \saveResultsThird   {0.40}{0.13}{0.28}{0.17} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+}
+
+
+%%%%%%%%%
+%
+% STATE CONFIGURATION MULTI
+%
+%%%%%%%%
+\newcommand{\makeFigureStateConfigurationMulti}{
+\begin{figure}[H]
+    \caption{Multi class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
+    \label{fig:states_multi}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlotFour
+    
+    \nextgroupplot[title=Accuracy Distinct Optimization,  ylabel=Measure]
+    \saveResultsFirst   {0.51}{0.04}{0.79}{0.08} % DONE 0.5
+    \saveResultsSecond  {0.51}{0.05}{0.80}{0.08} % DONE 1
+    \saveResultsThird   {0.51}{0.04}{0.55}{0.08} % DONE 2.0
+    \saveResultsFourth  {0.55}{0.03}{0.46}{0.02} % DONE 4.0
+    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+}
+
+
+%%%%%%%%%
+%
+% FITNESS FUNCTIONS INDISTINCT
+%
+%%%%%%%%
+\newcommand{\makeFigureFitnessTwo}{
+\begin{figure}[H]
+    \caption{Two class optimization. $r$ stands for alphabet size. Native states: 20. Foreign states: 20. Optimization Based on four different fitness functions}
+    \label{fig:fitness_two}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlot
+    
+    \nextgroupplot[title=Accuracy Indistinct Optimization.,  ylabel=Measure]
+    \saveResultsFirst   {0.79}{0.84}{0.76}{0.80} % DONE
+    \saveResultsSecond  {0.80}{0.84}{0.78}{0.80} % DONE
+    \saveResultsThird   {0.79}{0.86}{0.76}{0.82} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    \nextgroupplot[title=Precision Indistinct Optimization.]
+    \saveResultsFirst   {0.52}{0.05}{0.99}{0.11} % DONE
+    \saveResultsSecond  {0.70}{0.44}{0.95}{0.59} % DONE
+    \saveResultsThird   {0.67}{0.38}{0.93}{0.53} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    \nextgroupplot[title=Sensitivity Indistinct Optimization.,  ylabel=Measure]
+    \saveResultsFirst   {0.53}{1.00}{0.51}{0.68} % DONE
+    \saveResultsSecond  {0.56}{0.99}{0.52}{0.69} % DONE
+    \saveResultsThird   {0.58}{0.99}{0.54}{0.70} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    \nextgroupplot[title=F-Measure Indistinct Optimization.]
+    \saveResultsFirst   {0.78}{0.88}{0.75}{0.81} % DONE
+    \saveResultsSecond  {0.78}{0.90}{0.72}{0.81} % DONE
+    \saveResultsThird   {0.77}{0.89}{0.74}{0.80} % DONE
+    \addBarPlotResults  {r=10}{r=30}{r=40}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+}
+
+%%%%%%%%%
+%
+% FITNESS ACCURACY INDISTINCT. CONFIGURATING STATES
+%
+%%%%%%%%
+\newcommand{\makeFigureStatesTwo}{
+\begin{figure}[H]
+    \caption{Two class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
+    \label{fig:states_two}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlotFour
+    
+    \nextgroupplot[title=Accuracy Indistinct Optimization. ,ylabel=Measure]
+    \saveResultsFirst   {0.82}{0.78}{0.85}{0.81} % DONE
+    \saveResultsSecond  {0.79}{0.82}{0.77}{0.80} % DONE
+    \saveResultsThird   {0.75}{0.79}{0.73}{0.76} % DONE
+    \saveResultsFourth   {0.69}{0.57}{0.75}{0.65} % DONE
+    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+}

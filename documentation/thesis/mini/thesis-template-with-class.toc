@@ -59,10 +59,12 @@
 \contentsline {section}{\numberline {5.2}RTFEM Integration into Game Engine}{49}{section.5.2}
 \contentsline {subsection}{\numberline {5.2.1}Editor}{52}{subsection.5.2.1}
 \contentsline {chapter}{\numberline {6}Tests}{57}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusions}{58}{chapter.7}
-\contentsline {section}{\numberline {7.1}Further work}{58}{section.7.1}
-\contentsline {chapter}{References}{60}{section*.10}
-\contentsline {chapter}{List of symbols and abbreviations}{62}{section*.11}
-\contentsline {chapter}{List of figures}{63}{section*.12}
-\contentsline {chapter}{List of tables}{64}{section*.13}
+\contentsline {section}{\numberline {6.1}CPU}{57}{section.6.1}
+\contentsline {section}{\numberline {6.2}GPU}{58}{section.6.2}
+\contentsline {chapter}{\numberline {7}Conclusions}{61}{chapter.7}
+\contentsline {section}{\numberline {7.1}Further work}{61}{section.7.1}
+\contentsline {chapter}{References}{63}{section*.10}
+\contentsline {chapter}{List of symbols and abbreviations}{65}{section*.11}
+\contentsline {chapter}{List of figures}{66}{section*.12}
+\contentsline {chapter}{List of tables}{68}{section*.13}
 \contentsfinish 

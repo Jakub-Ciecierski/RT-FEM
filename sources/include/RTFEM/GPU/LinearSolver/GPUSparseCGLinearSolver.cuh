@@ -18,6 +18,8 @@ public:
     virtual void PreSolve(const SparseMatrixCSR<T>& A) override;
 
     virtual void Solve(const T* b, T* x) override;
+
+    void SetTolerance(T tolerance);
 protected:
     virtual void Terminate() override;
 
@@ -26,6 +28,7 @@ protected:
     T *d_p;
     T *d_Ax;
 
+    T tolerance_;
 };
 
 }

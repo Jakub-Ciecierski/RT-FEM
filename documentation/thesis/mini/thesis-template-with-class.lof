@@ -31,5 +31,13 @@
 \contentsline {figure}{\numberline {5.15}{\ignorespaces Soft body editor. Solver panel}}{55}{figure.5.15}
 \contentsline {figure}{\numberline {5.16}{\ignorespaces Soft body editor. Solver panel during computations}}{56}{figure.5.16}
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Time in milliseconds required to compute a single iteration for a given number of finite elements. Comparison between CPU and GPU solver}}{58}{figure.6.1}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Time in milliseconds required to compute a single iteration for a given number of finite elements. GPU solver}}{58}{figure.6.2}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Time Break down of a single GPU iteration for different finite element count $E$. Force assembly, computing the right hand side (RHS) and solving the linear system of equations.}}{59}{figure.6.3}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Torus with 660 finite elements}}{59}{figure.6.4}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Torus with 1110 finite elements}}{59}{figure.6.5}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Torus with 2000 finite elements}}{60}{figure.6.6}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Torus with 3250 finite elements}}{60}{figure.6.7}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Torus with 5400 finite elements}}{60}{figure.6.8}
 \addvspace {10\p@ }
 \contentsfinish 

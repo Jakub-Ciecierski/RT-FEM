@@ -3,6 +3,7 @@
 \usepackage{indentfirst}
 \setlength{\parindent}{5mm} % wcięcie akapitowe 5mm, zarządzenie Rektora
 
+\usepackage{pgfplots}
 \usepackage{algorithm}
 \usepackage{mathtools}
 \usepackage{amsmath}
@@ -10,6 +11,96 @@
 \usepackage[noend]{algpseudocode}
 
 \setcounter{MaxMatrixCols}{20}
+
+%-------------------------------------------
+% Group Plots
+%-------------------------------------------
+\usepackage{xcolor} % Colors
+
+\usepackage{tikz}
+\usepackage{keyval}
+\usepackage{pgfplots} % Bar charts
+
+\usepgfplotslibrary{groupplots}
+
+%\usepackage{groupplots}
+%\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+
+
+%
+% Define bar chart colors
+%
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+\definecolor{ggreen}{HTML}{9BBB59}
+\definecolor{ppurple}{HTML}{9F4C7C}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           START OF PLOT COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Save results to be later used in addBarPlotResults
+% #1: Train Small
+% #2: Train Big
+% #3: Train All
+% #4: Test
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\saveResultsFirst}[3]{
+    \def\AccuracyFirst{#1}%
+    \def\SensitivityFirst{#2}%
+    \def\PrecisionFirst{#3}%
+}
+\newcommand{\saveResultsSecond}[3]{
+    \def\AccuracySecond{#1}%
+    \def\SensitivitySecond{#2}%
+    \def\PrecisionSecond{#3}%
+}
+
+\newcommand{\saveResultsThird}[3]{
+    \def\AccuracyThird{#1}%
+    \def\SensitivityThird{#2}%
+    \def\PrecisionThird{#3}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adds Results to Bars labeled by #1, #2
+%
+% Label #1 is used for saveResultsFirst
+% Label #2 is used for saveResultsSecond
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\addBarPlotResults}[3]{
+    % ACCURACY
+    \addplot[style={bblue, fill=bblue, mark=none}]
+    coordinates 
+    {
+        (#1,  \AccuracyFirst)
+        (#2,  \AccuracySecond)
+        (#3,  \AccuracyThird)
+    };
+    
+    % SENSITIVITY
+    \addplot[style={rred, fill=rred, mark=none}]
+    coordinates 
+    {
+        (#1,  \SensitivityFirst)
+        (#2,  \SensitivitySecond)
+        (#3,  \SensitivityThird)
+    };
+    
+    % PRECISION
+    \addplot[style={ggreen, fill=ggreen, mark=none}]
+    coordinates 
+    {
+        (#1,  \PrecisionFirst)
+        (#2,  \PrecisionSecond)
+        (#3,  \PrecisionThird)
+    };
+   
+}
 
 % ------------ Ustawienia autora pracy ---------------
 
@@ -47,12 +138,12 @@
 \setcounter{page}{1}
 
 \begin{abstract}
-This thesis provides an overview of real-time soft body deformation methods. The goal of this study is to design and implement numerical library solving the problem of physically correct soft body deformations. GPU accelerated Finite Element Method is used which solves the problem of solid mechanics for linear geometry and linear material properties. The library is integrated into existing open source game engine.
+This thesis provides an overview of real-time soft body deformation methods. The goal of this study is to design and implement numerical library solving the problem of physically correct soft body deformations. The library is also integrated into existing open source game engine. The author chooses Finite Element Method (FEM) based simulation of soft bodies. It is the most physically correct method studied in this thesis. However, it comes with a price of expensive computations. FEM is used to solve the problem of solid mechanics with linear geometry and linear material properties. The linear FEM formulation guarantees a linear system of algebraic equations which can be computed much faster than the non-linear systems. The linear system of equations is solved using conjugate gradient method accelerated on GPU. Linear tetrahedron finite element is chosen which is quite suitable for real time simulations. Implicit euler method is used for integrating the differential equations of the dynamic system.
 
 \end{abstract}
 
 \begin{streszczenie}
-Niniejsza praca przedstawia przegląd metod deformacji ciał odkształcalnych w czasie rzeczywistym. Celem tego opracowania jest zaprojektowanie i implementacja biblioteki numerycznej rozwiązującej problem fizycznie poprawnych deformacji. Zagadnienie liniowej mechaniki ciał stałych zostało rozwiązane za pomocą Metody Elementów Skończonych, którą zaprogramowano na GPU. Biblioteka zostoła zintegrowana z istniejącym silnikiem do gier.
+Niniejsza praca przedstawia przegląd metod deformacji ciał odkształcalnych w czasie rzeczywistym. Celem tego opracowania jest zaprojektowanie i implementacja biblioteki numerycznej rozwiązującej problem fizycznie poprawnych deformacji. Biblioteka została także zintegrowana z istniejącym silnikiem do gier. Autor wybiera symulację ciał odkształcalnych w oparciu o Metodę Elementów Skończonych (MES). Metoda ta wyróżnia się wysoką jakością rozwiązania, jednak wiąże się to z kosztownymi obliczeniami. MES służy do rozwiązania problemu liniowej mechaniki ciał stałych. Liniowe zagadnienie MES gwarantuje liniowy układ równań algebraicznych, który można obliczyć znacznie szybciej niż układ nieliniowy. Liniowy układ równań rozwiązano za pomocą metody gradientu sprzężonego przyspieszonej na GPU. Do aproksymacji przestrzeni ciała stałego wybrano liniowy czworościan. Niejawna metoda Eulera służy do integracji równań różniczkowych układu dynamicznego.
 
 \end{streszczenie}
 
@@ -71,13 +162,11 @@ Niniejsza praca przedstawia przegląd metod deformacji ciał odkształcalnych w 
 \pagestyle{fancy}
 
 \chapter*{Introduction}
-With the growth of popularity in virtual reality hardware comes great responsibility for software engineers to provide realistic and detailed experiences. User wearing virtual reality headset such as Oculus Rift is closer to the virtual environment than ever before. She will expect full interaction with the environment around her. The object she will pick up can be seen from very close distance. This requirement pushes software and hardware engineers alike to the frontier of computer graphics to provide detailed and authentic experiences. However, the user will also expect the virtual object to behave in a physically correct way. Virtual reality controllers gives us a chance to grab and interact with objects using our own hands. We should expect a virtual object to deform when enough pressure is applied to it. Thus, it is our responsibility as engineers to develop physics engines suitable for such tasks.
+With the growth of popularity in virtual reality hardware comes great responsibility for software engineers to provide realistic and detailed experiences. User wearing virtual reality headset such as Oculus Rift is closer to the virtual environment than ever before. The objects that the user will pick up can be seen from very close distance. This requirement pushes software and hardware engineers alike to the frontier of computer graphics to provide detailed and authentic experiences. However, the user will also expect the virtual object to behave in a physically correct way. Virtual reality controllers gives us a chance to grab and interact with objects using our own hands. We should expect a virtual object to deform when enough pressure is applied to it. Thus, it is our responsibility as engineers to develop physics engines suitable for such tasks.
 
 Real-time soft body deformation simulations have many practical applications. It provides more realistic and thus more fun gaming experiences. Soft body simulation is extremely useful in educational applications such as real time virtual surgery tutorial. Real time virtual car crash testing can provide fast and extremely cheap way to analyse car deformation in case of accident.
 
 Topic of this thesis is motivated by the ever increasing requirements of virtual environment users and by the rapid growth of hardware capabilities in a form of GPU computational power. This thesis provides an overview of current methods used in real-time soft body deformations. The goal is to design and implement numerical library that would solve the problem of soft body deformation in real-time. Moreover, the library should provide friendly interface which support easy integration into existing virtual reality engines(e.g. game engines). The author proposes an integration into open source engine of his own creation~\cite{ifx}.
-
-The author chooses Finite Element Method(FEM) based simulation of soft bodies. It is the most physically correct method studied in this thesis. However, it comes with a price of expensive computations. FEM is used to solve the problem of solid mechanics with linear geometry and linear material properties. The linearity of the system enables us to work only with linear system of equations which can be computed much faster than the non-linear systems. However, the linear formulation is visibly pleasing only for small deformations. Linear tetrahedron finite element is chosen which is quite suitable for real time simulations. Implicit euler method is used for integrating the differential equations of the dynamic system.
 
 Understanding FEM from theoretical point of view might seem daunting at first. However, the study of applied mechanics have been extremely active for over three decades. Zienkiewicz in~\cite{zienkiewicz1} and~\cite{zienkiewicz2} provides thorough explanation of FEM and its applications in solid mechanics. Kleiber and Kowalczyk~\cite{termo} familiarise the reader with the basics of tensor algebra, stress analysis and material properties. Lectures at University of Colorado~\cite{colorado_fem_lectures} guide the reader through linear FEM. Moreover, they provide example functions written in Mathematica that can be used to test implementation of custom FEM solver. Altair University~\cite{altair} shows practical applications of FEM aimed at material engineers.
 
@@ -86,7 +175,7 @@ Faure et al. in~\cite{tensor-mass} provide alternative to classical FEM called T
 Zhuang et al. were interested in non-linear FEM solver~\cite{global_deformation}. Experiments of their CPU implementation gave reasonable results thanks to the diagonalization of mass and damping matrices.
 
 In chapter~\ref{chap:background} the thesis starts with a background study of particle-based methods. It familiarises reader with numerical integration of differentiable equations and provides an overview of currently commercially available physics engines.
-Further in chapters~\ref{chap:solid_mechanics1} and~\ref{chap:solid_mechanics2} detailed explanation of solid mechanics and finite element method is provided. Here, the reader is set on a journey to transform linear partial differential equations(PDE) to linear system of algebraic equations. Then in chapter~\ref{chap:system_linear} method of solving the system of linear equations is described in a form of  Conjugate Gradient.
+Further in chapters~\ref{chap:solid_mechanics1} and~\ref{chap:solid_mechanics2} detailed explanation of solid mechanics and finite element method is provided. Here, the reader is set on a journey to transform linear partial differential equations (PDE) to linear system of algebraic equations. Then in chapter~\ref{chap:system_linear} method of solving the system of linear equations is described in a form of  Conjugate Gradient.
 Chapter~\ref{chap:Implementation} shows the implementation of the library and its integration into open source game engine.
 The thesis ends with chapters~\ref{chap:tests} and~\ref{chap:Conclusions} where the author tests and provides conclusions of created algorithm.
 % ---------------------------------------------------
@@ -131,7 +220,7 @@ In order to simulate the mass spring system, we use the Newton's second law of m
 f = m \ddot{x}
 \end{equation}
 
-where $f$ is the force, $m$ is the mass and $\ddot{x}$ is the acceleration or the second derivative of position with respect to time. By transforming the equation to solve for acceleration, we get a second order ordinary differential equation(ODE):
+where $f$ is the force, $m$ is the mass and $\ddot{x}$ is the acceleration or the second derivative of position with respect to time. By transforming the equation to solve for acceleration, we get a second order ordinary differential equation (ODE):
 \begin{equation}
 \ddot{x} = \dfrac{f}{m}
 \end{equation}
@@ -267,13 +356,13 @@ M v^{t+1} = M v^{t} + \Delta t f(x_{t+1})
 \end{equation}
 \begin{equation}
 \label{eq:implicit_mass_ode_x}
-x^{t+1} = x_{t} + \Delta t v^{t+1}
+x^{t+1} = x^{t} + \Delta t v^{t+1}
 \end{equation}
 
 Substituting Eq.~\ref{eq:implicit_mass_ode_x} into Eq.~\ref{eq:implicit_mass_ode_v}, results in single system of algebraic equations:
 
 \begin{equation}
-M v^{t+1} = M v^{t} + \Delta t f(x_{t} + \Delta t v^{t+1})
+M v^{t+1} = M v^{t} + \Delta t f(x^{t} + \Delta t v^{t+1})
 \end{equation}
 
 We solve this system for $v^{t+1}$.
@@ -284,7 +373,7 @@ Example implementation of mass spring system can found in open source software c
 Mass spring systems are easy to implement and for many applications give good enough results(e.g. computer games). However, relatively expensive ODE integrators have to be used in order to keep the simulation stable. Moreover, modelling physically correct materials can be a complicated task, since the parameters of the system hardly reflect reality.
 
 \section{Position Based Dynamics}
-As the name suggests, Position Based Dynamics(PBD) omits integrating over velocity and works directly on positions. The biggest advantage over mass spring system is avoidance of overshooting problem during integration step.
+As the name suggests, Position Based Dynamics (PBD) omits integrating over velocity and works directly on positions. The biggest advantage over mass spring system is avoidance of overshooting problem during integration step.
 \subsection{Formulation}
 The system of PBD includes a set of $N$ particles and a set of $M$ constraints. Each particle $i$ has three attributes: 
 \begin{enumerate}
@@ -435,7 +524,7 @@ We defined three dimensional Hooke's law which defines a linear relation between
 \end{aligned}
 \end{equation}
 
-The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does not depend on $x$ and is composed of only constant material parameters. In case of isotropic materials(material that behave the same in all directions of motion) the Hooke's law can be defined by the system:
+The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does not depend on $x$ and is composed of only constant material parameters. In case of isotropic materials (material that behave the same in all directions of motion) the Hooke's law can be defined by the system:
 \begin{equation}
 \begin{aligned}
 \begin{bmatrix}
@@ -469,7 +558,7 @@ The fourth order tensor $C$ is called a spring stiffness tensor. Tensor $C$ does
 where $E$ is Young's modulus that describes the elastic stiffness, $\nu$ is the Poisson's coefficient that describes the conversation of volume within the material.
 
 \subsection{Strong formulation}
-A strong formulation can be described by the following set of partial differential equations(PDE):
+A strong formulation can be described by the following set of partial differential equations (PDE):
 \begin{equation}
 \begin{aligned}
 \sigma_{ij,j} + \hat{f_{i}} = 0 \quad x \in \Omega
@@ -491,7 +580,7 @@ u_i = \hat{u_i} \quad x \in \partial  \Omega_{u}
 \end{aligned}
 \end{equation}
 The entire boundary domain is defined as $\partial \Omega = \partial \Omega_{u} \cup \partial \Omega_{\sigma}$
-First equation defines kinematic(Dirichlet) boundary conditions. Second equation defines dynamic(Neumann) boundary conditions. The displacement field applied to the boundary $\partial \Omega_{u}$ is denoted by $\hat{u_i}$. Traction force applied to the boundary $\partial \Omega_{\sigma}$ is denoted by $\hat{t_i}$. See figure~\ref{fig:omega} for example body.
+First equation defines kinematic (Dirichlet) boundary conditions. Second equation defines dynamic (Neumann) boundary conditions. The displacement field applied to the boundary $\partial \Omega_{u}$ is denoted by $\hat{u_i}$. Traction force applied to the boundary $\partial \Omega_{\sigma}$ is denoted by $\hat{t_i}$. See figure~\ref{fig:omega} for example body.
 
 \begin{figure}[h!]
 \centering
@@ -541,7 +630,7 @@ Substituting the above equation in Eq.~\ref{eq:virtual_work1} and naming $\delta
 \int_{\Omega}\sigma_{ij} \delta \epsilon_{ij} dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
 \end{equation}
 
-The Eq.~\ref{eq:virtual_work3} is called the principle of virtual work for linear, static solid deformations. It claims that the work made by external forces on the virtual displacements(right hand side) is equal to the work made by interior forces(stress) on certain virtual displacement.
+The Eq.~\ref{eq:virtual_work3} is called the principle of virtual work for linear, static solid deformations. It claims that the work made by external forces on the virtual displacements (right hand side) is equal to the work made by interior forces (stress) on certain virtual displacement.
 
 By including the constitutive equation and the symmetry of stiffness tensor, we can further transform the Eq.~\ref{eq:virtual_work3}:
 
@@ -551,7 +640,7 @@ By including the constitutive equation and the symmetry of stiffness tensor, we 
 \end{equation}
 
 \subsubsection{Dynamic System}
-Once again, we want to add dynamic behaviour to the system. We do this by following that same steps but this time using the dynamic equation of motion(E.q~\ref{eq:motion_dynamic}).
+Once again, we want to add dynamic behaviour to the system. We do this by following that same steps but this time using the dynamic equation of motion (E.q~\ref{eq:motion_dynamic}).
 \begin{equation}
 \label{eq:virtual_work_dynamic4}
 \int_{\Omega}C_{ijkl} u_{k,l} \delta u_{i,j} dV + \int_{\Omega}\rho \ddot{u_i} \delta u_i dV = \int_{\Omega} \hat{f_i} \delta u_{i} dV + \int_{\partial \Omega_{\sigma}} \hat{t_i} \delta u_{i} dA
@@ -771,7 +860,7 @@ Where $B_{6 \times 3N}$ is called a geometric matrix and is defined as follows:
 \end{equation}
 
 If in a given finite element $e$ there are $N_e$ vertices then the local count of vertex parameters is equal to $3N_e$. We will now introduce local stiffness matrix $k^{(e)}_{3N_e \times 3N_e}$ and force vector $p^{(3)}_{3N_e \times 1}$. These are computed using the Eq.~\ref{eq:static_fem} but using only the local shape functions of each finite element, namely the non-zero values on $\Omega_{e}$ section.
-However, we must somehow map these local values to our global values, $K$ and $Q$. We introduce partial global stiffness matrix $K^{(e)}_{3N \times 3N}$ and partial global force vector $Q^{(e)}_{3N \times 1}$. They contain the local values($k^{e}$ and $p^{(e)}$) of the finite element $e$, mapped into their global coordinates using boolean matrix $A^{(e)}_{3N_{e} \times 3N}$.
+However, we must somehow map these local values to our global values, $K$ and $Q$. We introduce partial global stiffness matrix $K^{(e)}_{3N \times 3N}$ and partial global force vector $Q^{(e)}_{3N \times 1}$. They contain the local values ($k^{e}$ and $p^{(e)}$) of the finite element $e$, mapped into their global coordinates using boolean matrix $A^{(e)}_{3N_{e} \times 3N}$.
 
 \begin{equation}
 \begin{aligned}
@@ -800,11 +889,11 @@ M_{3N \times 3N} =  \int_{\Omega} \rho \Phi^{T}_{3N \times 3} \Phi_{3N \times 3}
 We compute the local mass matrix $m_{e}$ using Eq.~\ref{eq:mass_matrix_matrix} over the $\Omega_{e}$ section. Assembly process is exactly the as in the case of stiffness matrix.
 
 \section{Sparse Matrix Representation}
-There exists many methods for storing sparse matrices in efficient way. One of the most popular methods is called Compressed Sparse Row(CSR). This method is chosen because of its common usage in numerical libraries in CUDA API. We will learn about its programming usages later on. For now we provide the definition for CSR storage.
+There exists many methods for storing sparse matrices in efficient way. One of the most popular methods is called Compressed Sparse Row (CSR). This method is chosen because of its common usage in numerical libraries in CUDA API. We will learn about its programming usages later on. For now we provide the definition for CSR storage.
 
 For simplicity we assume that a matrix $M$ is square sparse $n \times n$ matrix. CSR format stores matrix $M$ using three one-dimensional vectors $A_{V}, A_{I}, A_{J}$. Denote the number of non-zero elements in $M$ by $n_{z}$. The vectors are constructed as follows:
 \begin{enumerate}
-\item The vector $A_{V}$ is of length $n_{z}$ and holds all the non-zero elements of $M$ in left-to-right top-to-bottom(row-major) order.
+\item The vector $A_{V}$ is of length $n_{z}$ and holds all the non-zero elements of $M$ in left-to-right top-to-bottom (row-major) order.
 \item The vector $A_{J}$ is of length $n_{z}$. Contains the column indices in $M$ of each element in $A_{V}$.
 \item The vector $A_{I}$ is of length $n+1$ and is defined as follows:
 \begin{enumerate}
@@ -1264,7 +1353,7 @@ m^{(e)}_{12 \times 12} = \dfrac{\rho V}{20}
 Similarly to stiffness, mass matrix is also symmetric.
 
 \subsection{Mass Matrix Diagonalization}
-Zienkiewicz presents~\cite{zienkiewicz2} a simple method of mass matrix diagonalization called the row sum method. Diagonal elements in the resulting matrix contain the sum of all elements on a given row in the original matrix:
+In~\cite{zienkiewicz2} Zienkiewicz describes a simple method of mass matrix diagonalization called the row sum method. Diagonal elements in the resulting matrix contain the sum of all elements on a given row in the original matrix:
 
 \begin{equation}
 m^{D(e)}_{ii} = \sum_{j} m^{(e)}_{ij}
@@ -1310,7 +1399,7 @@ Another problem that has to be solved is the control of elements shape. We often
 \label{fig:tetrahedra_shapes}
 \end{figure}
 
-Solutions to this problem is explored by Shewchuk in~\cite{delaunay_mesh, cdt}. He provides an insight to Constrained Delaunay Tetrahedralization(CDT) process. CDT is often used in numerical libraries solving the problem of 3D mesh generation. Such is the case with TeTGen~\cite{tetgen} library used in the implementation of this thesis.
+Solutions to this problem is explored by Shewchuk in~\cite{delaunay_mesh, cdt}. He provides an insight to Constrained Delaunay Tetrahedralization (CDT) process. CDT is often used in numerical libraries solving the problem of 3D mesh generation. Such is the case with TeTGen~\cite{tetgen} library used in the implementation of this thesis.
 
 
 % ---------------------------------------------------
@@ -1321,12 +1410,12 @@ Solutions to this problem is explored by Shewchuk in~\cite{delaunay_mesh, cdt}. 
 This section explains all the tools required to define the Conjugate Gradient algorithm. Shewchuk described this method in great detail~\cite{cg}. The following section provides the most essential information about CG method.
 
 \subsection{Introduction}
-Conjugate Gradient(CG) is one of the most popular iterative methods of solving system of linear equations:
+Conjugate Gradient (CG) is one of the most popular iterative methods of solving system of linear equations:
 \begin{equation}
 Ax=b
 \end{equation}
-where $A$ is a square $n \times n$, symmetric, positive-definite(or positive-indefinite) matrix, $x$ and $b$ are vectors i.e. $n \times 1$ matrices
-We define inner product(also known as dot product) of vector by 
+where $A$ is a square $n \times n$, symmetric, positive-definite (or positive-indefinite) matrix, $x$ and $b$ are vectors i.e. $n \times 1$ matrices
+We define inner product (also known as dot product) of vector by 
 \begin{equation}
 x^{T}y = \sum^{n}_{i=1} x_i y_i
 \end{equation}
@@ -1615,7 +1704,7 @@ InitDisplacementData simply creates new zero vectors, see algorithm~\ref{alg:Ini
 \end{algorithmic}
 \end{algorithm}
 
-InitPreSolveLHS presented in algorithm~\ref{alg:InitPreSolveLHS} computes left hand side(LHS) of the system shown in section~\ref{sec:ImplicitEuler} and transforms it to sparse CSR format. Then, the boundary conditions are applied but only to matrix LHS, since the force vector will change every iteration. Finally, the sparse matrix LHS is stored on the GPU using the GPUSparseCGLinearSolver class. 
+InitPreSolveLHS presented in algorithm~\ref{alg:InitPreSolveLHS} computes left hand side (LHS) of the system shown in section~\ref{sec:ImplicitEuler} and transforms it to sparse CSR format. Then, the boundary conditions are applied but only to matrix LHS, since the force vector will change every iteration. Finally, the sparse matrix LHS is stored on the GPU using the GPUSparseCGLinearSolver class. 
 
 \begin{algorithm}
 \caption{FEM Dynamic Solver: InitPreSolveLHS}
@@ -1735,7 +1824,7 @@ The game loop sequence is shown in figure~\ref{fig:ifx_game_loop}. Each system i
 \label{fig:ifx_game_loop}
 \end{figure}
 
-Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into game module. SoftBodyFEMComponent is created by deriving the GameComponent interface and SoftBodyFEM from the physics module. The soft body component also contains a render object which is created by fetching the boundary triangle faces of FEM model. SoftBodyFEM is updated in PhysicsSimulation which computes and stores the displacements. SoftBodyFEMComponent uses the displacements to synchronize render-able vertices by updating the current vertex buffer object(VBO). That happens in the GameContainer update function. Finally the boundary triangle faces are rendered in Renderer update.
+Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into game module. SoftBodyFEMComponent is created by deriving the GameComponent interface and SoftBodyFEM from the physics module. The soft body component also contains a render object which is created by fetching the boundary triangle faces of FEM model. SoftBodyFEM is updated in PhysicsSimulation which computes and stores the displacements. SoftBodyFEMComponent uses the displacements to synchronize render-able vertices by updating the current vertex buffer object (VBO). That happens in the GameContainer update function. Finally the boundary triangle faces are rendered in Renderer update.
 
 \begin{figure}[h!]
 \centering
@@ -1746,7 +1835,7 @@ Finally, figure~\ref{fig:ifx_game2} described the integration of soft body into 
 
 
 \subsection{Editor}
-This section describes the graphical editor of soft body system in the game engine. Soft body editor can be opened by clicking the Soft Body button located in the middle view port, see figure~\ref{fig:ifx_example}. We can select a game object to be opened by right clicking it in the scene list(left panel). Game object that can be opened in the soft body editor must have exactly one render component. It can have other components too. The render component contains the triangle mesh that is used as a input problem domain in the 3D mesh generation. Figures~\ref{fig:ifx_meshing} through~\ref{fig:ifx_solver2} present the soft body editor panels. In the first step we want to create 3D mesh. Meshing panel is devoted to that procedure shown in figure~\ref{fig:ifx_meshing}. The cube has been already meshed with example parameter values.
+This section describes the graphical editor of soft body system in the game engine. Soft body editor can be opened by clicking the Soft Body button located in the middle view port, see figure~\ref{fig:ifx_example}. We can select a game object to be opened by right clicking it in the scene list (left panel). Game object that can be opened in the soft body editor must have exactly one render component. It can have other components too. The render component contains the triangle mesh that is used as a input problem domain in the 3D mesh generation. Figures~\ref{fig:ifx_meshing} through~\ref{fig:ifx_solver2} present the soft body editor panels. In the first step we want to create 3D mesh. Meshing panel is devoted to that procedure shown in figure~\ref{fig:ifx_meshing}. The cube has been already meshed with example parameter values.
 
 \begin{figure}[h!]
 \centering
@@ -1760,7 +1849,7 @@ Next, figure~\ref{fig:ifx_material}, we are presented with materials described i
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.3]{pictures/ifx/ifx_material.png}
-\caption[Soft body editor. Material panel]{Soft body editor. Meshing panel}
+\caption[Soft body editor. Material panel]{Soft body editor. Material panel}
 \label{fig:ifx_material}
 \end{figure}
 
@@ -1773,7 +1862,7 @@ Boundary conditions panel is shown in figure~\ref{fig:ifx_bc}. The user can sele
 \label{fig:ifx_bc}
 \end{figure}
 
-In the load panel(see figure~\ref{fig:ifx_load} user can select body force that acts on the entire body, simulating gravity. Traction forces are selected by left clicking on a triangle face and dragging the mouse to choose the magnitude of traction force. Remember that the direction of the traction force lies along the normal of that face.
+In the load panel (see figure~\ref{fig:ifx_load} user can select body force that acts on the entire body, simulating gravity. Traction forces are selected by left clicking on a triangle face and dragging the mouse to choose the magnitude of traction force. Remember that the direction of the traction force lies along the normal of that face.
 
 \begin{figure}[h!]
 \centering
@@ -1802,6 +1891,215 @@ Finally, the solver panel is shown in figure~\ref{fig:ifx_solver1}. Build button
 
 \chapter{Tests}
 \label{chap:tests}
+This chapter tests the time of computations of the RTFEM library. Three dimensional torus has been used as domain space. It has been meshed 5 times with a different number of finite elements: 660, 1110, 2000, 3250 and 5400. Each time, two triangle faces have been applied with a traction force pointing towards the body, effectively squashing it. Figures~\ref{fig:torus660} through~\ref{fig:torus5400} show initial and final configuration after 15 seconds of computations. Time step of 0.016 seconds (60Hz) was used. The material parameters and traction force used were the following:
+\begin{enumerate}
+\item Young Modulus: 7000
+\item Poisson Coefficient: 0.2
+\item Density: 1
+\item Damping Mass ($\alpha$): 10
+\item Damping Stiffness ($\beta$): 2.5
+\item Traction force on each side: -100
+\end{enumerate}
+
+The hardware used was the following:
+\begin{enumerate}
+\item CPU: Intel Core i5-2500k 3.30GHz
+\item GPU: GeForce GTX 1060
+\end{enumerate}
+
+\section{CPU}
+
+Eigen's LU solver of linear system of equations was used for CPU benchmarking. Figure~\ref{fig:cpu_gpu} shows the comparison between single threaded CPU and GPU solvers. It shows computation time of a single iteration. It is clear that even for small finite element count, CPU can not be used in a real-time setting.
+
+    \begin{figure}[H]
+        \caption{Time in milliseconds required to compute a single iteration for a given number of finite elements. Comparison between CPU and GPU solver}
+        \label{fig:cpu_gpu}
+        
+		\pgfplotsset{xticklabel style={text width=2em, align=center}}
+        \begin{tikzpicture}
+        
+        \begin{groupplot}[group style={group size= 1 by 1,
+            vertical sep=50pt, horizontal sep=40pt}, 
+        height=6cm,
+        width=13cm,
+        ylabel=Time (ms),
+        xlabel=Finite element count,
+        legend cell align=left, 
+        legend columns=1,
+        legend style={
+            at={(1.3, 0.7)}, 
+            anchor=south east, 
+            column sep=2ex
+        }
+        ]
+        
+        \nextgroupplot[]
+        
+        \addplot[color=rred, thick] coordinates {
+            (182, 3)
+            (245, 4)
+            (572, 5)
+        };
+                
+        \addplot[color=bblue, very thick] coordinates {
+            (182, 271)
+            (245, 640)
+            (572, 3000)
+        };
+        \addlegendentry{GPU}
+        \addlegendentry{CPU}
+
+        
+        \end{groupplot}
+        
+        \end{tikzpicture}
+        
+    \end{figure}
+
+\section{GPU}
+Figure~\ref{fig:gpu} shows the computation time of a single iteration of the GPU solver for various finite element count. The optimal amount of fine elements is about 3500, because the time required to compute a single iteration is about 20 milliseconds.
+
+\begin{figure}[H]
+        \caption{Time in milliseconds required to compute a single iteration for a given number of finite elements. GPU solver}
+        \label{fig:gpu}
+        
+		\pgfplotsset{xticklabel style={text width=2em, align=center}}
+        \begin{tikzpicture}
+        
+        \begin{groupplot}[group style={group size= 1 by 1,
+            vertical sep=50pt, horizontal sep=40pt}, 
+        height=6cm,
+        width=15cm,
+        ylabel=Time (ms),
+        xlabel=Finite element count,
+        legend cell align=left, 
+        legend columns=1,
+        legend style={
+            at={(1.3, 0.7)}, 
+            anchor=south east, 
+            column sep=2ex
+        }
+        ]
+        
+        \nextgroupplot[]
+        
+        % NATIVE VS NATIVE
+        \addplot[color=rred, very thick] coordinates {
+            (660, 7)
+            (1119, 11)
+            (2000, 15)
+            (3252, 20)
+            (5392, 35)
+        };
+
+        \end{groupplot}
+        
+        \end{tikzpicture}
+        
+    \end{figure}
+
+Figure~\ref{fig:gpu_breakdown} shows the time break down of a single GPU iteration. Time required to compute the right hand side (RHS) vector of the system~\ref{eq:fem_dynamic3} is negligible. However, for large amount of finite elements, the force assembly process takes majority of time to compute.
+
+    \begin{figure}[H]
+        \caption{Time Break down of a single GPU iteration for different finite element count $E$. Force assembly, computing the right hand side (RHS) and solving the linear system of equations.}
+        \label{fig:gpu_breakdown}
+        
+		\pgfplotsset{xticklabel style={text width=2em, align=center}}
+        \begin{tikzpicture}
+        
+        %%%%%%%%%%%%%%%%%%%%
+        % GROUPPLOT
+        %%%%%%%%%%%%%%%%%%%%
+        
+        \begin{groupplot}[
+        group style={group size= 1 by 1,  vertical sep=50pt},
+        height = 5.5cm, 
+        ybar=4*\pgflinewidth, 
+        ymin=0, 
+        ymax=26,
+        width  = 0.50*\textwidth, 
+        enlarge x limits={abs=0.85cm}, 
+        major x tick style = transparent, 
+        ymajorgrids = true, 
+        symbolic x coords={
+            r=2,
+            r=4,
+            r=8,
+            E=1110,
+            E=2000,
+            E=5400,
+            A=10,
+            A=30,
+            A=40,
+            N=20 F=10,
+            N=20 F=20,
+            N=20 F=40,
+            N=20 F=80
+        },
+        xtick = data, 
+        scaled y ticks = false, 
+        legend cell align=center, 
+        legend columns=1,
+        legend style={
+            at={(1.25, 0.45)}, 
+            anchor=north,
+        }
+        ]
+
+        \nextgroupplot[title=,  ylabel=Time (ms)]
+        \saveResultsFirst   {4}{0.20}{4}{0.66} % DONE 
+   		\saveResultsSecond  {5}{0.22}{5}{0.66} % DONE 
+        \saveResultsThird   {16}{0.66}{15}{0.66} % DONE 
+        \addBarPlotResults  {E=1110}{E=2000}{E=5400}
+
+        %%%%%%%%%%%%%%%%%%%%
+        % LEGEND
+        %%%%%%%%%%%%%%%%%%%%
+	    \legend{Force assembly, RHS, Linear System}
+        
+        \end{groupplot}
+        \end{tikzpicture}
+    \end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/tests/660.png}
+\includegraphics[scale=0.3]{pictures/tests/660_end.png}
+\caption[Torus with 660 finite elements]{Torus with 660 finite elements. Initial configuration on the left, final configuration on the right.}
+\label{fig:torus660}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/tests/1119.png}
+\includegraphics[scale=0.3]{pictures/tests/1119_end.png}
+\caption[Torus with 1110 finite elements]{Torus with 1110 finite elements. Initial configuration on the left, final configuration on the right.}
+\label{fig:torus1110}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/tests/2000tet.png}
+\includegraphics[scale=0.3]{pictures/tests/2000end.png}
+\caption[Torus with 2000 finite elements]{Torus with 2000 finite elements. Initial configuration on the left, final configuration on the right.}
+\label{fig:torus2000}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/tests/3252.png}
+\includegraphics[scale=0.3]{pictures/tests/3252end.png}
+\caption[Torus with 3250 finite elements]{Torus with 3250 finite elements. Initial configuration on the left, final configuration on the right.}
+\label{fig:torus3250}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{pictures/tests/5392.png}
+\includegraphics[scale=0.3]{pictures/tests/5392_end.png}
+\caption[Torus with 5400 finite elements]{Torus with 5400 finite elements. Initial configuration on the left, final configuration on the right.}
+\label{fig:torus5400}
+\end{figure}
 
 
 \chapter{Conclusions}
@@ -1813,7 +2111,7 @@ GPU solver has obviously been proven to run much faster than a CPU for a large e
 
 \section{Further work}
 
-The two most expensive procedures of solver iteration include computing the right hand side vector and solving linear system of equations. Those procedures have been fully accelerated on the GPU. Other procedures such as applying boundary conditions or computing the force vector are now causing bottleneck due to their CPU implementation. Further work should look into accelerating these procedures on the GPU side as well.
+The two most expensive procedures of solver iteration include computing the right hand side vector of the system defined in Eq.~\ref{eq:fem_dynamic3} and solving linear system of equations. Those procedures have been fully accelerated on the GPU. However, assembling the force vector causes bottleneck due to its CPU implementation. Further work should look into accelerating this procedure on the GPU.
 
 Soft body deformation based on FEM formulation can support fracture mechanism. Stress magnitude can be calculated at each vertex. After overcoming a certain yield threshold the material would start breaking.
 
@@ -1831,63 +2129,91 @@ It would be interesting to see how the proposed soft body solution checks out wi
 
 % FEM Books
 
-\bibitem[1]{termo} Michał Kleiber, Piotr Kowalczyk, \emph{Wprowadzenie do Nieliniowej Termomechaniki Ciał Odkształcalnych}.
+\bibitem[1]{altair} Altair University \emph{Practical Aspects of Finite Element Simulation}.
 
-\bibitem[2]{zienkiewicz1} Zienkiewicz \emph{The Finite Element Method. Volume 1: The Basis}.
+\bibitem[2]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
 
-\bibitem[3]{zienkiewicz2} Zienkiewicz \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
+\bibitem[3]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
 
-\bibitem[4]{altair} Altair University \emph{Practical Aspects of Finite Element Simulation}.
+\bibitem[4]{rtfem} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/RT-FEM}.
 
-\bibitem[5]{colorado_fem_lectures} Department of Aerospace Engineering Sciences University of Colorado at Boulder \emph{Advanced Finite Element Methods (ASEN 6367) Lectures https://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/}.
+\bibitem[5]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
 
-% Notes
+\bibitem[6]{colorado_fem_lectures} Department of Aerospace Engineering Sciences University of Colorado at Boulder \emph{Advanced Finite Element Methods (ASEN 6367) Lectures https://www.colorado.edu/engineering/CAS/courses.d/AFEM.d/}.
 
-\bibitem[6]{physics_notes} Matthias Muller, Jos Stam, Doug James, Nils Thurey, \emph{Real Time Physics Class Notes}.
+\bibitem[7]{eigen} Eigen \emph{http://eigen.tuxfamily.org/index.php?title=Main\_Page}.
 
-\bibitem[7]{cg} Jonathan Richard Shewchuk \emph{An Introduction to the Conjugate Gradient Method Without the Agonizing Pain}.
+\bibitem[8]{tensor-mass} X. Faure, F. Zara, F. Jaillet, J-M. Moreau  \emph{An implicit Tensor-Mass solver on the GPU for soft bodies simulation}.
 
-\bibitem[8]{delaunay_mesh} Jonathan Richard Shewchuk \emph{Lecture Notes on Delaunay Mesh Generation}.
+\bibitem[9]{googletest} Google \emph{https://github.com/google/googletest}.
 
-\bibitem[9]{cdt} Jonathan Richard Shewchuk \emph{Constrained Delaunay Tetrahedralizations and Provably Good Boundary Recovery}.
+\bibitem[10]{termo} Michał Kleiber, Piotr Kowalczyk, \emph{Wprowadzenie do Nieliniowej Termomechaniki Ciał Odkształcalnych}.
 
-\bibitem[10]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
-
-% FEM Papers
 
 \bibitem[11]{flex} Miles Macklin, Matthias Muller, Nuttapong Chentanez, Tae-Yong Kim \emph{Unified Particle Physics for Real-Time Applications}.
 
-\bibitem[12]{parker} Eric G. Parker, James F. O'Brien \emph{Real-Time Deformation and Fracture in a Game Environment}.
+\bibitem[12]{physics_notes} Matthias Muller, Jos Stam, Doug James, Nils Thurey, \emph{Real Time Physics Class Notes}.
 
-\bibitem[13]{tensor-mass} X. Faure, F. Zara, F. Jaillet, J-M. Moreau  \emph{An implicit Tensor-Mass solver on the GPU for soft bodies simulation}.
 
-\bibitem[14]{global_deformation} Yan Zhuang, John Canny \emph{Real-time Simulation of Physically Realistic Global Deformation}.
+\bibitem[13]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
 
-% Third party software
+\bibitem[14]{cublas} NVIDIA cuBLAS \emph{http://docs.nvidia.com/cuda/cublas/index.html}.
 
-\bibitem[15]{bullet} Bullet \emph{http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Documentation}.
+\bibitem[15]{cusparse} NVIDIA cuSPARSE \emph{http://docs.nvidia.com/cuda/cusparse/index.html}.
 
 \bibitem[16]{opengl} OpenGl \emph{https://www.opengl.org/}.
 
-\bibitem[17]{sofa} SOFA Framework \emph{https://www.sofa-framework.org}.
+\bibitem[17]{parker} Eric G. Parker, James F. O'Brien \emph{Real-Time Deformation and Fracture in a Game Environment}.
 
-\bibitem[18]{physx} NVIDIA \emph{http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Index.html}.
+\bibitem[18]{cg} Jonathan Richard Shewchuk \emph{An Introduction to the Conjugate Gradient Method Without the Agonizing Pain}.
 
-\bibitem[19]{cublas} NVIDIA cuBLAS \emph{http://docs.nvidia.com/cuda/cublas/index.html}.
+\bibitem[19]{delaunay_mesh} Jonathan Richard Shewchuk \emph{Lecture Notes on Delaunay Mesh Generation}.
 
-\bibitem[20]{cusparse} NVIDIA cuSPARSE \emph{http://docs.nvidia.com/cuda/cusparse/index.html}.
+\bibitem[20]{cdt} Jonathan Richard Shewchuk \emph{Constrained Delaunay Tetrahedralizations and Provably Good Boundary Recovery}.
 
-\bibitem[21]{eigen} Eigen \emph{http://eigen.tuxfamily.org/index.php?title=Main\_Page}.
+\bibitem[21]{sofa} SOFA Framework \emph{https://www.sofa-framework.org}.
 
-\bibitem[22]{googletest} Google \emph{https://github.com/google/googletest}.
+\bibitem[22]{tetgen} Hang Si \emph{A Quality Tetrahedral Mesh Generator and 3D Delaunay Triangulator}.
+
+\bibitem[23]{global_deformation} Yan Zhuang, John Canny \emph{Real-time Simulation of Physically Realistic Global Deformation}.
+
+\bibitem[24]{zienkiewicz1} Zienkiewicz \emph{The Finite Element Method. Volume 1: The Basis}.
+
+\bibitem[25]{zienkiewicz2} Zienkiewicz \emph{The Finite Element Method. Volume 2: Solid Mechanics}.
+
+
+
+% Notes
+
+
+
+
+
+
+
+% FEM Papers
+
+
+
+
+
+
+
+
+
+% Third party software
+
+
+
+
+
+
+
+
+
+
 
 % Source codes
-
-\bibitem[23]{ifx} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/InfinityXLib}.
-
-\bibitem[24]{rtfem} Jakub Ciecierski \emph{https://github.com/Jakub-Ciecierski/RT-FEM}.
-
-\bibitem[25]{JC-MassSpring} Jakub Ciecierski, \emph{https://github.com/Jakub-Ciecierski/SoftBodySimulation}
 
 
 \end{thebibliography}
@@ -1930,4 +2256,5 @@ PBD & Position Based Dynamics \\
 %Załącznik 1, załącznik 2 -- mają się znajdować na końcu pracy (to jest notka przypominająca)
 
 \end{document}
+
 

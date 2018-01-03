@@ -12,6 +12,8 @@ public:
     DeviceProperties(const cudaDeviceProp& properties);
     ~DeviceProperties() = default;
 
+    double GetUsedMegaBytesCount();
+
     const cudaDeviceProp& properties() {return properties_;}
 
     friend std::ostream& operator<<(std::ostream& os,
