@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  3 JAN 2018 07:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.12.16)  3 JAN 2018 07:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1458,7 +1458,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[18] <pictures/omega.png, id=554, 448.67625pt x 200.75pt>
+[18] <pictures/omega.png, id=548, 448.67625pt x 200.75pt>
 File: pictures/omega.png Graphic file (type png)
 
 <use pictures/omega.png>
@@ -1559,7 +1559,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [29]
 Rozdzia\l  3.
-<pictures/tetrahedron.png, id=691, 1025.8325pt x 343.2825pt>
+<pictures/tetrahedron.png, id=685, 1025.8325pt x 343.2825pt>
 File: pictures/tetrahedron.png Graphic file (type png)
 
 <use pictures/tetrahedron.png>
@@ -1610,7 +1610,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[34] <pictures/3dmesh_incomplite.png, id=747, 503.8825pt x 428.60126pt>
+[34] <pictures/3dmesh_incomplite.png, id=741, 503.8825pt x 428.60126pt>
 File: pictures/3dmesh_incomplite.png Graphic file (type png)
 
 <use pictures/3dmesh_incomplite.png>
@@ -1621,7 +1621,7 @@ Package pdftex.def Info: pictures/3dmesh_incomplite.png used on input line 1379
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/3dmesh.png, id=750, 844.15375pt x 621.32124pt>
+<pictures/3dmesh.png, id=744, 844.15375pt x 621.32124pt>
 File: pictures/3dmesh.png Graphic file (type png)
 
 <use pictures/3dmesh.png>
@@ -1637,7 +1637,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[35] <pictures/tetrahedra_shapes.png, id=762, 1260.71pt x 310.15875pt>
+[35] <pictures/tetrahedra_shapes.png, id=756, 1260.71pt x 310.15875pt>
 File: pictures/tetrahedra_shapes.png Graphic file (type png)
 
 <use pictures/tetrahedra_shapes.png>
@@ -1686,14 +1686,14 @@ es.png>]
 Rozdzia\l  4.
 [38
 
-] <pictures/paraboloid.png, id=792, 636.3775pt x 504.88625pt>
+] <pictures/paraboloid.png, id=786, 636.3775pt x 504.88625pt>
 File: pictures/paraboloid.png Graphic file (type png)
 
 <use pictures/paraboloid.png>
 Package pdftex.def Info: pictures/paraboloid.png used on input line 1466.
 (pdftex.def)             Requested size: 318.18797pt x 252.44249pt.
 
-<pictures/contour.png, id=794, 620.3175pt x 598.235pt>
+<pictures/contour.png, id=788, 620.3175pt x 598.235pt>
 File: pictures/contour.png Graphic file (type png)
 
 <use pictures/contour.png>
@@ -1729,14 +1729,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
                                                   \fi \fi 
 l.1505 \begin{equation}
                         <./pictures/contour.png>]
-<pictures/alpha1.png, id=821, 331.2375pt x 276.03125pt>
+<pictures/alpha1.png, id=815, 331.2375pt x 276.03125pt>
 File: pictures/alpha1.png Graphic file (type png)
 
 <use pictures/alpha1.png>
 Package pdftex.def Info: pictures/alpha1.png used on input line 1531.
 (pdftex.def)             Requested size: 264.99034pt x 220.82529pt.
 
-<pictures/alpha2.png, id=824, 290.08376pt x 273.02pt>
+<pictures/alpha2.png, id=818, 290.08376pt x 273.02pt>
 File: pictures/alpha2.png Graphic file (type png)
 
 <use pictures/alpha2.png>
@@ -1759,7 +1759,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
                                                   \fi \fi 
 l.1553 \end{equation}
                       <./pictures/alpha1.png>]
-<pictures/steepest_descent.png, id=836, 669.50125pt x 588.1975pt>
+<pictures/steepest_descent.png, id=830, 669.50125pt x 588.1975pt>
 File: pictures/steepest_descent.png Graphic file (type png)
 
 <use pictures/steepest_descent.png>
@@ -1799,7 +1799,7 @@ l.1604 \chapter
 Rozdzia\l  5.
 [44
 
-] <pictures/fem_model.png, id=875, 800.9925pt x 605.26125pt>
+] <pictures/fem_model.png, id=869, 800.9925pt x 605.26125pt>
 File: pictures/fem_model.png Graphic file (type png)
 
 <use pictures/fem_model.png>
@@ -1813,7 +1813,7 @@ Overfull \hbox (25.35507pt too wide) in paragraph at lines 1643--1644
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/tetrahedralization.png, id=877, 451.6875pt x 308.15125pt>
+<pictures/tetrahedralization.png, id=871, 451.6875pt x 308.15125pt>
 File: pictures/tetrahedralization.png Graphic file (type png)
 
 <use pictures/tetrahedralization.png>
@@ -1824,7 +1824,7 @@ Package pdftex.def Info: pictures/tetrahedralization.png used on input line 165
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/solver.png, id=880, 955.57pt x 544.0325pt>
+<pictures/solver.png, id=874, 955.57pt x 544.0325pt>
 File: pictures/solver.png Graphic file (type png)
  <use pictures/solver.png>
 Package pdftex.def Info: pictures/solver.png used on input line 1661.
@@ -1887,7 +1887,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[48] <pictures/ifx/ifx.png, id=925, 1926.19624pt x 1054.94125pt>
+[48] <pictures/ifx/ifx.png, id=919, 1926.19624pt x 1054.94125pt>
 File: pictures/ifx/ifx.png Graphic file (type png)
 
 <use pictures/ifx/ifx.png>
@@ -1907,14 +1907,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
                                                   \fi \fi 
 l.1783 
         <./pictures/ifx/ifx.png>]
-<pictures/ifx_general.png, id=940, 378.41376pt x 353.32pt>
+<pictures/ifx_general.png, id=934, 378.41376pt x 353.32pt>
 File: pictures/ifx_general.png Graphic file (type png)
 
 <use pictures/ifx_general.png>
 Package pdftex.def Info: pictures/ifx_general.png used on input line 1786.
 (pdftex.def)             Requested size: 189.2064pt x 176.65956pt.
 
-<pictures/ifx_physics.png, id=942, 670.505pt x 397.485pt>
+<pictures/ifx_physics.png, id=936, 670.505pt x 397.485pt>
 File: pictures/ifx_physics.png Graphic file (type png)
 
 <use pictures/ifx_physics.png>
@@ -1924,7 +1924,7 @@ Package pdftex.def Info: pictures/ifx_physics.png used on input line 1795.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_graphics.png, id=944, 461.725pt x 421.575pt>
+<pictures/ifx_graphics.png, id=938, 461.725pt x 421.575pt>
 File: pictures/ifx_graphics.png Graphic file (type png)
 
 <use pictures/ifx_graphics.png>
@@ -1934,7 +1934,7 @@ Package pdftex.def Info: pictures/ifx_graphics.png used on input line 1804.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_game.png, id=946, 512.91624pt x 504.88625pt>
+<pictures/ifx_game.png, id=940, 512.91624pt x 504.88625pt>
 File: pictures/ifx_game.png Graphic file (type png)
 
 <use pictures/ifx_game.png>
@@ -1961,7 +1961,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
                                                   \fi \fi 
 l.1819 
         <./pictures/ifx_general.png>]
-<pictures/game_loop.png, id=956, 1128.215pt x 309.155pt>
+<pictures/game_loop.png, id=950, 1128.215pt x 309.155pt>
 File: pictures/game_loop.png Graphic file (type png)
 
 <use pictures/game_loop.png>
@@ -1971,7 +1971,7 @@ Package pdftex.def Info: pictures/game_loop.png used on input line 1822.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx_game2.png, id=958, 703.62875pt x 415.5525pt>
+<pictures/ifx_game2.png, id=952, 703.62875pt x 415.5525pt>
 File: pictures/ifx_game2.png Graphic file (type png)
 
 <use pictures/ifx_game2.png>
@@ -2000,7 +2000,7 @@ l.1834 \end{figure}
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx/ifx_meshing.png, id=969, 1160.335pt x 710.655pt>
+<pictures/ifx/ifx_meshing.png, id=963, 1160.335pt x 710.655pt>
 File: pictures/ifx/ifx_meshing.png Graphic file (type png)
 
 <use pictures/ifx/ifx_meshing.png>
@@ -2026,7 +2026,7 @@ l.1845 \end{figure}
                                                   \fi \fi 
 l.1845 \end{figure}
                     <./pictures/ifx_game.png> <./pictures/game_loop.png>]
-<pictures/ifx/ifx_material.png, id=979, 1158.3275pt x 704.6325pt>
+<pictures/ifx/ifx_material.png, id=972, 1158.3275pt x 704.6325pt>
 File: pictures/ifx/ifx_material.png Graphic file (type png)
 
 <use pictures/ifx/ifx_material.png>
@@ -2037,7 +2037,7 @@ Package pdftex.def Info: pictures/ifx/ifx_material.png used on input line 1851.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx/ifx_bc.png, id=981, 1163.34625pt x 706.64pt>
+<pictures/ifx/ifx_bc.png, id=974, 1163.34625pt x 706.64pt>
 File: pictures/ifx/ifx_bc.png Graphic file (type png)
 
 <use pictures/ifx/ifx_bc.png>
@@ -2047,7 +2047,7 @@ Package pdftex.def Info: pictures/ifx/ifx_bc.png used on input line 1860.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx/ifx_load.png, id=983, 1160.335pt x 708.6475pt>
+<pictures/ifx/ifx_load.png, id=976, 1160.335pt x 708.6475pt>
 File: pictures/ifx/ifx_load.png Graphic file (type png)
 
 <use pictures/ifx/ifx_load.png>
@@ -2077,7 +2077,7 @@ l.1872 \end{figure}
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/ifx/ifx_solver1.png, id=993, 1159.33125pt x 705.63625pt>
+<pictures/ifx/ifx_solver1.png, id=987, 1159.33125pt x 705.63625pt>
 File: pictures/ifx/ifx_solver1.png Graphic file (type png)
 
 <use pictures/ifx/ifx_solver1.png>
@@ -2103,7 +2103,7 @@ l.1881 \end{figure}
                                                   \fi \fi 
 l.1881 \end{figure}
                     <./pictures/ifx/ifx_material.png> <./pictures/ifx/ifx_bc.pn
-g>] <pictures/ifx/ifx_solver2.png, id=999, 1162.3425pt x 709.65125pt>
+g>] <pictures/ifx/ifx_solver2.png, id=993, 1162.3425pt x 709.65125pt>
 File: pictures/ifx/ifx_solver2.png Graphic file (type png)
 
 <use pictures/ifx/ifx_solver2.png>
@@ -2255,42 +2255,42 @@ l.2063
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.2063 
-       ] <pictures/tests/660.png, id=1036, 684.5575pt x 413.545pt>
+       ] <pictures/tests/660.png, id=1030, 684.5575pt x 413.545pt>
 File: pictures/tests/660.png Graphic file (type png)
 
 <use pictures/tests/660.png>
 Package pdftex.def Info: pictures/tests/660.png used on input line 2066.
 (pdftex.def)             Requested size: 205.36882pt x 124.06445pt.
 
-<pictures/tests/660_end.png, id=1037, 678.535pt x 416.55624pt>
+<pictures/tests/660_end.png, id=1031, 678.535pt x 416.55624pt>
 File: pictures/tests/660_end.png Graphic file (type png)
 
 <use pictures/tests/660_end.png>
 Package pdftex.def Info: pictures/tests/660_end.png used on input line 2067.
 (pdftex.def)             Requested size: 203.56207pt x 124.96783pt.
 
-<pictures/tests/1119.png, id=1038, 673.51625pt x 415.5525pt>
+<pictures/tests/1119.png, id=1032, 673.51625pt x 415.5525pt>
 File: pictures/tests/1119.png Graphic file (type png)
 
 <use pictures/tests/1119.png>
 Package pdftex.def Info: pictures/tests/1119.png used on input line 2074.
 (pdftex.def)             Requested size: 202.05643pt x 124.6667pt.
 
-<pictures/tests/1119_end.png, id=1039, 675.52374pt x 416.55624pt>
+<pictures/tests/1119_end.png, id=1033, 675.52374pt x 416.55624pt>
 File: pictures/tests/1119_end.png Graphic file (type png)
 
 <use pictures/tests/1119_end.png>
 Package pdftex.def Info: pictures/tests/1119_end.png used on input line 2075.
 (pdftex.def)             Requested size: 202.65868pt x 124.96783pt.
 
-<pictures/tests/2000tet.png, id=1040, 682.55pt x 418.56375pt>
+<pictures/tests/2000tet.png, id=1034, 682.55pt x 418.56375pt>
 File: pictures/tests/2000tet.png Graphic file (type png)
 
 <use pictures/tests/2000tet.png>
 Package pdftex.def Info: pictures/tests/2000tet.png used on input line 2082.
 (pdftex.def)             Requested size: 204.76657pt x 125.57008pt.
 
-<pictures/tests/2000end.png, id=1041, 678.535pt x 419.5675pt>
+<pictures/tests/2000end.png, id=1035, 678.535pt x 419.5675pt>
 File: pictures/tests/2000end.png Graphic file (type png)
 
 <use pictures/tests/2000end.png>
@@ -2300,14 +2300,14 @@ Package pdftex.def Info: pictures/tests/2000end.png used on input line 2083.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/tests/3252.png, id=1042, 678.535pt x 418.56375pt>
+<pictures/tests/3252.png, id=1036, 678.535pt x 418.56375pt>
 File: pictures/tests/3252.png Graphic file (type png)
 
 <use pictures/tests/3252.png>
 Package pdftex.def Info: pictures/tests/3252.png used on input line 2090.
 (pdftex.def)             Requested size: 203.56207pt x 125.57008pt.
 
-<pictures/tests/3252end.png, id=1043, 682.55pt x 412.54124pt>
+<pictures/tests/3252end.png, id=1037, 682.55pt x 412.54124pt>
 File: pictures/tests/3252end.png Graphic file (type png)
 
 <use pictures/tests/3252end.png>
@@ -2317,14 +2317,14 @@ Package pdftex.def Info: pictures/tests/3252end.png used on input line 2091.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<pictures/tests/5392.png, id=1044, 673.51625pt x 407.5225pt>
+<pictures/tests/5392.png, id=1038, 673.51625pt x 407.5225pt>
 File: pictures/tests/5392.png Graphic file (type png)
 
 <use pictures/tests/5392.png>
 Package pdftex.def Info: pictures/tests/5392.png used on input line 2098.
 (pdftex.def)             Requested size: 202.05643pt x 122.25769pt.
 
-<pictures/tests/5392_end.png, id=1045, 671.50874pt x 415.5525pt>
+<pictures/tests/5392_end.png, id=1039, 671.50874pt x 415.5525pt>
 File: pictures/tests/5392_end.png Graphic file (type png)
 
 <use pictures/tests/5392_end.png>
@@ -2442,35 +2442,30 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[67] (./thesis-template-with-class.lot)
-\tf@lot=\write7
-\openout7 = `thesis-template-with-class.lot'.
-
- [68
-
-]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2258.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2258.
+[67]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2253.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2253.
  (./thesis-template-with-class.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2258.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2258.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2253.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2253.
 
 Package rerunfilecheck Info: File `thesis-template-with-class.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: 7D0CEF516B848ACBB5C9027F26A15730;8277.
+(rerunfilecheck)             Checksum: 919EF95A4003171615B32E4C66F5AE0D;8156.
+
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2258.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2253.
  ) 
 Here is how much of TeX's memory you used:
- 33536 strings out of 493029
- 736378 string characters out of 6136233
+ 33530 strings out of 493029
+ 736281 string characters out of 6136233
  908161 words of memory out of 5000000
- 36119 multiletter control sequences out of 15000+600000
+ 36118 multiletter control sequences out of 15000+600000
  17655 words of font info for 45 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  62i,19n,108p,1253b,2648s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2493,10 +2488,10 @@ usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/font
 s/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-su
 per/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></u
 sr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on thesis-template-with-class.pdf (68 pages, 3200999 bytes).
+Output written on thesis-template-with-class.pdf (67 pages, 3200342 bytes).
 PDF statistics:
- 1277 PDF objects out of 1440 (max. 8388607)
- 1078 compressed objects within 11 object streams
- 365 named destinations out of 1000 (max. 500000)
- 681 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1267 PDF objects out of 1440 (max. 8388607)
+ 1070 compressed objects within 11 object streams
+ 363 named destinations out of 1000 (max. 500000)
+ 673 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -66,5 +66,4 @@
 \contentsline {chapter}{References}{63}{section*.10}
 \contentsline {chapter}{List of symbols and abbreviations}{65}{section*.11}
 \contentsline {chapter}{List of figures}{66}{section*.12}
-\contentsline {chapter}{List of tables}{68}{section*.13}
 \contentsfinish 
