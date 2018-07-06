@@ -1,4 +1,7 @@
 # RTFEM
+
+![alt tag](./ifx_solver.png)
+
 RTFEM stands for Real-Time Finite Element Method. <br/>
 The library computes the entire process of Finite Element Method for solid mechanics in real time, namely:
  1. Pre-Processing:
