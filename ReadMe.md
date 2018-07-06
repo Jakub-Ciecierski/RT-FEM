@@ -5,6 +5,8 @@ The library computes the entire process of Finite Element Method for solid mecha
     * 3D Finite Element Meshing of given geometry.
  1. FEM Solver:
     * CPU and GPU Linear elastic, linear deformation, dynamic.
+Sample video:
+https://drive.google.com/file/d/1A7MO1FB9vLsI6-7j8mlbYS4NfCRSP8pY/view?usp=sharing
 
 # Supported Platforms
 Library is written in c++11.
